@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/action-receipt.schema.json",
+  "title": "Gummy Action Receipt",
+  "type": "object",
+  "required": ["schema", "id", "action", "actor", "application", "outcome", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.action-receipt/v0" },
+    "id": { "type": "string", "pattern": "^receipt:" },
+    "action": { "type": "string" },
+    "actor": { "type": "string" },
+    "application": { "type": "string" },
+    "resources": { "type": "array", "items": { "type": "string" } },
+    "capabilities": { "type": "array", "items": { "type": "string" } },
+    "outcome": { "enum": ["completed", "denied", "failed", "rolled-back"] },
+    "reversible": { "type": "boolean" },
+    "detail": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

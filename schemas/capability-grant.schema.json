@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/capability-grant.schema.json",
+  "title": "Gummy Capability Grant",
+  "type": "object",
+  "required": ["schema", "id", "actor", "action", "resource", "risk", "issuedAt", "expiresAt"],
+  "properties": {
+    "schema": { "const": "gummy.capability-grant/v0" },
+    "id": { "type": "string", "pattern": "^grant:" },
+    "actor": { "type": "string" },
+    "action": { "type": "string" },
+    "resource": { "type": "string" },
+    "risk": { "enum": ["low", "medium", "high", "critical"] },
+    "reason": { "type": "string" },
+    "scope": { "type": "object" },
+    "approval": { "enum": ["policy", "human", "organization"] },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

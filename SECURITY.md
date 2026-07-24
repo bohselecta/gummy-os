@@ -1,28 +1,7 @@
-# Security Policy
+# Security
 
-Gummy is currently an architectural prototype and has not received a production security audit. Do not use this scaffold to process secrets, financial transactions, regulated data, or untrusted executable workloads.
+Gummy 0.1 is an architectural scaffold and must not be treated as a production security boundary.
 
-## Reporting a vulnerability
+Do not submit secrets in public issues. Report suspected vulnerabilities privately to the repository owner with affected commit, reproduction steps, impact, and mitigation.
 
-Report suspected vulnerabilities privately to the repository owner rather than opening a public issue. Include:
-
-- affected commit or version;
-- reproduction steps;
-- the expected and observed security boundary;
-- likely impact;
-- any proposed mitigation.
-
-## High-risk areas
-
-Changes in these areas require explicit security review:
-
-- iframe sandbox flags and cross-origin messaging;
-- model adapters and prompt/context assembly;
-- connectors, OAuth tokens, and account authorization;
-- file byte persistence, OPFS, IndexedDB, or host file handles;
-- runtime capsules, Wasm imports, Linux compatibility, and networking;
-- capability grants, approval policy, and receipt integrity;
-- application-pack signing and update channels;
-- service workers, offline caches, and origin isolation headers.
-
-See [`docs/SECURITY_MODEL.md`](docs/SECURITY_MODEL.md) for the intended trust boundaries.
+Read `docs/SECURITY_MODEL.md` before adding models, connectors, external frames, authentication, synchronization, Application Packs, or executable runtimes.

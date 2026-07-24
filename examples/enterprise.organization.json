@@ -1,0 +1,12 @@
+{
+  "schema": "gummy.organization/v0",
+  "id": "org:gummy-labs",
+  "name": "Gummy Labs",
+  "deployment": "dedicated-cloud",
+  "dataRegions": ["US"],
+  "identity": { "provider": "passkey-and-oidc", "roles": ["owner", "admin", "operator", "auditor", "member"] },
+  "policyPacks": ["policy-pack:baseline-enterprise:0.1"],
+  "appPackRegistries": ["registry:gummy-labs"],
+  "modelBrokers": ["broker:approved-models"],
+  "runtimePools": ["runtime:web", "runtime:wasm", "runtime:linux"]
+}
