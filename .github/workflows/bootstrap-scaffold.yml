@@ -1,0 +1,40 @@
+name: Bootstrap Gummy scaffold
+
+on:
+  push:
+    branches:
+      - agent/scaffold-gummy-os
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    if: github.event.head_commit.message != 'Scaffold Gummy OS'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out scaffold branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify, expand, and replace bootstrap payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .gummy-bootstrap/payload-* | base64 --decode > /tmp/gummy-os-scaffold.tar.xz
+          echo "ee621b90fca311c34f2d1d7fed212cef818fcc86ecb356cafd5e4918b58d1550  /tmp/gummy-os-scaffold.tar.xz" | sha256sum --check
+          tar -xJf /tmp/gummy-os-scaffold.tar.xz -C .
+          rm -rf .gummy-bootstrap .github/workflows/bootstrap-scaffold.yml
+
+          git config user.name "Gummy Bootstrap"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No scaffold changes were produced."
+            exit 0
+          fi
+
+          git commit -m "Scaffold Gummy OS"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
