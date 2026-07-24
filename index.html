@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#7c5cff" />
+  <title>Gummy — A computer you can open</title>
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <div id="boot" class="boot-screen" aria-live="polite">
+    <div class="boot-mark"><span></span><span></span><span></span></div>
+    <h1>Gummy</h1>
+    <p>A computer you can open.</p>
+  </div>
+  <main id="desktop" class="desktop" hidden>
+    <header class="topbar">
+      <button class="brand-button" data-action="open-app" data-app="about" aria-label="About Gummy">
+        <span class="brand-orb"></span><strong>Gummy</strong>
+      </button>
+      <div class="workspace-pill"><span class="presence-dot"></span><span id="workspace-name">My Gummy</span></div>
+      <div class="topbar-actions">
+        <button class="ghost-button" data-action="open-app" data-app="launcher">⌘ Apps</button>
+        <button class="ghost-button" id="fullscreen-button">Full screen</button>
+        <button class="avatar-button" data-action="open-app" data-app="snack"><span id="avatar-initial">H</span></button>
+      </div>
+    </header>
+    <section class="desktop-canvas" aria-label="Gummy desktop">
+      <div id="desktop-icons" class="desktop-icons"></div>
+      <div id="window-layer" class="window-layer"></div>
+      <button id="companion" class="companion" aria-label="Gummy companion" title="Drop a file here">
+        <span class="companion-face"><i></i><i></i><b></b></span>
+        <span class="companion-label">Gummy</span>
+      </button>
+      <div id="toast-layer" class="toast-layer" aria-live="polite"></div>
+    </section>
+    <nav id="dock" class="dock" aria-label="Gummy dock"></nav>
+  </main>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

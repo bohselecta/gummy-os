@@ -1,0 +1,11 @@
+{
+  "schema": "gummy.snack/v0",
+  "id": "snack:hayden",
+  "name": "Hayden",
+  "handle": "@hayden",
+  "flavor": "electric citrus",
+  "shape": "squircle",
+  "colors": { "primary": "#7c5cff", "secondary": "#ff7cc8", "accent": "#75f0c8" },
+  "companion": "Gummy",
+  "visibility": "private"
+}

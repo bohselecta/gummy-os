@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/policy-pack.schema.json",
+  "title": "Gummy Policy Pack",
+  "type": "object",
+  "required": ["schema", "id", "name", "rules", "version"],
+  "properties": {
+    "schema": { "const": "gummy.policy-pack/v0" },
+    "id": { "type": "string", "pattern": "^policy-pack:" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "rules": { "type": "array", "items": { "type": "object" } },
+    "appliesTo": { "type": "array", "items": { "type": "string" } },
+    "signature": { "type": "object" }
+  },
+  "additionalProperties": true
+}

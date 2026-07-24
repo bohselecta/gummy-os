@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/organization.schema.json",
+  "title": "Gummy Organization",
+  "type": "object",
+  "required": ["schema", "id", "name", "deployment", "identity", "policyPacks"],
+  "properties": {
+    "schema": { "const": "gummy.organization/v0" },
+    "id": { "type": "string", "pattern": "^org:" },
+    "name": { "type": "string" },
+    "deployment": { "enum": ["hosted", "dedicated-cloud", "self-hosted", "sovereign"] },
+    "dataRegions": { "type": "array", "items": { "type": "string" } },
+    "identity": { "type": "object" },
+    "policyPacks": { "type": "array", "items": { "type": "string" } },
+    "appPackRegistries": { "type": "array", "items": { "type": "string" } },
+    "modelBrokers": { "type": "array", "items": { "type": "string" } },
+    "runtimePools": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

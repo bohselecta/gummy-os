@@ -1,0 +1,22 @@
+{
+  "schema": "gummy.app-pack/v0",
+  "id": "pack:publishing-workbench:0.1",
+  "application": { "name": "Publishing Workbench", "version": "1.0" },
+  "vendor": { "name": "Example Vendor" },
+  "runtime": "web-native",
+  "capabilities": [
+    { "id": "document.import", "risk": "low" },
+    { "id": "release.prepare", "risk": "medium" },
+    { "id": "release.publish", "risk": "high", "approval": "human" }
+  ],
+  "workflows": [
+    { "id": "prepare-release", "steps": ["document.import", "release.prepare"] }
+  ],
+  "policies": [
+    { "action": "release.publish", "effect": "require-approval" }
+  ],
+  "documentation": ["docs/operator-manual.md"],
+  "verification": { "suite": "tests/pack.spec.json", "requiredPassRate": 1 },
+  "recovery": { "rollback": "release.unpublish" },
+  "signature": { "status": "unsigned-demo" }
+}

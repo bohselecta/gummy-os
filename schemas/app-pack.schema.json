@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/app-pack.schema.json",
+  "title": "Gummy Application Pack",
+  "type": "object",
+  "required": ["schema", "id", "application", "vendor", "runtime", "capabilities", "policies", "verification"],
+  "properties": {
+    "schema": { "const": "gummy.app-pack/v0" },
+    "id": { "type": "string", "pattern": "^pack:" },
+    "application": { "type": "object" },
+    "vendor": { "type": "object" },
+    "runtime": { "enum": ["web-native", "wasm", "linux", "governed-cloud"] },
+    "capabilities": { "type": "array", "items": { "type": "object" } },
+    "workflows": { "type": "array", "items": { "type": "object" } },
+    "policies": { "type": "array", "items": { "type": "object" } },
+    "documentation": { "type": "array", "items": { "type": "string" } },
+    "verification": { "type": "object" },
+    "recovery": { "type": "object" },
+    "signature": { "type": "object" }
+  },
+  "additionalProperties": true
+}

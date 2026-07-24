@@ -1,9 +1,3 @@
-# Gummy Community Standard
+# Community standard
 
-Gummy should be as welcoming to build as it is to use.
-
-Participants are expected to be direct without being cruel, curious without being extractive, and rigorous without using expertise as a weapon. Harassment, discrimination, threats, doxxing, sexualized attention, and deliberate sabotage are not acceptable.
-
-Disagreement about architecture is welcome. Attack the decision, describe the tradeoff, and preserve the dignity of the person who made it.
-
-Project maintainers may remove contributions or participation that violate this standard.
+Treat people with respect. Do not harass, impersonate, threaten, expose private information, or weaponize Gummy's social and agent capabilities against others. Maintainers may remove participation that undermines a safe, constructive environment.

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/snack.schema.json",
+  "title": "Gummy Snack",
+  "type": "object",
+  "required": ["schema", "id", "name", "handle", "shape", "colors"],
+  "properties": {
+    "schema": { "const": "gummy.snack/v0" },
+    "id": { "type": "string", "pattern": "^snack:" },
+    "name": { "type": "string", "minLength": 1 },
+    "handle": { "type": "string", "pattern": "^@" },
+    "flavor": { "type": "string" },
+    "shape": { "enum": ["squircle", "orb", "bean", "diamond"] },
+    "colors": {
+      "type": "object",
+      "required": ["primary", "secondary", "accent"],
+      "properties": {
+        "primary": { "type": "string" },
+        "secondary": { "type": "string" },
+        "accent": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "companion": { "type": "string" },
+    "visibility": { "enum": ["private", "invite", "public"] },
+    "identityProof": { "type": "object" }
+  },
+  "additionalProperties": true
+}

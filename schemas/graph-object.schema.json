@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/graph-object.schema.json",
+  "title": "Gummy Graph Object",
+  "type": "object",
+  "required": ["schema", "id", "kind", "owner", "visibility"],
+  "properties": {
+    "schema": { "const": "gummy.graph-object/v0" },
+    "id": { "type": "string" },
+    "kind": { "enum": ["bowl", "drop", "link", "project", "conversation", "artifact", "application"] },
+    "owner": { "type": "string" },
+    "visibility": { "enum": ["private", "invite", "organization", "public"] },
+    "title": { "type": "string" },
+    "content": {},
+    "provenance": { "type": "object" },
+    "capabilities": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}
