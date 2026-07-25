@@ -13,20 +13,22 @@ Do not import code or architecture from older repositories that reused the Gummy
 ## Read order
 
 1. `README.md`
-2. `docs/GLOPPER_NAMING.md`
-3. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-4. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
-5. `docs/GUMMY_BOX_WORK_ORDERS.md`
-6. `docs/VOCABULARY.md`
-7. `docs/PRODUCT_SPEC.md`
-8. `docs/ARCHITECTURE.md`
-9. `docs/PROTOCOL.md`
-10. `docs/SECURITY_MODEL.md`
-11. `docs/SOCIAL_LAYER.md`
-12. `docs/ROADMAP.md`
-13. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-14. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
-15. `docs/BUILD_RUNBOOK.md`
+2. `docs/BRAND_SYSTEM.md`
+3. `docs/GLOPPER_NAMING.md`
+4. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
+5. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
+6. `docs/GUMMY_BOX_WORK_ORDERS.md`
+7. `docs/VOCABULARY.md`
+8. `docs/PRODUCT_SPEC.md`
+9. `docs/ARCHITECTURE.md`
+10. `docs/PROTOCOL.md`
+11. `docs/SECURITY_MODEL.md`
+12. `docs/SOCIAL_LAYER.md`
+13. `docs/ROADMAP.md`
+14. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+15. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
+16. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
+17. `docs/BUILD_RUNBOOK.md`
 
 ## Locked naming
 
@@ -34,7 +36,8 @@ Do not import code or architecture from older repositories that reused the Gummy
 Gummy OS       = platform
 Gummy Canvas   = working surface
 Gummy Bar      = persistent candy-store system bar
-Glopper        = companion character and first-party Agent identity
+Gummy          = purple-dominant platform guide/personality
+Glopper        = gold-dominant action companion and first-party Agent identity
 Glopper Panel  = expanded in-OS conversation/control surface
 Glopper App    = standalone native/mobile interface
 Gummy Box      = user-owned durable handoff space
@@ -48,6 +51,42 @@ The Gummy Bar is not the Glopper Bar. Glopper is one special candy inside it.
 Do not create current product names `Gummy Desktop`, `Gummy Web`, `Z`, `Z bar`, `Z panel`, `native Z app`, or `Zeke` for the Gummy OS companion.
 
 A candy icon is presentation, not a protocol object type.
+
+## Locked brand system
+
+Exactly two canonical expressions exist:
+
+```text
+Night Gummy
+Day Gummy
+```
+
+Exactly five brand hue anchors exist:
+
+```text
+#4B187A  Deep Indigo
+#7C2FD0  Gummy Violet
+#F2B544  Honey Gold
+#FFF1C7  Warm Cream
+#100817  Aubergine Black
+```
+
+Core grammar:
+
+```text
+Purple tells you where you are.
+Gold tells you what you can do.
+Gummy = purple-dominant, gold accent.
+Glopper = gold-dominant, purple accent.
+```
+
+Do not add arbitrary accents, theme marketplaces, third-party Gummy OS skins, mascot recolors, or new branded hues.
+
+Derived colors may use opacity or mixes only between the five locked anchors.
+
+Meaning must never rely on color alone. Use labels, icons, shapes, patterns, position, and accessible names.
+
+Mascot silhouettes, proportions, identity colors, logos, and personality are locked. Developer placeholders remain visibly temporary until Hayden supplies production assets.
 
 ## Gummy Box rule
 
@@ -82,7 +121,8 @@ Master Control = placement, sync, assignment, approval, revocation
 Gummy OS = universal WebOS platform
 Gummy Canvas = open working surface
 Gummy Bar = candy-store system surface
-Glopper = first-party companion and Agent identity
+Gummy = orientation and continuity personality
+Glopper = action and execution personality
 Gummy Box = provider-neutral async connective tissue
 ```
 
@@ -103,6 +143,7 @@ Build the standalone browser-first proof on Ubuntu:
 
 ```text
 Human opens Actor
+→ selects Night or Day Gummy
 → uses Gummy Canvas and Gummy Bar
 → opens Glopper Panel
 → initializes Gummy Box
@@ -145,6 +186,13 @@ Recursive composition is allowed. **Creation never transfers authority automatic
 
 - Preserve provider neutrality.
 - Keep Canvas and Bar playful, accessible, responsive, and fast.
+- Implement brand colors through source and semantic tokens, not scattered literals.
+- Night and Day must feel like one universe.
+- Purple remains the primary location/navigation/context signal.
+- Gold remains the primary action/focus/selection/attention signal.
+- Gummy and Glopper remain identifiable without color alone.
+- Honey Gold controls use dark text.
+- Do not recolor mascots or approximate final wordmarks.
 - Actor and Agent remain distinct.
 - Human authority remains above both.
 - Mold is an operating contract, not an avatar.
@@ -157,11 +205,11 @@ Recursive composition is allowed. **Creation never transfers authority automatic
 - Downloads begin quarantined.
 - Native promotion is explicit and receiptable.
 - Do not inspect native distro before standalone proof requires it.
-- Do not expand broad social, enterprise, federation, public-figure, character, or multi-runtime scope before proof passes.
+- Do not expand broad social, enterprise, federation, public-figure, character, multi-runtime, or theme-marketplace scope before proof passes.
 - Migration is deterministic, idempotent, traceable, and non-destructive.
 
 ## Completion standard
 
-A lane is complete only when the visible journey works, authority/storage/provider boundaries are typed, deterministic behavior has tests, denial/failure/revocation are truthful, documentation matches code, state survives return, `npm run verify` passes, and the builder returns exact artifacts and limitations.
+A lane is complete only when the visible journey works, brand/authority/storage/provider boundaries are typed, deterministic behavior has tests, denial/failure/revocation are truthful, accessibility is verified, documentation matches code, state survives return, `npm run verify` passes, and the builder returns exact artifacts and limitations.
 
 The builder does not accept its own Return.
