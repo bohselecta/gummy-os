@@ -1,0 +1,21 @@
+{
+  "schema": "gummy.grab/v0",
+  "id": "grab:welcome-copy",
+  "sourceGummyId": "gummy:welcome",
+  "resultGummyId": "gummy:welcome-copy",
+  "actorId": "actor:hayden",
+  "moldId": "mold:hayden:default",
+  "sourceRevision": 1,
+  "sourceHash": {
+    "algorithm": "sha256",
+    "value": "example-only-replace-with-real-source-hash"
+  },
+  "linkId": "link:welcome-copy-grab-of-welcome",
+  "rightsCarried": {
+    "license": "private",
+    "attributionRequired": false,
+    "commercialUse": "unspecified"
+  },
+  "transformationNote": "Independent copy created without modifying the source Gummy.",
+  "createdAt": "2026-07-25T00:00:00Z"
+}
