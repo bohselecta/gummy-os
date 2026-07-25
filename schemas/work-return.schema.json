@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/work-return.schema.json",
+  "title": "Gummy OS Work Return",
+  "description": "A structured account of attempted or completed Work Order execution returned by an Agent into a Gummy Box.",
+  "type": "object",
+  "required": ["schema", "id", "boxId", "workOrderId", "agentId", "taskLeaseId", "result", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.work-return/v0" },
+    "id": { "type": "string", "pattern": "^return:" },
+    "boxId": { "type": "string", "pattern": "^box:" },
+    "workOrderId": { "type": "string", "pattern": "^work-order:" },
+    "taskLeaseId": { "type": "string", "pattern": "^lease:" },
+    "humanAuthorityId": { "type": "string", "pattern": "^human:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "baseState": {
+      "type": "object",
+      "properties": {
+        "repository": { "type": "string" },
+        "branch": { "type": "string" },
+        "baseRevision": { "type": "string" },
+        "sourceHashes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "filesChanged": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "gummiesChanged": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "actionsPerformed": { "type": "array", "items": { "type": "string" } },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "outcome"],
+        "properties": {
+          "name": { "type": "string" },
+          "command": { "type": "string" },
+          "outcome": { "enum": ["pass", "fail", "blocked", "not-run"] },
+          "detail": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "artifactRefs": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "receiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true },
+    "knownLimitations": { "type": "array", "items": { "type": "string" } },
+    "provenClaims": { "type": "array", "items": { "type": "string" } },
+    "unprovenClaims": { "type": "array", "items": { "type": "string" } },
+    "recommendedNextAction": { "type": "string" },
+    "result": { "enum": ["completed", "partial", "failed", "blocked", "denied", "cancelled", "expired"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
