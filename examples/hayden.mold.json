@@ -1,27 +1,48 @@
 {
   "schema": "gummy.mold/v0",
-  "id": "mold:hayden:default",
+  "id": "mold:hayden:personal",
   "actorId": "actor:hayden",
-  "actorClass": "human",
+  "name": "Hayden Personal Mold",
   "handle": "@hayden",
-  "displayName": "Hayden",
-  "description": "Personal Gummy OS identity.",
-  "visibility": "private",
-  "verificationStatus": "self-asserted",
-  "presentation": {
+  "status": "active",
+  "allowedHumanIds": ["human:hayden"],
+  "allowedAgentIds": ["agent:personal-broker"],
+  "role": "personal-owner",
+  "context": "Personal Gummy OS",
+  "representation": {
+    "displayName": "Hayden",
+    "description": "Personal representation and operating contract for @hayden.",
     "shape": "squircle",
     "primaryColor": "#7c5cff",
     "secondaryColor": "#ff7cc8",
-    "accentColor": "#75f0c8"
+    "accentColor": "#75f0c8",
+    "behavioralNotes": []
   },
-  "publicFields": {},
-  "privateFields": {
-    "companion": "Gummy"
+  "permissions": {
+    "capabilities": ["gummy.read", "gummy.create", "gummy.transform"],
+    "readScopes": ["actor:hayden/gummies/*"],
+    "writeScopes": ["actor:hayden/gummies/generated/*"],
+    "publishScopes": [],
+    "requiresHumanApproval": true
+  },
+  "runtimePolicy": {
+    "allowedLocalities": ["web", "local", "cloud"],
+    "allowedRuntimeClasses": ["browser", "server"],
+    "networkPolicy": "ask"
+  },
+  "syncPolicy": {
+    "mode": "manual",
+    "allowedData": ["gummies", "receipts", "links"],
+    "directions": []
   },
   "proofs": [],
-  "keys": [],
-  "supportedProtocolVersions": ["0.2"],
-  "createdAt": "2026-07-25T00:00:00Z",
+  "disclosure": {
+    "operatorType": "mixed",
+    "agentDisclosureRequired": true,
+    "licenseDisclosure": "personal"
+  },
+  "issuedBy": "human:hayden",
+  "issuedAt": "2026-07-25T00:00:00Z",
   "updatedAt": "2026-07-25T00:00:00Z",
   "legacyIds": ["snack:hayden"]
 }
