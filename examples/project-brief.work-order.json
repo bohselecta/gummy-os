@@ -1,0 +1,64 @@
+{
+  "schema": "gummy.work-order/v0",
+  "id": "work-order:project-brief",
+  "boxId": "box:hayden",
+  "issuer": {
+    "type": "model",
+    "id": "model:frontier-approved",
+    "displayName": "Frontier Planning Model",
+    "provider": "configured-provider",
+    "model": "configured-model"
+  },
+  "target": {
+    "humanAuthorityId": "human:hayden",
+    "actorId": "actor:hayden",
+    "preferredAgentFamily": "Glopper",
+    "preferredAgentId": "agent:glopper-web",
+    "moldId": "mold:hayden:personal",
+    "masterControlId": "master-control:hayden"
+  },
+  "goal": "Turn the attached notes into a concise project brief while preserving the source.",
+  "context": "The Human wants a new Markdown result Gummy and an inspectable Receipt.",
+  "sourceRefs": [
+    {
+      "kind": "gummy",
+      "ref": "gummy:welcome",
+      "required": true
+    }
+  ],
+  "scope": {
+    "requestedCapabilities": ["gummy.read", "gummy.create", "gummy.transform"],
+    "gummyIds": ["gummy:welcome"],
+    "allowedWriteTargets": ["box:hayden/artifacts/", "actor:hayden/gummies/generated/"],
+    "forbiddenActions": ["overwrite-source", "publish", "native-execute"],
+    "maxCost": 1.0
+  },
+  "execution": {
+    "requiredLocality": "any",
+    "privacy": "approved-cloud",
+    "preferredInference": "frontier-cloud",
+    "requiresNative": false,
+    "offlineAllowed": false
+  },
+  "acceptance": {
+    "checks": [
+      "Source Gummy hash is unchanged.",
+      "A new Markdown result Gummy exists.",
+      "A Receipt identifies the actual Agent and model route."
+    ],
+    "expectedReturn": {
+      "resultKind": "file",
+      "mediaType": "text/markdown",
+      "receiptRequired": true
+    },
+    "humanAcceptanceRequired": true
+  },
+  "approval": {
+    "required": true,
+    "risk": "medium"
+  },
+  "status": "awaiting-approval",
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z",
+  "expiresAt": "2026-07-26T00:00:00Z"
+}
