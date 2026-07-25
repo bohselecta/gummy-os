@@ -8,6 +8,7 @@ const required = [
   'src/core/capability-broker.js',
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
+  'docs/ACTOR_AGENT_MASTER_CONTROL.md',
   'docs/VOCABULARY.md',
   'docs/ARCHITECTURE.md',
   'docs/PROTOCOL.md',
@@ -26,7 +27,9 @@ if (pkg.name !== 'gummy-os') throw new Error('package name must remain gummy-os'
 
 const schemas = [
   'schemas/actor.schema.json',
+  'schemas/agent.schema.json',
   'schemas/mold.schema.json',
+  'schemas/master-control.schema.json',
   'schemas/gummy.schema.json',
   'schemas/bowl.schema.json',
   'schemas/link.schema.json',
@@ -47,14 +50,26 @@ for (const schema of schemas) {
 
 const vocabulary = await readFile('docs/VOCABULARY.md', 'utf8');
 for (const definition of [
-  'Actor = who acts',
-  'Mold = how that Actor is represented and verified',
-  'Gummy = what the Actor creates or operates',
-  'Bowl = where Actors and Gummies gather',
-  'Link = how they relate',
-  'Grab = how a Gummy becomes yours without altering the source'
+  'Human = ultimate personal authority',
+  'Actor = persistent addressable entity in the web/world',
+  'Agent = executable intelligence that performs work',
+  'Mold = permissioned embodiment and operating contract for an Actor',
+  'Master Control = where authority, placement, and synchronization are decided',
+  'Gummy OS = the Web OS where Actors are opened and deployed',
+  'Glyphd OS = the native AI execution and device-sovereignty environment',
+  '@address = the stable protocol identity and route for an Actor'
 ]) {
   if (!vocabulary.includes(definition)) throw new Error(`canonical vocabulary is missing: ${definition}`);
+}
+
+const ruling = await readFile('docs/ACTOR_AGENT_MASTER_CONTROL.md', 'utf8');
+for (const boundary of [
+  'The Web Actor and OS Agent may work together, but they are not the same object.',
+  'Master Control',
+  'Gummy OS is the **Web OS plane**',
+  'Glyphd OS is the **native execution and device-sovereignty plane**'
+]) {
+  if (!ruling.includes(boundary)) throw new Error(`architecture ruling is missing: ${boundary}`);
 }
 
 const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');
@@ -62,4 +77,4 @@ if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
   throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
-console.log('Gummy validation passed with Protocol 0.2 specifications and Protocol 0.1 compatibility inputs.');
+console.log('Gummy validation passed with distinct Human, Actor, Agent, Mold, and Master Control specifications.');
