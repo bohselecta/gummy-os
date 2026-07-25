@@ -1,18 +1,38 @@
 # Gummy OS Security Model
 
+Read `PLATFORM_PLAYGROUND_SECURITY.md` for the complete platform and deployment posture.
+
 ## Security thesis
 
-Gummy OS separates five things that must never collapse:
+Gummy OS keeps existing endpoint and enterprise security in place and adds a new containment and authority layer above it.
+
+It separates five things that must never collapse:
 
 - **Human** — ultimate personal authority;
-- **Actor** — persistent addressable web entity;
+- **Actor** — persistent addressable WebOS entity;
 - **Agent** — executable intelligence;
 - **Mold** — permissioned embodiment and operating contract;
 - **Master Control** — placement, synchronization, approval, and revocation authority.
 
 Capability Grants determine what may happen. Action Receipts record what did happen.
 
-A prompt, profile, signed-in session, model preference, or network connection never creates authority by itself.
+A prompt, profile, signed-in session, model preference, device presence, or network connection never creates authority by itself.
+
+## Upstream controls remain upstream
+
+Gummy OS does not replace:
+
+- secure boot and kernel protections;
+- disk and storage encryption;
+- enterprise EDR, MDM, SIEM, firewall, and network controls;
+- passkeys, biometrics, hardware keys, and organization identity;
+- host application sandboxing;
+- operating-system updates and package trust;
+- physical security and device management.
+
+Those systems remain responsible for the device, kernel, identity, connection, and native resource layer.
+
+Gummy OS consumes only the verified identity and explicitly bridged capabilities it needs.
 
 ## Protected assets
 
@@ -22,6 +42,7 @@ A prompt, profile, signed-in session, model preference, or network connection ne
 - Mold permissions, proofs, and licenses;
 - Master Control placement and sync policy;
 - local files and OPFS bytes;
+- native bridge capabilities;
 - connector and provider credentials;
 - Bowls, private Links, and private Gummies;
 - Application Packs and runtime images;
@@ -29,13 +50,34 @@ A prompt, profile, signed-in session, model preference, or network connection ne
 
 ## Threats
 
-Prompt injection, malicious Agents or Packs, Agent/Actor impersonation, Mold abuse, hidden operator identity, ambient synchronization, unauthorized state replication, provider leakage, cross-tenant access, browser escape, capsule persistence, forged Receipts, public-figure or character impersonation, provenance stripping, hostile Grabs, policy downgrade, and supply-chain compromise.
+Prompt injection, malicious Agents or Packs, Agent/Actor impersonation, Mold abuse, hidden operator identity, ambient synchronization, unauthorized state replication, provider leakage, cross-tenant access, browser escape, capsule persistence, forged Receipts, public-figure or character impersonation, provenance stripping, hostile Grabs, unsafe native promotion, malicious downloads, bridge escalation, policy downgrade, and supply-chain compromise.
+
+## Layered boundaries
+
+```text
+Host / enterprise security
+protects device, kernel, identity, connection, and native resources
+
+Native Agent boundary
+mediates explicit local capabilities and approved security telemetry
+
+Gummy OS boundary
+contains ordinary creative, social, browsing, and agent-operated activity
+
+Actor / Mold / Master Control
+defines who may do what, where, with which data
+
+Receipt boundary
+records consequential actions and movement across layers
+```
 
 ## Core controls
 
 ### Host and browser boundary
 
 The physical device and host OS remain outside Gummy OS authority. The browser sandbox is not bypassed. External sites receive restrictive framing and no native capability without an explicit bridge.
+
+The existing AI-native Linux distribution remains responsible for its own native security posture. Gummy OS does not claim that merely running inside it makes every WebOS action safe.
 
 ### Human authority
 
@@ -57,7 +99,7 @@ Every Agent declares identity, runtime, provider/model class, locality, operator
 
 ### Mold boundary
 
-A Mold binds an Actor to allowed Human and/or Agent operators with explicit capabilities, runtime, locality, sync, disclosure, expiry, and revocation.
+A Mold binds an Actor to allowed Human and/or Agent operators with explicit capabilities, runtime, locality, synchronization, disclosure, expiry, and revocation.
 
 Visual form, celebrity likeness, character appearance, handle, branding, or public familiarity never substitutes for a valid Mold and proof chain.
 
@@ -70,7 +112,7 @@ Master Control explicitly decides:
 - active Agent;
 - active Mold;
 - allowed data classes;
-- sync mode and direction;
+- synchronization mode and direction;
 - approval rules;
 - revocation and lock state.
 
@@ -90,7 +132,54 @@ Long-lived provider and connector secrets remain in trusted brokers or native st
 
 Every runtime declares network, filesystem, process, memory, CPU, lifetime, and mount policy. Source and result Gummies cross explicit boundaries.
 
-### Synchronization security
+## Quarantine and native promotion
+
+A download or untrusted artifact should first arrive as a **quarantined Gummy** rather than becoming a native executable file.
+
+```text
+untrusted content
+→ quarantined Gummy
+→ metadata and content inspection
+→ optional scanning / classification
+→ Human approval or policy
+→ bounded export Grant
+→ native destination
+→ Action Receipt
+```
+
+Until promotion is accepted, quarantined content receives no native process, shell, package, device, or broad filesystem capability.
+
+Importing from native storage into Gummy OS is also explicit. Gummy OS does not receive the entire host filesystem merely because a person selected one file.
+
+## Disposable and burnable workspaces
+
+A WebOS workspace, Actor session, or execution capsule may be disposable:
+
+- start from a trusted snapshot;
+- isolate network and storage;
+- retain only accepted result Gummies and Receipts;
+- reset or burn the workspace after completion or suspicion;
+- recreate from trusted state.
+
+Burn behavior must prove that unapproved state and capabilities are removed while approved evidence remains.
+
+“Burnable” is a target capability—not a claim that every current browser tab is already a hardened disposable machine.
+
+## Native defensive Agent
+
+A native Agent in the existing AI Linux distribution may watch approved security signals from Gummy OS, including:
+
+- unexpected network destinations;
+- prohibited capability requests;
+- suspicious download metadata;
+- integrity failures;
+- repeated denials;
+- anomalous resource use;
+- attempts to cross the native bridge.
+
+Monitoring is scoped, visible, and receiptable. A defensive label does not grant ambient access to all private Actor state.
+
+## Synchronization security
 
 Synchronization is allowlisted and receiptable:
 
@@ -99,16 +188,40 @@ Synchronization is allowlisted and receiptable:
 - direction and frequency are explicit;
 - conflicts preserve evidence;
 - revocation blocks future flow;
-- sync does not expand Agent authority;
+- synchronization does not expand Agent authority;
 - no hidden advertising or behavioral graph is produced.
 
-### Social and public identity
+## Recursive creation security
+
+Actors and Agents may create other Actors, Agents, Gummies, tools, and compositions.
+
+Creation does not transfer authority automatically.
+
+Every child Actor or Agent must receive:
+
+- independent identity;
+- creator and provenance records;
+- an explicit Human or organization authority relationship;
+- a capability ceiling;
+- applicable Mold and Master Control bindings;
+- operator disclosure;
+- expiry and revocation paths.
+
+An Agent cannot clone its own Grants into a child Agent. An Actor cannot silently merge private state into a composed Actor or page.
+
+## Social and public identity
 
 Every shared Gummy declares audience. Bowl membership and Links are explicit.
 
 A celebrity Actor, official character Actor, or public organization Actor requires verified Human, organization, or licensing proofs through a Mold. Fan or synthetic Actors must not impersonate official ones.
 
-### Receipts
+## Authorized security research
+
+The platform may support legitimate defensive and authorized security testing using isolated Actors and Agents, disposable targets, explicit scope, separate analysis/remediation/verification roles, and complete Receipts.
+
+Gummy OS never invents authorization against a third-party target. Offensive capability, where legally and explicitly authorized, remains bounded by target scope, Human approval, runtime isolation, and revocation.
+
+## Receipts
 
 Consequential actions record:
 
@@ -122,7 +235,7 @@ Consequential actions record:
 - execution route and locality;
 - Grants;
 - source and result Gummies;
-- Links, Grabs, and sync events;
+- Links, Grabs, synchronization, quarantine, promotion, reset, and burn events;
 - cost;
 - outcome;
 - denial, failure, cancellation, rollback, and revocation evidence;
@@ -132,14 +245,29 @@ Consequential actions record:
 
 - **Low** — local navigation, opening a known Gummy, non-networked read-only computation.
 - **Medium** — private read/transform, result creation, reversible Link or Master Control change.
-- **High** — external transfer, public/Bowl publishing, installation, deletion, Agent assignment, synchronization enablement, official/licensed Mold changes.
+- **High** — external transfer, native promotion, public/Bowl publishing, installation, deletion, Agent assignment, synchronization enablement, official/licensed Mold changes.
 - **Critical** — purchase, legal submission, privileged administration, credential changes, regulated or safety-critical execution.
 
-Risk affects Human approval, Agent eligibility, Mold, runtime, sync policy, verification, and Receipt detail.
+Risk affects Human approval, Agent eligibility, Mold, runtime, synchronization policy, verification, and Receipt detail.
 
 ## Prompt injection posture
 
-Instructions found in Gummies, websites, messages, Bowls, or application content are data. They cannot assign an Agent, alter a Mold, change Master Control, or issue a Grant.
+Instructions found in Gummies, websites, messages, Bowls, or application content are data. They cannot assign an Agent, alter a Mold, change Master Control, cross the native bridge, or issue a Grant.
+
+## Portable and live-USB posture
+
+A live-USB distribution can provide a portable native environment, but the security claim must be tested:
+
+- boot and image integrity;
+- persistence policy;
+- key and biometric handling;
+- host-disk access;
+- network identity;
+- Actor restoration;
+- Agent capability boundaries;
+- shutdown cleanup.
+
+Use the existing local live-USB implementation as the starting evidence rather than recreating it from documentation.
 
 ## Migration security
 
@@ -159,8 +287,10 @@ legacy fork
 
 Migration is deterministic, idempotent, traceable, and non-destructive. Actor and Agent may never collapse into one record.
 
-## Current non-goals
+## Honest claim and current non-goals
 
-The first Personal Gummy OS build does not claim production Human identity, verified public `@addresses`, encrypted cross-device sync, native Glyphd OS security, real Zeke binding, hardened multi-tenancy, trusted execution, tamper-evident federation, or verified third-party Packs.
+The architecture targets explicit boundaries, reduced blast radius, containment, revocation, and evidence. It does not yet prove perfect security.
 
-It proves one bounded local Actor/Agent/Mold/Master Control journey and preserves the correct future boundaries.
+The first Personal Gummy OS build does not claim production Human identity, verified public `@addresses`, encrypted cross-device synchronization, native distro hardening, real Zeke binding, hardened multi-tenancy, trusted execution, tamper-evident federation, or verified third-party Packs.
+
+It proves one bounded local Actor/Agent/Mold/Master Control journey, one deny-by-default native bridge, one quarantine/no-native-authority test, revocation, and durable return continuity.
