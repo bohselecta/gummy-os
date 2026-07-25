@@ -19,6 +19,8 @@ const required = [
   'docs/SOCIAL_GRAPH.md',
   'docs/ENTERPRISE_FRAMEWORK.md',
   'docs/ROADMAP.md',
+  'examples/glopper-web.agent.json',
+  'examples/project-brief.task-lease.json',
   'plans/active/2026-07-25-personal-gummy-cursor-work-order.md'
 ];
 
@@ -32,6 +34,7 @@ const schemas = [
   'schemas/agent.schema.json',
   'schemas/mold.schema.json',
   'schemas/master-control.schema.json',
+  'schemas/task-lease.schema.json',
   'schemas/gummy.schema.json',
   'schemas/bowl.schema.json',
   'schemas/link.schema.json',
@@ -69,7 +72,7 @@ for (const definition of [
   'Agent = executable intelligence that performs work',
   'Mold = permissioned embodiment and operating contract for an Actor',
   'Master Control = where authority, placement, and synchronization are decided',
-  '@address = the stable protocol identity and route for an Actor'
+  'Gummy Bar = persistent candy-store system bar'
 ]) {
   if (!vocabulary.includes(definition)) throw new Error(`canonical vocabulary is missing: ${definition}`);
 }
@@ -96,9 +99,19 @@ for (const requirement of [
   if (!workOrder.includes(requirement)) throw new Error(`active work order is missing: ${requirement}`);
 }
 
+const agent = JSON.parse(await readFile('examples/glopper-web.agent.json', 'utf8'));
+if (agent.id !== 'agent:glopper-web' || agent.characterFamily !== 'Glopper') {
+  throw new Error('canonical Glopper Web Agent example is invalid');
+}
+
+const lease = JSON.parse(await readFile('examples/project-brief.task-lease.json', 'utf8'));
+if (lease.agentId !== 'agent:glopper-web' || lease.mode !== 'exclusive') {
+  throw new Error('canonical Glopper Task Lease example is invalid');
+}
+
 const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');
 if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
   throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
-console.log('Gummy validation passed with Gummy Canvas, candy-store Gummy Bar, Glopper companion, standalone-first development, and explicit authority boundaries.');
+console.log('Gummy validation passed with Gummy Canvas, candy-store Gummy Bar, Glopper Agent family, Task Lease ownership, standalone-first development, and explicit authority boundaries.');
