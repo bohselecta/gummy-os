@@ -2,27 +2,46 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/actor.schema.json",
   "title": "Gummy OS Actor",
-  "description": "The accountable principal that acts, owns, delegates, or appears in a Capability Grant or Action Receipt.",
+  "description": "A persistent, addressable computational entity expressed through Gummy OS and the shared web protocol.",
   "type": "object",
-  "required": ["schema", "id", "class", "name", "status", "createdAt", "updatedAt"],
+  "required": ["schema", "id", "address", "kind", "name", "status", "deployment", "createdAt", "updatedAt"],
   "properties": {
     "schema": { "const": "gummy.actor/v0" },
     "id": { "type": "string", "pattern": "^actor:" },
-    "class": { "enum": ["human", "agent", "organization", "service", "application", "character"] },
+    "address": { "type": "string", "pattern": "^@[a-zA-Z0-9._-]+$" },
+    "kind": { "enum": ["person", "public-figure", "character", "organization", "service", "application", "project-role", "world", "other"] },
     "name": { "type": "string", "minLength": 1 },
     "status": { "enum": ["active", "suspended", "revoked", "archived"] },
-    "moldIds": {
-      "type": "array",
-      "items": { "type": "string", "pattern": "^mold:" },
-      "uniqueItems": true
+    "humanAuthorityIds": { "type": "array", "items": { "type": "string", "pattern": "^human:" }, "uniqueItems": true },
+    "moldIds": { "type": "array", "items": { "type": "string", "pattern": "^mold:" }, "uniqueItems": true },
+    "agentIds": { "type": "array", "items": { "type": "string", "pattern": "^agent:" }, "uniqueItems": true },
+    "gummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "deployment": {
+      "type": "object",
+      "required": ["mode", "authoritativeLocation"],
+      "properties": {
+        "mode": { "enum": ["web-only", "local-only", "hybrid", "governed"] },
+        "authoritativeLocation": { "type": "string" },
+        "webEndpoint": { "type": "string" },
+        "nativeRuntime": { "type": "string" },
+        "lastOpenedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": true
     },
-    "ownerActorId": { "type": "string", "pattern": "^actor:" },
-    "operatorActorId": { "type": "string", "pattern": "^actor:" },
-    "organizationId": { "type": "string", "pattern": "^org:" },
+    "syncPolicy": {
+      "type": "object",
+      "properties": {
+        "mode": { "enum": ["none", "manual", "approved", "continuous"] },
+        "directions": { "type": "array", "items": { "enum": ["web-to-native", "native-to-web", "bidirectional"] }, "uniqueItems": true },
+        "allowedData": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "requiresApproval": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
     "license": {
       "type": "object",
       "properties": {
-        "holderActorId": { "type": "string", "pattern": "^actor:" },
+        "holderRef": { "type": "string" },
         "scope": { "type": "string" },
         "expiresAt": { "type": "string", "format": "date-time" }
       },
