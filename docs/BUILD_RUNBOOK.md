@@ -2,21 +2,24 @@
 
 ## Orientation
 
-Read in this order before implementation:
+Read in this order:
 
 1. `README.md`
-2. `docs/VOCABULARY.md`
-3. `docs/VISION.md`
-4. `docs/PRODUCT_SPEC.md`
-5. `docs/ARCHITECTURE.md`
-6. `docs/PROTOCOL.md`
-7. `docs/SECURITY_MODEL.md`
-8. `docs/SOCIAL_LAYER.md`
-9. `docs/ROADMAP.md`
-10. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-11. `AGENTS.md`
+2. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
+3. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
+4. `docs/VOCABULARY.md`
+5. `docs/PRODUCT_SPEC.md`
+6. `docs/ARCHITECTURE.md`
+7. `docs/PROTOCOL.md`
+8. `docs/SECURITY_MODEL.md`
+9. `docs/SOCIAL_LAYER.md`
+10. `docs/ROADMAP.md`
+11. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+12. `AGENTS.md`
 
-Do not inspect or import older repositories merely because they also use the Gummy name. The only active implementation repository is `bohselecta/gummy-os`.
+The active Gummy OS repository is `bohselecta/gummy-os`.
+
+The AI-native Linux distribution is a separate existing local implementation. Inspect it in Ubuntu. Do not rebuild it from assumptions in this repository.
 
 ## Baseline verification
 
@@ -25,103 +28,83 @@ npm run verify
 npm run dev
 ```
 
-Open `http://localhost:4173` and confirm the Protocol 0.1 scaffold still boots before migration:
+Open `http://localhost:4173` and confirm:
 
-1. Gummy OS opens into the browser-native desktop.
-2. Desktop and dock icons open applications.
-3. Windows move, resize, minimize, maximize, and close.
-4. `gummy://home`, `gummy://chat`, and `gummy://protocol` work.
-5. Files drag to the companion.
-6. Medium-risk attachment asks for confirmation.
-7. Demo chat returns a transparent non-networked response and Receipt.
-8. Existing local state survives refresh.
+1. Gummy OS boots.
+2. Desktop, dock, and windows work.
+3. `gummy://home`, `gummy://chat`, and `gummy://protocol` work.
+4. Files drag to the current companion surface.
+5. Medium-risk attachment asks for confirmation.
+6. Demo chat is transparently non-networked.
+7. Receipts appear.
+8. Existing state survives refresh.
 
-Record the starting commit and baseline result before changing code.
+Record the starting SHA and all baseline failures.
 
-## Active build sequence
+## Ubuntu native preflight
 
-### Gate 1 — Protocol 0.2 migration
+Before changing integration code:
 
-Implement the accepted vocabulary:
+1. locate the existing native distribution source and runtime;
+2. record local path, launch command, branch/revision, and build state;
+3. identify native Agent/chat services;
+4. identify browser or WebView host;
+5. identify existing IPC/API/MCP/localhost surfaces;
+6. inspect current capability and security boundaries;
+7. locate live-USB assets;
+8. launch the native system and prove its current behavior;
+9. choose the narrowest Gummy OS hosting route;
+10. stop rather than replacing a working native component speculatively.
+
+## Active gates
+
+The detailed requirements live in the active work order. The implementation order is:
+
+### Gate 0 — Existing native environment understood
+
+The distro and native Agent/chat behavior are found, launched, and documented.
+
+### Gate 1 — Gummy OS runs inside the distro
+
+Use ordinary browser or existing WebView first. Preserve standalone browser use.
+
+### Gate 2 — Z hybrid surface
+
+Implement persistent collapsed Z bar and expandable Z panel. Z is globally available across the canvas, not an ordinary dock app.
 
 ```text
-Actor
-Mold
-Gummy
-Bowl
-Link
-Grab
+automatic availability != automatic authority
 ```
 
-Required behavior:
+### Gate 3 — Correct Human / Actor / Agent / Mold / Master Control model
 
-- `snack:*` becomes one Actor and at least one Mold;
-- `drop:*` becomes a Gummy;
-- Bowl identity is preserved;
-- explicit relationship data becomes Links;
-- Fork state becomes a Grab record and `grab-of` Link;
-- migration is deterministic and idempotent;
-- legacy state stays readable until parity is verified;
-- new writes use Protocol 0.2;
-- Actor is the authority principal;
-- Mold is representation and verification only;
-- current UI labels stop teaching Snack, Drop, or Fork as canon.
+Actor and Agent remain distinct. Mold is an operating contract. Master Control owns placement, sync, assignment, approval, and revocation.
 
-### Gate 2 — Durable local Gummy storage
+### Gate 4 — Deterministic migration
 
-Implement:
+Legacy Snack/Drop/Fork/companion state migrates without deletion, duplication, or type collapse.
 
-- IndexedDB metadata;
-- OPFS file and artifact bytes;
-- stable Gummy IDs;
-- source and result hashes;
-- project/folder membership;
-- import and export;
-- reload and browser-return recovery;
-- migration from current `localStorage` without silent loss.
+### Gate 5 — Durable local WebOS
 
-The browser must never expose an arbitrary host-filesystem authority surface.
+IndexedDB metadata, OPFS bytes, stable IDs and hashes, projects, import/export, return continuity, and quarantine state.
 
-### Gate 3 — One trusted model broker
+### Gate 6 — Quarantine and burn proof
 
-Implement one provider-neutral broker contract:
+A harmless test file enters as a quarantined Gummy, lacks native authority, cannot promote without approval, and can be reset/burned while accepted evidence remains.
 
-- broker URL comes from trusted configuration;
-- provider secrets never enter the browser bundle;
-- request includes Actor, Mold, source Gummy, task, requested capabilities, privacy/locality preference, and output contract;
-- response includes terminal status, result bytes or result reference, model route, cost, and evidence;
-- failure and denial are explicit;
-- no second production provider is required for this gate.
+### Gate 7 — One deny-by-default Agent/native bridge
 
-### Gate 4 — Real file-to-agent-to-Gummy loop
+Only the exact bounded contract required by the active journey. No arbitrary shell, filesystem, process, package, device, or network endpoint.
 
-Acceptance journey:
+### Gate 8 — Real Actor-to-Agent journey
 
-1. Import a real text or Markdown file as a Gummy.
-2. Drag it to the companion.
-3. Ask for a bounded transformation.
-4. Display a clear Grant request for source read and result create.
-5. Run one real model route.
-6. Preserve the source unchanged.
-7. Create a result Gummy with identity, hash, provenance, and `created-by` / `derived-from` Links.
-8. Create an Action Receipt identifying Actor, Mold, route, Grant, source, result, locality, cost, time, and outcome.
-9. Close and return.
-10. Confirm source, result, project, and Receipt remain understandable and usable.
+Source Gummy → Human approval → Mold + Grant → distinct Agent → result Gummy → complete Receipt → revocation → durable return.
 
-### Gate 5 — Shell and PWA finish
+### Gate 9 — Small playground composition proof
 
-After the core loop passes:
-
-- installable PWA manifest and service worker;
-- truthful offline behavior;
-- polished first-run and full-screen entry;
-- accessibility pass;
-- responsive desktop and mobile-browser behavior;
-- no social or enterprise expansion during this gate.
+Two local Actor surfaces create one temporary shared canvas or Bowl using selected test Gummies without merging private state or inheriting authority.
 
 ## Verification commands
-
-The final lane must expose and pass:
 
 ```bash
 npm run check
@@ -130,48 +113,47 @@ npm run build
 npm run verify
 ```
 
-Add focused tests for:
+Add:
 
-- Protocol 0.1 → 0.2 migration;
-- migration idempotence;
-- Actor/Mold authority separation;
-- Gummy byte persistence;
-- source immutability;
-- result hashing;
-- Grant denial;
-- broker failure;
-- successful result Receipt;
-- return continuity.
+- one end-to-end WebOS journey command;
+- one native integration command when the bridge exists;
+- one quarantine/promotion/burn test;
+- one revocation test;
+- one temporary Actor-composition test.
 
 ## Git workflow
 
-The Cursor lane owns ordinary repository hygiene:
-
-1. inspect `main` and exact head;
+1. inspect exact `main`;
 2. run baseline verification;
 3. create one bounded branch;
-4. implement the complete active work order;
-5. run verification;
-6. record screenshots and evidence;
+4. implement the active work order;
+5. run all applicable verification;
+6. record screenshots, hashes, Receipts, and native-boundary evidence;
 7. commit and push;
-8. open one PR with exact proven and unproven boundaries;
-9. do not self-accept the Return;
+8. open one PR with proven and unproven claims;
+9. do not self-accept;
 10. merge only after founder acceptance or explicit authorization.
 
-Do not ask Hayden to manually perform ordinary branch, PR, merge, or cleanup work when connected tools can do it.
+Do not ask Hayden to perform ordinary branch, PR, merge, or cleanup work when connected tools can do it.
 
 ## Architecture change rule
 
-Any implementation change introducing a new object type, Link type, capability, trust boundary, runtime, model route, connector path, enterprise policy, or federation behavior must update `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, and `docs/SECURITY_MODEL.md` in the same lane.
+Any change introducing an object, Link, capability, bridge, trust boundary, runtime, model route, connector path, synchronization behavior, security claim, composition primitive, enterprise policy, or federation behavior must update the relevant authoritative documents in the same lane.
 
 ## Stop rules
 
-Stop and return an exact blocker rather than improvising when:
+Stop and return an exact blocker when:
 
-- the broker cannot protect credentials;
-- OPFS/IndexedDB semantics cannot preserve bytes and metadata reliably;
-- migration would discard or ambiguously merge legacy state;
+- the native distribution cannot be found or launched;
+- working native code would be replaced without evidence;
+- credentials cannot stay outside browser JavaScript;
+- IndexedDB/OPFS cannot preserve bytes and metadata reliably;
+- migration would discard or ambiguously merge state;
+- Actor and Agent would collapse;
 - the source Gummy would be overwritten;
-- a model or application receives broader authority than the displayed Grant;
-- the Receipt cannot truthfully identify the route, source, result, and outcome;
-- the build starts expanding the Social Layer, Enterprise Habitat, federation, or broad runtime matrix before the Personal Gummy OS exit passes.
+- the bridge would expose broad native authority;
+- quarantine cannot prevent native execution;
+- a child Actor or Agent would inherit authority automatically;
+- a Receipt cannot identify the Human, Actor, Agent, Mold, Master Control, route, source, result, and boundary crossing;
+- security claims exceed test evidence;
+- broad platform scope starts before the Personal Gummy OS exit passes.

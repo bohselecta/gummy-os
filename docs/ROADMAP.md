@@ -2,190 +2,242 @@
 
 ## Controlling sequence
 
-Gummy OS advances in strict dependency order.
+Gummy OS advances from a real existing foundation:
 
-The current scaffold proves the shell and protocol shape. The next phase makes the personal computer dependable. Social, enterprise, runtime, federation, and commercial work remain specified but do not advance ahead of that proof.
+- a runnable browser-native Gummy OS scaffold;
+- an existing local AI-native Linux distribution with AI system control, native chat/control, and live-USB work;
+- accepted Human / Actor / Agent / Mold / Master Control architecture.
+
+The task is integration and proof—not rebuilding either side from speculation.
 
 ## Phase 0 — Repository and Protocol Recovery
 
-**Goal:** establish a clean, runnable, authoritative base.
+**Goal:** establish a clean, runnable, authoritative Gummy OS base.
 
-Delivered in the July 24 scaffold:
+Delivered:
 
-- web-native desktop;
-- browser inside browser;
+- WebOS desktop and windows;
+- browser-inside-browser;
 - demo chat;
 - local object-space proof;
-- capability proof;
-- Receipts;
-- Protocol 0.1 identity and social proof;
-- Enterprise Habitat proof;
-- schemas;
-- architecture, security, social, enterprise, business, and licensing documents;
-- tests and CI configuration.
+- capability and Receipt proof;
+- legacy social and enterprise surfaces;
+- schemas, docs, tests, and validation;
+- corrected Actor/Agent separation;
+- Mold as operating contract;
+- Master Control specification;
+- platform, playground, and security thesis.
 
-Phase 0 closes with the accepted Protocol 0.2 vocabulary specification:
+## Phase 0.5 — Existing Native Foundation Preflight
 
-```text
-Actor
-Mold
-Gummy
-Bowl
-Link
-Grab
-```
+**Goal:** understand and preserve the real AI-native Linux implementation before integration.
 
-The implementation migration remains part of Phase 1.
+- locate source and runtime on Ubuntu;
+- record launch and build procedures;
+- verify native Agent/chat behavior;
+- inventory current AI system-control capabilities;
+- identify IPC, localhost, API, MCP, or other bridge surfaces;
+- verify browser/WebView hosting options;
+- inspect security and permission boundaries;
+- identify live-USB assets and behavior;
+- document exact proven and unproven state.
+
+**Exit:** the existing distro starts, its native control path is understood, and the narrowest Gummy OS hosting/bridge route is chosen without rebuilding working native code.
 
 ## Phase 1 — Personal Gummy OS
 
-**Goal:** make Gummy OS useful every day for one person.
+**Goal:** make Gummy OS useful, playful, and dependable for one Human and one Actor.
 
-### 1A. Actor-object vocabulary migration
+### 1A. Gummy OS inside the native environment
 
-- deterministically split Protocol 0.1 Snacks into Actors and Molds;
-- convert Drops and compatible graph objects into Gummies;
-- preserve Bowls;
-- convert relationship objects into Links;
-- convert fork lineage into Grab records and `grab-of` Links;
-- keep legacy state readable;
-- update UI copy and Receipts;
-- write only Protocol 0.2 objects after acceptance.
+- run Gummy OS in the distro through browser or existing WebView;
+- preserve standalone browser/PWA use on ordinary computers and phones;
+- prove shell, windows, browser, and file behavior in both modes;
+- add no broad native authority.
 
-### 1B. Durable local computer
+### 1B. Z hybrid surface
+
+- persistent collapsed Z bar;
+- expandable Z conversation/control panel;
+- selected canvas context;
+- Actor, Agent, Mold, Master Control, task, approval, result, and Receipt visibility;
+- native Z surface continuity through explicitly selected state;
+- Z is globally available, not an ordinary dock app;
+- automatic context never becomes automatic authority.
+
+### 1C. Correct object model and migration
+
+- local Human authority;
+- persistent Actor with provisional `@address`;
+- separate Agent;
+- permissioned Mold;
+- local Master Control;
+- Gummies, Bowls, Links, and Grabs;
+- deterministic, idempotent migration from Snack/Drop/Fork/demo-companion state;
+- no Actor/Agent identity collapse.
+
+### 1D. Durable local computer
 
 - IndexedDB metadata;
-- OPFS source and result bytes;
-- stable project folders;
-- file import/export;
-- durable Gummy identities and hashes;
-- searchable Action Receipts;
+- OPFS bytes;
+- stable identities and hashes;
+- Actor-owned projects and folders;
+- import/export;
+- searchable Receipts;
 - installable PWA;
 - accessibility;
-- polished full-screen onboarding;
-- reload and browser-return recovery.
+- return continuity;
+- explicit quarantine state.
 
-### 1C. One real intelligence route
+### 1E. One real Agent route
 
-- trusted model broker boundary;
-- one real provider-neutral model adapter;
-- optional local-model adapter only after the broker contract is proven;
+- one trusted provider-neutral route;
 - no secrets in browser JavaScript;
-- one bounded `gummy.read` + `gummy.create` task;
-- denial, failure, cancellation, and success Receipts.
+- Human → Actor → Agent → Mold → Master Control → Grant contract;
+- one bounded read/transform/create task;
+- denial, failure, cancellation, success, and revocation Receipts.
 
-**Exit:** a real file-to-agent-to-result-Gummy task survives return visits with the source unchanged and an inspectable Action Receipt.
+### 1F. Quarantine and burn proof
 
-## Phase 2 — Gummy OS Social Layer
+- harmless untrusted test content enters as a quarantined Gummy;
+- no native process, shell, package, device, or broad filesystem authority;
+- denied native promotion without approval;
+- bounded approved promotion with Receipt;
+- disposable workspace reset/burn;
+- accepted results and evidence survive.
 
-**Goal:** turn personal Gummies into a consent-first social system.
+**Exit:** Gummy OS runs inside the existing distro and independently in a normal browser; Z works as a hybrid surface; a real source Gummy becomes a result Gummy through a bounded Agent; source remains unchanged; revocation works; quarantined content lacks native authority; state survives return.
 
-- passkey- or proof-backed Actors;
-- public/private Mold separation;
+## Phase 2 — Native Agent Bridge
+
+**Goal:** connect a Gummy OS Actor to the real native Agent without widening authority unnecessarily.
+
+- deny-by-default localhost/native bridge;
+- verified native Agent identity;
+- explicit capability inventory;
+- Master Control placement and synchronization;
+- Mold-constrained local file, application, model, device, and system access;
+- native Z app/panel continuity;
+- selective task, conversation, result, approval, and Receipt synchronization;
+- no ambient host filesystem or shell endpoint;
+- real revocation and bridge shutdown;
+- live-USB integration evaluation.
+
+**Exit:** the real native Agent completes one bounded local capability task for a WebOS Actor, every crossing is visible and receipted, and revocation stops future access.
+
+## Phase 3 — Playground and Actor Composition
+
+**Goal:** prove Gummy OS as an open creative medium rather than one imposed workflow.
+
+- optional mini-app architecture;
+- hexagonal interface as one mini-app/surface;
+- multiple Actor surfaces;
+- discovery by `@address`;
+- explicit Links and invitations;
+- temporary shared canvases;
+- selected Gummy composition;
+- source provenance and private-state separation;
+- recursive creation of Actors, Agents, tools, and Gummies;
+- independent identity and authority for every child object;
+- determine through prototypes when composition naturally yields a Bowl, Gummy, Mold, Actor, application, or temporary surface.
+
+**Exit:** two local or authorized Actors create a useful shared composition without merging private state or inheriting authority.
+
+## Phase 4 — Gummy OS Social Layer
+
+**Goal:** turn addressable Actors and Gummies into a consent-first social system.
+
+- verified Human authority and `@addresses`;
+- public/private Actor state;
+- official and delegated Molds;
 - invitations and contacts;
 - Bowls;
 - Gummies with audience, provenance, license, and Grab policy;
-- Links;
+- explicit Links;
 - replies and collaboration;
 - abuse controls;
-- encrypted sync;
+- encrypted selective synchronization;
 - Link Inspector;
-- capability-bounded share links;
-- agent Actor disclosure;
-- official public-figure and licensed-character Mold structure without an entertainment marketplace commitment.
+- Agent-operation disclosure;
+- official public-figure and licensed-character structures without an automatic marketplace.
 
-**Exit:** two Actors share and Grab a Gummy with clear ownership, audience, lineage, obligations, and revocation.
+**Exit:** two Actors share and Grab a Gummy with clear Human authority, Agent operation, Mold, ownership, audience, lineage, obligations, and revocation.
 
-## Phase 3 — Governed Agents and Application Packs
+## Phase 5 — Governed Applications and Security Workbenches
 
-**Goal:** prove safe operation of one real third-party application.
+**Goal:** prove safe operation of real software and authorized security workflows.
 
-- production broker;
-- signed Actor-bound Grants and Receipts;
-- Pack authoring kit;
+- Application Pack authoring kit;
 - typed capability runner;
-- semantic interface map;
-- workflow and recovery engine;
-- verification harness;
-- reference Pack;
-- BrowserPod or Wasm adapter;
-- optional compatibility-runtime evaluation.
+- semantic interface maps;
+- workflow, verification, and recovery engines;
+- browser/Wasm/native runtime adapters;
+- quarantined artifact promotion;
+- isolated defensive-security Actors and Agents;
+- authorized target scope;
+- analysis, remediation, and verification roles;
+- replayable evidence and Receipts;
+- disposable workspaces.
 
-**Exit:** an agent Actor completes a vendor workflow inside an isolated capsule and returns a verified Gummy artifact.
+**Exit:** an authorized Agent completes a real vendor or defensive-security workflow inside an isolated environment and returns a verified Gummy with complete evidence.
 
-## Phase 4 — Enterprise Habitat
+## Phase 6 — Enterprise Habitat
 
-**Goal:** make Gummy OS deployable by a real organization.
+**Goal:** deploy Gummy OS within real organizations without replacing their security stack.
 
-- organization identity;
-- Actor roles;
-- approved Molds;
-- OIDC/SAML;
+- organization identity and roles;
+- approved Actors, Agents, and Molds;
+- OIDC/SAML/passkeys/biometrics/hardware keys;
 - model and connector brokers;
-- policy packs;
-- approval chains;
+- policy packs and approval chains;
 - Application Pack registry;
 - runtime manager;
-- tenant boundaries;
-- regions;
-- signed Receipts;
-- hosted and dedicated-cloud editions;
-- administration and audit.
+- tenant boundaries and regions;
+- EDR/MDM/SIEM integration points;
+- signed Receipts, retention, administration, and audit;
+- hosted, dedicated, self-hosted, and sovereign modes.
 
-**Exit:** an organization can approve, execute, audit, revoke, and reproduce an Actor-operated workflow.
+**Exit:** an organization can authenticate, authorize, execute, monitor, audit, revoke, reproduce, and contain an Agent-operated workflow while existing enterprise controls remain authoritative.
 
-## Phase 5 — Runtime Matrix
+## Phase 7 — Federation, Portable Life, and Independent Editions
 
-**Goal:** broaden compatibility without making every workload slow.
+**Goal:** make Gummy OS a protocol and portable life rather than one compulsory service.
 
-- web-native SDK;
-- Wasm capsules;
-- Linux compatibility;
-- cloud container/VM adapters;
-- GPU routing;
-- snapshots;
-- rollback;
-- artifact gateways;
-- compatibility catalog;
-- performance budgets;
-- warm pools.
-
-**Exit:** representative applications route across runtime classes through one Gummy OS experience.
-
-## Phase 6 — Federation and Independent Editions
-
-**Goal:** make Gummy OS a protocol rather than one compulsory service.
-
-- signed Actor and Mold discovery;
-- federated Bowl invitations;
-- Gummy exchange;
+- signed Actor discovery;
+- federated Bowls and Gummy exchange;
 - Link and Grab lineage;
 - compatibility declarations;
-- key rotation;
+- key rotation and revocation;
 - trust-domain moderation;
-- self-hosting kit;
-- branded independent editions;
-- certification;
-- migration and export.
+- self-hosting and independent editions;
+- live-USB portable deployment;
+- selective Actor restoration;
+- migration and export;
+- certification.
 
-**Exit:** independent Gummy OS implementations exchange signed objects without one central account system.
+**Exit:** independent Gummy OS implementations and portable native environments exchange authorized signed objects without one central account or provider.
 
-## Phase 7 — Commercial Network
+## Phase 8 — Commercial Network
 
-**Goal:** convert the protocol into durable revenue without taxing ordinary personal use.
+**Goal:** create durable revenue without taxing ordinary personal creativity.
 
 - vendor integration program;
 - certification;
 - enterprise licensing;
 - dedicated and sovereign deployment;
 - managed brokers and runtime pools;
-- OEM editions;
+- OEM and vertical editions;
+- security and compliance modules;
 - long-term support;
-- registry services;
-- partner program.
+- registry services and partner program.
 
-**Exit:** commercial customers pay for governance, reliability, compatibility, and deployment while Personal Gummy OS remains useful and free.
+**Exit:** customers pay for governance, reliability, verified compatibility, deployment, and support while Personal Gummy OS remains useful and free.
 
-## Stop rule
+## Stop rules
 
-No later phase may redefine or delay the accepted Phase 1 exit merely because a broader social, enterprise, runtime, or commercial idea appears.
+- Do not rebuild the existing native distribution before inspecting it.
+- Do not widen the native bridge to make a demo easier.
+- Do not let recursive creation inherit authority automatically.
+- Do not lock Actor composition into one output type before prototyping.
+- Do not claim security without boundary-specific evidence.
+- Do not advance broad social, enterprise, federation, or commercial scope ahead of the accepted Personal Gummy OS exit.
