@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/grab.schema.json",
+  "title": "Gummy OS Grab",
+  "description": "A provenance-preserving operation that creates an independent Gummy without altering the source Gummy.",
+  "type": "object",
+  "required": ["schema", "id", "sourceGummyId", "resultGummyId", "actorId", "sourceRevision", "linkId", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.grab/v0" },
+    "id": { "type": "string", "pattern": "^grab:" },
+    "sourceGummyId": { "type": "string", "pattern": "^gummy:" },
+    "resultGummyId": { "type": "string", "pattern": "^gummy:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "sourceRevision": { "type": "integer", "minimum": 1 },
+    "sourceHash": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "enum": ["sha256", "sha512", "blake3"] },
+        "value": { "type": "string", "minLength": 16 }
+      },
+      "additionalProperties": false
+    },
+    "linkId": { "type": "string", "pattern": "^link:" },
+    "rightsCarried": {
+      "type": "object",
+      "properties": {
+        "license": { "type": "string" },
+        "attributionRequired": { "type": "boolean" },
+        "commercialUse": { "enum": ["allowed", "prohibited", "permission-required", "unspecified"] }
+      },
+      "additionalProperties": true
+    },
+    "transformationNote": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "receiptId": { "type": "string", "pattern": "^receipt:" },
+    "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
