@@ -1,0 +1,27 @@
+{
+  "schema": "gummy.mold/v0",
+  "id": "mold:hayden:default",
+  "actorId": "actor:hayden",
+  "actorClass": "human",
+  "handle": "@hayden",
+  "displayName": "Hayden",
+  "description": "Personal Gummy OS identity.",
+  "visibility": "private",
+  "verificationStatus": "self-asserted",
+  "presentation": {
+    "shape": "squircle",
+    "primaryColor": "#7c5cff",
+    "secondaryColor": "#ff7cc8",
+    "accentColor": "#75f0c8"
+  },
+  "publicFields": {},
+  "privateFields": {
+    "companion": "Gummy"
+  },
+  "proofs": [],
+  "keys": [],
+  "supportedProtocolVersions": ["0.2"],
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z",
+  "legacyIds": ["snack:hayden"]
+}
