@@ -1,11 +1,11 @@
 # Gummy OS Protocol Examples
 
-## Corrected architecture examples
+## Current standalone examples
 
-- `hayden.actor.json` — persistent web-openable Actor at `@hayden`
-- `personal-broker.agent.json` — distinct executable Agent
-- `hayden.mold.json` — permissioned operating contract connecting Human, Actor, and Agent
-- `hayden.master-control.json` — local placement, sync, approval, and revocation authority
+- `hayden.actor.json` — persistent WebOS Actor at `@hayden`
+- `glopper-web.agent.json` — distinct first-party web Agent executor
+- `hayden.mold.json` — permissioned operating contract connecting Human, Actor, and Glopper Web
+- `hayden.master-control.json` — local placement, approval, assignment, sync, and revocation authority
 - `welcome.gummy.json` — source Gummy owned by the Actor
 - `builders.bowl.json` — shared Bowl
 - `welcome-created-by.link.json` — explicit relationship
@@ -13,17 +13,15 @@
 - `welcome-copy.gummy.json` — independent result Gummy
 - `welcome-copy-grab-of.link.json` — provenance Link
 
-The central separation is:
-
 ```text
 Human authority
 → Master Control
 → Actor in Gummy OS
-↔ Agent in a governed runtime
-through a Mold, Grant, and protocol route
+↔ agent:glopper-web
+through a Mold, Grant, task lease, and protocol route
 ```
 
-The Grab example is a separate lineage set:
+The Grab set remains:
 
 ```text
 source Gummy
@@ -34,8 +32,10 @@ source Gummy
 
 The source remains unchanged.
 
-## Legacy Protocol 0.1 examples
+## Visual naming
 
-Files such as `hayden.snack.json` remain migration inputs. They are not current architecture examples.
+The Gummy Bar's candy icons are presentation only. These examples define underlying protocol objects, not a `candy` schema.
 
-Cursor must migrate them deterministically without deleting legacy evidence before parity is verified.
+## Legacy inputs
+
+Files such as `hayden.snack.json` remain migration inputs. Old personal-broker, Z, Zeke, Snack, Drop, and Fork identities must migrate deterministically and remain traceable until parity is verified.
