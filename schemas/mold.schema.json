@@ -2,72 +2,78 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/mold.schema.json",
   "title": "Gummy OS Mold",
-  "description": "Portable representation and verification profile for exactly one Actor.",
+  "description": "A permissioned embodiment and operating contract through which a Human or Agent may open, represent, instantiate, or operate one Actor.",
   "type": "object",
-  "required": ["schema", "id", "actorId", "actorClass", "handle", "displayName", "visibility", "verificationStatus", "createdAt", "updatedAt"],
+  "required": ["schema", "id", "actorId", "name", "status", "permissions", "issuedAt", "updatedAt"],
   "properties": {
     "schema": { "const": "gummy.mold/v0" },
     "id": { "type": "string", "pattern": "^mold:" },
     "actorId": { "type": "string", "pattern": "^actor:" },
-    "actorClass": { "enum": ["human", "agent", "organization", "service", "application", "character"] },
-    "handle": { "type": "string", "pattern": "^@", "minLength": 2 },
-    "displayName": { "type": "string", "minLength": 1 },
-    "description": { "type": "string" },
-    "visibility": { "enum": ["private", "invite", "organization", "public"] },
-    "verificationStatus": { "enum": ["unverified", "self-asserted", "verified", "revoked"] },
-    "presentation": {
+    "name": { "type": "string", "minLength": 1 },
+    "handle": { "type": "string", "pattern": "^@" },
+    "status": { "enum": ["draft", "active", "expired", "revoked", "archived"] },
+    "allowedHumanIds": { "type": "array", "items": { "type": "string", "pattern": "^human:" }, "uniqueItems": true },
+    "allowedAgentIds": { "type": "array", "items": { "type": "string", "pattern": "^agent:" }, "uniqueItems": true },
+    "role": { "type": "string" },
+    "context": { "type": "string" },
+    "representation": {
       "type": "object",
       "properties": {
+        "displayName": { "type": "string" },
+        "description": { "type": "string" },
         "shape": { "type": "string" },
         "primaryColor": { "type": "string" },
         "secondaryColor": { "type": "string" },
         "accentColor": { "type": "string" },
-        "avatarGummyId": { "type": "string", "pattern": "^gummy:" }
+        "avatarGummyId": { "type": "string", "pattern": "^gummy:" },
+        "behavioralNotes": { "type": "array", "items": { "type": "string" } }
       },
       "additionalProperties": true
     },
-    "publicFields": { "type": "object" },
-    "privateFields": { "type": "object" },
-    "proofs": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["type", "issuer", "status"],
-        "properties": {
-          "type": { "type": "string" },
-          "issuer": { "type": "string" },
-          "status": { "enum": ["unverified", "verified", "expired", "revoked"] },
-          "evidence": { "type": "string" },
-          "expiresAt": { "type": "string", "format": "date-time" }
-        },
-        "additionalProperties": true
-      }
+    "permissions": {
+      "type": "object",
+      "required": ["capabilities"],
+      "properties": {
+        "capabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "readScopes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "writeScopes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "publishScopes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "requiresHumanApproval": { "type": "boolean" }
+      },
+      "additionalProperties": true
     },
-    "operatorDisclosure": {
+    "runtimePolicy": {
       "type": "object",
       "properties": {
-        "operatorActorId": { "type": "string", "pattern": "^actor:" },
-        "mode": { "enum": ["human", "assisted", "autonomous", "service"] },
-        "providerClass": { "type": "string" }
+        "allowedLocalities": { "type": "array", "items": { "enum": ["web", "local", "lan", "cloud", "organization"] }, "uniqueItems": true },
+        "allowedRuntimeClasses": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "networkPolicy": { "type": "string" }
       },
       "additionalProperties": true
     },
-    "keys": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["id", "type", "status"],
-        "properties": {
-          "id": { "type": "string" },
-          "type": { "type": "string" },
-          "status": { "enum": ["active", "rotated", "revoked"] },
-          "publicKey": { "type": "string" }
-        },
-        "additionalProperties": true
-      }
+    "syncPolicy": {
+      "type": "object",
+      "properties": {
+        "mode": { "enum": ["none", "manual", "approved", "continuous"] },
+        "allowedData": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "directions": { "type": "array", "items": { "enum": ["web-to-native", "native-to-web", "bidirectional"] }, "uniqueItems": true }
+      },
+      "additionalProperties": true
     },
-    "supportedProtocolVersions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-    "createdAt": { "type": "string", "format": "date-time" },
+    "proofs": { "type": "array", "items": { "type": "object" } },
+    "disclosure": {
+      "type": "object",
+      "properties": {
+        "operatorType": { "enum": ["human", "agent", "mixed"] },
+        "agentDisclosureRequired": { "type": "boolean" },
+        "licenseDisclosure": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "issuedBy": { "type": "string" },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": "string", "format": "date-time" },
     "updatedAt": { "type": "string", "format": "date-time" },
     "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "extensions": { "type": "object" }
