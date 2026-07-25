@@ -2,106 +2,174 @@
 
 **Status:** Founder architecture ruling  
 **Date:** 2026-07-25  
-**Scope:** Product identity, native/WebOS relationship, Z experience, composability, recursion, security posture, and Ubuntu integration order
+**Scope:** Platform identity, Glopper experience, Gummy Bar, native/WebOS relationship, composability, recursion, security posture, and development order
 
-## The platform thesis
+## Platform thesis
 
-Gummy OS is not one prescribed workflow and it is not a replacement desktop metaphor imposed on everyone.
+Gummy OS is not one prescribed workflow and not a desktop metaphor imposed on everyone.
 
-It is a new general-purpose creative and computational medium:
+It is a general-purpose creative and computational medium:
 
 > A secure, playful WebOS canvas where Humans open persistent Actors, connect them to Agents through Molds, create and operate Gummies, discover other Actors, compose new environments, and decide through Master Control exactly what may cross into native compute.
 
 The system should feel like a powerful toy before it feels like enterprise infrastructure. Play is the onboarding. Exploration reveals capability.
 
-## Existing native foundation
-
-The AI-native Linux distribution is **not a future hypothetical and must not be rebuilt in this repository**.
-
-Hayden already has a substantial local implementation of the native distribution. It is an ordinary usable Linux distribution with an optional AI system-control layer and a native chat/control surface. It has also been built in a live-USB form.
-
-That existing local implementation is an integration input. The first Ubuntu session must inspect its real code, processes, launch paths, capability surfaces, and current Agent behavior before proposing replacement architecture.
-
-This repository owns Gummy OS and the protocol boundary. It does not claim ownership of, or duplicate, the full native distribution implementation.
-
-## The two computers
+## Final surface and companion identity
 
 ```text
-Physical computer or phone
-│
-├── Host / native OS security, identity, networking, hardware
-│
-├── Native AI layer when available
-│   ├── AI-native Linux distribution / Glyphd OS
-│   ├── native Agent such as Zeke
-│   └── native Z chat and control surface
-│
-└── Gummy OS
-    ├── browser-delivered WebOS
-    ├── Actors and @addresses
-    ├── Gummies, Bowls, Links, and Grabs
-    ├── applications and mini-apps
-    ├── Z bar and expandable Z panel
-    └── Master Control view of every bridge to native authority
+Gummy OS       = universal platform and WebOS
+Gummy Canvas   = open working and creation surface
+Gummy Bar      = persistent candy-store system bar
+Glopper        = gummy-candy companion and first-party Agent identity
+Glopper Panel  = expanded conversation and control surface
+Glopper App    = standalone native/mobile interface
 ```
 
-Gummy OS can run:
+Do not create separate product identities called Gummy Desktop or Gummy Web. The platform remains Gummy OS across device classes.
 
-1. inside the existing AI-native Linux distribution;
-2. in a normal browser on Windows, macOS, Linux, Android, or iOS;
-3. as an installable PWA;
-4. inside a native shell or governed WebView;
-5. from a portable live-USB environment where the native distribution is available.
+## Gummy Canvas and Gummy Bar
 
-A person does not need the AI-native Linux distribution to use Gummy OS. The native distribution adds local Agent power, device control, private compute, and stronger local orchestration.
+Gummy OS is the canvas. The Gummy Bar stays available along an edge of the Canvas without dominating it.
 
-## The Z experience
+The Gummy Bar is visually a candy store: a persistent collection of candy icons representing Glopper, applications, mini-apps, Actors, Gummies, Bowls, tools, tasks, notifications, and controls.
 
-Z has three distinct meanings that must not be collapsed:
-
-- **Z Agent** — executable intelligence;
-- **Z surface inside Gummy OS** — the persistent conversational and command interface;
-- **native Z app/panel** — the external chat, voice, approval, notification, and device-control interface.
-
-### Inside Gummy OS
-
-Gummy OS is the canvas. Z is always available but does not consume the canvas unless expanded.
+A candy icon is presentation only. It does not create a new protocol object type.
 
 ```text
 ┌───────────────────────────────────────────────┐
 │                                               │
 │   ACTORS · WINDOWS · GUMMIES · APPLICATIONS   │
-│                THE CANVAS                     │
+│                GUMMY CANVAS                   │
 │                                               │
 ├───────────────────────────────────────────────┤
-│ Z: ask, speak, attach, direct, approve…    ↑  │
+│ 🍬  🍭  ◉  ◇  [GLOPPER]  ✦  ▣  🍬           │
+│                 GUMMY BAR                     │
 └───────────────────────────────────────────────┘
 ```
 
-The collapsed Z bar provides invocation, context, voice, attachment, and current-state indication.
+## Glopper experience
 
-The expanded Z panel provides conversation, current task, Actor, Agent, Mold, Master Control, requested Grants, results, and Receipts.
+Glopper has four related but distinct meanings:
 
-Z is globally available across the WebOS rather than trapped as an ordinary dock application. Consequential action still requires the correct authority.
+- **Glopper character** — gummy-candy mascot, personality, voice, motion, and relationship with the Human;
+- **Glopper Panel** — expanded conversational and command interface inside Gummy OS;
+- **Glopper App** — standalone native or mobile interface;
+- **Glopper Agent** — executable identity named in Grants and Receipts.
+
+Glopper is a special persistent candy in the Gummy Bar. Selecting it expands the Glopper Panel while preserving the Canvas.
+
+The Glopper Panel shows:
+
+- conversation and voice;
+- current Actor and Canvas context;
+- current task and task lease;
+- Agent identity and locality;
+- active Mold;
+- Master Control state;
+- requested Grants;
+- generated Gummies;
+- Receipts and errors.
 
 ```text
 automatic availability != automatic authority
 ```
 
-### Outside Gummy OS
+Glopper may have separate executors:
 
-The native Z app or native distribution panel can continue conversation, show approvals, manage devices, monitor local work, and open the relevant Actor or Gummy in Gummy OS.
+```text
+agent:glopper-web
+agent:glopper-native
+agent:glopper-cloud
+agent:glopper-phone
+```
 
-Only Master Control-approved state synchronizes between the native Z surface and Gummy OS.
+They may share the character and an approved portable preference profile, but are separate execution identities.
 
-## Open-ended toolkit, not a forced interface
+## Existing Glopper lineage
 
-Gummy OS should not prescribe one correct way to work.
+`bohselecta/glopper` already implements a local-first deterministic process director for multi-agent AI build workflows.
 
-It provides primitives:
+That application remains a real independent product and becomes Glopper's first substantial native lineage. Its current strengths—run state, gates, project memory, handoffs, evidence parsing, and hash-chained advancement—can become native companion capabilities over time.
 
-- canvas;
-- windows;
+The existing app is not falsely declared to be the complete future Glopper platform.
+
+## Existing native foundation
+
+Hayden already has a substantial local AI-native Linux distribution, including optional AI system control, a native chat/control surface, and a live-USB build.
+
+It is an integration input, not a prerequisite for the first Gummy OS build and not something to reconstruct from GitHub speculation.
+
+Development proceeds in this order:
+
+1. make Gummy OS and `agent:glopper-web` work independently in an ordinary Ubuntu browser;
+2. prove the Gummy Canvas, Gummy Bar, Glopper Panel, Actor, Mold, Master Control, Gummies, quarantine, and Receipts;
+3. only then inspect the existing native distribution;
+4. connect `agent:glopper-native` through one deny-by-default bridge;
+5. evaluate native device control, local model harnesses, live-USB behavior, and selective synchronization from real evidence.
+
+## One companion, multiple executors
+
+From the Human's perspective, Glopper is one companion available across Gummy OS, native systems, and future phones.
+
+Underneath, the router chooses among distinct executors based on:
+
+- where authoritative files live;
+- required capability;
+- privacy and data classification;
+- availability;
+- cost and latency;
+- current task lease;
+- Human preference;
+- Mold and Master Control policy.
+
+### Web Glopper can operate
+
+- Gummy OS and local browser Gummies;
+- web applications;
+- GitHub and remote repositories;
+- cloud development environments;
+- Vercel and connected services;
+- web research and SaaS tools;
+- remote inference brokers;
+- Actors, Bowls, Links, Grabs, and shared canvases.
+
+### Native Glopper can operate
+
+- explicitly granted local directories;
+- uncommitted repositories;
+- Cursor or another IDE;
+- local coding CLIs;
+- shells, processes, containers, VMs, databases, GPUs, and devices;
+- Ollama, llama.cpp, and other local inference;
+- private data that must stay local.
+
+Web Glopper delegates native work through a bounded task contract. It never receives ambient local-directory authority.
+
+## Local adaptation harness
+
+A small local harness may learn adaptations and interests without requiring the main Agent to be local.
+
+```text
+Private local memory
+raw history, local files, detailed adaptations
+never synchronizes automatically
+
+Approved portable profile
+selected preferences, corrections, terminology, routing choices
+synchronizes only through Master Control
+
+Current task context
+temporary material supplied to the selected executor
+```
+
+Ollama, llama.cpp, embeddings, classifiers, and structured memory are sufficient initial components. The harness proposes portable updates; the Human approves them.
+
+## Open-ended toolkit
+
+Gummy OS provides primitives rather than one mandatory interface:
+
+- Gummy Canvas;
+- Gummy Bar;
 - Actors;
 - Agents;
 - Molds;
@@ -110,106 +178,66 @@ It provides primitives:
 - Bowls;
 - Links;
 - Grabs;
-- applications;
+- applications and mini-apps;
 - protocols;
 - runtimes;
 - Receipts.
 
-People, communities, developers, and Agents may arrange those primitives into tools that the core team did not predict.
+The prior hexagonal interface remains an optional mini-app or Actor surface. Linear, spatial, game-like, cinematic, professional, accessible, child-friendly, enterprise, and world-specific interfaces can coexist.
 
-The earlier hexagonal interface remains valuable as a **mini-app or optional surface inside Gummy OS**. It is not the required shell for every user.
+## Recursive creation
 
-Other interfaces—linear, spatial, game-like, cinematic, professional, accessible, child-friendly, enterprise, or world-specific—may coexist as applications or Actor surfaces.
+Humans, Actors, and Agents may create and compose new Actors, Agents, Gummies, Molds, Bowls, tools, and surfaces.
 
-## Recursive creation is allowed
+> **Creation never implies inherited authority.**
 
-The future becomes powerful when composition is recursive:
-
-- Humans create Actors;
-- Agents help create Actors;
-- Actors commission or bind Agents;
-- Agents create Gummies for Actors;
-- Actors create or host tools that create new Agents or Actors;
-- multiple Actors discover one another and compose a new shared surface;
-- a composed surface may later become a new Actor, Mold, Bowl, application, or Gummy.
-
-This recursion is intentional.
-
-The invariant is:
-
-> Creation never implies inherited authority.
-
-Every newly created Actor or Agent receives its own stable identity, provenance, capability ceiling, Mold, Master Control relationship, disclosure, and revocation path.
-
-An Agent that creates another Agent does not automatically transfer its Grants. An Actor that creates another Actor does not automatically control it forever. A composed page does not silently merge private state.
+A child Agent does not inherit its creator's Grants. An Actor-created Actor does not silently inherit control. A composition does not merge private state without explicit Links, Molds, Master Control decisions, and Receipts.
 
 ## Actor discovery and composition
 
-Gummy OS should eventually work like an explorable internet of addressable Actors.
+Gummy OS may become an explorable internet of addressable Actors.
 
-An Actor surface may:
+An Actor surface may discover another Actor by `@address`, request a Link, open public or authorized Gummies, enter a Bowl, or propose a composition.
 
-- discover another Actor by `@address`;
-- request a Link;
-- open public or authorized Gummies;
-- invite an Actor into a Bowl;
-- propose a composition;
-- create a new shared canvas;
-- preserve every source and relationship.
+A composition may experimentally become:
 
-The final semantics of “two pages merge into a new page” are deliberately not locked yet. Depending on the prototype, the result may be:
-
-- a new Bowl;
+- a temporary shared Canvas;
+- a Bowl;
 - a composed Gummy;
-- a new Mold;
-- a new Actor;
-- a temporary shared canvas;
-- an application generated from the participating Actors.
+- a Mold;
+- an application;
+- a new Actor.
 
-Cursor must not prematurely choose one universal interpretation. Build the protocol boundaries first, then prototype composition through real use.
+The prototype determines which meaning is useful. Cursor must not force one universal interpretation prematurely.
 
 ## Security posture
 
 Gummy OS does not replace enterprise endpoint security, identity providers, network controls, secure boot, disk encryption, kernel protections, EDR, MDM, passkeys, biometrics, or hardware-backed credentials.
 
-Those controls remain where they are strongest: at the host, OS, network, identity, and organization layers.
+Those controls remain at the host, OS, network, identity, and organization layers.
 
-Gummy OS adds a new containment and authority layer above them.
-
-### Security separation
+Gummy OS adds containment and explicit authority:
 
 ```text
 Host / enterprise security
-protects device, kernel, identity, connection, and native resources
+protects device, kernel, identity, connection, native resources
 
 Native Agent boundary
-mediates explicit local capabilities and monitors approved signals
+mediates approved local capabilities
 
 Gummy OS boundary
-contains most everyday creative, social, and agent-operated activity
+contains everyday creative, social, and Agent-operated work
 
 Actor / Mold / Master Control
-defines who may do what, where, with which data
+specifies who may do what, where, and with which data
 
 Receipt boundary
-records consequential actions and movement across layers
+records consequential actions and cross-boundary movement
 ```
 
-### WebOS containment
+### Quarantine and native promotion
 
-When most ordinary activity occurs inside Gummy OS:
-
-- web content remains inside browser-origin or capsule boundaries;
-- downloaded content can first land as a quarantined Gummy rather than a native executable file;
-- suspicious sessions or capsules can be closed, reset, or burned;
-- native access requires an explicit bridge, Mold, Grant, and Master Control approval;
-- the native Agent can observe approved telemetry and security events without granting the WebOS ambient host access.
-
-A file existing inside Gummy OS does not automatically mean it can execute on the native OS.
-
-### Promotion gateway
-
-Moving content from Gummy OS into native authority is a distinct consequential action:
+A download enters as a quarantined Gummy.
 
 ```text
 quarantined Gummy
@@ -220,102 +248,52 @@ quarantined Gummy
 → Action Receipt
 ```
 
-The inverse direction is also explicit: native files are imported into Gummy OS through a bounded interface rather than exposing the entire host filesystem.
+Existence inside Gummy OS never grants native execution.
 
 ### Disposable environments
 
-A Gummy OS workspace, Actor session, or execution capsule may be designed to be disposable:
+A workspace, Actor session, or capsule may be snapshotted, isolated, burned, and recreated while approved results and Receipts survive.
 
-- snapshot before risky work;
-- isolate network and filesystem access;
-- retain approved results and Receipts;
-- burn the environment after completion or suspicion;
-- recreate from trusted state.
+### Native defensive Agent
 
-“Burnable” is an architectural capability, not a claim that every current browser window is already hardened against every threat.
+A future native Glopper executor may monitor approved signals such as prohibited capability requests, suspicious download metadata, integrity failure, repeated denial, anomalous resource use, or native-bridge attempts.
 
-### Native security Agent
+Monitoring remains visible, scoped, and receiptable.
 
-A native Agent inside the AI-native Linux distribution may watch Gummy OS for approved security signals such as:
+### Authorized security workbenches
 
-- unexpected network destinations;
-- prohibited capability requests;
-- suspicious download metadata;
-- integrity failures;
-- repeated denied actions;
-- anomalous resource use;
-- attempts to cross the native bridge.
+Actors and Agents may create defensive-security laboratories with isolated target Actors, explicit authorized scope, specialized analysis/remediation/verification Agents, disposable environments, and replayable evidence.
 
-Monitoring must be transparent, scoped, and receiptable. The monitoring Agent does not silently read all private Actor state merely because it is defensive.
+The platform does not grant authorization against third-party systems.
 
-### Security research and authorized testing
+## Portable deployment
 
-Actors and Agents can become a powerful defensive-security design environment:
+Gummy OS can run in a browser, PWA, native shell, governed WebView, or the existing live-USB distribution.
 
-- isolated test Actors;
-- disposable target environments;
-- specialized analysis Agents;
-- explicit scopes and authorized targets;
-- separate reconnaissance, detection, remediation, and verification roles;
-- complete Receipts and replayable evidence;
-- immediate revocation and destruction.
-
-The platform supplies composition, isolation, authority, and evidence. It does not automatically grant offensive capability or authorization against third-party systems.
-
-## Biometric and portable deployment
-
-Authentication may occur at any terminal through passkeys, biometrics, organization identity, hardware keys, or other verified methods while the Actor remains portable.
-
-A live-USB distribution can provide a portable native life:
-
-- boot trusted native environment;
-- authenticate the Human;
-- start the native Agent;
-- open Gummy OS;
-- resolve the Actor;
-- restore only authorized state;
-- use the host primarily for hardware, display, input, networking, and compute;
-- leave without persisting unapproved local state.
-
-This is a supported future deployment mode and should be evaluated against the existing live-USB implementation rather than rebuilt from speculation.
+A future portable flow may boot a trusted native environment, authenticate the Human, start `agent:glopper-native`, open Gummy OS, resolve the Actor, restore approved state, and leave without persisting unapproved data.
 
 ## Honest security claim
 
-The architecture has a strong security posture, but Gummy OS must not advertise itself as automatically secure merely because it runs in a browser or inside Linux.
+Security claims require evidence for origin and capsule isolation, bridge restrictions, Agent confinement, storage encryption, authentication, sync correctness, revocation, quarantine, promotion, Receipt integrity, and burn/recovery behavior.
 
-Security claims require evidence for:
+The product promise is **understandable power, explicit boundaries, and smaller blast radius**.
 
-- origin and capsule isolation;
-- bridge restrictions;
-- Agent confinement;
-- storage encryption;
-- authentication;
-- sync correctness;
-- revocation;
-- quarantine and promotion behavior;
-- Receipt integrity;
-- recovery and burn behavior.
+## Immediate Ubuntu order
 
-The product promise is **explicit boundaries and smaller blast radius**, verified progressively.
-
-## Immediate Ubuntu integration order
-
-The next coding session begins on Ubuntu with the existing native distribution and the current `bohselecta/gummy-os` repository.
-
-1. **Inspect, do not rebuild, the native distribution.** Record local path, launch command, current native chat/control process, capability interface, browser/WebView availability, and existing live-USB assets.
-2. **Run Gummy OS inside the distribution.** Start with an ordinary browser or existing WebView; do not add privileged bridges yet.
-3. **Implement the Z hybrid surface.** Persistent collapsed Z bar plus expandable panel inside Gummy OS.
-4. **Expose the local Actor and Master Control.** Show `@address`, current Agent, Mold, authoritative location, sync mode, and revocation.
-5. **Add one explicit localhost/native bridge.** The bridge begins deny-by-default and supports only the exact bounded task required by the active work order.
-6. **Complete the real source-Gummy to result-Gummy journey.** Preserve source bytes and produce a complete Receipt.
-7. **Prove revocation.** Remove the Agent or Mold and show future execution is blocked.
-8. **Prove containment.** Import a harmless test file into a quarantined Gummy, show it lacks native execution authority, and burn/reset the test workspace while preserving approved evidence.
-9. **Only then evaluate native Zeke binding, device control, sync, and live-USB packaging.**
+1. Pull and verify `bohselecta/gummy-os`.
+2. Run the standalone browser scaffold.
+3. Implement the Gummy Canvas and Gummy Bar.
+4. Implement Glopper as a candy icon and expandable Glopper Panel.
+5. Expose Human, Actor, Agent, Mold, Master Control, and task lease state.
+6. Add durable IndexedDB/OPFS Gummies and quarantine.
+7. Add one real `agent:glopper-web` inference route.
+8. Complete the real source-Gummy to result-Gummy journey.
+9. Prove denial, revocation, quarantine, promotion simulation, and burn/reset.
+10. Run one small two-Actor composition experiment.
+11. Inspect the existing native distro only after the standalone proof passes.
 
 ## Product principle
 
 Gummy OS is serious infrastructure that should feel like an astonishing creative toy.
 
-The security model makes experimentation safe enough to invite exploration. The playful canvas makes the security architecture desirable enough that people voluntarily use it.
-
-> The future should not arrive as a rigid workflow. It should arrive as a playground with understandable power, visible boundaries, and a Human still in control.
+> **The Gummy Bar is the candy store. Glopper is the companion candy. The Gummy Canvas is where the future gets made.**

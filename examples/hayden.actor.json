@@ -7,7 +7,7 @@
   "status": "active",
   "humanAuthorityIds": ["human:hayden"],
   "moldIds": ["mold:hayden:personal"],
-  "agentIds": ["agent:personal-broker"],
+  "agentIds": ["agent:glopper-web"],
   "gummyIds": ["gummy:welcome"],
   "deployment": {
     "mode": "web-only",
@@ -19,7 +19,7 @@
   "syncPolicy": {
     "mode": "manual",
     "directions": [],
-    "allowedData": ["gummies", "receipts", "links"],
+    "allowedData": ["gummies", "receipts", "links", "approved-preferences"],
     "requiresApproval": true
   },
   "createdAt": "2026-07-25T00:00:00Z",

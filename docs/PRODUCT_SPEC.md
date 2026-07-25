@@ -4,85 +4,57 @@
 
 Gummy OS is a browser-delivered WebOS and creative playground where persistent, addressable Actors can be opened from compatible devices and connected to executable Agents under explicit Human-controlled Master Control.
 
-It runs independently in a normal browser and can run inside Hayden's existing AI-native Linux distribution. That native distribution provides the optional local Agent and device-sovereignty layer; it is not rebuilt by this repository.
+The platform runs independently in an ordinary browser. A later native bridge may connect it to the already-existing AI-native Linux distribution.
 
-The familiar desktop is the access surface. The deeper product is the combination of:
-
-- Human authority;
-- Actor/Agent separation;
-- Molds;
-- Master Control;
-- Z hybrid interface;
-- Gummies, Bowls, Links, and Grabs;
-- quarantine and explicit native promotion;
-- recursive composition without inherited authority;
-- Grants and Receipts.
-
-## Canonical architecture
+## Final product names
 
 ```text
-Human = ultimate personal authority
-Actor = persistent addressable entity in Gummy OS / the web
-Agent = executable intelligence that performs work
-Mold = permissioned embodiment and operating contract for an Actor
-Master Control = placement, sync, permission, approval, and revocation
-Gummy OS = playful WebOS canvas
-Native AI Linux / Glyphd OS = existing Agent and device-sovereignty layer
-Z surface = persistent WebOS bar + expandable panel
-Native Z surface = external chat, voice, approval, and device control
-@address = stable identity and route for an Actor
+Gummy OS       = platform
+Gummy Canvas   = open working and creation surface
+Gummy Bar      = persistent candy-store system bar
+Glopper        = gummy-candy companion and first-party Agent identity
+Glopper Panel  = expanded conversation and control surface
+Glopper App    = standalone native/mobile interface
 ```
 
-See:
-
-- `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-- `docs/PLATFORM_PLAYGROUND_SECURITY.md`
-- `docs/VOCABULARY.md`
+There is no separate public Gummy Desktop or Gummy Web product.
 
 ## Product principles
 
-1. **The canvas comes first.** Gummy OS is where people make, arrange, open, combine, and explore.
-2. **Z is always available.** It is not an ordinary dock app.
-3. **Availability is not authority.** Context may be automatic; consequential action is not.
-4. **The platform is open-ended.** It provides primitives, not one imposed workflow.
-5. **Play is onboarding.** The product should feel like a powerful creative toy.
-6. **Recursive creation is allowed.** Child Actors and Agents never inherit authority automatically.
-7. **Existing security remains in place.** Gummy OS adds containment and explicit bridges rather than replacing native or enterprise controls.
-8. **The native distro is real.** Inspect and integrate it; do not rebuild it from assumptions.
-9. **Every important boundary is visible.** Human, Actor, Agent, Mold, Master Control, location, data flow, cost, and result appear in the experience and Receipt.
+1. **The Gummy Canvas comes first.** It is where people make, arrange, open, combine, and explore.
+2. **The Gummy Bar is the candy store.** Candy icons launch or represent real underlying objects.
+3. **Glopper is always available.** Glopper is a special companion candy, not the name of the Bar.
+4. **Availability is not authority.** Context can be automatic; consequential action cannot.
+5. **The platform is open-ended.** It supplies primitives rather than one imposed workflow.
+6. **Play is onboarding.** The system should feel like a powerful creative toy.
+7. **Recursive creation is allowed.** Child Actors and Agents never inherit authority automatically.
+8. **Existing security stays in place.** Gummy OS adds containment and explicit bridges.
+9. **Native integration comes last.** Standalone Gummy OS is proven first.
+10. **Every important boundary is visible.** Human, Actor, Agent, Mold, Master Control, locality, data flow, cost, and result appear in the experience and Receipt.
 
-## Product participants
+## Participants
 
-- **Human** — opens Actors, controls Master Control, authorizes Agents, selects Molds, approves consequential work, and revokes access.
+- **Human** — opens Actors, controls Master Control, authorizes Agents, selects Molds, approves work, and revokes access.
 - **Actor** — persistent WebOS entity with state, `@address`, Gummies, Links, Molds, Agent bindings, and deployment state.
-- **Agent** — executable intelligence operating locally or remotely under explicit capability and Mold constraints.
-- **Mold** — permissioned embodiment and operating contract defining who may operate an Actor, how, where, for how long, and with what data and capabilities.
-- **Auditor or security operator** — inspects Human sponsor, Actor, Agent, Mold, Grant, route, synchronization, quarantine, promotion, burn/reset, Gummies, and Receipts.
-- **Software vendor** — later provides an Application Pack for controlled operation by an authorized Agent.
+- **Agent** — executable intelligence operating under explicit capability, Mold, and Master Control constraints.
+- **Glopper** — first-party companion character and Agent family.
+- **Mold** — permissioned embodiment and operating contract defining who may operate an Actor, how, where, and with what data and capabilities.
+- **Auditor/security operator** — inspects sponsorship, identity, authority, route, quarantine, movement, results, and Receipts.
 
-## Core product loops
+## Core loops
 
 ### Personal creation
 
 ```text
 Human opens Actor
-→ uses Z anywhere on the canvas
+→ works on Gummy Canvas
+→ invokes Glopper from Gummy Bar
 → attaches source Gummy
 → Master Control displays Agent, Mold, scope, locality, and data flow
 → Human approves
-→ Agent performs bounded task
+→ agent:glopper-web performs bounded task
 → result Gummy + Receipt
 → state survives return
-```
-
-### Native integration
-
-```text
-Existing AI-native Linux distribution
-→ opens Gummy OS in browser/WebView
-→ native Z surface and WebOS Z surface share only approved state
-→ deny-by-default bridge exposes one bounded capability
-→ every crossing is receipted
 ```
 
 ### Containment
@@ -92,168 +64,170 @@ untrusted content
 → quarantined Gummy
 → no native execution authority
 → inspect / scan / classify
-→ approve or deny promotion
-→ bounded native destination + Receipt
+→ deny or approve bounded promotion
+→ Receipt
 → disposable workspace may be burned
 ```
 
-### Playground composition
+### Composition
 
 ```text
 Actor discovers Actor
 → explicit Link
 → selected public/test Gummies
-→ temporary shared canvas or Bowl
-→ sources and provenance remain distinct
-→ output type is chosen by use, not forced globally
+→ temporary shared Canvas or Bowl
+→ provenance remains distinct
+→ output type chosen by use rather than forced globally
 ```
 
-### Social, later
+### Native integration, later
 
 ```text
-Actor enters Bowl
-→ shares Gummy
-→ creates Link
-→ another Actor Grabs if allowed
-→ Human, Agent, Mold, audience, rights, and provenance remain visible
+standalone proof passes
+→ inspect existing native distro
+→ bind agent:glopper-native through deny-by-default bridge
+→ synchronize only Master Control-approved state
+→ receipt every crossing
 ```
 
 ## Core surfaces
 
-### Gummy OS canvas
+### Gummy Canvas
 
-Browser-native desktop, windows, applications, Actor surfaces, files, Gummies, Bowls, Links, Grabs, mini-apps, and Receipts.
+Open device-neutral workspace for windows, Actor surfaces, Gummies, applications, mini-apps, worlds, generated surfaces, and compositions.
 
-### Z bar
+### Gummy Bar
 
-Persistent compact surface containing:
+Persistent candy-store system bar containing candy icons for:
 
-- text input;
-- voice affordance;
-- attach/drag target;
-- current Actor;
-- current Agent;
-- current task/status;
-- pending approval signal;
-- expand control.
+- Glopper;
+- applications and mini-apps;
+- pinned or open Actors;
+- active Gummies;
+- Bowls;
+- tasks;
+- notifications;
+- controls.
 
-### Expanded Z panel
+Candy is visual presentation only; no `candy` protocol object is created.
 
-Contains:
+Required states include pinned, open, active, selected, awaiting approval, attention, offline, error, and task-running.
 
-- conversation;
-- selected canvas context;
-- current Actor and `@address`;
-- assigned Agent;
-- active Mold;
+### Glopper Panel
+
+Expanded from Glopper's candy icon. It contains:
+
+- conversation and voice affordance;
+- selected Canvas context;
+- Human, Actor, `@address`, Agent, and Mold;
 - Master Control summary;
+- task lease and executor locality;
 - requested Grants;
-- task progress;
-- results;
-- Receipts.
+- progress;
+- result Gummies;
+- Receipts, denial, errors, and revocation.
 
-### Native Z surface
+### Glopper App
 
-Existing or adapted native chat/control interface for conversation, voice, approvals, notifications, device control, native security signals, and “Open in Gummy OS.”
+Future native/mobile interface for conversation, approvals, notifications, local capabilities, and opening the relevant Actor/Gummy in Gummy OS.
 
 ### Actor surface
 
-Shows identity, `@address`, location, owned Gummies, active Molds, Agent bindings, state, Links, and available composition actions.
+Shows Actor identity, `@address`, location, Gummies, Molds, Agent bindings, Links, and available composition actions.
 
 ### Master Control
 
-Shows and controls:
-
-- authoritative state location;
-- web/local/hybrid deployment;
-- assigned Agent;
-- active Mold;
-- allowed data flow;
-- synchronization mode and direction;
-- approval rules;
-- revocation and lock state.
+Shows and controls authoritative location, assigned Agent, active Mold, data flow, sync mode, approval rules, task leases, revocation, and locks.
 
 ### Agent surface
 
-Shows Agent identity, runtime, provider/model disclosure, locality, status, capability ceiling, assigned Actors, and current authorization.
+Shows Agent identity, runtime, provider/model disclosure, locality, status, capability ceiling, task lease, assigned Actors, and current authorization.
 
-### Mold surface
-
-Shows representation and operating contract: allowed Humans/Agents, role, capability scope, data scope, runtime, locality, synchronization policy, proofs, expiry, and revocation.
-
-### My Gummies / Object Space
+### My Gummies
 
 Stores files, projects, conversations, applications, workflows, quarantined content, and results with stable identity, bytes, hashes, provenance, ownership, and rights.
 
 ### Mini-app framework
 
-Allows optional interfaces—including the hexagonal interface—to run inside Gummy OS without becoming mandatory shell behavior.
+Supports optional interfaces—including the hexagonal interface—without making them mandatory shell behavior.
 
-## Personal Gummy OS acceptance criteria
+## Standalone acceptance criteria
 
-The first implementation is accepted only when:
+The implementation is accepted when:
 
-1. The existing AI-native Linux distribution is located, launched, and documented rather than rebuilt.
-2. Gummy OS runs inside it through a normal browser or existing WebView.
-3. Gummy OS still runs independently in a normal browser.
-4. Z appears as a persistent collapsed bar and expandable panel, not only a dock app.
-5. Gummy OS remains usable without an Agent running.
-6. A local Human authority record exists.
-7. A persistent Actor exists with a provisional stable `@address`.
-8. A separate Agent record exists.
-9. A Mold explicitly allows the Human/Agent relationship and bounded capabilities.
-10. Master Control shows location, Agent, Mold, data flow, synchronization policy, approval, and revocation.
-11. A real text or Markdown file imports as a source Gummy with persisted bytes.
-12. A real provider-neutral Agent route performs one bounded transformation.
-13. Provider credentials never enter browser JavaScript.
-14. Human approval is required for source read, result creation, and any native bridge crossing.
-15. The source Gummy remains byte-identical.
-16. The result is written as a new Gummy with stable identity, provenance, Links, and hash.
-17. The Receipt identifies Human, Actor, `@address`, Agent, Mold, Master Control, Grant, route, source, result, locality, synchronization behavior, cost, outcome, and time.
-18. Mold or Agent revocation blocks future execution.
-19. A harmless test file can remain quarantined without native process, shell, package, device, or broad filesystem authority.
-20. Unapproved native promotion fails; approved bounded promotion produces a Receipt.
-21. A disposable test workspace can be reset/burned while accepted results and evidence remain.
-22. Denial and failure produce truthful terminal evidence.
-23. Reload and browser return preserve Actor, Z-selected continuity, Master Control, Gummies, Links, and Receipts.
-24. One small two-Actor temporary composition preserves source identity and does not merge private state.
-25. Gummy Browser and window behavior continue to work.
-26. `npm run verify`, end-to-end WebOS tests, and applicable native integration tests pass.
+1. Gummy OS runs independently in an Ubuntu browser.
+2. Gummy Canvas is named and usable.
+3. Gummy Bar replaces the ordinary dock presentation and contains candy icons.
+4. Glopper appears as a special candy in the Gummy Bar.
+5. Glopper Panel expands/collapses without replacing Canvas state.
+6. Gummy OS remains usable without an Agent running.
+7. Local Human, Actor, Agent, Mold, and Master Control records exist distinctly.
+8. The Actor has a stable provisional `@address`.
+9. The first real Agent is `agent:glopper-web` and is honestly disclosed.
+10. A real text/Markdown file imports as a source Gummy with persisted bytes.
+11. A provider-neutral route performs one bounded transformation.
+12. Provider credentials never enter browser JavaScript.
+13. Human approval is required for source read and result creation.
+14. Source bytes remain unchanged.
+15. Result Gummy has stable identity, provenance, Links, and hash.
+16. Receipt identifies Human, Actor, `@address`, Agent, Mold, Master Control, Grant, route, source, result, locality, cost, outcome, and time.
+17. Mold or Agent revocation blocks future execution.
+18. A harmless test file remains quarantined without native execution authority.
+19. Unapproved promotion fails; bounded approved promotion/simulation leaves a Receipt.
+20. Disposable state can be burned/reset while approved results/evidence remain.
+21. Denial and failure produce truthful terminal evidence.
+22. Reload and browser return preserve relevant state.
+23. A small two-Actor composition preserves identity and does not merge private state.
+24. Window, Browser, keyboard, touch, and responsive behavior continue to work.
+25. `npm run verify` and end-to-end browser tests pass.
+
+## Multiple Glopper executors
+
+```text
+agent:glopper-web
+agent:glopper-native
+agent:glopper-cloud
+agent:glopper-phone
+```
+
+They may share character and an approved portable preference profile. They remain separate identities with separate locality, capability, task lease, private memory boundary, and Receipts.
+
+## Local adaptation model
+
+```text
+private local memory
+approved portable profile
+current task context
+```
+
+Private memory does not synchronize automatically. The Human approves portable adaptations. Ollama, llama.cpp, embeddings, classifiers, and structured memory may support later local implementations.
 
 ## Recursive creation rules
 
 - Humans, Actors, and Agents may create or commission new Actors, Agents, Gummies, tools, and compositions.
 - Every child receives independent identity and provenance.
-- Every child Agent receives a capability ceiling and operator disclosure.
-- Every child Actor receives Human/organization authority, Molds, Master Control, and revocation.
+- Every child Agent receives a capability ceiling and disclosure.
+- Every child Actor receives authority, Molds, Master Control, and revocation.
 - No Grant is copied automatically.
 - No private state is silently merged.
-- Composition may yield a Bowl, Gummy, Mold, Actor, application, or temporary canvas; the universal result is not locked before prototype evidence.
+- Composition may yield a Bowl, Gummy, Mold, Actor, application, or temporary Canvas; the result is not universally predetermined.
 
-## Migration acceptance
+## Existing Glopper product
 
-- Legacy `snack:*` state becomes a local Human authority, Actor, and Mold where appropriate.
-- Legacy model/companion proof becomes a separate provisional Agent.
-- Legacy Drop/file state becomes Gummies.
-- Fork lineage becomes Grab records and `grab-of` Links.
-- Actor and Agent IDs/types never collapse.
-- Mold becomes an operating contract, not only presentation.
-- New Receipts distinguish Human, Actor, Agent, Mold, Master Control, and boundary crossings.
-- Migration is deterministic, idempotent, traceable, and non-destructive.
+`bohselecta/glopper` remains the real local-first process-director application. It is Glopper's native lineage and donor system, not code to flatten into Gummy OS and not proof that the full future companion is already implemented.
 
-## Out of scope for the active lane
+## Out of scope for standalone phase
 
-- broad or arbitrary native OS control;
-- production Zeke binding before the real native Agent interface is inspected;
-- cross-device or cloud Actor synchronization beyond explicit selected proof state;
+- inspection or integration of the native distro;
+- real `agent:glopper-native`;
+- broad native OS control;
+- cross-device/cloud Actor sync;
 - production public `@address` discovery;
-- public celebrity or licensed-character launch;
-- remote social accounts and broad Bowls;
-- enterprise identity and policy deployment;
+- public celebrity/character launch;
+- broad remote social systems;
+- enterprise deployment;
 - federation;
 - broad Application Pack execution;
-- multiple production model routes;
-- billing and marketplace behavior;
-- a universal permanent object type for Actor-page composition.
-
-These remain preserved future layers. They must not delay the first correct local proof.
+- multiple production providers;
+- billing/marketplace;
+- a universal permanent type for Actor composition.

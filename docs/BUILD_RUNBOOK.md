@@ -5,23 +5,24 @@
 Read in this order:
 
 1. `README.md`
-2. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-3. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
-4. `docs/VOCABULARY.md`
-5. `docs/PRODUCT_SPEC.md`
-6. `docs/ARCHITECTURE.md`
-7. `docs/PROTOCOL.md`
-8. `docs/SECURITY_MODEL.md`
-9. `docs/SOCIAL_LAYER.md`
-10. `docs/ROADMAP.md`
-11. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-12. `AGENTS.md`
+2. `docs/GLOPPER_NAMING.md`
+3. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
+4. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
+5. `docs/VOCABULARY.md`
+6. `docs/PRODUCT_SPEC.md`
+7. `docs/ARCHITECTURE.md`
+8. `docs/PROTOCOL.md`
+9. `docs/SECURITY_MODEL.md`
+10. `docs/SOCIAL_LAYER.md`
+11. `docs/ROADMAP.md`
+12. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+13. `AGENTS.md`
 
-The active Gummy OS repository is `bohselecta/gummy-os`.
+The active repository is `bohselecta/gummy-os`.
 
-The AI-native Linux distribution is a separate existing local implementation. Inspect it in Ubuntu. Do not rebuild it from assumptions in this repository.
+Do not inspect the existing native AI Linux distribution until the standalone browser proof is accepted.
 
-## Baseline verification
+## Baseline
 
 ```bash
 npm run verify
@@ -31,80 +32,75 @@ npm run dev
 Open `http://localhost:4173` and confirm:
 
 1. Gummy OS boots.
-2. Desktop, dock, and windows work.
-3. `gummy://home`, `gummy://chat`, and `gummy://protocol` work.
+2. Current desktop/dock/windows work before migration.
+3. Native `gummy://` routes work.
 4. Files drag to the current companion surface.
-5. Medium-risk attachment asks for confirmation.
-6. Demo chat is transparently non-networked.
+5. Medium-risk actions ask for confirmation.
+6. Demo chat is labeled non-networked.
 7. Receipts appear.
-8. Existing state survives refresh.
+8. State survives refresh.
 
-Record the starting SHA and all baseline failures.
-
-## Ubuntu native preflight
-
-Before changing integration code:
-
-1. locate the existing native distribution source and runtime;
-2. record local path, launch command, branch/revision, and build state;
-3. identify native Agent/chat services;
-4. identify browser or WebView host;
-5. identify existing IPC/API/MCP/localhost surfaces;
-6. inspect current capability and security boundaries;
-7. locate live-USB assets;
-8. launch the native system and prove its current behavior;
-9. choose the narrowest Gummy OS hosting route;
-10. stop rather than replacing a working native component speculatively.
+Record starting SHA, localStorage keys, current labels, and failures.
 
 ## Active gates
 
-The detailed requirements live in the active work order. The implementation order is:
+### Gate 1 — Gummy Canvas and Gummy Bar
 
-### Gate 0 — Existing native environment understood
+- name the working surface Gummy Canvas;
+- replace dock presentation with candy-store Gummy Bar;
+- candy icons may represent apps, Actors, Gummies, Bowls, tasks, notifications, controls, and Glopper;
+- candy remains presentation, not protocol;
+- prove keyboard, touch, responsive, and accessibility behavior.
 
-The distro and native Agent/chat behavior are found, launched, and documented.
+### Gate 2 — Glopper Panel
 
-### Gate 1 — Gummy OS runs inside the distro
+- Glopper is a special candy in the Gummy Bar;
+- collapsed status/invocation state;
+- expandable conversation/control Panel;
+- selected Canvas context;
+- Human/Actor/Agent/Mold/Master Control state;
+- task lease, approvals, results, and Receipts;
+- availability never becomes automatic authority.
 
-Use ordinary browser or existing WebView first. Preserve standalone browser use.
+### Gate 3 — Correct typed model
 
-### Gate 2 — Z hybrid surface
+Human, Actor, Agent, Mold, Master Control, Gummy, Bowl, Link, Grab, Grant, Receipt, quarantine, and task lease are distinct.
 
-Implement persistent collapsed Z bar and expandable Z panel. Z is globally available across the canvas, not an ordinary dock app.
-
-```text
-automatic availability != automatic authority
-```
-
-### Gate 3 — Correct Human / Actor / Agent / Mold / Master Control model
-
-Actor and Agent remain distinct. Mold is an operating contract. Master Control owns placement, sync, assignment, approval, and revocation.
+The first executor is `agent:glopper-web`.
 
 ### Gate 4 — Deterministic migration
 
-Legacy Snack/Drop/Fork/companion state migrates without deletion, duplication, or type collapse.
+Legacy Snack/Drop/Fork/Z/Zeke/companion/dock state migrates without loss, duplication, or type collapse.
 
 ### Gate 5 — Durable local WebOS
 
-IndexedDB metadata, OPFS bytes, stable IDs and hashes, projects, import/export, return continuity, and quarantine state.
+IndexedDB metadata, OPFS bytes, stable IDs/hashes, Actor-owned projects, import/export, quota handling, return continuity, and quarantine.
 
-### Gate 6 — Quarantine and burn proof
+### Gate 6 — Real Glopper Agent route
 
-A harmless test file enters as a quarantined Gummy, lacks native authority, cannot promote without approval, and can be reset/burned while accepted evidence remains.
+One provider-neutral route, no browser secrets, bounded capabilities, explicit locality/cost, truthful error/denial, complete Receipt evidence.
 
-### Gate 7 — One deny-by-default Agent/native bridge
+### Gate 7 — Real source-to-result journey
 
-Only the exact bounded contract required by the active journey. No arbitrary shell, filesystem, process, package, device, or network endpoint.
+Source Gummy → Human approval → `agent:glopper-web` + Mold + Grant → result Gummy → complete Receipt → revocation → durable return.
 
-### Gate 8 — Real Actor-to-Agent journey
+### Gate 8 — Quarantine and burn proof
 
-Source Gummy → Human approval → Mold + Grant → distinct Agent → result Gummy → complete Receipt → revocation → durable return.
+Harmless test content remains non-native, promotion is deny-by-default, bounded approved movement is receipted, disposable state burns while accepted evidence remains.
 
-### Gate 9 — Small playground composition proof
+### Gate 9 — Adaptation foundation
 
-Two local Actor surfaces create one temporary shared canvas or Bowl using selected test Gummies without merging private state or inheriting authority.
+Private local memory, approved portable profile, and current task context remain separate. Human approval is required to promote learned preferences.
 
-## Verification commands
+### Gate 10 — Composition proof
+
+Two local test Actors create a temporary shared Canvas or Bowl from selected Gummies without merging private state or inheriting authority.
+
+### Gate 11 — Native preflight, last
+
+After Gates 1–10 pass, locate and inspect the existing distro, evaluate the existing Glopper process-director app as native lineage, and design one deny-by-default `agent:glopper-native` bridge. No broad native implementation without a new work order.
+
+## Verification
 
 ```bash
 npm run check
@@ -115,11 +111,13 @@ npm run verify
 
 Add:
 
-- one end-to-end WebOS journey command;
-- one native integration command when the bridge exists;
-- one quarantine/promotion/burn test;
-- one revocation test;
-- one temporary Actor-composition test.
+- end-to-end Gummy Canvas/Bar/Glopper journey;
+- naming and migration test;
+- revocation test;
+- quarantine/promotion/burn test;
+- task lease test;
+- composition test;
+- native integration test only after Gate 11 begins.
 
 ## Git workflow
 
@@ -127,33 +125,28 @@ Add:
 2. run baseline verification;
 3. create one bounded branch;
 4. implement the active work order;
-5. run all applicable verification;
-6. record screenshots, hashes, Receipts, and native-boundary evidence;
+5. run applicable verification;
+6. record screenshots, hashes, Grants, Receipts, and boundaries;
 7. commit and push;
-8. open one PR with proven and unproven claims;
+8. open one PR with proven/unproven claims;
 9. do not self-accept;
 10. merge only after founder acceptance or explicit authorization.
 
 Do not ask Hayden to perform ordinary branch, PR, merge, or cleanup work when connected tools can do it.
 
-## Architecture change rule
-
-Any change introducing an object, Link, capability, bridge, trust boundary, runtime, model route, connector path, synchronization behavior, security claim, composition primitive, enterprise policy, or federation behavior must update the relevant authoritative documents in the same lane.
-
 ## Stop rules
 
 Stop and return an exact blocker when:
 
-- the native distribution cannot be found or launched;
-- working native code would be replaced without evidence;
 - credentials cannot stay outside browser JavaScript;
-- IndexedDB/OPFS cannot preserve bytes and metadata reliably;
+- storage cannot preserve bytes/metadata reliably;
 - migration would discard or ambiguously merge state;
 - Actor and Agent would collapse;
-- the source Gummy would be overwritten;
-- the bridge would expose broad native authority;
-- quarantine cannot prevent native execution;
-- a child Actor or Agent would inherit authority automatically;
-- a Receipt cannot identify the Human, Actor, Agent, Mold, Master Control, route, source, result, and boundary crossing;
-- security claims exceed test evidence;
-- broad platform scope starts before the Personal Gummy OS exit passes.
+- source Gummy would be overwritten;
+- a candy icon would become authority;
+- quarantine cannot remain separated from native execution;
+- a child Actor/Agent would inherit authority;
+- a Receipt cannot name Human, Actor, Agent, Mold, Master Control, route, source, result, and outcome;
+- security claims exceed evidence;
+- native-distro work begins before the standalone proof passes;
+- broad platform scope starts before the accepted exit.

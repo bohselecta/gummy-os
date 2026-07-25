@@ -6,7 +6,7 @@
   "handle": "@hayden",
   "status": "active",
   "allowedHumanIds": ["human:hayden"],
-  "allowedAgentIds": ["agent:personal-broker"],
+  "allowedAgentIds": ["agent:glopper-web"],
   "role": "personal-owner",
   "context": "Personal Gummy OS",
   "representation": {
@@ -26,13 +26,13 @@
     "requiresHumanApproval": true
   },
   "runtimePolicy": {
-    "allowedLocalities": ["web", "local", "cloud"],
+    "allowedLocalities": ["web", "cloud"],
     "allowedRuntimeClasses": ["browser", "server"],
     "networkPolicy": "ask"
   },
   "syncPolicy": {
     "mode": "manual",
-    "allowedData": ["gummies", "receipts", "links"],
+    "allowedData": ["gummies", "receipts", "links", "approved-preferences"],
     "directions": []
   },
   "proofs": [],

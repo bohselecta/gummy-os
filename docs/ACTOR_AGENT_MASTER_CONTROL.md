@@ -2,25 +2,22 @@
 
 **Status:** Founder architecture ruling  
 **Date:** 2026-07-25  
-**Source:** Hayden's handwritten system drawing in the Chief of Command thread  
-**Precedence:** This document corrects any narrower Actor or Mold definition elsewhere in the repository.
+**Precedence:** This document corrects narrower identity or runtime definitions elsewhere.
 
-## The central realization
+## Core realization
 
-Gummy OS is not merely a social identity layer and an Actor is not merely a user record.
-
-The architecture has two distinct execution faces:
+Gummy OS has distinct persistent and executable sides:
 
 ```text
-WEB / GUMMY OS                     NATIVE OS / GLYPHD OS
-Actor                              Agent
-addressable, openable              executable, local, device-capable
-persistent web presence            persistent intelligence/runtime
+GUMMY OS / WEB                      EXECUTION RUNTIMES
+Actor                               Agent
+addressable and openable            executable and replaceable
+persistent state                    performs bounded work
 ```
 
-A human may directly control either side. Master Control decides how they are connected, where state lives, what synchronizes, and which Agent may operate which Actor.
+A Human may directly control an Actor or authorize an Agent to operate it. Master Control decides connection, placement, data flow, approval, and revocation.
 
-## Canonical architecture
+## Architecture
 
 ```text
 Human authority
@@ -29,206 +26,151 @@ Human authority
 Master Control
 placement · synchronization · permission · revocation
       │
-      ├─────────────── protocol / @address ───────────────┐
-      │                                                   │
-      ▼                                                   ▼
-Web Actor                                             OS Agent
-inside Gummy OS                                       inside AI-native Linux / Glyphd OS
-openable anywhere                                     runs locally or on governed compute
-persistent addressable state                         executes tools and controls resources
+      ├──────────── protocol / @address ────────────┐
+      │                                              │
+      ▼                                              ▼
+Actor in Gummy OS                               Agent executor
+Gummy Canvas + Gummy Bar                       web, cloud, native, phone
+persistent addressable state                  tools, models, devices
 ```
 
-The Web Actor and OS Agent may work together, but they are not the same object.
+Actor and Agent may produce one continuous experience, but are never the same object.
 
 ## Gummy OS
 
-Gummy OS is the **Web OS plane**.
+Gummy OS is the WebOS plane.
 
-It is the familiar computer a person can open through the web: desktop, windows, applications, files, browser, projects, Gummies, Bowls, Links, Receipts, and Actor surfaces.
+- **Gummy Canvas** is the open working and creation surface.
+- **Gummy Bar** is the persistent candy-store system bar.
+- **Glopper** is a special companion candy in the Bar.
+- **Glopper Panel** is the expanded conversation/control interface.
 
-Gummy OS is where Actors can be deployed, opened, shared, visited, or inhabited from nearly any compatible device.
-
-Gummy OS is not itself the native Linux Agent and does not silently inherit host-machine authority.
-
-## Glyphd OS and AI-native Linux
-
-Glyphd OS is the **native execution and device-sovereignty plane**.
-
-It may host Zeke or another Agent with access to explicitly granted local capabilities: compute, local files, devices, applications, peripherals, models, and protected runtimes.
-
-An AI-native Linux Agent can deploy, operate, or synchronize one or more Actors into Gummy OS through the protocol.
-
-The native Agent does not own the Actor merely because it runs the computation.
+Actors can be opened, visited, operated, shared, or composed from compatible devices. Gummy OS does not silently inherit host-machine authority.
 
 ## Actor
 
-An Actor is a **persistent, addressable computational entity expressed through the web**.
+An Actor is a persistent addressable computational entity expressed through the web.
 
-An Actor can represent or embody:
-
-- a person;
-- a public figure or celebrity;
-- an AI-facing persona;
-- a licensed character;
-- an organization;
-- a service;
-- a project role;
-- a world or persistent computational presence.
+It may embody a person, public figure, character, organization, service, project role, world, or other persistent presence.
 
 An Actor:
 
-- has a stable protocol identity and `@address`;
-- may be opened from any compatible web device;
-- carries state, permissions, memory, relationships, Gummies, and provenance;
-- may be directly controlled by a human;
+- has a stable ID and `@address`;
+- carries state, memory, permissions, Gummies, Links, and provenance;
+- may be opened from compatible devices;
+- may be controlled directly by a Human;
 - may be operated by an authorized Agent;
-- may move or synchronize between web and native environments according to Master Control;
-- remains the same Actor even when its execution location changes.
+- remains the same Actor when device, runtime, or Agent changes.
 
-**Actor is not synonymous with a human, account, model, process, or profile.** It is the persistent computational entity through which those participants act in the shared system.
+Actor is not synonymous with Human, account, profile, model, or process.
 
 ## Agent
 
-An Agent is an **executable intelligence or operating process**.
+An Agent is executable intelligence or an operating process.
 
-An Agent may run:
-
-- locally inside Glyphd OS;
-- inside another AI-native Linux distribution;
-- in a trusted server environment;
-- in a governed cloud runtime;
-- in a bounded browser or Wasm runtime where capability permits.
+It may run in a browser/server route, cloud runtime, native Linux environment, future phone runtime, or another governed environment.
 
 An Agent:
 
 - plans and executes work;
 - uses tools and applications;
-- controls only explicitly granted resources;
-- may deploy or operate Actors;
-- may synchronize Actor state;
-- must identify itself in Receipts;
-- does not become the Actor merely because it speaks or acts through it.
+- controls only granted resources;
+- may operate Actors;
+- may synchronize approved Actor state;
+- owns a task lease while executing;
+- identifies itself and its locality in Receipts;
+- does not become the Actor it operates.
 
-Zeke is the primary first-party example of an Agent operating inside Glyphd OS.
+## Glopper Agent family
+
+Glopper is the first-party companion identity.
+
+```text
+agent:glopper-web
+agent:glopper-cloud
+agent:glopper-native
+agent:glopper-phone
+```
+
+These executors may share one character and Human-approved portable preferences. They retain separate identity, locality, capabilities, task leases, private-memory boundaries, and Receipts.
+
+`bohselecta/glopper` is the existing local-first process-director application and the first substantial native Glopper lineage.
 
 ## Mold
 
-A Mold is more than a visual profile.
+A Mold is the permissioned embodiment and operating contract through which a Human or Agent may open, represent, instantiate, or operate an Actor.
 
-A Mold is the **permissioned embodiment and reusable Actor definition** through which a human or Agent may open, instantiate, represent, or operate an Actor.
+It may specify:
 
-A Mold can specify:
-
-- which Actor it applies to;
-- who may use it;
-- whether the operator is a human or Agent;
-- visual and behavioral representation;
+- Actor;
+- allowed Human and Agent operators;
+- representation and behavior;
 - role and context;
-- permitted capabilities;
-- allowed execution locations;
+- capabilities and data scopes;
+- runtime/locality;
 - synchronization policy;
-- duration and revocation;
-- identity, organization, character, celebrity, or licensing proofs;
-- disclosure requirements;
-- what state may be read, changed, or published.
+- proof/license/disclosure;
+- issue, expiry, and revocation.
 
-Examples:
-
-- Hayden opens his own Actor through his personal Mold.
-- An authorized assistant Agent operates Hayden's Actor through a limited work Mold.
-- A celebrity's team operates an official Actor through an organization-approved Mold.
-- A licensed character Actor is performed by an Agent through a character Mold.
-- A guest opens another Actor only through a temporary invitation Mold.
-
-**A Mold does not independently act. It is the permissioned form and operating contract by which an Actor can be inhabited or controlled.**
+A Mold does not independently act.
 
 ## Master Control
 
-Master Control is the human-controlled authority layer that decides:
+Master Control decides:
 
-- whether an Actor is web-only, local-only, or synchronized;
-- which device, OS, server, or runtime currently holds authoritative state;
-- which Agent may operate an Actor;
-- which Mold the operator must use;
-- which data may synchronize;
-- which direction synchronization may flow;
-- whether actions require approval;
-- how authority is revoked;
-- what evidence and Receipts must be retained.
+- authoritative state location;
+- assigned Agent;
+- active Mold;
+- task lease;
+- allowed data classes;
+- synchronization mode and direction;
+- approval rules;
+- revocation and lock state;
+- evidence retention.
 
-Master Control prevents synchronization from becoming ambient replication or invisible platform ownership.
+Sign-in or connectivity never substitutes for Master Control.
 
-## Protocol and @addresses
+## @addresses
 
-Every Actor receives a stable protocol address, expressed in human-facing form as an `@address`.
+Every Actor receives a stable human-facing protocol address.
 
-The address is used for:
+An `@address` supports resolution, opening, messaging, invitations, Agent binding, Bowl membership, Gummy ownership/provenance, synchronization routing, and revocation.
 
-- identity resolution;
-- routing;
-- opening the Actor;
-- invitations;
-- permissions;
-- Agent bindings;
-- synchronization;
-- messaging;
-- Bowl membership;
-- Gummy ownership and provenance;
-- revocation and discovery.
+An address never grants control by itself.
 
-The protocol connects Actors and Agents without forcing every Actor to live on one server or every Agent to use one model provider.
+## Native layer
 
-## Runtime stack from the drawing
+The already-built AI-native Linux distribution is a future integration target, not a dependency for standalone Gummy OS.
+
+After the browser proof passes, it may host `agent:glopper-native` with explicitly granted directories, IDEs, processes, local models, devices, and protected capabilities.
+
+The native Agent does not own the Actor because it runs computation.
+
+## Runtime stack
 
 ```text
-Physical device and human input
+Physical device / host security
         ↓
-Reality / device layer
+optional native AI Linux and local Agent
+        ↓ explicit Bridge + Master Control + Mold + Grant
+Gummy OS
         ↓
-Network and protocol layer
-        ↓
-AI-native Linux distribution / Glyphd OS
-        ↓
-Agent runtime
-        ↓ protocol, Mold, and Master Control
-Gummy OS / Web OS
-        ↓
-Addressable Actor and its Gummies
+Gummy Canvas + Gummy Bar + addressable Actors + Gummies
 ```
 
-The layers may be distributed across devices and networks. The user experiences one coherent computer and one persistent Actor.
+Gummy OS can also run without the native layer.
 
-## Corrected vocabulary
+## Immediate boundary
 
 ```text
-Human = ultimate personal authority
-Actor = persistent addressable entity in the web/world
-Agent = executable intelligence that performs work
-Mold = permissioned embodiment and operating contract for an Actor
-Master Control = placement, sync, permission, and revocation authority
-Gummy OS = Web OS where Actors are opened and deployed
-Glyphd OS = native AI execution and device-sovereignty environment
-@address = stable protocol identity and route for an Actor
-Gummy = an object an Actor creates, owns, receives, or operates
-Bowl = a shared environment
-Link = an explicit relationship
-Grab = independent derivation preserving source provenance
+Human opens personal Actor
+→ uses Gummy Canvas and Gummy Bar
+→ opens Glopper Panel
+→ authorizes agent:glopper-web through bounded Mold
+→ Glopper transforms source Gummy without altering it
+→ result Gummy + complete Receipt
+→ revoke Agent/Mold and prove blocked
+→ state survives return
 ```
 
-## Immediate implementation boundary
-
-The first Personal Gummy OS milestone remains intentionally small:
-
-```text
-human opens personal Actor in Gummy OS
-→ imports a real source Gummy
-→ authorizes an Agent through a bounded Mold
-→ Agent transforms the source without altering it
-→ result Gummy returns
-→ Actor, Agent, Mold, Grant, route, and result appear in the Receipt
-→ state survives return visits
-```
-
-Cursor must not reduce this to a profile rename, nor attempt the entire distributed Linux/Web synchronization system in the first build.
-
-The first build proves the object boundaries locally. Later phases connect a Gummy OS Actor to a native Glyphd OS Agent through Master Control and the protocol.
+Native Glopper integration happens only after this standalone proof.

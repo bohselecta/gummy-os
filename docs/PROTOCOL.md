@@ -2,70 +2,63 @@
 
 ## Status
 
-Protocol 0.2 is the current specification target. The July 25 founder drawing corrected the identity model before Cursor implementation:
+Protocol 0.2 is the current specification target. Current source still contains legacy Protocol 0.1 and temporary companion naming; Cursor must migrate it deterministically.
 
-- Actor is a persistent addressable web entity;
-- Agent is a separate executable intelligence;
-- Human authority sits above both;
-- Mold is a permissioned embodiment and operating contract;
-- Master Control governs placement, synchronization, permission, and revocation.
-
-The current scaffold still contains Protocol 0.1 labels and earlier draft assumptions. Migration must preserve readable legacy state.
-
-## Objective
-
-Define portable, provider-neutral, runtime-neutral objects for:
-
-- Human authority;
-- addressable Actors;
-- executable Agents;
-- permissioned Molds;
-- Master Control;
-- Gummies, Bowls, Links, and Grabs;
-- Application Packs;
-- Capability Grants;
-- Action Receipts;
-- organization policy and federation later.
-
-## Core language
+## Core entities
 
 ```text
 Human = ultimate personal authority
-Actor = persistent addressable entity in the web/world
-Agent = executable intelligence that performs work
-Mold = permissioned embodiment and operating contract for an Actor
-Master Control = placement, sync, permission, and revocation authority
-Gummy OS = Web OS where Actors are opened and deployed
-Glyphd OS = native AI execution and device-sovereignty environment
-@address = stable protocol identity and route for an Actor
+Actor = persistent addressable web entity
+Agent = separate executable intelligence
+Mold = permissioned Actor operating contract
+Master Control = assignment, placement, sync, approval, revocation
+Gummy = Actor-owned/operated object
+Bowl = shared environment
+Link = explicit relationship
+Grab = provenance-preserving independent derivation
 ```
+
+## Product presentation names
+
+```text
+Gummy OS
+Gummy Canvas
+Gummy Bar
+Glopper
+Glopper Panel
+Glopper App
+```
+
+These are product/interface names. The Gummy Bar's candy icons do not create a `candy` protocol class.
 
 ## Artifact families
 
 | Schema | Purpose |
 | --- | --- |
-| `gummy.actor/v0` | Persistent addressable entity expressed through Gummy OS. |
-| `gummy.agent/v0` | Executable intelligence or operating process. |
-| `gummy.mold/v0` | Permissioned embodiment and operating contract for one Actor. |
-| `gummy.master-control/v0` | Human-controlled placement, sync, approval, assignment, and revocation state. |
-| `gummy.gummy/v0` | Actor-owned or operated object. |
+| `gummy.actor/v0` | Persistent addressable Actor. |
+| `gummy.agent/v0` | Executable intelligence/process. |
+| `gummy.mold/v0` | Permissioned embodiment and operating contract. |
+| `gummy.master-control/v0` | Human-controlled assignment, placement, sync, approval, revocation. |
+| `gummy.gummy/v0` | Actor-owned/operated object. |
 | `gummy.bowl/v0` | Shared environment. |
-| `gummy.link/v0` | Typed explicit relationship. |
-| `gummy.grab/v0` | Independent derivation preserving source provenance. |
-| `gummy.app-pack/v0` | Vendor application operating contract. |
-| `gummy.capability-grant/v0` | Temporary authority for one bounded operator action through an Actor. |
-| `gummy.action-receipt/v0` | Evidence of Human sponsor, Actor, Agent, Mold, route, resources, and outcome. |
-| `gummy.organization/v0` | Enterprise identity and deployment context. |
-| `gummy.policy-pack/v0` | Versioned policy rules. |
+| `gummy.link/v0` | Typed relationship. |
+| `gummy.grab/v0` | Independent derivation preserving source. |
+| `gummy.app-pack/v0` | Application operating knowledge/contract. |
+| `gummy.capability-grant/v0` | Bounded temporary authority. |
+| `gummy.action-receipt/v0` | Evidence of request, participants, route, objects, and outcome. |
+| `gummy.organization/v0` | Enterprise context. |
+| `gummy.policy-pack/v0` | Versioned policy. |
 
-## Identifiers
+## Canonical identifiers
 
 ```text
 human:hayden
 actor:hayden
 @hayden
-agent:zeke-local
-agent:personal-broker
+agent:glopper-web
+agent:glopper-cloud
+agent:glopper-native
+agent:glopper-phone
 mold:hayden:personal
 master-control:hayden
 gummy:welcome
@@ -76,207 +69,106 @@ grant:01J...
 receipt:01J...
 ```
 
-The Actor ID is machine-stable. The `@address` is the human-facing protocol identity and route.
-
-## Human authority reference
-
-The first local implementation may use a simple `human:*` principal reference without claiming production identity verification.
-
-Human authority may:
-
-- sponsor Actors;
-- authorize Agents;
-- issue or approve Molds;
-- control Master Control;
-- approve Grants;
-- revoke access.
-
-Future identity systems may bind this reference to passkeys, organizations, or cryptographic identity.
-
 ## Actor contract
 
-An Actor declares:
+Actor declares stable ID, `@address`, kind, Human authority, state/memory refs, Molds, Agents, owned Gummies, deployment/authoritative location, sync policy, status, times, and legacy IDs.
 
-- stable Actor ID;
-- stable `@address`;
-- kind and display name;
-- Human authority references;
-- state and memory references;
-- Mold IDs;
-- Agent IDs;
-- owned Gummy IDs;
-- deployment mode;
-- authoritative location;
-- web endpoint where applicable;
-- sync policy;
-- status, times, and legacy IDs.
-
-Actor kind describes what persistent presence it embodies, not what executes it. Agent is never an Actor kind.
+Agent is never an Actor kind.
 
 ## Agent contract
 
-An Agent declares:
+Agent declares stable ID, name/character family, version, provider/model class, runtime, locality, status, Human/organization operator, Actor/Mold bindings, capability ceiling, task lease, private-memory boundary, autonomy, and disclosure.
 
-- stable Agent ID;
-- name and version;
-- provider/model class;
-- runtime class;
-- locality;
-- status;
-- Human authority or organization operator;
-- Actor and Mold bindings;
-- capability ceiling;
-- autonomy and disclosure.
-
-An Agent may act through an Actor only when Master Control, Mold, policy, and Grant allow it.
+Glopper executors are separate Agents despite sharing the Glopper character.
 
 ## Mold contract
 
-A Mold declares:
+Mold declares Actor, allowed Human/Agent operators, representation, role/context, capabilities, data scopes, runtime/locality, synchronization, proof/license/disclosure, issue/expiry/revocation, and status.
 
-- Actor ID;
-- allowed Human and Agent operators;
-- role and context;
-- representation;
-- capability scope;
-- read/write/publish scope;
-- runtime and locality policy;
-- synchronization policy;
-- proof, licensing, and disclosure requirements;
-- issue, expiry, revocation, and status.
-
-A Mold does not act and does not own the Actor. It defines the permitted embodiment and operating relationship.
+Mold does not act or own the Actor.
 
 ## Master Control contract
 
-Master Control declares:
+Master Control declares Human, Actor, active Agent, active Mold, task lease, authoritative location, deployment, sync, allowed data classes, approval rules, revoked Agents/Molds, locks, and status.
 
-- Human authority;
-- Actor;
-- active Agent;
-- active Mold;
-- authoritative state location;
-- deployment mode;
-- sync mode and direction;
-- allowed data classes;
-- approval rules;
-- revoked Agents and Molds;
-- lock and status state.
+Sign-in, connectivity, or character continuity never substitutes for Master Control.
 
-Sign-in state, network availability, or Agent preference never substitutes for Master Control.
+## Gummy Bar presentation contract
 
-## @address semantics
+A Gummy Bar item references an underlying object and local presentation state:
 
-An `@address` supports:
+- object kind and ID;
+- icon/visual asset reference;
+- pinned/open/selected state;
+- task/approval/attention badges;
+- order/grouping;
+- accessibility label.
 
-- Actor identity resolution;
-- opening an Actor;
-- messaging and invitations;
-- Agent binding;
-- permission exchange;
-- synchronization routing;
-- Bowl membership;
-- Gummy ownership and provenance;
-- revocation and discovery.
+It does not receive capability authority independently.
 
-An `@address` does not reveal private state by default and does not grant permission to operate the Actor.
+## Glopper routing
 
-## Gummy contract
+A Human-facing Glopper interaction resolves to an Agent executor through explicit routing.
 
-Every Gummy declares stable identity, kind, owner Actor, creator Actor, optional operating Agent, Mold, audience, content/byte reference, hash, revision, provenance, rights, capabilities, Links, times, and legacy IDs.
+Routing considers:
 
-## Bowl, Link, and Grab contracts
+- authoritative data location;
+- capability requirements;
+- privacy/data classification;
+- Agent availability;
+- locality, cost, and latency;
+- current task lease;
+- Mold and Master Control policy.
 
-- Bowl defines shared membership, roles, visibility, policy, and contained Gummies.
-- Link defines explicit relationships such as `operated-by-agent`, `controlled-by-human`, `represented-by`, `deployed-to`, `synchronized-with`, `created-by`, `member-of`, `derived-from`, and `grab-of`.
-- Grab creates a new Gummy and provenance Link without changing the source.
+The Receipt identifies the actual executor, not only the Glopper character.
 
-## Capability Grant semantics
+## Capability Grant
 
-A Grant binds:
+A Grant binds Human, Actor, operator type/ID, Agent, Mold, Master Control, task lease, action, resource, scope, locality, risk, approval, issue/expiry, and revocation.
 
-- Human authority;
-- Actor;
-- operator type and operator ID;
-- Agent where applicable;
-- Mold;
-- Master Control record;
-- action;
-- resource;
-- scope;
-- risk;
-- locality;
-- approval;
-- issue, expiry, and revocation.
+No capability exceeds the Mold ceiling, Agent ceiling, Master Control policy, or Human authority.
 
-The operator receives no capability beyond the Mold ceiling, Master Control policy, and issuing authority.
+## Action Receipt
 
-## Action Receipt semantics
+A Receipt identifies request/action, Human, Actor/`@address`, operator, Agent, Glopper character where relevant, Mold, Master Control, task lease, runtime/locality, Grants, source/result Gummies, Links/Grabs, capabilities, cost, outcome, errors/denial/revocation, time, and hashes.
 
-A Receipt identifies:
+The user-readable summary stands alone.
 
-- request and action;
-- Human sponsor;
-- Actor and `@address`;
-- operator type;
-- Agent if used;
-- Mold;
-- Master Control record;
-- execution route, runtime, locality, and sync mode;
-- Grants;
-- source and result Gummies;
-- Links and Grabs;
-- capabilities;
-- cost;
-- outcome;
-- denial, failure, cancellation, rollback, or revocation evidence;
-- times and hashes.
+## Quarantine and promotion
 
-The user-readable summary must stand on its own.
+A quarantined Gummy has no native execution authority.
 
-## Application Pack semantics
+Promotion across a native boundary requires explicit destination, scan/classification result where applicable, Human/policy approval, bounded Grant, Bridge identity, and Receipt.
 
-A Pack teaches an authorized Agent how to operate one application through typed capabilities, APIs/tools, semantic interfaces, accessibility, or GUI control.
+## Synchronization
 
-The Pack provides knowledge and verification. It does not grant authority.
+Actor declares authoritative location. Master Control declares allowed data classes, direction, and mode. Mold constrains operator sync. Grants authorize consequential transfer. Receipts record movement. Revocation blocks future flow.
 
-## Runtime and synchronization semantics
-
-Runtime is replaceable:
-
-```text
-web-native → browser/Wasm → Linux-native → governed server/cloud
-```
-
-Synchronization is explicit:
-
-- Actor declares authoritative location;
-- Master Control declares data classes, direction, and mode;
-- Mold constrains what the operator may synchronize;
-- Grants authorize individual consequential flows;
-- Receipts record what moved and why;
-- revocation blocks future flow.
+Private local adaptation and approved portable profile are separate data classes.
 
 ## Legacy compatibility
 
 ```text
 legacy Snack
-→ Human authority + Actor + Mold
+→ Human + Actor + Mold
 
-legacy demo companion/model
-→ provisional Agent
+legacy companion / personal-broker / Z / Zeke
+→ agent:glopper-web plus Glopper presentation
+
+legacy dock
+→ Gummy Bar presentation
 
 legacy Drop/file
 → Gummy
 
-legacy fork
+legacy Fork
 → Grab + grab-of Link
 ```
 
-Migration must be deterministic, idempotent, and non-destructive. Actor and Agent may never collapse into one record.
+Migration is deterministic, idempotent, traceable, and non-destructive. Actor and Agent never collapse.
 
-## Versioning and transport
+## Transport and versioning
 
-Schema versions are explicit. Breaking semantic changes require a new protocol version. Unknown additive fields may be ignored only when authority and provenance are not weakened.
+Transport may use local import/export, HTTPS, events, content-addressed storage, enterprise buses, signed documents, or federation. Transport never creates authority.
 
-Transport may use local import/export, HTTPS, events, content-addressed storage, enterprise buses, signed documents, or future federation. Transport never creates authority.
+Breaking semantics require a new protocol version; additive fields may be ignored only when authority/provenance remain intact.

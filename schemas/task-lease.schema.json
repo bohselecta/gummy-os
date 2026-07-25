@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/task-lease.schema.json",
+  "title": "Gummy OS Task Lease",
+  "description": "Exclusive or explicitly shared bounded ownership of one task by one Agent executor against one authoritative work scope.",
+  "type": "object",
+  "required": ["schema", "id", "humanAuthorityId", "actorId", "agentId", "taskId", "scope", "mode", "status", "issuedAt", "expiresAt"],
+  "properties": {
+    "schema": { "const": "gummy.task-lease/v0" },
+    "id": { "type": "string", "pattern": "^lease:" },
+    "humanAuthorityId": { "type": "string", "pattern": "^human:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "masterControlId": { "type": "string", "pattern": "^master-control:" },
+    "taskId": { "type": "string", "minLength": 1 },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "gummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+        "repository": { "type": "string" },
+        "directory": { "type": "string" },
+        "branch": { "type": "string" },
+        "worktree": { "type": "string" },
+        "baseRevision": { "type": "string" },
+        "capabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "authoritativeLocation": { "type": "string" },
+    "mode": { "enum": ["exclusive", "shared-explicit"] },
+    "parallelLeaseIds": { "type": "array", "items": { "type": "string", "pattern": "^lease:" }, "uniqueItems": true },
+    "expectedReturn": { "type": "object" },
+    "status": { "enum": ["proposed", "active", "released", "expired", "revoked", "completed"] },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "releasedAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}

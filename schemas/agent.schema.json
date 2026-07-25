@@ -2,24 +2,35 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/agent.schema.json",
   "title": "Gummy OS Agent",
-  "description": "An executable intelligence or operating process that may perform work for or through an Actor under a Mold and Capability Grant.",
+  "description": "An executable intelligence or operating process that may perform work for or through an Actor under a Mold, Task Lease, and Capability Grant.",
   "type": "object",
   "required": ["schema", "id", "name", "runtimeClass", "locality", "status", "createdAt", "updatedAt"],
   "properties": {
     "schema": { "const": "gummy.agent/v0" },
     "id": { "type": "string", "pattern": "^agent:" },
     "name": { "type": "string", "minLength": 1 },
+    "characterFamily": { "type": "string", "description": "Shared Human-facing character such as Glopper. Does not merge Agent identity or authority." },
     "version": { "type": "string" },
     "providerClass": { "type": "string" },
     "model": { "type": "string" },
-    "runtimeClass": { "enum": ["glyphd-os", "linux-native", "server", "cloud", "browser", "wasm", "other"] },
-    "locality": { "enum": ["local", "lan", "cloud", "organization", "unknown"] },
+    "runtimeClass": { "enum": ["glyphd-os", "linux-native", "server", "cloud", "browser", "wasm", "phone", "other"] },
+    "locality": { "enum": ["web", "local", "lan", "cloud", "organization", "phone", "unknown"] },
     "status": { "enum": ["available", "active", "paused", "offline", "revoked", "archived"] },
     "humanAuthorityIds": { "type": "array", "items": { "type": "string", "pattern": "^human:" }, "uniqueItems": true },
     "organizationId": { "type": "string", "pattern": "^org:" },
     "actorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" }, "uniqueItems": true },
     "moldIds": { "type": "array", "items": { "type": "string", "pattern": "^mold:" }, "uniqueItems": true },
+    "activeTaskLeaseIds": { "type": "array", "items": { "type": "string", "pattern": "^lease:" }, "uniqueItems": true },
     "capabilityCeiling": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "memoryBoundary": {
+      "type": "object",
+      "properties": {
+        "privateLocal": { "type": "boolean" },
+        "portableProfileAllowed": { "type": "boolean" },
+        "currentTaskContextOnly": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
     "disclosure": {
       "type": "object",
       "properties": {

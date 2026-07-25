@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/action-receipt.schema.json",
   "title": "Gummy OS Action Receipt",
-  "description": "Evidence of a Human-sponsored action performed directly or by an Agent through an Actor, Mold, Grant, and Master Control policy.",
+  "description": "Evidence of a Human-sponsored action performed directly or by an Agent through an Actor, Mold, Task Lease, Grant, and Master Control policy.",
   "type": "object",
   "required": ["schema", "id", "action", "humanAuthorityId", "actorId", "operatorType", "operatorId", "moldId", "application", "outcome", "createdAt"],
   "properties": {
@@ -15,8 +15,10 @@
     "operatorType": { "enum": ["human", "agent"] },
     "operatorId": { "type": "string", "pattern": "^(human|agent):" },
     "agentId": { "type": "string", "pattern": "^agent:" },
+    "characterFamily": { "type": "string", "description": "Human-facing family such as Glopper; never substitutes for agentId." },
     "moldId": { "type": "string", "pattern": "^mold:" },
     "masterControlId": { "type": "string", "pattern": "^master-control:" },
+    "taskLeaseId": { "type": "string", "pattern": "^lease:" },
     "application": { "type": "string" },
     "applicationPackId": { "type": "string", "pattern": "^pack:" },
     "executionRoute": {
@@ -25,7 +27,7 @@
         "providerClass": { "type": "string" },
         "model": { "type": "string" },
         "runtime": { "type": "string" },
-        "locality": { "enum": ["web", "local", "lan", "cloud", "organization", "unknown"] },
+        "locality": { "enum": ["web", "local", "lan", "cloud", "organization", "phone", "unknown"] },
         "authoritativeLocation": { "type": "string" },
         "syncMode": { "enum": ["none", "manual", "approved", "continuous"] }
       },
@@ -54,7 +56,8 @@
         "sourceHashes": { "type": "array", "items": { "type": "string" } },
         "resultHashes": { "type": "array", "items": { "type": "string" } },
         "traceRef": { "type": "string" },
-        "revocationProof": { "type": "string" }
+        "revocationProof": { "type": "string" },
+        "burnResetProof": { "type": "string" }
       },
       "additionalProperties": true
     },
