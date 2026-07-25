@@ -1,0 +1,86 @@
+{
+  "schema": "gummy.work-return/v0",
+  "id": "return:standalone-phase-1-acceptance",
+  "boxId": "box:hayden",
+  "workOrderId": "work-order:project-brief",
+  "taskLeaseId": "lease:standalone-phase-1-acceptance",
+  "humanAuthorityId": "human:hayden",
+  "actorId": "actor:hayden",
+  "agentId": "agent:glopper-web",
+  "moldId": "mold:hayden:personal",
+  "baseState": {
+    "sourceHashes": [
+      "sanitized-runtime-sha256"
+    ]
+  },
+  "filesChanged": [],
+  "gummiesChanged": [
+    "gummy:sanitized-result"
+  ],
+  "actionsPerformed": [
+    "Implemented the standalone Gummy Canvas and Gummy Bar",
+    "Initialized the Local Gummy Box and durable personal authority records",
+    "Validated and executed a bounded project-brief Work Order through agent:glopper-web",
+    "Created a separate result Gummy, Return, provenance Links, and chained Receipt",
+    "Proved exclusive lease collision, revocation blocking, replacement Mold restoration, quarantine, bounded export, burn/reset, and two-Actor Bowl composition",
+    "Implemented a repository-scoped private GitHub Gummy Box adapter with expected-head reconciliation"
+  ],
+  "checks": [
+    {
+      "name": "Active personal Gummy cursor Work Order requirements",
+      "outcome": "pass",
+      "detail": "Standalone Human, Actor, Glopper Web Agent, Local Box, Work Order lifecycle, immutable source, result, Return, and Receipt are implemented."
+    },
+    {
+      "name": "Gummy Box cursor addendum requirements",
+      "outcome": "pass",
+      "detail": "Local authoritative Box and one private GitHub adapter are implemented; live round trip remains credential-gated."
+    },
+    {
+      "name": "Brand system cursor addendum requirements",
+      "outcome": "pass",
+      "detail": "Night and Day use exactly the five locked colors; reference imagery is direction-only and temporary slots are labeled."
+    },
+    {
+      "name": "Hermetic verification",
+      "outcome": "pass",
+      "detail": "Schema, brand, unit, build, mocked-provider browser, accessibility, responsive, and evidence lanes run under npm run verify."
+    },
+    {
+      "name": "Live OpenAI and private GitHub acceptance",
+      "outcome": "blocked",
+      "detail": "Run npm run test:live with explicit credentials and pricing configuration; no credentials are embedded in this sanitized Return."
+    }
+  ],
+  "artifactRefs": [
+    "artifacts/playwright-report/",
+    "artifacts/evidence/",
+    "examples/standalone-acceptance.return.json"
+  ],
+  "receiptIds": [
+    "receipt:sanitized-acceptance"
+  ],
+  "knownLimitations": [
+    "No production authentication or identity verification",
+    "No native bridge or agent:glopper-native",
+    "No Google Drive, social, federation, enterprise expansion, billing, or public address resolution",
+    "Live provider and GitHub acceptance requires founder-supplied credentials"
+  ],
+  "provenClaims": [
+    "Hermetic tests exercise a mocked OpenAI provider and Chromium durable browser storage",
+    "Source and result are separate hashed byte objects",
+    "Receipts are local tamper evidence, not signatures"
+  ],
+  "unprovenClaims": [
+    "A live OpenAI transformation has not run without OPENAI_API_KEY",
+    "A live private GitHub round trip has not run without GitHub App credentials"
+  ],
+  "recommendedNextAction": "Configure the live acceptance environment, run npm run test:live, review the PR, and explicitly accept or reject the founder proof.",
+  "result": "partial",
+  "createdAt": "2026-07-25T00:00:00.000Z",
+  "extensions": {
+    "sanitized": true,
+    "nativeAuthority": false,
+    "reviewScope": "standalone-founder-review"
+  }
+}

@@ -1,8 +1,6 @@
-import { cp, mkdir, rm } from 'node:fs/promises';
+import { cp } from 'node:fs/promises';
+import { build } from 'vite';
 
-await rm('build', { recursive: true, force: true });
-await mkdir('build', { recursive: true });
-await cp('index.html', 'build/index.html');
-await cp('src', 'build/src', { recursive: true });
+await build();
 await cp('schemas', 'build/schemas', { recursive: true });
-console.log('Built Gummy into ./build');
+console.log('Built Gummy OS into ./build');

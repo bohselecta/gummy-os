@@ -1,0 +1,11 @@
+{
+  "schema": "gummy.human/v0",
+  "id": "human:hayden",
+  "name": "Hayden",
+  "status": "active",
+  "actorIds": ["actor:hayden"],
+  "authorizedAgentIds": ["agent:glopper-web"],
+  "identityAssurance": "local-unverified",
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z"
+}

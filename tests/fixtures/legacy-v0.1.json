@@ -1,0 +1,63 @@
+{
+  "storageKey": "gummy-os:v0.1",
+  "sourceLabels": [
+    "Gummy desktop",
+    "Gummy dock",
+    "Snack Bar",
+    "Snack Graph",
+    "Gummy companion",
+    "My Files"
+  ],
+  "colorLiterals": [
+    "#7c5cff",
+    "#ff7cc8",
+    "#75f0c8",
+    "#4bc5ff",
+    "#4464ff",
+    "#ff6fae",
+    "#ffd166"
+  ],
+  "serializedState": {
+    "snack": {
+      "id": "snack:hayden",
+      "name": "Hayden",
+      "handle": "@hayden",
+      "companion": "Gummy",
+      "colors": {
+        "primary": "#7c5cff",
+        "secondary": "#ff7cc8",
+        "accent": "#75f0c8"
+      }
+    },
+    "files": [
+      {
+        "id": "file:welcome",
+        "name": "Welcome to Gummy.md",
+        "type": "markdown"
+      }
+    ],
+    "graph": {
+      "snacks": [
+        {
+          "id": "snack:hayden",
+          "relation": "self"
+        },
+        {
+          "id": "snack:zeke",
+          "relation": "companion"
+        },
+        {
+          "id": "snack:studio",
+          "relation": "following"
+        }
+      ],
+      "drops": [
+        {
+          "id": "drop:welcome",
+          "forks": 2
+        }
+      ]
+    }
+  },
+  "capturedFromCommit": "4489a6a82aef8ef80e3fd360dfe2456235c743a5"
+}

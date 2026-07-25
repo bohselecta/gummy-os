@@ -1,4 +1,6 @@
 import { access, readFile } from 'node:fs/promises';
+import Ajv2020 from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
 
 const required = [
   'index.html',
@@ -26,6 +28,7 @@ const required = [
   'examples/project-brief.work-order.json',
   'examples/project-brief.task-lease.json',
   'examples/project-brief.work-return.json',
+  'examples/standalone-acceptance.return.json',
   'plans/active/2026-07-25-personal-gummy-cursor-work-order.md',
   'plans/active/2026-07-25-gummy-box-cursor-addendum.md',
   'plans/active/2026-07-25-brand-system-cursor-addendum.md'
@@ -37,6 +40,7 @@ const pkg = JSON.parse(await readFile('package.json', 'utf8'));
 if (pkg.name !== 'gummy-os') throw new Error('package name must remain gummy-os');
 
 const schemas = [
+  'schemas/human.schema.json',
   'schemas/actor.schema.json',
   'schemas/agent.schema.json',
   'schemas/mold.schema.json',
@@ -58,9 +62,14 @@ const schemas = [
   'schemas/graph-object.schema.json'
 ];
 
+const ajv = new Ajv2020({ allErrors: true, strict: false });
+addFormats(ajv);
+const parsedSchemas = new Map();
 for (const schema of schemas) {
   const parsed = JSON.parse(await readFile(schema, 'utf8'));
   if (!parsed.$id || !parsed.title) throw new Error(`${schema} is missing $id or title`);
+  ajv.addSchema(parsed);
+  parsedSchemas.set(schema, parsed);
 }
 
 const naming = await readFile('docs/GLOPPER_NAMING.md', 'utf8');
@@ -173,6 +182,11 @@ if (agent.id !== 'agent:glopper-web' || agent.characterFamily !== 'Glopper') {
   throw new Error('canonical Glopper Web Agent example is invalid');
 }
 
+const human = JSON.parse(await readFile('examples/hayden.human.json', 'utf8'));
+if (human.id !== 'human:hayden' || human.identityAssurance !== 'local-unverified') {
+  throw new Error('canonical local Human example is invalid');
+}
+
 const box = JSON.parse(await readFile('examples/hayden.gummy-box.json', 'utf8'));
 if (box.id !== 'box:hayden' || box.provider.type !== 'github') {
   throw new Error('canonical Gummy Box example is invalid');
@@ -191,6 +205,24 @@ if (lease.agentId !== 'agent:glopper-web' || lease.mode !== 'exclusive') {
 const returnedWork = JSON.parse(await readFile('examples/project-brief.work-return.json', 'utf8'));
 if (returnedWork.workOrderId !== 'work-order:project-brief' || returnedWork.agentId !== 'agent:glopper-web') {
   throw new Error('canonical Work Return example is invalid');
+}
+
+const acceptanceReturn = JSON.parse(await readFile('examples/standalone-acceptance.return.json', 'utf8'));
+if (acceptanceReturn.extensions.sanitized !== true || acceptanceReturn.checks.length < 5) {
+  throw new Error('sanitized standalone acceptance Return is incomplete');
+}
+
+for (const [schemaPath, record] of [
+  ['schemas/human.schema.json', human],
+  ['schemas/agent.schema.json', agent],
+  ['schemas/gummy-box.schema.json', box],
+  ['schemas/work-order.schema.json', proposedWork],
+  ['schemas/task-lease.schema.json', lease],
+  ['schemas/work-return.schema.json', returnedWork],
+  ['schemas/work-return.schema.json', acceptanceReturn]
+]) {
+  const validate = ajv.getSchema(parsedSchemas.get(schemaPath).$id);
+  if (!validate(record)) throw new Error(`${record.id} fails ${schemaPath}: ${ajv.errorsText(validate.errors)}`);
 }
 
 const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');

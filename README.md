@@ -247,15 +247,18 @@ After the standalone browser system works, evaluate the existing native distribu
 
 ## What works now
 
-- Web-native shell with draggable, resizable, minimizable, and maximizable windows.
-- Gummy Browser with native routes, sandboxed external frames, and external-tab fallback.
-- My Files with drag-to-companion delegation.
-- Provider-neutral demo chat and scoped capability requests.
-- Legacy social and enterprise proof surfaces.
-- Persistent shell state through `localStorage`.
-- Protocol schemas, deterministic tests, build, and validation.
+- Night and Day Gummy with the exact five-color brand token system.
+- Gummy Canvas windows with persisted bounds, focus, minimization, maximization, and selected context.
+- Keyboard- and touch-operable Gummy Bar plus responsive Glopper Panel.
+- IndexedDB protocol records and OPFS Gummy/artifact bytes with visible blocked persistence states.
+- One local non-verified Human, two distinct local Actors, one Glopper Web Agent, a Mold, and Master Control.
+- Local Gummy Box, validated JSON Work Order import, Inbox decisions, exclusive lease claims, three temporary Grants, Returns, and chained Receipts.
+- Real server-side OpenAI Responses route with structured output, immutable source checks, explicit cost/locality policy, and a hermetic mocked-provider lane.
+- Quarantine, denied promotion, bounded browser export, disposable-workspace burn evidence, profile boundaries, and two-Actor Bowl composition.
+- Repository-scoped private GitHub App adapter using a `gummy-box` branch, one commit per multi-file operation, and expected-head reconciliation.
+- Chromium acceptance tests for onboarding, reload continuity, Work Order execution, accessibility, revocation/restoration, composition, phone layout, and visual evidence.
 
-The scaffold does **not** yet ship production Night/Day tokens, final mascot assets, the final Gummy Bar, Glopper Panel, durable OPFS bytes, Gummy Box adapters, Glopper Inbox, real Glopper Agent route, hardened quarantine, native Bridge, production `@addresses`, encrypted sync, tamper-evident Receipts, or verified enterprise security.
+Final mascot and wordmark masters remain replaceable labeled slots. Production authentication, verified identity, native execution, Google Drive, public discovery, social/federated expansion, billing, and enterprise expansion remain outside this standalone lane.
 
 ## Product map
 
@@ -328,16 +331,38 @@ Gummy OS
 16. `docs/BUILD_RUNBOOK.md`
 17. `AGENTS.md`
 
-## Run the current scaffold
+## Run and verify
 
 Requirements: Node.js 22 or newer.
 
 ```bash
 npm run dev
+npm run check
+npm test
+npm run test:e2e
+npm run build
 npm run verify
+npm run evidence
 ```
 
-Open `http://localhost:4173`.
+Open `http://127.0.0.1:4173`. The server binds to loopback unless `HOST` is explicitly set.
+
+`npm run verify` is hermetic and uses the explicit mocked-provider browser lane. `npm run test:live` is opt-in and requires OpenAI pricing configuration plus a repository-scoped GitHub App installation:
+
+```text
+OPENAI_API_KEY
+OPENAI_INPUT_USD_PER_MILLION
+OPENAI_OUTPUT_USD_PER_MILLION
+GITHUB_APP_ID
+GITHUB_APP_PRIVATE_KEY
+GITHUB_APP_SLUG
+GITHUB_INSTALLATION_ID
+GITHUB_TEST_REPOSITORY
+```
+
+Hosted production should set `GUMMY_PUBLIC_ORIGIN=https://…` and a stable `GUMMY_SESSION_SECRET`; the HTTPS origin also enables the session cookie’s `Secure` attribute.
+
+No provider source/result content, API keys, installation tokens, private keys, or direct personal identifiers are written to server logs.
 
 ## Status
 

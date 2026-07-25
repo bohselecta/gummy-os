@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/human.schema.json",
+  "title": "Gummy Human Authority",
+  "type": "object",
+  "required": ["schema", "id", "name", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.human/v0" },
+    "id": { "type": "string", "pattern": "^human:" },
+    "name": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["active", "paused", "revoked", "archived"] },
+    "actorIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^actor:" },
+      "uniqueItems": true
+    },
+    "authorizedAgentIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^agent:" },
+      "uniqueItems": true
+    },
+    "identityAssurance": { "enum": ["local-unverified", "verified"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
