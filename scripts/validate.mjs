@@ -11,6 +11,7 @@ const required = [
   'docs/GLOPPER_NAMING.md',
   'docs/ACTOR_AGENT_MASTER_CONTROL.md',
   'docs/PLATFORM_PLAYGROUND_SECURITY.md',
+  'docs/GUMMY_BOX_WORK_ORDERS.md',
   'docs/VOCABULARY.md',
   'docs/ARCHITECTURE.md',
   'docs/PROTOCOL.md',
@@ -20,8 +21,12 @@ const required = [
   'docs/ENTERPRISE_FRAMEWORK.md',
   'docs/ROADMAP.md',
   'examples/glopper-web.agent.json',
+  'examples/hayden.gummy-box.json',
+  'examples/project-brief.work-order.json',
   'examples/project-brief.task-lease.json',
-  'plans/active/2026-07-25-personal-gummy-cursor-work-order.md'
+  'examples/project-brief.work-return.json',
+  'plans/active/2026-07-25-personal-gummy-cursor-work-order.md',
+  'plans/active/2026-07-25-gummy-box-cursor-addendum.md'
 ];
 
 for (const path of required) await access(path);
@@ -34,7 +39,10 @@ const schemas = [
   'schemas/agent.schema.json',
   'schemas/mold.schema.json',
   'schemas/master-control.schema.json',
+  'schemas/gummy-box.schema.json',
+  'schemas/work-order.schema.json',
   'schemas/task-lease.schema.json',
+  'schemas/work-return.schema.json',
   'schemas/gummy.schema.json',
   'schemas/bowl.schema.json',
   'schemas/link.schema.json',
@@ -65,27 +73,24 @@ for (const definition of [
   if (!naming.includes(definition)) throw new Error(`Glopper naming is missing: ${definition}`);
 }
 
-const vocabulary = await readFile('docs/VOCABULARY.md', 'utf8');
-for (const definition of [
-  'Human = ultimate personal authority',
-  'Actor = persistent addressable entity in the web/world',
-  'Agent = executable intelligence that performs work',
-  'Mold = permissioned embodiment and operating contract for an Actor',
-  'Master Control = where authority, placement, and synchronization are decided',
-  'Gummy Bar = persistent candy-store system bar'
+const boxDoc = await readFile('docs/GUMMY_BOX_WORK_ORDERS.md', 'utf8');
+for (const invariant of [
+  'Gummy Box is the durable asynchronous handoff space',
+  'A Work Order is a proposal, not a Grant.',
+  'Frontier models write the instructions. Glopper owns the execution contract. The Human owns the Box and the authority.'
 ]) {
-  if (!vocabulary.includes(definition)) throw new Error(`canonical vocabulary is missing: ${definition}`);
+  if (!boxDoc.includes(invariant)) throw new Error(`Gummy Box doctrine is missing: ${invariant}`);
 }
 
-const platform = await readFile('docs/PLATFORM_PLAYGROUND_SECURITY.md', 'utf8');
-for (const invariant of [
-  'automatic availability != automatic authority',
-  'Creation never implies inherited authority.',
-  'A candy icon is presentation only.',
-  'Existence inside Gummy OS never grants native execution.',
-  'The Gummy Bar is the candy store. Glopper is the companion candy. The Gummy Canvas is where the future gets made.'
+const protocol = await readFile('docs/PROTOCOL.md', 'utf8');
+for (const definition of [
+  'gummy.box/v0',
+  'gummy.work-order/v0',
+  'gummy.task-lease/v0',
+  'gummy.work-return/v0',
+  'A Work Order is not a Capability Grant.'
 ]) {
-  if (!platform.includes(invariant)) throw new Error(`platform thesis is missing: ${invariant}`);
+  if (!protocol.includes(definition)) throw new Error(`protocol is missing: ${definition}`);
 }
 
 const workOrder = await readFile('plans/active/2026-07-25-personal-gummy-cursor-work-order.md', 'utf8');
@@ -99,9 +104,30 @@ for (const requirement of [
   if (!workOrder.includes(requirement)) throw new Error(`active work order is missing: ${requirement}`);
 }
 
+const addendum = await readFile('plans/active/2026-07-25-gummy-box-cursor-addendum.md', 'utf8');
+for (const requirement of [
+  'Local only',
+  'Private GitHub',
+  'Google Drive',
+  'Glopper Inbox',
+  'Work Order is a proposal'
+]) {
+  if (!addendum.includes(requirement)) throw new Error(`Gummy Box addendum is missing: ${requirement}`);
+}
+
 const agent = JSON.parse(await readFile('examples/glopper-web.agent.json', 'utf8'));
 if (agent.id !== 'agent:glopper-web' || agent.characterFamily !== 'Glopper') {
   throw new Error('canonical Glopper Web Agent example is invalid');
+}
+
+const box = JSON.parse(await readFile('examples/hayden.gummy-box.json', 'utf8'));
+if (box.id !== 'box:hayden' || box.provider.type !== 'github') {
+  throw new Error('canonical Gummy Box example is invalid');
+}
+
+const proposedWork = JSON.parse(await readFile('examples/project-brief.work-order.json', 'utf8'));
+if (proposedWork.boxId !== 'box:hayden' || proposedWork.approval.required !== true) {
+  throw new Error('canonical Work Order example is invalid');
 }
 
 const lease = JSON.parse(await readFile('examples/project-brief.task-lease.json', 'utf8'));
@@ -109,9 +135,14 @@ if (lease.agentId !== 'agent:glopper-web' || lease.mode !== 'exclusive') {
   throw new Error('canonical Glopper Task Lease example is invalid');
 }
 
+const returnedWork = JSON.parse(await readFile('examples/project-brief.work-return.json', 'utf8'));
+if (returnedWork.workOrderId !== 'work-order:project-brief' || returnedWork.agentId !== 'agent:glopper-web') {
+  throw new Error('canonical Work Return example is invalid');
+}
+
 const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');
 if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
   throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
-console.log('Gummy validation passed with Gummy Canvas, candy-store Gummy Bar, Glopper Agent family, Task Lease ownership, standalone-first development, and explicit authority boundaries.');
+console.log('Gummy validation passed with Gummy Box onboarding, frontier-authored Work Orders, Glopper Inbox, Task Lease ownership, Returns, standalone-first development, and explicit authority boundaries.');
