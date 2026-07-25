@@ -2,93 +2,145 @@
 
 ## Product statement
 
-Gummy OS is a browser-delivered personal AI computer where familiar desktop objects, replaceable intelligence, social relationships, and enterprise software participate in one provider-neutral capability protocol.
+Gummy OS is a browser-delivered Web OS where persistent, addressable Actors can be opened from compatible devices and connected to executable Agents under explicit human-controlled Master Control.
 
-The active product priority is **Personal Gummy OS**: make one real file-to-agent-to-artifact task survive return visits before expanding the social, enterprise, federation, or runtime matrix.
+The familiar desktop is the access surface. The protocol, Actor/Agent separation, Molds, Master Control, Gummies, Grants, and Receipts are the deeper system.
 
-## Canonical object language
+The active priority is **Personal Gummy OS**: prove one local Human → Actor → Mold → Agent → result Gummy loop that survives return visits before implementing distributed Glyphd OS synchronization or expanding social, enterprise, federation, or runtime scope.
+
+## Canonical architecture
 
 ```text
-Actor = who acts
-Mold = how that Actor is represented and verified
-Gummy = what the Actor creates or operates
-Bowl = where Actors and Gummies gather
-Link = how they relate
-Grab = how a Gummy becomes yours without altering the source
+Human = ultimate personal authority
+Actor = persistent addressable entity in Gummy OS / the web
+Agent = executable intelligence that performs work
+Mold = permissioned embodiment and operating contract for an Actor
+Master Control = placement, sync, permission, and revocation authority
+@address = stable identity and route for an Actor
 ```
 
-See `docs/VOCABULARY.md` for normative definitions and Protocol 0.1 migration rules.
+See `docs/ACTOR_AGENT_MASTER_CONTROL.md` and `docs/VOCABULARY.md`.
 
-## Personas
+## Product participants
 
-- **Personal user** — one understandable place for files, conversations, projects, applications, services, people, agents, and results.
-- **Creator or developer** — portable identity, user-owned Gummies, shareable artifacts, model/runtime choice, and independent compatible editions.
-- **Software vendor** — complicated application safely operable by authorized Actors through an Application Pack.
-- **Enterprise administrator** — Actor identity, policy, model control, credential custody, runtime governance, and audit.
-- **Auditor** — evidence of which Actor requested, authorized, accessed, changed, produced, or verified something.
+- **Human** — controls Master Control, opens Actors, authorizes Agents, selects Molds, and approves consequential work.
+- **Actor** — persistent web-openable computational entity with state, Gummies, Links, Molds, Agent bindings, deployment, and `@address`.
+- **Agent** — executable intelligence operating locally or remotely under explicit capability and Mold constraints.
+- **Mold** — permissioned embodiment and operating contract defining who may operate an Actor, how, where, for how long, and with what capabilities.
+- **Auditor** — inspects Human sponsor, Actor, Agent, Mold, Grant, route, Gummies, state changes, and Receipts.
+- **Software vendor** — later provides an Application Pack for controlled operation by an authorized Agent.
 
 ## Core loops
 
 ```text
-Personal:   open Gummy OS → find/import Gummy → ask companion Actor → approve scope → result Gummy → Receipt
-Social:     establish Actor + Mold → enter Bowl → share Gummy → create Link → Grab if allowed → inspect lineage
-Vendor:     package app → declare capabilities → verify workflows → publish signed Pack
-Enterprise: approve Actor/Pack/model/runtime → request workflow → policy gate → result Gummy + audit
+Personal:
+Human opens Actor
+→ selects/approves Mold and Agent
+→ imports source Gummy
+→ Master Control displays scope and locality
+→ Agent performs bounded task
+→ result Gummy + Receipt
+→ state survives return
+
+Native bridge, later:
+Actor in Gummy OS
+↔ protocol / @address / Master Control
+↔ Agent in Glyphd OS
+
+Social, later:
+Actor enters Bowl
+→ shares Gummy
+→ creates Link
+→ another Actor Grabs if allowed
+→ provenance remains visible
 ```
 
-## Applications and surfaces
+## Core surfaces
+
+### Gummy OS Desktop
+
+Familiar browser-native desktop, windows, dock, applications, files, Gummies, Bowls, Links, and Receipts.
+
+### Actor surface
+
+Shows Actor identity, provisional or verified `@address`, deployment location, owned Gummies, active Molds, Agent bindings, state, and Links.
+
+### Master Control
+
+Shows and controls:
+
+- authoritative state location;
+- web/local/hybrid deployment;
+- assigned Agent;
+- active Mold;
+- allowed data flow;
+- synchronization mode;
+- approval rules;
+- revocation.
+
+### Agent surface
+
+Shows Agent identity, runtime, provider/model disclosure, locality, status, capability ceiling, assigned Actors, and current authorization.
+
+### Mold surface
+
+Shows representation plus operating contract: allowed Humans/Agents, role, capability scope, runtime policy, sync policy, proofs, expiry, and revocation.
 
 ### Gummy Browser
 
-Internal `gummy://` routes, native chat, safe external-frame mode, external-tab fallback, and governed browser capsules later.
+Opens native Gummy routes and compatible external sites. Later it may open `glyphd.com` or web-native Glyphd surfaces without making them dependencies.
 
-### My Files / Object Space
+### My Gummies / Object Space
 
-Local Gummies, project membership, provenance, versions, drag-to-agent, audience controls, and OPFS persistence in production.
-
-### Mold editor
-
-Presentation and verification for the current Actor: handle, public/private fields, shape and color, disclosure, proofs, keys, compatibility, export, and import. The final customer-facing label for this editor may be selected during implementation without changing the Mold object.
-
-### Gummy OS Social Layer
-
-Actors and Molds, Bowls, Gummies, Links, Grabs, invitations, provenance, audience, moderation, and federation later.
-
-### Enterprise Habitat
-
-Organization overview, Actor roles, policy packs, Application Pack registry, brokers, runtime pools, Receipt ledger, deployment, and regions.
+Stores files, projects, conversations, applications, workflows, and result artifacts with stable identity, bytes, provenance, ownership, and hashes.
 
 ## Personal Gummy OS acceptance criteria
 
-The next implementation is accepted only when all of the following are proven:
+The first implementation is accepted only when:
 
-1. Gummy OS opens as a usable browser-native desktop without a model running.
-2. A person can import a real text or Markdown file as a Gummy.
-3. The actual file bytes persist locally through IndexedDB/OPFS or an equally explicit local-first boundary.
-4. The user can drag the source Gummy to the companion.
-5. A real provider-neutral broker route performs one bounded transformation.
-6. Provider credentials never enter browser JavaScript.
-7. A medium-risk request asks for explicit read and create authority.
-8. The source Gummy remains unchanged.
-9. The result is written as a new Gummy with stable identity, provenance, and hash.
-10. The Action Receipt identifies Actor, Mold, model route, Grant, source Gummy, result Gummy, locality, cost, outcome, and time.
-11. Denial and failure also produce understandable terminal evidence.
-12. Reload and browser return preserve the source, result, project state, and Receipt.
-13. Gummy Browser can still open native routes and compatible external sites.
-14. `npm run verify` passes.
+1. Gummy OS boots as a usable browser-native desktop without an Agent running.
+2. A local Human authority record exists.
+3. A persistent Actor exists with a stable provisional `@address`.
+4. A separate Agent record exists.
+5. A Mold explicitly allows that Human/Agent relationship and bounded capabilities.
+6. Master Control shows location, Agent, Mold, sync policy, approval rules, and revocation state.
+7. A real text or Markdown file imports as a source Gummy with actual persisted bytes.
+8. A real provider-neutral Agent/broker route performs one bounded transformation.
+9. Provider credentials never enter browser JavaScript.
+10. Human approval is required for source read and result create.
+11. The source Gummy remains unchanged.
+12. The result is written as a new Gummy with stable identity, provenance, Links, and hash.
+13. The Receipt identifies Human sponsor, Actor, `@address`, Agent, Mold, Master Control, Grant, route, source, result, locality, cost, outcome, and time.
+14. Mold or Agent revocation blocks future execution.
+15. Denial and failure produce truthful terminal evidence.
+16. Reload and browser return preserve all state.
+17. Gummy Browser and window behavior continue to work.
+18. `npm run verify` and the end-to-end journey pass.
 
-## Protocol 0.2 vocabulary migration acceptance
+## Migration acceptance
 
-- `snack:*` state deterministically becomes one `actor:*` plus at least one `mold:*`.
-- `drop:*` state becomes `gummy:*` without losing owner, audience, content, or provenance.
-- `fork-of` state becomes `grab-of` lineage.
-- Legacy Protocol 0.1 state remains readable during migration.
-- New writes use Actor, Mold, Gummy, Bowl, Link, and Grab.
-- UI copy no longer teaches Snack, Drop, or Fork as the current product language.
-- Receipts reference Actors as principals and may reference the Mold used for presentation or verification.
+- Legacy `snack:*` state becomes a local Human authority, Actor, and Mold where appropriate.
+- Legacy model/companion proof becomes a separate provisional Agent, not an Actor class.
+- Legacy Drop/file state becomes Gummies.
+- Fork lineage becomes Grab records and `grab-of` Links.
+- Actor and Agent IDs/types never collapse.
+- Mold becomes an operating contract, not only presentation.
+- New Receipts distinguish Human, Actor, Agent, and Mold.
+- Migration is deterministic, idempotent, and non-destructive.
 
-## Out of scope for the active Personal Gummy OS lane
+## Out of scope for the active lane
 
-Production multi-user delivery, encrypted sync, federation, marketplace transactions, broad Application Pack execution, enterprise identity, billing, public social discovery, moderation operations, BrowserPod, CheerpX, Linux compatibility, cloud runtime pools, and multiple production model providers.
+- Native Glyphd OS integration;
+- real Zeke binding;
+- cross-device or cloud Actor synchronization;
+- production public `@address` discovery;
+- public celebrity or licensed-character Actors;
+- remote social accounts and Bowls;
+- enterprise identity and policy;
+- federation;
+- broad Application Pack execution;
+- Linux compatibility capsules;
+- multiple production model routes;
+- billing and marketplace behavior.
 
-These remain specified future phases. They must not delay the first dependable personal-computer loop.
+These are preserved future layers. They must not delay the first correct local proof.
