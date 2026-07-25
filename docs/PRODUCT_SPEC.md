@@ -1,61 +1,94 @@
-# Gummy Product Specification
+# Gummy OS Product Specification
 
 ## Product statement
 
-Gummy is a browser-delivered personal AI computer where familiar desktop objects, social relationships, and enterprise software all participate in one provider-neutral capability protocol.
+Gummy OS is a browser-delivered personal AI computer where familiar desktop objects, replaceable intelligence, social relationships, and enterprise software participate in one provider-neutral capability protocol.
+
+The active product priority is **Personal Gummy OS**: make one real file-to-agent-to-artifact task survive return visits before expanding the social, enterprise, federation, or runtime matrix.
+
+## Canonical object language
+
+```text
+Actor = who acts
+Mold = how that Actor is represented and verified
+Gummy = what the Actor creates or operates
+Bowl = where Actors and Gummies gather
+Link = how they relate
+Grab = how a Gummy becomes yours without altering the source
+```
+
+See `docs/VOCABULARY.md` for normative definitions and Protocol 0.1 migration rules.
 
 ## Personas
 
-- **Personal user** — one understandable place for files, chats, projects, apps, services, people, and agents.
-- **Creator or developer** — forkable environment, portable identity, shareable artifacts, model/runtime choice.
-- **Software vendor** — complicated application safely operable by authorized agents.
-- **Enterprise administrator** — identity, policy, model control, credential custody, runtime governance, audit.
-- **Auditor** — evidence of what was requested, authorized, accessed, changed, and verified.
+- **Personal user** — one understandable place for files, conversations, projects, applications, services, people, agents, and results.
+- **Creator or developer** — portable identity, user-owned Gummies, shareable artifacts, model/runtime choice, and independent compatible editions.
+- **Software vendor** — complicated application safely operable by authorized Actors through an Application Pack.
+- **Enterprise administrator** — Actor identity, policy, model control, credential custody, runtime governance, and audit.
+- **Auditor** — evidence of which Actor requested, authorized, accessed, changed, produced, or verified something.
 
 ## Core loops
 
 ```text
-Personal:   open Gummy → find object → ask companion → approve scope → result → receipt
-Social:     create Snack → enter Bowl → publish Drop → fork/respond → inspect lineage
+Personal:   open Gummy OS → find/import Gummy → ask companion Actor → approve scope → result Gummy → Receipt
+Social:     establish Actor + Mold → enter Bowl → share Gummy → create Link → Grab if allowed → inspect lineage
 Vendor:     package app → declare capabilities → verify workflows → publish signed Pack
-Enterprise: approve Pack/model/runtime → request workflow → policy gate → result + audit
+Enterprise: approve Actor/Pack/model/runtime → request workflow → policy gate → result Gummy + audit
 ```
 
-## Applications
+## Applications and surfaces
 
 ### Gummy Browser
 
-Internal `gummy://` routes, native chat, safe external frame mode, external-tab fallback, and governed browser capsules later.
+Internal `gummy://` routes, native chat, safe external-frame mode, external-tab fallback, and governed browser capsules later.
 
 ### My Files / Object Space
 
-Local and synchronized objects, project membership, provenance, versions, drag-to-agent, audience controls, and OPFS persistence in production.
+Local Gummies, project membership, provenance, versions, drag-to-agent, audience controls, and OPFS persistence in production.
 
-### Snack Bar
+### Mold editor
 
-Person or agent identity, shape, colors, flavor, public/private field separation, keys, identity proofs, export/import, and compatibility profile.
+Presentation and verification for the current Actor: handle, public/private fields, shape and color, disclosure, proofs, keys, compatibility, export, and import. The final customer-facing label for this editor may be selected during implementation without changing the Mold object.
 
-### Snack Graph
+### Gummy OS Social Layer
 
-People and agents, follows and trust links, Bowls, Drops, invitations, forks, graph inspection, abuse controls, and federation later.
+Actors and Molds, Bowls, Gummies, Links, Grabs, invitations, provenance, audience, moderation, and federation later.
 
 ### Enterprise Habitat
 
-Organization overview, roles, policy packs, Application Pack registry, brokers, runtime pools, receipt ledger, deployment, and regions.
+Organization overview, Actor roles, policy packs, Application Pack registry, brokers, runtime pools, Receipt ledger, deployment, and regions.
 
-## Acceptance criteria for 0.1 scaffold
+## Personal Gummy OS acceptance criteria
 
-- Opens with `npm run dev` and no dependency installation.
-- Desktop remains responsive without a model or runtime.
-- Browser opens native pages and constructs a sandboxed external frame.
-- Files drag to the companion.
-- Medium-risk delegation requests confirmation.
-- Demo chat is transparent and non-networked.
-- Snack appearance persists locally.
-- User can create a Bowl, publish a Drop, follow a Snack, and fork a Drop.
-- Enterprise policy changes and Pack verification create receipts.
-- `npm run verify` passes.
+The next implementation is accepted only when all of the following are proven:
 
-## Out of scope for 0.1
+1. Gummy OS opens as a usable browser-native desktop without a model running.
+2. A person can import a real text or Markdown file as a Gummy.
+3. The actual file bytes persist locally through IndexedDB/OPFS or an equally explicit local-first boundary.
+4. The user can drag the source Gummy to the companion.
+5. A real provider-neutral broker route performs one bounded transformation.
+6. Provider credentials never enter browser JavaScript.
+7. A medium-risk request asks for explicit read and create authority.
+8. The source Gummy remains unchanged.
+9. The result is written as a new Gummy with stable identity, provenance, and hash.
+10. The Action Receipt identifies Actor, Mold, model route, Grant, source Gummy, result Gummy, locality, cost, outcome, and time.
+11. Denial and failure also produce understandable terminal evidence.
+12. Reload and browser return preserve the source, result, project state, and Receipt.
+13. Gummy Browser can still open native routes and compatible external sites.
+14. `npm run verify` passes.
 
-Production authentication, remote multi-user delivery, encrypted sync, inference billing, production connectors, executable capsules, cryptographic signing, moderation operations, billing, and marketplace transactions.
+## Protocol 0.2 vocabulary migration acceptance
+
+- `snack:*` state deterministically becomes one `actor:*` plus at least one `mold:*`.
+- `drop:*` state becomes `gummy:*` without losing owner, audience, content, or provenance.
+- `fork-of` state becomes `grab-of` lineage.
+- Legacy Protocol 0.1 state remains readable during migration.
+- New writes use Actor, Mold, Gummy, Bowl, Link, and Grab.
+- UI copy no longer teaches Snack, Drop, or Fork as the current product language.
+- Receipts reference Actors as principals and may reference the Mold used for presentation or verification.
+
+## Out of scope for the active Personal Gummy OS lane
+
+Production multi-user delivery, encrypted sync, federation, marketplace transactions, broad Application Pack execution, enterprise identity, billing, public social discovery, moderation operations, BrowserPod, CheerpX, Linux compatibility, cloud runtime pools, and multiple production model providers.
+
+These remain specified future phases. They must not delay the first dependable personal-computer loop.
