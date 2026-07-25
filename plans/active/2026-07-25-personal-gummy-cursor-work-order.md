@@ -1,281 +1,371 @@
-# Personal Gummy OS — Cursor Production Work Order
+# Personal Gummy OS — Ubuntu / Cursor Production Work Order
 
 **Date:** 2026-07-25  
 **Repository:** `bohselecta/gummy-os`  
-**Authority:** Hayden's accepted handwritten Actor/Agent architecture in the Chief of Command thread  
-**Active lane:** Personal Gummy OS  
-**Target:** one dependable computer-within-a-computer loop with the correct future boundaries
+**Authority:** Hayden's Actor/Agent, Z-surface, playground, and security rulings in the Chief of Command thread  
+**Active lane:** Personal Gummy OS inside the existing AI-native Linux environment  
+**Target:** one real, secure, playful computer-within-a-computer loop
 
 ## Mission
 
-Finish the new July 24, 2026 Gummy OS—not any older repository that reused the Gummy name.
+Finish the new July 24, 2026 Gummy OS and run it inside Hayden's **existing local AI-native Linux distribution**.
 
-Gummy OS is the Web OS where persistent addressable Actors are opened. Glyphd OS is the future native execution environment where Agents such as Zeke may run. Master Control connects those planes and decides placement, synchronization, authority, and revocation.
+Do not rebuild that distribution. It is already substantially implemented, includes AI system control and a native chat/control surface, and has had a live-USB form.
 
-The first Cursor build proves these boundaries locally. It does **not** implement the complete distributed Glyphd OS ↔ Gummy OS system.
+Gummy OS is the WebOS canvas. The native distribution is the device-sovereignty and Agent layer. Z appears both as:
+
+- an always-available collapsed bar and expandable panel inside Gummy OS;
+- the existing or adapted native chat/control surface outside Gummy OS.
+
+Master Control decides what connects and synchronizes between them.
 
 ## Read before changing code
 
 1. `README.md`
 2. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-3. `docs/VOCABULARY.md`
-4. `docs/PRODUCT_SPEC.md`
-5. `docs/ARCHITECTURE.md`
-6. `docs/PROTOCOL.md`
-7. `docs/SECURITY_MODEL.md`
-8. `docs/ROADMAP.md`
-9. `docs/BUILD_RUNBOOK.md`
-10. `AGENTS.md`
-11. current source and tests
+3. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
+4. `docs/VOCABULARY.md`
+5. `docs/PRODUCT_SPEC.md`
+6. `docs/ARCHITECTURE.md`
+7. `docs/PROTOCOL.md`
+8. `docs/SECURITY_MODEL.md`
+9. `docs/ROADMAP.md`
+10. `docs/BUILD_RUNBOOK.md`
+11. `AGENTS.md`
+12. current source and tests
+13. the actual local native-distribution source and runtime
 
-## Corrected canonical model
+## Canonical model
 
 ```text
 Human = ultimate personal authority
 Actor = persistent addressable entity in Gummy OS / the web
 Agent = executable intelligence that performs work
 Mold = permissioned embodiment and operating contract for an Actor
-Master Control = where placement, synchronization, and authority are decided
-@address = stable protocol identity and route for an Actor
-Gummy = what an Actor creates, owns, receives, or operates
+Master Control = placement, synchronization, approval, and revocation
+Gummy OS = playful WebOS canvas
+Native AI Linux / Glyphd OS = existing local Agent and device layer
+Z surface = persistent WebOS bar + expandable panel
+Native Z surface = external chat, voice, approval, and device control
 ```
 
-The earlier draft made Actor too similar to an account and treated Agent as an Actor class. Do not implement that model.
+## Product character
+
+Gummy OS is not one forced workflow. It is a toolkit and playground for creating interfaces, tools, Actors, Agents, Gummies, Bowls, and compositions.
+
+The existing hexagonal interface belongs as an optional mini-app or Actor surface. Do not make it the mandatory shell.
+
+Recursive creation is allowed. Authority is never inherited automatically.
 
 ## Absolute exclusions
 
 Do not:
 
 - inspect or import the old `gummy`, `gummy2`, `mygummy`, or `my-gummy` repositories;
+- rebuild or replace the existing native AI Linux distribution before inspecting it;
+- assume the native distribution is future work or absent because it is not fully represented in GitHub;
 - collapse Actor and Agent into one object;
 - model Mold as only a profile or avatar;
-- redesign the shell before proving the core loop;
-- implement full native Glyphd OS integration, cross-device sync, public `@address` discovery, remote social accounts, celebrity/character systems, federation, enterprise administration, BrowserPod, CheerpX, Linux capsules, or multiple model providers;
-- make Glyphd Desktop, `glyphd.com`, or Zeke a dependency;
+- make Z merely an ordinary dock application;
+- grant Z, an Actor, Agent, model, or application ambient authority;
+- synchronize everything merely because the same Human is authenticated;
 - expose provider credentials to browser JavaScript;
-- provide arbitrary host filesystem or shell authority;
+- expose arbitrary native filesystem, shell, process, package, device, or network authority;
 - overwrite the source Gummy;
-- call the work complete because a UI demonstration looks finished.
+- claim browser or Linux hosting alone proves security;
+- implement public Actor discovery, celebrity/character systems, broad remote social accounts, federation, enterprise administration, broad Application Packs, multiple providers, or full cross-device sync before the local proof passes;
+- make Glyphd Desktop or `glyphd.com` a dependency;
+- lock Actor-page composition into one universal object type before prototyping.
 
-## Baseline
+## Work package 0 — Ubuntu and native-distribution preflight
 
-Before implementation:
+Before modifying Gummy OS:
 
-1. record exact `main` SHA;
-2. run `npm run verify`;
-3. run the current app;
-4. capture the existing shell and serialized state;
-5. identify every place where Snack, Actor, Agent, Mold, Drop, Gummy, Fork, Grab, capability, and Receipt semantics appear;
-6. identify every schema that treats Agent as an Actor class or Mold as a display profile;
-7. write the migration plan before changing stored data.
+1. Record the exact `gummy-os` `main` SHA.
+2. Run `npm run verify`.
+3. Locate the actual native AI Linux distribution project and runtime.
+4. Record:
+   - local project path;
+   - repository/branch if any;
+   - launch command;
+   - compositor/desktop/session details;
+   - native Agent or chat process;
+   - current AI system-control capabilities;
+   - localhost/API/MCP/IPC surfaces;
+   - browser or WebView availability;
+   - security or permission layer;
+   - live-USB image/build assets;
+   - current tests and known failures.
+5. Launch the existing distro and prove the current native chat/control path without changing it.
+6. Identify the narrowest way to open Gummy OS inside it: ordinary browser first, existing WebView second.
+7. Return an exact blocker rather than inventing a replacement if the local implementation cannot be found or started.
 
-## Work package A — Correct the object model
+## Work package A — run Gummy OS inside the distro
 
-Implement distinct typed objects for:
+- Start the current Gummy OS scaffold in the Ubuntu environment.
+- Open it inside the distribution through a normal browser or existing WebView.
+- Preserve ordinary standalone browser use on other computers and phones.
+- Prove windows, browser, files, and existing shell behavior still work.
+- Record process, origin, port, and host/native boundaries.
+- Add no privileged native bridge during this package.
+
+## Work package B — implement the Z hybrid surface
+
+Inside Gummy OS, implement:
+
+### Collapsed Z bar
+
+Always visible but compact. It provides:
+
+- text input;
+- optional voice affordance;
+- attach or drag a Gummy;
+- current Actor indicator;
+- current Agent indicator;
+- current task/status;
+- expand control;
+- clear pending approval indicator.
+
+### Expanded Z panel
+
+Provides:
+
+- conversation;
+- selected canvas context;
+- current Actor and `@address`;
+- assigned Agent;
+- active Mold;
+- Master Control summary;
+- requested Grants;
+- task progress;
+- results;
+- Receipts;
+- collapse control.
+
+Z must be available globally across the WebOS, not launched as an ordinary dock app.
+
+Z may understand selected context automatically. It may not perform consequential action automatically.
+
+## Work package C — correct typed object model
+
+Implement distinct records for:
 
 ### Human authority
 
-A local personal principal record sufficient to sponsor an Actor and authorize an Agent. Do not attempt production identity verification in this lane.
+A local personal principal sufficient to sponsor an Actor and approve Agent operation. Do not claim production identity verification.
 
 ### Actor
 
-A persistent web-openable entity with:
-
 - stable Actor ID;
 - local provisional `@address`;
-- display name and kind;
+- name and kind;
 - owned Gummies;
 - state and memory references;
 - Mold references;
-- Agent binding references;
+- Agent bindings;
 - deployment state;
-- local sync policy placeholder;
-- legacy identity references.
+- authoritative location;
+- local sync policy;
+- legacy references.
 
 ### Agent
 
-A separate executable entity with:
-
 - stable Agent ID;
 - provider/runtime class;
-- version;
-- locality;
-- owner or operator;
+- version and locality;
+- Human/organization operator;
 - capability ceiling;
-- current status;
-- Actor bindings;
-- disclosure information.
+- status;
+- Actor and Mold bindings;
+- disclosure.
 
-The first real Agent may be the trusted broker adapter. Label it honestly. Do not claim it is Zeke or a native Glyphd OS Agent.
+The first real Agent may be a trusted broker adapter. Do not falsely label it Zeke or the native distro Agent until it truly is.
 
 ### Mold
 
-A permissioned embodiment and operating contract containing:
-
 - Actor ID;
-- allowed Human and/or Agent operators;
-- representation fields;
-- role and context;
+- allowed Human and Agent operators;
+- representation and role;
 - capability ceiling;
-- permitted data access;
-- permitted result locations;
-- allowed runtime/locality;
-- sync policy;
+- read/write/publish scope;
+- runtime and locality policy;
+- synchronization policy;
 - disclosure;
-- issue, expiry, and revocation state.
+- proof/license references;
+- issue, expiry, and revocation.
 
 ### Master Control
 
-A local personal control record/UI sufficient to show and decide:
-
-- Actor location: local web instance for this phase;
-- authoritative state location;
+- Human authority;
+- Actor;
+- authoritative location;
 - assigned Agent;
 - active Mold;
-- allowed data flow;
-- approval requirements;
-- revocation.
+- permitted data flow;
+- synchronization mode/direction;
+- approval rules;
+- revocation and lock state.
 
-Do not build cloud synchronization. Prove that placement and sync policy are explicit rather than ambient.
-
-## Work package B — Protocol migration
-
-Migrate legacy state deterministically and idempotently.
+## Work package D — deterministic legacy migration
 
 ```text
-snack:hayden
+legacy snack:hayden
 → human:hayden
 → actor:hayden
 → mold:hayden:personal
 
-legacy demo companion/model
+legacy companion/model
 → agent:personal-broker
 
-drop/file objects
-→ gummy objects
+legacy drop/file
+→ gummy
 
-fork-of
-→ grab record + grab-of Link
+legacy fork
+→ grab + grab-of Link
 ```
 
 Requirements:
 
-- no duplicates on repeated migration;
+- migration is deterministic and idempotent;
 - old state remains readable until parity is verified;
 - Actor and Agent never share an ID or type;
-- authority moves through Human sponsorship, Agent assignment, Mold, and Grant;
+- authority flows through Human sponsorship, Master Control, Mold, and Grant;
 - new writes use the corrected model;
-- current UI copy distinguishes Actor, Agent, and Mold;
-- Receipts preserve legacy references where useful.
+- UI copy distinguishes Actor, Agent, Mold, and Z surface;
+- legacy references remain traceable in Receipts where useful.
 
-## Work package C — durable local computer
+## Work package E — durable local WebOS
 
-Replace metadata-only/localStorage proof state with:
+Implement:
 
 - IndexedDB for structured records and indexes;
-- OPFS for actual source and result bytes;
-- stable IDs and content hashes;
-- Actor-owned project/folder membership;
+- OPFS for actual Gummy bytes;
+- stable IDs and hashes;
+- Actor-owned projects/folders;
 - import and export;
 - versioned migrations;
 - reload, browser restart, and return recovery;
-- bounded storage and quota errors.
+- quota and storage errors;
+- explicit quarantine state.
 
-Gummy identity must remain separate from byte location. The browser must not expose arbitrary host-filesystem authority.
+Gummy identity remains separate from byte location. OPFS is not arbitrary host filesystem access.
 
-## Work package D — one trusted Agent route
+## Work package F — quarantine and burn proof
 
-Implement one provider-neutral Agent/broker contract.
+Use a harmless test file, not malware.
 
-Browser request includes:
+1. Import the file as a quarantined Gummy.
+2. Show that it lacks native process, shell, package, device, and broad filesystem authority.
+3. Display quarantine state in the UI.
+4. Attempt native promotion without approval and prove denial.
+5. Approve a bounded export into a harmless test destination and create a Receipt.
+6. Create a disposable test workspace or session.
+7. Reset/burn it.
+8. Prove unapproved workspace state is removed while accepted result Gummies and Receipts remain.
+
+Do not claim hardened containment beyond what the test actually proves.
+
+## Work package G — one explicit Agent/native bridge
+
+Implement the narrowest deny-by-default bridge required for the active journey.
+
+Preferred sequence:
+
+1. web-only broker/server Agent route;
+2. localhost native bridge only when the native distro path is understood;
+3. real native Agent binding after its capability interface is verified.
+
+The request includes:
 
 - Human sponsor ID;
 - Actor ID and `@address`;
 - Agent ID;
 - Mold ID;
+- Master Control ID;
 - source Gummy ID and bounded content;
-- requested task;
-- requested capabilities;
-- privacy/locality preference;
+- requested task and capabilities;
+- locality/privacy preference;
 - output contract;
 - cost ceiling.
 
-Response includes:
+The response includes:
 
 - terminal status;
 - Agent/provider/runtime identity;
 - locality;
-- result bytes or explicit result reference;
+- result bytes/reference;
 - usage and cost;
 - failure/denial detail;
-- evidence suitable for an Action Receipt.
+- evidence for a Receipt.
 
-Only one real route is required. Preserve the demo adapter as an explicitly labeled offline simulation, not proof of real Agent execution.
+The bridge exposes no arbitrary shell or generic native control endpoint.
 
-## Work package E — real Actor-to-Agent journey
+## Work package H — complete real journey
 
-Build this exact path:
+1. Start the existing AI-native Linux distribution.
+2. Open Gummy OS inside it.
+3. Open the local personal Actor.
+4. Confirm the Z bar and expanded Z panel work.
+5. Show `@address`, authoritative location, Agent, Mold, sync policy, and approval rules.
+6. Import a real text or Markdown source Gummy.
+7. Drag or attach it to Z.
+8. Ask: “Turn this into a concise project brief. Preserve the original and create a new file.”
+9. Master Control shows Actor, Agent, Mold, source access, result destination, locality, and requested bridge use.
+10. Human approves or denies.
+11. On approval, issue a bounded Grant and call the real Agent route.
+12. Preserve the source bytes unchanged.
+13. Create a result Gummy with stable identity, bytes, hash, provenance, and Links.
+14. Create a Receipt naming Human, Actor, `@address`, Agent, Mold, Master Control, Grant, route, source, result, locality, cost, time, and outcome.
+15. Revoke the Mold or Agent binding and prove future work is blocked.
+16. Restore authorized state.
+17. Close and return.
+18. Confirm Actor state, Z conversation/task state selected for sync, Master Control, source, result, Links, and Receipt remain understandable.
 
-1. Open Gummy OS.
-2. Open the local personal Actor.
-3. Show the Actor's provisional `@address`, current location, Agent assignment, active Mold, and sync policy.
-4. Import a real text or Markdown file as a source Gummy owned by the Actor.
-5. Drag the source Gummy to the companion/work surface.
-6. Ask: “Turn this into a concise project brief. Preserve the original and create a new file.”
-7. Master Control shows the proposed Actor, Agent, Mold, source access, result destination, locality, and approval requirement.
-8. Human approves or denies.
-9. On approval, issue a bounded Grant and call the real Agent route.
-10. Preserve the source unchanged.
-11. Create a result Gummy with stable identity, bytes, hash, provenance, and Links.
-12. Create an Action Receipt naming Human sponsor, Actor, `@address`, Agent, Mold, Grant, route, source, result, locality, cost, time, and outcome.
-13. Open the result.
-14. Revoke the Mold or Agent binding and prove future work is blocked.
-15. Restore an authorized binding.
-16. Close and return.
-17. Confirm Actor state, Master Control decisions, source, result, Links, and Receipt remain present and understandable.
+## Work package I — playground composition proof
 
-Denial, revoked Mold, unassigned Agent, malformed response, Agent failure, cancellation, storage failure, and quota failure must produce truthful terminal states.
+Only after the real journey passes, add one small non-authoritative composition experiment:
 
-## Work package F — shell finish
+- open two local Actor surfaces;
+- create an explicit Link;
+- choose selected public/test Gummies from each;
+- create a temporary shared canvas or Bowl;
+- preserve source identities and provenance;
+- do not merge private state;
+- do not automatically mint a permanent new Actor or Mold;
+- record what output type seems natural for a later product decision.
 
-Only after the core journey passes:
-
-- installable PWA;
-- truthful offline shell behavior;
-- polished full-screen entry;
-- accessibility and keyboard operation;
-- responsive desktop and mobile-browser pass;
-- clear Actor/Agent/Mold/location/sync/cost indicators;
-- no unnecessary redesign of the desktop grammar.
+This tests the playground without prematurely freezing the universal composition model.
 
 ## Required tests
 
-At minimum:
-
-- legacy migration;
-- migration idempotence;
-- Actor/Agent type separation;
+- native-distribution preflight evidence;
+- Gummy OS shell inside distro;
+- standalone browser regression;
+- collapsed and expanded Z surface;
+- Actor/Agent separation;
 - Human sponsorship;
-- Mold permission scope;
-- Mold expiry and revocation;
+- Mold scope, expiry, and revocation;
 - Agent assignment and removal;
-- local Master Control placement/sync policy;
-- Gummy byte persistence;
-- source immutability;
-- result hashing;
+- Master Control placement and sync policy;
+- deterministic migration and idempotence;
+- IndexedDB/OPFS persistence;
+- source immutability and result hashing;
 - Grant approval and denial;
-- Agent success, failure, and malformed response;
+- Agent success/failure/malformed response;
+- no arbitrary native bridge;
+- quarantine denial and approved promotion;
+- burn/reset evidence;
 - Receipt completeness;
 - return continuity;
-- shell/window/browser regression.
+- temporary Actor composition without private-state merge.
 
-## Acceptance command
+## Acceptance commands
 
 ```bash
 npm run verify
 ```
 
-Add an end-to-end browser command proving the exact journey.
+Add one end-to-end browser command and, when the local distro bridge exists, one integration command that proves the exact journey without requiring broad native privileges.
 
 ## Required Return
 
@@ -284,15 +374,21 @@ Repository
 Branch
 Base SHA
 Head SHA
-Files changed
-Migration behavior
-Actor record
+Native distro local path
+Native distro launch command
+Native Agent/chat process
+Gummy OS launch/origin
+WebView/browser host
+Z surface evidence
+Human record
+Actor record and @address
 Agent record
 Mold record
 Master Control state
-Provisional @address
+Migration behavior
 Storage boundary
-Agent/broker boundary
+Quarantine state
+Bridge contract
 Commands run
 Tests passed
 Tests failed
@@ -303,6 +399,9 @@ Result Gummy hash
 Example Grant
 Example Receipt
 Revocation proof
+Quarantine/promotion proof
+Burn/reset proof
+Composition experiment result
 Known limitations
 What is proven
 What is not proven
@@ -313,6 +412,6 @@ Do not self-accept the Return.
 
 ## Definition of done
 
-Personal Gummy OS is working when a Human opens a persistent Actor, explicitly authorizes a distinct Agent through a bounded Mold, creates a real result Gummy without changing the source, can revoke that operating relationship, receives a truthful Receipt, and returns later to the same understandable state.
+Personal Gummy OS is working when it runs inside the existing AI-native Linux distribution and independently in a normal browser; Z is globally available as a hybrid bar/panel; a Human opens a persistent Actor, authorizes a distinct Agent through a bounded Mold, creates a real result Gummy without changing the source, can revoke the relationship, receives a truthful Receipt, proves quarantined content lacks native authority, and returns later to the same understandable state.
 
-After that, the next phase may connect the Actor to a native Zeke Agent inside Glyphd OS through real Master Control synchronization. That distributed step is not required now.
+After that proof, the next phase may bind the Actor to the real native Zeke Agent, expand live-USB deployment, activate selective synchronization, and prototype richer Actor composition.
