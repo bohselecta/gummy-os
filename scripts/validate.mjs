@@ -13,6 +13,7 @@ const required = [
   'docs/ACTOR_AGENT_MASTER_CONTROL.md',
   'docs/PLATFORM_PLAYGROUND_SECURITY.md',
   'docs/GUMMY_BOX_WORK_ORDERS.md',
+  'docs/AUTOMATED_ACCEPTANCE.md',
   'docs/VOCABULARY.md',
   'docs/ARCHITECTURE.md',
   'docs/PROTOCOL.md',
@@ -28,7 +29,8 @@ const required = [
   'examples/project-brief.work-return.json',
   'plans/active/2026-07-25-personal-gummy-cursor-work-order.md',
   'plans/active/2026-07-25-gummy-box-cursor-addendum.md',
-  'plans/active/2026-07-25-brand-system-cursor-addendum.md'
+  'plans/active/2026-07-25-brand-system-cursor-addendum.md',
+  'plans/active/2026-07-25-automated-acceptance-cursor-addendum.md'
 ];
 
 for (const path of required) await access(path);
@@ -121,6 +123,17 @@ for (const definition of [
   if (!protocol.includes(definition)) throw new Error(`protocol is missing: ${definition}`);
 }
 
+const acceptance = await readFile('docs/AUTOMATED_ACCEPTANCE.md', 'utf8');
+for (const rule of [
+  'Hayden is not the test harness.',
+  'No PASS without executable evidence.',
+  'The computer tests the computer. Hayden builds the world.',
+  'npm run test:acceptance',
+  'Founder ready'
+]) {
+  if (!acceptance.includes(rule)) throw new Error(`automated acceptance mandate is missing: ${rule}`);
+}
+
 const workOrder = await readFile('plans/active/2026-07-25-personal-gummy-cursor-work-order.md', 'utf8');
 for (const requirement of [
   'Work package A — Gummy Canvas and Gummy Bar',
@@ -156,6 +169,17 @@ for (const requirement of [
   'Work package 8 — accessibility'
 ]) {
   if (!brandAddendum.includes(requirement)) throw new Error(`brand addendum is missing: ${requirement}`);
+}
+
+const acceptanceAddendum = await readFile('plans/active/2026-07-25-automated-acceptance-cursor-addendum.md', 'utf8');
+for (const requirement of [
+  'No founder testing where automation can perform the same verification.',
+  'Vite',
+  'Playwright',
+  'Gummy Acceptance Pack',
+  'Founder-ready: YES/NO'
+]) {
+  if (!acceptanceAddendum.includes(requirement)) throw new Error(`automated acceptance addendum is missing: ${requirement}`);
 }
 
 const product = await readFile('docs/PRODUCT_SPEC.md', 'utf8');
@@ -198,4 +222,4 @@ if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
   throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
-console.log('Gummy validation passed with locked Night/Day expressions, exact purple-gold palette, Gummy/Glopper emphasis, Gummy Box Work Orders, Task Lease ownership, and explicit authority boundaries.');
+console.log('Gummy validation passed with founder-free automated acceptance, locked Night/Day expressions, exact purple-gold palette, Gummy/Glopper emphasis, Gummy Box Work Orders, Task Lease ownership, and explicit authority boundaries.');
