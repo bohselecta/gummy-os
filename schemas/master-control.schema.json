@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/master-control.schema.json",
+  "title": "Gummy OS Master Control",
+  "description": "Human-controlled placement, synchronization, Agent assignment, Mold selection, approval, and revocation state for one Actor.",
+  "type": "object",
+  "required": ["schema", "id", "humanAuthorityId", "actorId", "authoritativeLocation", "syncMode", "status", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.master-control/v0" },
+    "id": { "type": "string", "pattern": "^master-control:" },
+    "humanAuthorityId": { "type": "string", "pattern": "^human:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "activeAgentId": { "type": "string", "pattern": "^agent:" },
+    "activeMoldId": { "type": "string", "pattern": "^mold:" },
+    "authoritativeLocation": { "type": "string" },
+    "deploymentMode": { "enum": ["web-only", "local-only", "hybrid", "governed"] },
+    "syncMode": { "enum": ["none", "manual", "approved", "continuous"] },
+    "syncDirections": { "type": "array", "items": { "enum": ["web-to-native", "native-to-web", "bidirectional"] }, "uniqueItems": true },
+    "allowedData": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "approvalRules": {
+      "type": "object",
+      "properties": {
+        "default": { "enum": ["allow", "deny", "ask"] },
+        "externalNetwork": { "enum": ["allow", "deny", "ask"] },
+        "publish": { "enum": ["allow", "deny", "ask"] },
+        "destructive": { "enum": ["allow", "deny", "ask"] },
+        "sync": { "enum": ["allow", "deny", "ask"] }
+      },
+      "additionalProperties": true
+    },
+    "revokedAgentIds": { "type": "array", "items": { "type": "string", "pattern": "^agent:" }, "uniqueItems": true },
+    "revokedMoldIds": { "type": "array", "items": { "type": "string", "pattern": "^mold:" }, "uniqueItems": true },
+    "status": { "enum": ["active", "paused", "locked", "revoked"] },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
