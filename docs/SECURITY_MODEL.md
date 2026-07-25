@@ -2,125 +2,165 @@
 
 ## Security thesis
 
-An AI-operated computer cannot rely on a system prompt saying the model should be careful. Gummy OS separates reasoning, representation, and authority:
+Gummy OS separates five things that must never collapse:
 
-- **Actor** is who acts;
-- **Mold** is how that Actor is represented and verified;
-- **Capability Grants** determine what the Actor may do;
-- **Action Receipts** record what happened.
+- **Human** — ultimate personal authority;
+- **Actor** — persistent addressable web entity;
+- **Agent** — executable intelligence;
+- **Mold** — permissioned embodiment and operating contract;
+- **Master Control** — placement, synchronization, approval, and revocation authority.
 
-Browser isolation, task capabilities, policy, runtime boundaries, provenance, and Receipts are overlapping controls.
+Capability Grants determine what may happen. Action Receipts record what did happen.
+
+A prompt, profile, signed-in session, model preference, or network connection never creates authority by itself.
 
 ## Protected assets
 
-Personal Gummies and history, connector credentials, private conversations and memory, Actor identity keys, Mold proofs, Bowl membership, private Gummies, organization policy and audit data, vendor software and Application Packs, model prompts and outputs, runtime images, and generated artifacts.
+- Actor state, memory, `@address`, and Gummies;
+- Human identity and approval state;
+- Agent configuration and capability ceilings;
+- Mold permissions, proofs, and licenses;
+- Master Control placement and sync policy;
+- local files and OPFS bytes;
+- connector and provider credentials;
+- Bowls, private Links, and private Gummies;
+- Application Packs and runtime images;
+- Receipts, hashes, and provenance.
 
 ## Threats
 
-Prompt injection, malicious Packs, over-broad connectors, provider leakage, cross-tenant access, browser-origin escape attempts, capsule persistence, Mold impersonation, hidden agent identity, social abuse, forged Receipts, provenance stripping, hostile Grabs, policy downgrade, and supply-chain compromise.
+Prompt injection, malicious Agents or Packs, Agent/Actor impersonation, Mold abuse, hidden operator identity, ambient synchronization, unauthorized state replication, provider leakage, cross-tenant access, browser escape, capsule persistence, forged Receipts, public-figure or character impersonation, provenance stripping, hostile Grabs, policy downgrade, and supply-chain compromise.
 
 ## Core controls
 
-### Browser boundary
+### Host and browser boundary
 
-The host computer remains outside Gummy OS. The browser sandbox is not bypassed. External sites are framed only under their own policy and receive a restrictive iframe sandbox.
+The physical device and host OS remain outside Gummy OS authority. The browser sandbox is not bypassed. External sites receive restrictive framing and no native capability without an explicit bridge.
 
-### Actor authority
+### Human authority
 
-Capability, ownership, delegation, and Receipt semantics bind to an Actor ID.
+A Human controls Master Control, approves consequential Grants, selects Molds, assigns Agents, and revokes access.
 
-An Actor class must be disclosed when it changes how a person interprets the action. Agent, service, application, organization, and character Actors must not impersonate human Actors.
+A Human may operate multiple Actors. Actor identity is not proof of the Human behind it.
+
+### Actor boundary
+
+An Actor owns state and provides a persistent web presence. It does not gain host authority merely because it is open on a device.
+
+An `@address` identifies and routes to the Actor. It does not grant control.
+
+### Agent boundary
+
+An Agent executes work. It receives no authority from being selected as a companion or model.
+
+Every Agent declares identity, runtime, provider/model class, locality, operator, capability ceiling, and status. Agent activity appears distinctly in Receipts.
 
 ### Mold boundary
 
-A Mold presents and verifies an Actor. A Mold may contain handles, appearance, public fields, proofs, and keys, but it cannot independently receive authority.
+A Mold binds an Actor to allowed Human and/or Agent operators with explicit capabilities, runtime, locality, sync, disclosure, expiry, and revocation.
 
-Visual shape, color, celebrity likeness, character styling, or a familiar handle is never sufficient authentication. Official status requires a validated identity, organization, or licensing proof bound to the Actor.
+Visual form, celebrity likeness, character appearance, handle, branding, or public familiarity never substitutes for a valid Mold and proof chain.
+
+### Master Control boundary
+
+Master Control explicitly decides:
+
+- authoritative state location;
+- web/local/hybrid placement;
+- active Agent;
+- active Mold;
+- allowed data classes;
+- sync mode and direction;
+- approval rules;
+- revocation and lock state.
+
+A signed-in session or second device must not silently enable synchronization.
 
 ### Capability broker
 
-Actors, models, applications, connectors, and relationship actions receive no ambient universal authority. Medium, high, and critical actions require policy or explicit human approval according to risk.
+A Grant binds Human authority, Actor, operator type and ID, Agent where applicable, Mold, Master Control, action, resource, scope, locality, risk, approval, issue/expiry, and revocation.
 
-A grant is Actor-bound, action-bound, resource-bound, time-bound, revocable, and attributable.
+The Grant cannot exceed the Mold ceiling or Master Control policy.
 
 ### Credential mediation
 
-Long-lived connector and provider secrets remain in trusted brokers. The model receives results or action handles, not raw credentials.
+Long-lived provider and connector secrets remain in trusted brokers or native stores. Agents receive bounded results or action handles, not raw credentials.
 
 ### Runtime isolation
 
-Every capsule declares network, filesystem, process, memory, CPU, lifetime, and mount policy. Source and result Gummies cross explicit import/export boundaries.
+Every runtime declares network, filesystem, process, memory, CPU, lifetime, and mount policy. Source and result Gummies cross explicit boundaries.
 
-### Application Pack verification
+### Synchronization security
 
-Application Packs are versioned, signed, scanned, tested, reviewed, and revocable. The runtime checks the approved hash or signature before execution.
+Synchronization is allowlisted and receiptable:
 
-### Social consent
+- authoritative location is visible;
+- allowed data classes are explicit;
+- direction and frequency are explicit;
+- conflicts preserve evidence;
+- revocation blocks future flow;
+- sync does not expand Agent authority;
+- no hidden advertising or behavioral graph is produced.
 
-Every shared Gummy declares audience. Bowl invitations, follows, agent joins, delegation Links, and Grabs are visible and reversible where possible.
+### Social and public identity
 
-A Grab must preserve source provenance, rights, attribution, source revision, and a `grab-of` Link. It cannot mutate or impersonate the source.
+Every shared Gummy declares audience. Bowl membership and Links are explicit.
 
-### Identity separation
-
-Actor, Mold, provider, model, application, and organization are separate identities.
-
-Examples:
-
-- an agent Actor may use a Zeke Mold;
-- a human Actor may use a public professional Mold and a private family Mold;
-- a licensed character Actor may be operated by an authorized service Actor;
-- the service Actor must still appear in the Receipt where it performed the actual action.
+A celebrity Actor, official character Actor, or public organization Actor requires verified Human, organization, or licensing proofs through a Mold. Fan or synthetic Actors must not impersonate official ones.
 
 ### Receipts
 
 Consequential actions record:
 
-- acting Actor;
-- sponsoring Actor where applicable;
-- Mold used;
-- application and Pack version;
-- model/provider class;
+- Human sponsor;
+- Actor and `@address`;
+- operator type;
+- Agent;
+- Mold;
+- Master Control;
+- application and Pack;
+- execution route and locality;
 - Grants;
 - source and result Gummies;
-- Links or Grabs created;
-- locality and network boundary;
+- Links, Grabs, and sync events;
+- cost;
 - outcome;
-- rollback reference;
-- evidence hashes.
-
-Enterprise deployments sign and retain Receipts according to policy.
+- denial, failure, cancellation, rollback, and revocation evidence;
+- hashes and time.
 
 ## Risk classes
 
-- **Low** — read-only local navigation, opening a known Gummy, non-networked computation.
-- **Medium** — reading private data for transformation, creating Links, creating a result Gummy, changing reversible settings.
-- **High** — sending data externally, publishing to a Bowl or public audience, deleting, installing software, modifying enterprise records, creating a licensed-character Mold.
-- **Critical** — purchasing, legal submission, privileged administration, credential changes, regulated or safety-critical execution.
+- **Low** — local navigation, opening a known Gummy, non-networked read-only computation.
+- **Medium** — private read/transform, result creation, reversible Link or Master Control change.
+- **High** — external transfer, public/Bowl publishing, installation, deletion, Agent assignment, synchronization enablement, official/licensed Mold changes.
+- **Critical** — purchase, legal submission, privileged administration, credential changes, regulated or safety-critical execution.
 
-Risk affects Actor eligibility, model eligibility, runtime, approvals, verification, and Receipt detail.
+Risk affects Human approval, Agent eligibility, Mold, runtime, sync policy, verification, and Receipt detail.
 
 ## Prompt injection posture
 
-Untrusted content is labeled and cannot grant itself authority. Instructions found in Gummies, files, websites, or Bowls are data unless the user or policy explicitly elevates them into a task plan.
+Instructions found in Gummies, websites, messages, Bowls, or application content are data. They cannot assign an Agent, alter a Mold, change Master Control, or issue a Grant.
 
-Capabilities derive from the Actor's request and policy, never from content alone.
+## Migration security
 
-## Protocol 0.1 migration security
+```text
+legacy Snack
+→ Human authority + Actor + Mold
 
-Migration from Snack/Drop/Fork terminology must not weaken identity or provenance:
+legacy companion/model
+→ separate provisional Agent
 
-- a Snack becomes an Actor and one or more Molds;
-- authority references move to the Actor;
-- visual and profile fields move to the Mold;
-- Drop content and ownership move to a Gummy;
-- Fork lineage becomes a Grab record and `grab-of` Link;
-- legacy identifiers remain traceable;
-- migration is idempotent and receiptable;
-- old state is not deleted until parity is verified.
+legacy Drop/file
+→ Gummy
 
-## Security non-goals of the current scaffold
+legacy fork
+→ Grab + grab-of Link
+```
 
-The browser-only scaffold does not claim cryptographic Actor identity, encrypted sync, hardened multi-tenancy, trusted execution, secure credential custody, production sandboxing, tamper-evident Receipts, or verified third-party Packs.
+Migration is deterministic, idempotent, traceable, and non-destructive. Actor and Agent may never collapse into one record.
 
-The next Personal Gummy OS lane proves only one bounded real file-to-agent-to-artifact path. It does not authorize broad autonomous control of the host computer.
+## Current non-goals
+
+The first Personal Gummy OS build does not claim production Human identity, verified public `@addresses`, encrypted cross-device sync, native Glyphd OS security, real Zeke binding, hardened multi-tenancy, trusted execution, tamper-evident federation, or verified third-party Packs.
+
+It proves one bounded local Actor/Agent/Mold/Master Control journey and preserves the correct future boundaries.
