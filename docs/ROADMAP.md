@@ -2,242 +2,215 @@
 
 ## Controlling sequence
 
-Gummy OS advances from a real existing foundation:
+Gummy OS advances from the browser outward.
 
-- a runnable browser-native Gummy OS scaffold;
-- an existing local AI-native Linux distribution with AI system control, native chat/control, and live-USB work;
-- accepted Human / Actor / Agent / Mold / Master Control architecture.
+1. Prove the standalone Gummy OS platform.
+2. Prove Glopper as the web companion and Agent family.
+3. Prove containment, revocation, and return continuity.
+4. Prototype composition and social primitives.
+5. Inspect and integrate the already-built native distro only when the native bridge is the next dependency.
 
-The task is integration and proof—not rebuilding either side from speculation.
-
-## Phase 0 — Repository and Protocol Recovery
-
-**Goal:** establish a clean, runnable, authoritative Gummy OS base.
+## Phase 0 — Foundation and naming
 
 Delivered:
 
-- WebOS desktop and windows;
-- browser-inside-browser;
-- demo chat;
-- local object-space proof;
-- capability and Receipt proof;
-- legacy social and enterprise surfaces;
-- schemas, docs, tests, and validation;
-- corrected Actor/Agent separation;
-- Mold as operating contract;
-- Master Control specification;
-- platform, playground, and security thesis.
+- runnable browser-native scaffold;
+- window manager and Gummy Browser;
+- demo capability/Receipt loop;
+- Actor/Agent separation;
+- Mold and Master Control specifications;
+- playground and security thesis;
+- final naming:
 
-## Phase 0.5 — Existing Native Foundation Preflight
+```text
+Gummy OS
+Gummy Canvas
+Gummy Bar
+Glopper
+Glopper Panel
+Glopper App
+```
 
-**Goal:** understand and preserve the real AI-native Linux implementation before integration.
+## Phase 1 — Standalone Personal Gummy OS
 
-- locate source and runtime on Ubuntu;
-- record launch and build procedures;
-- verify native Agent/chat behavior;
-- inventory current AI system-control capabilities;
-- identify IPC, localhost, API, MCP, or other bridge surfaces;
-- verify browser/WebView hosting options;
-- inspect security and permission boundaries;
-- identify live-USB assets and behavior;
-- document exact proven and unproven state.
+**Goal:** make Gummy OS useful, playful, and dependable for one Human and one Actor in a normal Ubuntu browser.
 
-**Exit:** the existing distro starts, its native control path is understood, and the narrowest Gummy OS hosting/bridge route is chosen without rebuilding working native code.
+### 1A. Gummy Canvas and Gummy Bar
 
-## Phase 1 — Personal Gummy OS
+- name and preserve the open working Canvas;
+- replace dock presentation with candy-store Gummy Bar;
+- candy icons for Glopper, apps, Actors, Gummies, Bowls, tasks, and controls;
+- keyboard, touch, responsive, and accessibility behavior;
+- placeholder candy art until Hayden supplies the final visual system.
 
-**Goal:** make Gummy OS useful, playful, and dependable for one Human and one Actor.
+### 1B. Glopper Web experience
 
-### 1A. Gummy OS inside the native environment
+- Glopper candy in Gummy Bar;
+- collapsed status/invocation state;
+- expanded Glopper Panel;
+- selected Canvas context;
+- Actor, Agent, Mold, Master Control, task lease, approval, result, and Receipt visibility;
+- first executor `agent:glopper-web`;
+- automatic context without automatic authority.
 
-- run Gummy OS in the distro through browser or existing WebView;
-- preserve standalone browser/PWA use on ordinary computers and phones;
-- prove shell, windows, browser, and file behavior in both modes;
-- add no broad native authority.
-
-### 1B. Z hybrid surface
-
-- persistent collapsed Z bar;
-- expandable Z conversation/control panel;
-- selected canvas context;
-- Actor, Agent, Mold, Master Control, task, approval, result, and Receipt visibility;
-- native Z surface continuity through explicitly selected state;
-- Z is globally available, not an ordinary dock app;
-- automatic context never becomes automatic authority.
-
-### 1C. Correct object model and migration
+### 1C. Correct objects and migration
 
 - local Human authority;
 - persistent Actor with provisional `@address`;
-- separate Agent;
+- separate Glopper Agent;
 - permissioned Mold;
 - local Master Control;
 - Gummies, Bowls, Links, and Grabs;
-- deterministic, idempotent migration from Snack/Drop/Fork/demo-companion state;
-- no Actor/Agent identity collapse.
+- deterministic migration from Snack/Drop/Fork/demo companion/Z terminology;
+- no Actor/Agent collapse.
 
-### 1D. Durable local computer
+### 1D. Durable local system
 
 - IndexedDB metadata;
 - OPFS bytes;
-- stable identities and hashes;
-- Actor-owned projects and folders;
+- stable IDs and hashes;
+- Actor-owned projects/folders;
 - import/export;
 - searchable Receipts;
-- installable PWA;
-- accessibility;
+- PWA;
 - return continuity;
-- explicit quarantine state.
+- explicit quarantine.
 
-### 1E. One real Agent route
+### 1E. One real Glopper route
 
-- one trusted provider-neutral route;
-- no secrets in browser JavaScript;
-- Human → Actor → Agent → Mold → Master Control → Grant contract;
+- provider-neutral broker;
+- no browser secrets;
 - one bounded read/transform/create task;
-- denial, failure, cancellation, success, and revocation Receipts.
+- Human → Actor → Agent → Mold → Master Control → Grant contract;
+- task lease;
+- denial/failure/success/revocation Receipts.
 
 ### 1F. Quarantine and burn proof
 
-- harmless untrusted test content enters as a quarantined Gummy;
-- no native process, shell, package, device, or broad filesystem authority;
-- denied native promotion without approval;
-- bounded approved promotion with Receipt;
+- harmless content enters as quarantined Gummy;
+- no native execution authority;
+- deny unapproved promotion;
+- bounded approved promotion or simulation with Receipt;
 - disposable workspace reset/burn;
-- accepted results and evidence survive.
+- accepted results/evidence survive.
 
-**Exit:** Gummy OS runs inside the existing distro and independently in a normal browser; Z works as a hybrid surface; a real source Gummy becomes a result Gummy through a bounded Agent; source remains unchanged; revocation works; quarantined content lacks native authority; state survives return.
+### 1G. Small composition proof
 
-## Phase 2 — Native Agent Bridge
+- two local test Actors;
+- explicit Link;
+- selected Gummies;
+- temporary shared Canvas or Bowl;
+- source identity and private state remain distinct;
+- record which output type feels natural.
 
-**Goal:** connect a Gummy OS Actor to the real native Agent without widening authority unnecessarily.
+**Exit:** standalone Gummy OS works through Gummy Canvas, candy-filled Gummy Bar, and Glopper Panel; a real source Gummy becomes a result Gummy through `agent:glopper-web`; source remains unchanged; revocation, quarantine, burn/reset, composition, and return continuity are proven.
 
-- deny-by-default localhost/native bridge;
-- verified native Agent identity;
-- explicit capability inventory;
-- Master Control placement and synchronization;
-- Mold-constrained local file, application, model, device, and system access;
-- native Z app/panel continuity;
-- selective task, conversation, result, approval, and Receipt synchronization;
-- no ambient host filesystem or shell endpoint;
-- real revocation and bridge shutdown;
-- live-USB integration evaluation.
+## Phase 2 — Glopper companion system
 
-**Exit:** the real native Agent completes one bounded local capability task for a WebOS Actor, every crossing is visible and receipted, and revocation stops future access.
+**Goal:** make Glopper one coherent companion across separately governed executors.
 
-## Phase 3 — Playground and Actor Composition
+- `agent:glopper-web`;
+- `agent:glopper-cloud` when useful;
+- task router and executor leases;
+- private local memory / approved portable profile / current task context;
+- structured preference adaptation;
+- optional Ollama/llama.cpp local harness;
+- conflict and takeover rules;
+- consistent character and disclosure;
+- standalone Glopper App shell without broad native authority.
 
-**Goal:** prove Gummy OS as an open creative medium rather than one imposed workflow.
+**Exit:** Glopper routes web/cloud tasks correctly, preserves executor identity, and carries only Human-approved preferences.
 
-- optional mini-app architecture;
-- hexagonal interface as one mini-app/surface;
+## Phase 3 — Native distro inspection and bridge
+
+**Goal:** connect Gummy OS to the real existing AI-native Linux system without rebuilding or widening it speculatively.
+
+- locate and launch existing distribution;
+- document local path, services, chat/Agent process, capabilities, browser/WebView, security, and live-USB assets;
+- evaluate existing `bohselecta/glopper` app/process director as native companion foundation;
+- add `agent:glopper-native` identity;
+- one deny-by-default task bridge;
+- explicit directory, IDE, shell, model, device, and process capabilities;
+- local Ollama/llama.cpp routing where appropriate;
+- selective task/result/approval/Receipt synchronization;
+- revocation and bridge shutdown;
+- no generic host-control API.
+
+**Exit:** native Glopper completes one bounded local task for a Gummy OS Actor, every crossing is visible and receipted, and revocation stops future access.
+
+## Phase 4 — Playground and Actor composition
+
+**Goal:** establish Gummy OS as a creative medium rather than a single workflow.
+
+- mini-app framework;
+- hexagonal interface as one optional mini-app;
 - multiple Actor surfaces;
 - discovery by `@address`;
 - explicit Links and invitations;
-- temporary shared canvases;
-- selected Gummy composition;
-- source provenance and private-state separation;
-- recursive creation of Actors, Agents, tools, and Gummies;
-- independent identity and authority for every child object;
-- determine through prototypes when composition naturally yields a Bowl, Gummy, Mold, Actor, application, or temporary surface.
+- temporary shared Canvases;
+- recursive creation of Actors, Agents, Gummies, tools, and surfaces;
+- independent authority and provenance for every child;
+- prototype when composition naturally yields Bowl, Gummy, Mold, Actor, application, or temporary Canvas.
 
-**Exit:** two local or authorized Actors create a useful shared composition without merging private state or inheriting authority.
+**Exit:** useful compositions form without private-state merge or inherited authority.
 
-## Phase 4 — Gummy OS Social Layer
+## Phase 5 — Gummy OS Social Layer
 
-**Goal:** turn addressable Actors and Gummies into a consent-first social system.
+**Goal:** consent-first social computing around addressable Actors and Gummies.
 
-- verified Human authority and `@addresses`;
+- verified Humans and `@addresses`;
 - public/private Actor state;
 - official and delegated Molds;
-- invitations and contacts;
-- Bowls;
-- Gummies with audience, provenance, license, and Grab policy;
-- explicit Links;
-- replies and collaboration;
-- abuse controls;
+- Bowls, Gummies, Links, and Grabs;
 - encrypted selective synchronization;
-- Link Inspector;
-- Agent-operation disclosure;
-- official public-figure and licensed-character structures without an automatic marketplace.
+- abuse controls;
+- Glopper/Agent disclosure;
+- public-figure and licensed-character structures without automatic marketplace assumptions.
 
-**Exit:** two Actors share and Grab a Gummy with clear Human authority, Agent operation, Mold, ownership, audience, lineage, obligations, and revocation.
+**Exit:** Actors share and Grab Gummies with clear authority, operation, audience, rights, provenance, and revocation.
 
-## Phase 5 — Governed Applications and Security Workbenches
+## Phase 6 — Governed applications and security workbenches
 
-**Goal:** prove safe operation of real software and authorized security workflows.
+- Application Pack SDK;
+- typed capabilities;
+- semantic/accessibility/GUI operation hierarchy;
+- isolated runtimes;
+- authorized defensive-security Actors and Agents;
+- explicit target scope;
+- replayable evidence;
+- disposable environments;
+- verified result Gummies.
 
-- Application Pack authoring kit;
-- typed capability runner;
-- semantic interface maps;
-- workflow, verification, and recovery engines;
-- browser/Wasm/native runtime adapters;
-- quarantined artifact promotion;
-- isolated defensive-security Actors and Agents;
-- authorized target scope;
-- analysis, remediation, and verification roles;
-- replayable evidence and Receipts;
-- disposable workspaces.
-
-**Exit:** an authorized Agent completes a real vendor or defensive-security workflow inside an isolated environment and returns a verified Gummy with complete evidence.
-
-## Phase 6 — Enterprise Habitat
-
-**Goal:** deploy Gummy OS within real organizations without replacing their security stack.
+## Phase 7 — Enterprise Habitat
 
 - organization identity and roles;
-- approved Actors, Agents, and Molds;
+- approved Actors, Glopper/other Agents, and Molds;
 - OIDC/SAML/passkeys/biometrics/hardware keys;
-- model and connector brokers;
-- policy packs and approval chains;
-- Application Pack registry;
-- runtime manager;
-- tenant boundaries and regions;
-- EDR/MDM/SIEM integration points;
+- policy, brokers, registries, runtime pools;
+- EDR/MDM/SIEM integration;
 - signed Receipts, retention, administration, and audit;
-- hosted, dedicated, self-hosted, and sovereign modes.
+- hosted, dedicated, self-hosted, sovereign modes.
 
-**Exit:** an organization can authenticate, authorize, execute, monitor, audit, revoke, reproduce, and contain an Agent-operated workflow while existing enterprise controls remain authoritative.
-
-## Phase 7 — Federation, Portable Life, and Independent Editions
-
-**Goal:** make Gummy OS a protocol and portable life rather than one compulsory service.
+## Phase 8 — Federation and portable life
 
 - signed Actor discovery;
-- federated Bowls and Gummy exchange;
-- Link and Grab lineage;
-- compatibility declarations;
+- federated Bowls/Gummies/Links/Grabs;
+- independent editions;
 - key rotation and revocation;
-- trust-domain moderation;
-- self-hosting and independent editions;
+- self-hosting;
 - live-USB portable deployment;
 - selective Actor restoration;
-- migration and export;
-- certification.
+- migration/export and compatibility certification.
 
-**Exit:** independent Gummy OS implementations and portable native environments exchange authorized signed objects without one central account or provider.
+## Phase 9 — Commercial network
 
-## Phase 8 — Commercial Network
-
-**Goal:** create durable revenue without taxing ordinary personal creativity.
-
-- vendor integration program;
-- certification;
-- enterprise licensing;
-- dedicated and sovereign deployment;
-- managed brokers and runtime pools;
-- OEM and vertical editions;
-- security and compliance modules;
-- long-term support;
-- registry services and partner program.
-
-**Exit:** customers pay for governance, reliability, verified compatibility, deployment, and support while Personal Gummy OS remains useful and free.
+Customers may pay for governance, verification, compatibility, enterprise deployment, security/compliance modules, OEM editions, managed brokers/runtimes, support, and certification while Personal Gummy OS remains useful and free.
 
 ## Stop rules
 
-- Do not rebuild the existing native distribution before inspecting it.
+- Do not inspect or integrate the native distro before the standalone proof passes.
 - Do not widen the native bridge to make a demo easier.
-- Do not let recursive creation inherit authority automatically.
-- Do not lock Actor composition into one output type before prototyping.
-- Do not claim security without boundary-specific evidence.
-- Do not advance broad social, enterprise, federation, or commercial scope ahead of the accepted Personal Gummy OS exit.
+- Do not let recursive creation inherit authority.
+- Do not lock composition into one output type prematurely.
+- Do not claim security without evidence.
+- Do not advance broad social, enterprise, federation, or commercial scope ahead of the accepted standalone exit.
