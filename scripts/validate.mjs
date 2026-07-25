@@ -12,6 +12,7 @@ const required = [
   'docs/ARCHITECTURE.md',
   'docs/PROTOCOL.md',
   'docs/SECURITY_MODEL.md',
+  'docs/SOCIAL_LAYER.md',
   'docs/SOCIAL_GRAPH.md',
   'docs/ENTERPRISE_FRAMEWORK.md',
   'docs/ROADMAP.md',
@@ -54,6 +55,11 @@ for (const definition of [
   'Grab = how a Gummy becomes yours without altering the source'
 ]) {
   if (!vocabulary.includes(definition)) throw new Error(`canonical vocabulary is missing: ${definition}`);
+}
+
+const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');
+if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
+  throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
 console.log('Gummy validation passed with Protocol 0.2 specifications and Protocol 0.1 compatibility inputs.');
