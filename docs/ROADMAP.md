@@ -4,15 +4,15 @@
 
 Gummy OS advances from the browser outward.
 
-1. Prove the standalone Gummy OS platform.
+1. Prove the locked brand and standalone Gummy OS platform.
 2. Prove Glopper as the web companion and Agent family.
-3. Prove containment, revocation, and return continuity.
+3. Prove Gummy Box Work Orders, containment, revocation, and return continuity.
 4. Prototype composition and social primitives.
 5. Inspect and integrate the already-built native distro only when the native bridge is the next dependency.
 
-## Phase 0 — Foundation and naming
+## Phase 0 — Foundation, naming, and brand lock
 
-Delivered:
+Delivered as specification:
 
 - runnable browser-native scaffold;
 - window manager and Gummy Browser;
@@ -20,40 +20,84 @@ Delivered:
 - Actor/Agent separation;
 - Mold and Master Control specifications;
 - playground and security thesis;
-- final naming:
+- Gummy Box and Work Order protocol;
+- final naming;
+- locked brand system.
 
 ```text
 Gummy OS
 Gummy Canvas
 Gummy Bar
+Gummy
 Glopper
 Glopper Panel
 Glopper App
+Gummy Box
+Glopper Inbox
+```
+
+```text
+Night Gummy
+Day Gummy
+
+Deep Indigo      #4B187A
+Gummy Violet     #7C2FD0
+Honey Gold       #F2B544
+Warm Cream       #FFF1C7
+Aubergine Black  #100817
+```
+
+```text
+Purple tells you where you are.
+Gold tells you what you can do.
+Gummy = purple-dominant.
+Glopper = gold-dominant.
 ```
 
 ## Phase 1 — Standalone Personal Gummy OS
 
-**Goal:** make Gummy OS useful, playful, and dependable for one Human and one Actor in a normal Ubuntu browser.
+**Goal:** make Gummy OS useful, unmistakable, playful, and dependable for one Human and one Actor in a normal Ubuntu browser.
 
-### 1A. Gummy Canvas and Gummy Bar
+### 1A. Brand tokens and canonical expressions
+
+- exact five source tokens;
+- semantic tokens for Canvas, surfaces, text, location, energy, action, focus, border, and shadow;
+- Night Gummy and Day Gummy only;
+- local persistence and safe fallback;
+- optional device-follow mapped only to Night/Day;
+- no arbitrary theme or accent selection;
+- automated literal-color and contrast review.
+
+### 1B. Gummy Canvas and Gummy Bar
 
 - name and preserve the open working Canvas;
 - replace dock presentation with candy-store Gummy Bar;
-- candy icons for Glopper, apps, Actors, Gummies, Bowls, tasks, and controls;
-- keyboard, touch, responsive, and accessibility behavior;
-- placeholder candy art until Hayden supplies the final visual system.
+- candy icons for Glopper, apps, Actors, Gummies, Bowls, Work Orders, tasks, and controls;
+- purple location/grouping grammar;
+- gold action/selection/attention grammar;
+- keyboard, touch, responsive, reduced-motion, and accessibility behavior;
+- placeholder candy art until Hayden supplies production assets.
 
-### 1B. Glopper Web experience
+### 1C. Gummy and Glopper identities
+
+- Gummy purple-dominant guide surfaces;
+- Glopper gold-dominant action surfaces;
+- names/avatars/accessibility labels in addition to color;
+- locked mascot proportions and identity colors;
+- wordmark asset slots without approximation;
+- actual Agent executor always explicit.
+
+### 1D. Glopper Web experience
 
 - Glopper candy in Gummy Bar;
 - collapsed status/invocation state;
 - expanded Glopper Panel;
 - selected Canvas context;
-- Actor, Agent, Mold, Master Control, task lease, approval, result, and Receipt visibility;
+- Actor, Agent, Mold, Master Control, Task Lease, approval, result, Return, and Receipt visibility;
 - first executor `agent:glopper-web`;
 - automatic context without automatic authority.
 
-### 1C. Correct objects and migration
+### 1E. Correct objects and migration
 
 - local Human authority;
 - persistent Actor with provisional `@address`;
@@ -61,31 +105,36 @@ Glopper App
 - permissioned Mold;
 - local Master Control;
 - Gummies, Bowls, Links, and Grabs;
-- deterministic migration from Snack/Drop/Fork/demo companion/Z terminology;
-- no Actor/Agent collapse.
+- Gummy Box, Work Order, Task Lease, Return;
+- deterministic migration from Snack/Drop/Fork/demo companion/Z/theme terminology;
+- no Actor/Agent collapse or unsupported theme values.
 
-### 1D. Durable local system
+### 1F. Durable local system and Gummy Box
 
 - IndexedDB metadata;
 - OPFS bytes;
 - stable IDs and hashes;
 - Actor-owned projects/folders;
+- Local Gummy Box;
 - import/export;
 - searchable Receipts;
 - PWA;
 - return continuity;
 - explicit quarantine.
 
-### 1E. One real Glopper route
+### 1G. Glopper Inbox and one real route
 
+- Work Order validation as untrusted data;
+- approve/revise/reject/hold;
+- exclusive Task Lease and conflict denial;
 - provider-neutral broker;
 - no browser secrets;
 - one bounded read/transform/create task;
-- Human → Actor → Agent → Mold → Master Control → Grant contract;
-- task lease;
-- denial/failure/success/revocation Receipts.
+- Human → Actor → Agent → Mold → Master Control → Task Lease → Grant contract;
+- Return/artifact/Receipt writeback;
+- denial/failure/success/revocation evidence.
 
-### 1F. Quarantine and burn proof
+### 1H. Quarantine and burn proof
 
 - harmless content enters as quarantined Gummy;
 - no native execution authority;
@@ -94,7 +143,15 @@ Glopper App
 - disposable workspace reset/burn;
 - accepted results/evidence survive.
 
-### 1G. Small composition proof
+### 1I. One external Gummy Box adapter
+
+- implement private GitHub or Google Drive after Local Box passes;
+- provider-scoped permissions only;
+- preserve provider-neutral adapter contract;
+- disconnected queue/retry;
+- do not require both providers for acceptance.
+
+### 1J. Small composition proof
 
 - two local test Actors;
 - explicit Link;
@@ -103,7 +160,7 @@ Glopper App
 - source identity and private state remain distinct;
 - record which output type feels natural.
 
-**Exit:** standalone Gummy OS works through Gummy Canvas, candy-filled Gummy Bar, and Glopper Panel; a real source Gummy becomes a result Gummy through `agent:glopper-web`; source remains unchanged; revocation, quarantine, burn/reset, composition, and return continuity are proven.
+**Exit:** standalone Gummy OS is recognizable without mascots; Night and Day feel like one universe; purple communicates place; gold communicates action; Gummy and Glopper are peripherally distinct; Local Gummy Box and one real Work Order complete; a source Gummy becomes a result through `agent:glopper-web`; source remains unchanged; revocation, quarantine, burn/reset, composition, and return continuity are proven.
 
 ## Phase 2 — Glopper companion system
 
@@ -116,10 +173,10 @@ Glopper App
 - structured preference adaptation;
 - optional Ollama/llama.cpp local harness;
 - conflict and takeover rules;
-- consistent character and disclosure;
+- consistent character, brand emphasis, and disclosure;
 - standalone Glopper App shell without broad native authority.
 
-**Exit:** Glopper routes web/cloud tasks correctly, preserves executor identity, and carries only Human-approved preferences.
+**Exit:** Glopper routes web/cloud tasks correctly, preserves executor identity, carries only Human-approved preferences, and remains gold-dominant without recoloring the mascot.
 
 ## Phase 3 — Native distro inspection and bridge
 
@@ -148,7 +205,7 @@ Glopper App
 - discovery by `@address`;
 - explicit Links and invitations;
 - temporary shared Canvases;
-- recursive creation of Actors, Agents, Gummies, tools, and surfaces;
+- recursive creation of Actors, Agents, Gummies, tools, Work Orders, and surfaces;
 - independent authority and provenance for every child;
 - prototype when composition naturally yields Bowl, Gummy, Mold, Actor, application, or temporary Canvas.
 
@@ -164,7 +221,7 @@ Glopper App
 - Bowls, Gummies, Links, and Grabs;
 - encrypted selective synchronization;
 - abuse controls;
-- Glopper/Agent disclosure;
+- Gummy/Glopper/Agent disclosure;
 - public-figure and licensed-character structures without automatic marketplace assumptions.
 
 **Exit:** Actors share and Grab Gummies with clear authority, operation, audience, rights, provenance, and revocation.
@@ -208,9 +265,12 @@ Customers may pay for governance, verification, compatibility, enterprise deploy
 
 ## Stop rules
 
+- Do not add a third canonical Gummy OS theme.
+- Do not introduce a new branded hue or recolor mascots.
+- Do not let gold lose its action meaning or purple lose its location meaning.
 - Do not inspect or integrate the native distro before the standalone proof passes.
 - Do not widen the native bridge to make a demo easier.
 - Do not let recursive creation inherit authority.
 - Do not lock composition into one output type prematurely.
-- Do not claim security without evidence.
-- Do not advance broad social, enterprise, federation, or commercial scope ahead of the accepted standalone exit.
+- Do not claim security or accessibility without evidence.
+- Do not advance broad social, enterprise, federation, commercial, provider, or theme scope ahead of the accepted standalone exit.
