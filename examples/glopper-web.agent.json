@@ -2,6 +2,7 @@
   "schema": "gummy.agent/v0",
   "id": "agent:glopper-web",
   "name": "Glopper Web",
+  "characterFamily": "Glopper",
   "version": "0.1.0",
   "providerClass": "provider-neutral-broker",
   "model": "configured-at-runtime",
@@ -11,9 +12,14 @@
   "humanAuthorityIds": ["human:hayden"],
   "actorIds": ["actor:hayden"],
   "moldIds": ["mold:hayden:personal"],
+  "activeTaskLeaseIds": [],
   "capabilityCeiling": ["gummy.read", "gummy.create", "gummy.transform"],
+  "memoryBoundary": {
+    "privateLocal": false,
+    "portableProfileAllowed": true,
+    "currentTaskContextOnly": true
+  },
   "disclosure": {
-    "character": "Glopper",
     "operator": "human:hayden",
     "autonomy": "human-directed",
     "providerDisclosure": "The concrete provider and model must be shown in each Action Receipt."
