@@ -8,6 +8,8 @@
 - `builders.bowl.json`
 - `welcome-created-by.link.json`
 - `welcome.grab.json`
+- `welcome-copy.gummy.json`
+- `welcome-copy-grab-of.link.json`
 
 These demonstrate the accepted object language:
 
@@ -19,6 +21,17 @@ Bowl
 Link
 Grab
 ```
+
+The Grab example is a set:
+
+```text
+source Gummy
+→ Grab record
+→ result Gummy
+→ grab-of Link
+```
+
+The source remains unchanged.
 
 ## Legacy Protocol 0.1 examples
 
