@@ -1,0 +1,25 @@
+{
+  "schema": "gummy.task-lease/v0",
+  "id": "lease:project-brief",
+  "humanAuthorityId": "human:hayden",
+  "actorId": "actor:hayden",
+  "agentId": "agent:glopper-web",
+  "moldId": "mold:hayden:personal",
+  "masterControlId": "master-control:hayden",
+  "taskId": "task:project-brief",
+  "scope": {
+    "gummyIds": ["gummy:welcome"],
+    "capabilities": ["gummy.read", "gummy.create", "gummy.transform"]
+  },
+  "authoritativeLocation": "gummy-os:local-browser",
+  "mode": "exclusive",
+  "parallelLeaseIds": [],
+  "expectedReturn": {
+    "resultKind": "file",
+    "mediaType": "text/markdown",
+    "receiptRequired": true
+  },
+  "status": "proposed",
+  "issuedAt": "2026-07-25T00:00:00Z",
+  "expiresAt": "2026-07-25T01:00:00Z"
+}
