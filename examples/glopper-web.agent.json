@@ -1,0 +1,23 @@
+{
+  "schema": "gummy.agent/v0",
+  "id": "agent:glopper-web",
+  "name": "Glopper Web",
+  "version": "0.1.0",
+  "providerClass": "provider-neutral-broker",
+  "model": "configured-at-runtime",
+  "runtimeClass": "server",
+  "locality": "cloud",
+  "status": "available",
+  "humanAuthorityIds": ["human:hayden"],
+  "actorIds": ["actor:hayden"],
+  "moldIds": ["mold:hayden:personal"],
+  "capabilityCeiling": ["gummy.read", "gummy.create", "gummy.transform"],
+  "disclosure": {
+    "character": "Glopper",
+    "operator": "human:hayden",
+    "autonomy": "human-directed",
+    "providerDisclosure": "The concrete provider and model must be shown in each Action Receipt."
+  },
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z"
+}
