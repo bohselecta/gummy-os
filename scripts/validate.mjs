@@ -9,6 +9,7 @@ const required = [
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
   'docs/ACTOR_AGENT_MASTER_CONTROL.md',
+  'docs/PLATFORM_PLAYGROUND_SECURITY.md',
   'docs/VOCABULARY.md',
   'docs/ARCHITECTURE.md',
   'docs/PROTOCOL.md',
@@ -72,9 +73,32 @@ for (const boundary of [
   if (!ruling.includes(boundary)) throw new Error(`architecture ruling is missing: ${boundary}`);
 }
 
+const platform = await readFile('docs/PLATFORM_PLAYGROUND_SECURITY.md', 'utf8');
+for (const invariant of [
+  'The AI-native Linux distribution is **not a future hypothetical and must not be rebuilt in this repository**.',
+  'Gummy OS is the canvas.',
+  'automatic availability != automatic authority',
+  'Creation never implies inherited authority.',
+  'A file existing inside Gummy OS does not automatically mean it can execute on the native OS.',
+  'The product promise is **explicit boundaries and smaller blast radius**, verified progressively.',
+  'The future should not arrive as a rigid workflow. It should arrive as a playground with understandable power, visible boundaries, and a Human still in control.'
+]) {
+  if (!platform.includes(invariant)) throw new Error(`platform thesis is missing: ${invariant}`);
+}
+
+const workOrder = await readFile('plans/active/2026-07-25-personal-gummy-cursor-work-order.md', 'utf8');
+for (const requirement of [
+  'Work package 0 — Ubuntu and native-distribution preflight',
+  'Work package B — implement the Z hybrid surface',
+  'Work package F — quarantine and burn proof',
+  'Work package I — playground composition proof'
+]) {
+  if (!workOrder.includes(requirement)) throw new Error(`active work order is missing: ${requirement}`);
+}
+
 const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');
 if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
   throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
-console.log('Gummy validation passed with distinct Human, Actor, Agent, Mold, and Master Control specifications.');
+console.log('Gummy validation passed with native/WebOS integration, Z surface, playground recursion, quarantine, and explicit security boundaries.');
