@@ -1,14 +1,83 @@
-# Gummy
+# Gummy OS
 
 > **A computer you can open.**
 
-Gummy is a provider-neutral personal AI computer, a consent-first social protocol, and a governed enterprise software habitat delivered through the browser.
+Gummy OS is a browser-delivered personal AI computer. It gives people the familiar shell they already understand—desktop, windows, folders, files, applications, a dock, drag-and-drop, and a browser inside the browser—while adding the boundaries an AI-operated computer requires: replaceable intelligence, scoped authority, isolated runtimes, Application Packs, and Action Receipts.
 
-It keeps the interface people already understand—desktop, windows, folders, files, applications, a dock, drag-and-drop, and a browser inside the browser—while adding the boundaries an AI-operated computer requires: portable identity, scoped capabilities, isolated runtimes, vendor Application Packs, organization policy, and Action Receipts.
+The canonical personal address is **mygum.my**. Personal Gummy OS is intended to remain useful and free without requiring a social account, enterprise organization, or one model provider.
 
-The canonical home is **mygum.my**. Personal Gummy is intended to remain free to consumers. Commercial value lives in verified integrations, enterprise deployment, policy and audit infrastructure, certification, support, and OEM editions.
+## Current priority: make the computer real
 
-## Run the scaffold
+The active product lane is **Personal Gummy OS**.
+
+The first dependable proof is:
+
+```text
+open Gummy OS
+→ import a real file
+→ drag it to the companion
+→ ask a real model to transform it
+→ approve bounded read + create authority
+→ receive a new Gummy
+→ inspect the Action Receipt
+→ close and return later
+→ the source, result, project, and Receipt are still there
+```
+
+Social, enterprise, federation, marketplace, and broad runtime work remain specified but must not delay this file-to-agent-to-artifact loop.
+
+## Canonical object language
+
+```text
+Actor = who acts
+Mold = how that Actor is represented and verified
+Gummy = what the Actor creates or operates
+Bowl = where Actors and Gummies gather
+Link = how they relate
+Grab = how a Gummy becomes yours without altering the source
+```
+
+### Actor
+
+The accountable acting principal: a person, AI agent, organization, service, application, or licensed character. Capability Grants and Action Receipts identify the Actor—not merely a display name or visual profile.
+
+### Mold
+
+The portable representation and verification profile through which an Actor appears inside Gummy OS. A Mold may carry a handle, public presentation, visual form, disclosure, identity proofs, keys, and compatibility information. A Mold never becomes authority merely because it looks official.
+
+### Gummy
+
+Anything an Actor creates, keeps, receives, shares, or operates inside Gummy OS: a note, file, image, project, conversation, application, workflow, invitation, or generated result. Every Gummy can carry ownership, audience, provenance, rights, history, and capabilities.
+
+### Bowl
+
+A shared environment with explicit members, roles, visibility, and rules. A Bowl may contain Actors, Molds, Gummies, conversations, projects, and Links.
+
+### Link
+
+An intentional, inspectable relationship such as follows, belongs-to, created-by, collaborates-with, delegates-to, trusts-for, shared-with, or derived-from.
+
+### Grab
+
+The user-facing action that creates an independent Gummy from an existing Gummy while preserving cryptographic provenance and a `grab-of` lineage Link. A Grab never changes the source.
+
+## Protocol migration boundary
+
+The current July 24 scaffold still contains Protocol 0.1 implementation labels such as **Snack**, **Drop**, **Fork**, **Snack Bar**, and **Snack Graph**. Those names are now legacy compatibility vocabulary.
+
+The accepted Protocol 0.2 target is:
+
+| Protocol 0.1 | Protocol 0.2 target |
+| --- | --- |
+| Snack | Actor + Mold |
+| Drop / generic graph object | Gummy |
+| Snack Graph | Gummy OS Social Layer |
+| Fork | Grab |
+| fork-of | grab-of |
+
+Cursor must migrate state and UI deterministically rather than deleting old local data or pretending implementation already matches the new specification.
+
+## Run the current scaffold
 
 Requirements: Node.js 22 or newer.
 
@@ -18,8 +87,6 @@ npm run dev
 
 Open `http://localhost:4173`.
 
-No package installation is required. The scaffold uses browser-native JavaScript and Node's standard library so the operating surface stays fast, inspectable, and easy to fork.
-
 ```bash
 npm run check
 npm test
@@ -27,88 +94,84 @@ npm run build
 npm run verify
 ```
 
+The scaffold uses browser-native JavaScript and Node's standard library so the shell stays fast, inspectable, and easy to fork into compatible editions.
+
 ## What works now
 
-- Fast web-native desktop with draggable, resizable, minimizable, and maximizable windows.
+- Web-native desktop with draggable, resizable, minimizable, and maximizable windows.
 - Gummy Browser with `gummy://home`, `gummy://chat`, `gummy://protocol`, sandboxed external frames, and external-tab fallback.
 - My Files with drag-to-companion delegation.
 - Provider-neutral demo chat and scoped capability requests.
-- Snack Bar for portable shape, color, flavor, handle, visibility, and companion identity.
-- Snack Graph with Snacks, Bowls, Drops, links, follows, publishing, and non-destructive forking.
-- Enterprise Habitat with organization overview, policies, Application Pack registry, runtime pools, and audit-oriented receipts.
-- Persistent local state through `localStorage`.
-- Protocol schemas for Snacks, graph objects, Application Packs, grants, receipts, organizations, and policy packs.
-- Zero-dependency validation, tests, build, and GitHub CI.
+- Legacy Protocol 0.1 social and enterprise proof surfaces.
+- Persistent shell state through `localStorage`.
+- Protocol schemas, deterministic tests, build, and validation.
 
-The scaffold is honest about its boundaries. It does not yet ship a real model broker, authentication, encrypted sync, cryptographic signing, multi-tenant backend, BrowserPod, CheerpX, or a production policy engine.
+The scaffold does **not** yet ship a real model broker, durable OPFS file bytes, generated artifact writes, production authentication, encrypted sync, cryptographic signing, multi-tenant backend, BrowserPod, Wasm/Linux capsules, or a production policy engine.
 
 ## Product map
 
 ```text
-Gummy
+Gummy OS
 ├── Shell          desktop, windows, dock, browser, files, companion
-├── Snack          portable person or agent identity
-├── Object Space   files, projects, conversations, applications, Drops
-├── Graph          relationships, Bowls, sharing, following, forks
+├── Actor          the accountable principal that acts
+├── Mold           portable representation and verification for an Actor
+├── Gummy          files, projects, conversations, apps, workflows, results
+├── Bowl           shared environments for Actors and Gummies
+├── Link           explicit relationships, authority, ownership, and lineage
+├── Grab           independent derivation without altering the source
 ├── Pack           vendor-authored application knowledge and authority contract
 ├── Broker         model, connector, and task-scoped capability routing
 ├── Capsule        web, Wasm, Linux, or governed cloud execution
 ├── Receipt        evidence of request, authority, changes, and outcome
-├── Organization   enterprise identity, roles, policies, registries, and runtime pools
-└── Federation     portable protocol objects and fork-compatible Gummy editions
+├── Organization   enterprise identity, roles, policies, registries, runtimes
+└── Federation     portable signed objects and compatible Gummy OS editions
 ```
 
 ## The central product insight
 
-Traditional AI integration asks: **How do we connect this model to this application?**
+Traditional AI integration asks:
 
-Gummy asks: **How do we place the application inside a governed computer the agent already knows how to use?**
+> How do we connect this model to this application?
 
-A software vendor can ship an Application Pack containing typed capabilities, agent-oriented documentation, semantic interface maps, workflow recipes, policy rules, verification tests, and recovery instructions. Gummy supplies the secure habitat in which an authorized model may operate it.
+Gummy OS asks:
 
-## The social insight
+> How do we place the application inside a governed computer the agent already knows how to use?
 
-The user's digital life should not become another advertising graph. Gummy's social layer is made from portable objects:
-
-- **Snack** — a person or agent identity.
-- **Bowl** — a shared space with explicit membership and visibility.
-- **Drop** — a shared object, artifact, note, project, application, or invitation.
-- **Link** — a scoped relationship such as follows, member-of, collaborates-with, delegates-to, or trusts-for.
-- **Fork** — a new independent edition that preserves provenance without altering the original.
-
-Visual shape and color make Snacks recognizable, but never constitute authentication. Production identity is bound separately through passkeys, organizational identity, or cryptographic proofs.
-
-## Architecture planes
-
-```text
-Experience Plane   desktop, browser, files, companion, Snack surfaces
-Object & Graph     private objects, Bowls, Drops, links, provenance
-Agent Plane        provider-neutral models, planning, memory, orchestration
-Capability Plane   policy, approvals, connector mediation, revocation
-Runtime Plane      web-native, Wasm, Linux compatibility, governed cloud
-Enterprise Plane   organizations, roles, Pack registry, audit, deployment
-Federation Plane   portable objects, discovery, signatures, fork compatibility
-```
-
-Read `docs/` for the vision, architecture, Snack Graph, enterprise framework, protocol, security model, product specification, roadmap, business model, licensing strategy, and build runbook.
+A software vendor can eventually ship an Application Pack containing typed capabilities, operating documentation, semantic interface maps, workflow recipes, policy defaults, verification tests, and recovery instructions. Gummy OS supplies the habitat in which an authorized Actor may operate it.
 
 ## Founding rules
 
 1. The shell is web-native.
 2. The visible grammar stays familiar.
-3. The agent is provider-neutral.
-4. No ambient authority.
+3. Intelligence is provider-neutral.
+4. Actors receive no ambient authority.
 5. Consequential work leaves evidence.
-6. The host remains outside.
-7. Social is consent-first.
-8. Visual identity is not security identity.
-9. Compatibility is routed.
+6. The host computer remains outside Gummy OS.
+7. Social computing is consent-first.
+8. A Mold's appearance is not authentication.
+9. Compatibility is routed through explicit adapters.
 10. Personal utility remains free.
-11. Forks are part of the design.
+11. Grabs preserve provenance without altering sources.
 12. Delight is functional.
+
+## Read order
+
+1. `docs/VOCABULARY.md`
+2. `docs/VISION.md`
+3. `docs/PRODUCT_SPEC.md`
+4. `docs/ARCHITECTURE.md`
+5. `docs/PROTOCOL.md`
+6. `docs/SECURITY_MODEL.md`
+7. `docs/SOCIAL_GRAPH.md`
+8. `docs/ENTERPRISE_FRAMEWORK.md`
+9. `docs/ROADMAP.md`
+10. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+11. `docs/BUILD_RUNBOOK.md`
 
 ## Status
 
-This is **Gummy 0.1 / Protocol Zero expansion**. It is a runnable product and architecture scaffold, not yet a security-reviewed operating environment.
+This repository is the **new July 24, 2026 Gummy OS**. Older repositories that reused the Gummy name are historical name collisions and are not implementation donors unless a future work order names an exact file and reason.
 
-> Open Gummy. Your computer is already there.
+The current scaffold is runnable. The accepted specification now targets Protocol 0.2 vocabulary and a dependable Personal Gummy OS loop.
+
+> **Open Gummy OS. Your computer is already there.**
