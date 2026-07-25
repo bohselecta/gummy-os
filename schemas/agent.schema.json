@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/agent.schema.json",
+  "title": "Gummy OS Agent",
+  "description": "An executable intelligence or operating process that may perform work for or through an Actor under a Mold and Capability Grant.",
+  "type": "object",
+  "required": ["schema", "id", "name", "runtimeClass", "locality", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.agent/v0" },
+    "id": { "type": "string", "pattern": "^agent:" },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string" },
+    "providerClass": { "type": "string" },
+    "model": { "type": "string" },
+    "runtimeClass": { "enum": ["glyphd-os", "linux-native", "server", "cloud", "browser", "wasm", "other"] },
+    "locality": { "enum": ["local", "lan", "cloud", "organization", "unknown"] },
+    "status": { "enum": ["available", "active", "paused", "offline", "revoked", "archived"] },
+    "humanAuthorityIds": { "type": "array", "items": { "type": "string", "pattern": "^human:" }, "uniqueItems": true },
+    "organizationId": { "type": "string", "pattern": "^org:" },
+    "actorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" }, "uniqueItems": true },
+    "moldIds": { "type": "array", "items": { "type": "string", "pattern": "^mold:" }, "uniqueItems": true },
+    "capabilityCeiling": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "disclosure": {
+      "type": "object",
+      "properties": {
+        "operator": { "type": "string" },
+        "autonomy": { "enum": ["human-directed", "assisted", "bounded-autonomous", "service"] },
+        "providerDisclosure": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
