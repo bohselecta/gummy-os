@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/graph-object.schema.json",
-  "title": "Gummy Graph Object",
+  "title": "Legacy Gummy Graph Object — Protocol 0.1 Migration Input",
+  "description": "Legacy Protocol 0.1 graph object. Read only for deterministic migration into gummy.gummy/v0, gummy.bowl/v0, or gummy.link/v0. Fork lineage migrates to gummy.grab/v0 and a grab-of Link.",
   "type": "object",
   "required": ["schema", "id", "kind", "owner", "visibility"],
   "properties": {
