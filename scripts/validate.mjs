@@ -8,6 +8,7 @@ const required = [
   'src/core/capability-broker.js',
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
+  'docs/BRAND_SYSTEM.md',
   'docs/GLOPPER_NAMING.md',
   'docs/ACTOR_AGENT_MASTER_CONTROL.md',
   'docs/PLATFORM_PLAYGROUND_SECURITY.md',
@@ -26,7 +27,8 @@ const required = [
   'examples/project-brief.task-lease.json',
   'examples/project-brief.work-return.json',
   'plans/active/2026-07-25-personal-gummy-cursor-work-order.md',
-  'plans/active/2026-07-25-gummy-box-cursor-addendum.md'
+  'plans/active/2026-07-25-gummy-box-cursor-addendum.md',
+  'plans/active/2026-07-25-brand-system-cursor-addendum.md'
 ];
 
 for (const path of required) await access(path);
@@ -66,11 +68,37 @@ for (const definition of [
   'Gummy OS       = the universal platform and WebOS',
   'Gummy Canvas   = the open working and creation surface',
   'Gummy Bar      = the persistent candy-store system bar',
-  'Glopper        = the gummy-candy companion and first-party Agent identity',
-  'The Gummy Bar is the candy store.',
-  'Glopper is the companion candy.'
+  'Gummy          = the purple-dominant platform guide/personality',
+  'Glopper        = the gummy-candy action companion and first-party Agent identity',
+  'Gummy tells you where you are.',
+  'Glopper helps you act.'
 ]) {
-  if (!naming.includes(definition)) throw new Error(`Glopper naming is missing: ${definition}`);
+  if (!naming.includes(definition)) throw new Error(`Gummy/Glopper naming is missing: ${definition}`);
+}
+
+const brand = await readFile('docs/BRAND_SYSTEM.md', 'utf8');
+for (const invariant of [
+  'Night Gummy',
+  'Day Gummy',
+  'Purple tells you where you are. Gold tells you what you can do.',
+  'Deep Indigo | `#4B187A`',
+  'Gummy Violet | `#7C2FD0`',
+  'Honey Gold | `#F2B544`',
+  'Warm Cream | `#FFF1C7`',
+  'Aubergine Black | `#100817`',
+  'Gummy = purple-dominant.',
+  'Glopper = gold-dominant.',
+  'No theme marketplace.'
+]) {
+  if (!brand.includes(invariant)) throw new Error(`brand system is missing: ${invariant}`);
+}
+
+for (const forbidden of [
+  'Teal Gummy is allowed',
+  'Red Glopper is allowed',
+  'Users may create custom Gummy themes'
+]) {
+  if (brand.includes(forbidden)) throw new Error(`brand system contains forbidden policy: ${forbidden}`);
 }
 
 const boxDoc = await readFile('docs/GUMMY_BOX_WORK_ORDERS.md', 'utf8');
@@ -104,7 +132,7 @@ for (const requirement of [
   if (!workOrder.includes(requirement)) throw new Error(`active work order is missing: ${requirement}`);
 }
 
-const addendum = await readFile('plans/active/2026-07-25-gummy-box-cursor-addendum.md', 'utf8');
+const boxAddendum = await readFile('plans/active/2026-07-25-gummy-box-cursor-addendum.md', 'utf8');
 for (const requirement of [
   'Local only',
   'Private GitHub',
@@ -112,7 +140,32 @@ for (const requirement of [
   'Glopper Inbox',
   'Work Order is a proposal'
 ]) {
-  if (!addendum.includes(requirement)) throw new Error(`Gummy Box addendum is missing: ${requirement}`);
+  if (!boxAddendum.includes(requirement)) throw new Error(`Gummy Box addendum is missing: ${requirement}`);
+}
+
+const brandAddendum = await readFile('plans/active/2026-07-25-brand-system-cursor-addendum.md', 'utf8');
+for (const requirement of [
+  'Night Gummy',
+  'Day Gummy',
+  '--gummy-deep-indigo: #4B187A;',
+  '--gummy-violet: #7C2FD0;',
+  '--gummy-honey-gold: #F2B544;',
+  '--gummy-warm-cream: #FFF1C7;',
+  '--gummy-aubergine-black: #100817;',
+  'Work package 4 — assistant emphasis',
+  'Work package 8 — accessibility'
+]) {
+  if (!brandAddendum.includes(requirement)) throw new Error(`brand addendum is missing: ${requirement}`);
+}
+
+const product = await readFile('docs/PRODUCT_SPEC.md', 'utf8');
+for (const requirement of [
+  'Exactly two expressions exist',
+  'Gummy    purple-dominant, gold accent',
+  'Glopper  gold-dominant, purple accent',
+  'No color picker, downloadable theme, per-window accent selection, mascot recoloring, or third-party Gummy OS skin is permitted.'
+]) {
+  if (!product.includes(requirement)) throw new Error(`product spec is missing brand requirement: ${requirement}`);
 }
 
 const agent = JSON.parse(await readFile('examples/glopper-web.agent.json', 'utf8'));
@@ -145,4 +198,4 @@ if (!legacySocialPath.includes('SOCIAL_LAYER.md')) {
   throw new Error('legacy SOCIAL_GRAPH.md must point to the canonical SOCIAL_LAYER.md');
 }
 
-console.log('Gummy validation passed with Gummy Box onboarding, frontier-authored Work Orders, Glopper Inbox, Task Lease ownership, Returns, standalone-first development, and explicit authority boundaries.');
+console.log('Gummy validation passed with locked Night/Day expressions, exact purple-gold palette, Gummy/Glopper emphasis, Gummy Box Work Orders, Task Lease ownership, and explicit authority boundaries.');
