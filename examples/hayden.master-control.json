@@ -5,20 +5,29 @@
   "actorId": "actor:hayden",
   "activeAgentId": "agent:glopper-web",
   "activeMoldId": "mold:hayden:personal",
+  "activeTaskLeaseId": "lease:project-brief",
   "authoritativeLocation": "gummy-os:local-browser",
   "deploymentMode": "web-only",
   "syncMode": "manual",
   "syncDirections": [],
   "allowedData": ["gummies", "receipts", "links", "approved-preferences"],
+  "executorPolicy": {
+    "allowedAgentIds": ["agent:glopper-web"],
+    "parallelExecution": "deny",
+    "takeoverRequiresHumanApproval": true
+  },
   "approvalRules": {
     "default": "ask",
     "externalNetwork": "ask",
     "publish": "deny",
     "destructive": "ask",
-    "sync": "ask"
+    "sync": "ask",
+    "nativePromotion": "ask",
+    "portableProfileUpdate": "ask"
   },
   "revokedAgentIds": [],
   "revokedMoldIds": [],
+  "revokedTaskLeaseIds": [],
   "status": "active",
   "updatedAt": "2026-07-25T00:00:00Z"
 }
