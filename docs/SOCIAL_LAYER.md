@@ -4,93 +4,92 @@
 
 Your digital life is not an advertising graph.
 
-Gummy OS builds social computing from portable, user-owned objects with visible ownership, audience, authority, provenance, and history. Social behavior is a natural extension of the personal computer rather than a separate feed-shaped website.
+Gummy OS builds social computing from portable, user-owned, addressable Actors and explicit objects with visible ownership, audience, authority, provenance, and history.
 
 The Social Layer is optional. A private, local-only Personal Gummy OS remains complete.
 
-## Canonical mental model
+## Canonical model
 
 ```text
-Actor = who acts
-Mold = how that Actor is represented and verified
-Gummy = what the Actor creates or operates
+Human = ultimate personal authority
+Actor = persistent addressable entity in the web/world
+Agent = executable intelligence that may operate an Actor
+Mold = permissioned embodiment and operating contract
+Master Control = placement, sync, permission, and revocation authority
+Gummy = what an Actor creates, owns, receives, or operates
 Bowl = where Actors and Gummies gather
 Link = how they relate
-Grab = how a Gummy becomes yours without altering the source
+Grab = independent derivation preserving the source
 ```
 
 ## Actor
 
-An Actor is the accountable person, AI agent, organization, service, application, or licensed character that acts inside Gummy OS.
+An Actor is the persistent web-openable presence others can visit, follow, invite, collaborate with, or address.
 
-Actors create and operate Gummies, join Bowls, establish Links, request authority, and appear in Action Receipts.
+An Actor may embody:
 
-A public figure is a human Actor whose official presence is established through a verified Mold. A fictional or licensed character may be a character Actor with explicit ownership, operator, and license Links.
+- a person;
+- a public figure or celebrity;
+- a licensed character;
+- an organization;
+- a project role;
+- a service;
+- a world;
+- another persistent computational presence.
+
+Every Actor has a stable `@address`. Opening an Actor does not grant control over it.
+
+## Agent
+
+An Agent is separate executable intelligence that may operate an Actor under a Mold, Master Control policy, and Grant.
+
+Agents are not listed as Actor classes. When an Agent needs a public social presence, it may operate or be represented by an Actor, but the Agent identity remains separately visible in Receipts and disclosures.
 
 ## Mold
 
-A Mold is the portable representation and verification profile through which an Actor appears.
+A Mold is the permissioned embodiment and operating contract through which a Human or Agent may open, represent, perform, or operate an Actor.
 
-A Mold may declare:
+A Mold can define:
 
-- handle and public name;
-- Actor class;
-- public description;
-- shape, color, and visual form;
-- operator disclosure for AI agents;
-- identity proofs and keys;
-- organization or licensing claims;
-- discovery endpoints;
-- supported protocol versions;
-- public/private field separation.
+- authorized Human and Agent operators;
+- public representation;
+- role and context;
+- permitted capabilities;
+- data access;
+- publication and synchronization policy;
+- runtime/locality limits;
+- proof, license, and disclosure requirements;
+- expiry and revocation.
 
-Molds create recognition. They do not create authority through appearance alone.
+A Mold is what makes official celebrity, performer, character, organization, guest, and delegated-Agent operation possible without confusing appearance with authority.
 
 ## Gummy
 
-A Gummy is anything an Actor creates, keeps, receives, shares, or operates:
+A Gummy is anything an Actor creates, owns, keeps, receives, shares, or operates: note, file, image, video, project, application, conversation, workflow, invitation, result, or verified artifact.
 
-- note;
-- file;
-- image;
-- video;
-- project;
-- application;
-- conversation;
-- workflow;
-- invitation;
-- generated result;
-- verified artifact.
-
-Every shared Gummy identifies its owner Actor, creator Actor, audience, provenance, rights, dependencies, revision, and Grab policy.
+Every shared Gummy identifies its owner Actor, creator Actor, operating Agent where applicable, Mold, audience, provenance, rights, dependencies, revision, and Grab policy.
 
 ## Bowl
 
-A Bowl is a shared environment with explicit membership, roles, visibility, and rules.
+A Bowl is a shared environment with explicit Actors, allowed Molds, Gummies, membership, roles, visibility, and rules.
 
-Examples:
-
-- family Bowl;
-- private project Bowl;
-- classroom Bowl;
-- public creator Bowl;
-- enterprise team Bowl;
-- temporary event Bowl.
-
-A Bowl contains Actors, allowed Molds, Gummies, conversations, projects, and Links. It is more than a group chat.
+Examples include family, project, classroom, creator, enterprise, and event Bowls.
 
 ## Link
 
-A Link is a typed, scoped, inspectable relationship.
+A Link is a typed, inspectable relationship.
 
 Examples:
 
 - follows;
 - member-of;
 - belongs-to;
-- created-by;
-- operated-by;
+- controlled-by-human;
 - represented-by;
+- operated-by-agent;
+- created-by;
+- deployed-to;
+- synchronized-with;
 - collaborates-with;
 - delegates-to;
 - trusts-for;
@@ -103,104 +102,80 @@ Links are explicit protocol objects, not invisible platform inference.
 
 ## Grab
 
-A Grab creates a new independent Gummy from a source Gummy.
-
-A Grab:
-
-- creates a new Gummy identity;
-- preserves the source ID, revision, and hash;
-- creates a `grab-of` Link;
-- preserves required attribution, license, and use restrictions;
-- never changes the source;
-- lets the new owner continue independently within the source policy.
-
-The user-facing action is **Grab**. `Fork`, `Drop`, and `Clone` are not canonical Social Layer language.
+A Grab creates a new independent Gummy while preserving source ID, revision, hash, rights, attribution, and a `grab-of` Link. The source is never changed.
 
 ## Product surfaces
 
-- **My Actor** — acting identity, Actor class, delegation and authority overview.
-- **Mold editor** — handle, appearance, public/private profile, proofs, keys, disclosure, and export.
-- **Actors** — deliberate discovery of people, agents, services, organizations, applications, and characters.
-- **Bowls** — shared environments with visible membership, roles, policy, and audience.
-- **Gummies** — shared objects organized chronologically, by Bowl, or by project.
-- **Grab** — source policy, obligations, provenance, and independent-copy action.
-- **Link Inspector** — ownership, audience, provenance, dependencies, representation, delegation, and authority relationships.
-
-The final navigation labels may be polished in implementation. The underlying object meanings are locked.
+- **Actors** — deliberate discovery and opening through stable `@addresses`.
+- **Actor Home** — the Actor's public or private web-openable environment.
+- **Molds** — permitted ways Humans or Agents may represent or operate an Actor.
+- **Master Control** — private authority over placement, Agent assignment, sync, and revocation.
+- **Agents** — separate execution identities and disclosures.
+- **Bowls** — shared environments.
+- **Gummies** — shared objects.
+- **Grab** — provenance-preserving independent copy.
+- **Link Inspector** — ownership, representation, operation, delegation, sync, audience, and provenance.
 
 ## Privacy model
 
 - Private by default.
+- Opening is distinct from controlling.
 - Saving is distinct from publishing.
-- Every shared Gummy shows its audience before publication.
-- Bowls expose membership and role policy.
-- Public Mold fields are separate from private Actor state.
-- Blocking cuts discovery and delivery Links while preserving legally necessary audit evidence.
-- Deleting a local copy does not falsely claim remote copies disappeared.
-- Revocation updates future access and signals compliant peers.
-- No inferred advertising profile is required for product operation.
-- A Grab cannot erase source attribution or impersonate the source Actor.
+- Every shared Gummy shows its audience.
+- Public Actor state is separate from private Human and Master Control state.
+- Molds expose only the representation and permissions required for their purpose.
+- Agent operation is disclosed.
+- Blocking cuts discovery and delivery Links where possible.
+- Revocation blocks future operation and synchronization.
+- No advertising profile is required.
 
 ## Agent participation
 
-AI agents are Actor class `agent`.
+An Agent may:
 
-An agent Actor must disclose:
+- operate an Actor under an active Mold;
+- create Gummies for that Actor under a Grant;
+- participate in a Bowl only when the Actor, Mold, and Bowl policy permit it;
+- create Links or Grabs only under explicit authority.
 
-- operator or owner;
-- model/provider class where required;
-- available capabilities;
-- current Mold;
-- last verification time;
-- whether an action is autonomous, assisted, or human-approved.
+The system must disclose which Agent acted, which Actor it acted through, which Mold allowed it, and which Human or organization sponsored it.
 
-An agent Actor cannot join a Bowl, create a Link, publish a Gummy, or perform a Grab without authority from its operator or organization policy.
+## Celebrities, performers, and characters
 
-## Public figures, performers, and characters
+This is where the Actor/Mold/Agent architecture becomes especially powerful:
 
-The Actor/Mold distinction supports future entertainment and public-identity use without confusing appearance with authority:
+- a celebrity can have one official persistent Actor at a verified `@address`;
+- the celebrity may control it directly;
+- an authorized team or Agent may operate it through limited official Molds;
+- a performer may authorize a character Mold;
+- a fictional character may have a licensed Actor;
+- multiple Agents may perform bounded functions without becoming the celebrity or character;
+- fan Actors and fan Gummies remain distinct from official ones;
+- Receipts preserve who actually operated the Actor;
+- Master Control allows immediate revocation or change of operator.
 
-- a celebrity is a human Actor with an official verified Mold;
-- a performer may authorize a service Actor to operate under bounded authority;
-- a fictional character may be a licensed character Actor;
-- a character Actor may have one or more official Molds;
-- fan-created Gummies may preserve Links to an official source without impersonating it;
-- Receipts preserve which Actor actually performed the action.
-
-This section defines identity structure, not a celebrity marketplace or licensing business commitment.
+The protocol defines the identity and authority bridge. It does not yet commit Gummy OS to a celebrity marketplace.
 
 ## Federation direction
 
-The Social Layer should support:
+Future compatible Gummy OS instances may exchange signed Actor, Mold, Gummy, Bowl, Link, Grab, and revocation objects while Agents remain independently hosted and disclosed.
 
-- Gummy-hosted personal accounts;
-- self-hosted Gummy OS instances;
-- enterprise instances;
-- protocol-compatible independent editions;
-- offline export/import;
-- signed Actor and Mold documents;
-- Bowl invitations;
-- Gummy exchange;
-- Link and Grab provenance.
+An Actor's stable address survives changes in Agent, device, runtime, and provider.
 
-Federation is not permission to ignore abuse controls. Trust domains may apply admission, rate, content, identity, and safety policy while preserving object portability.
+## Initial Social Layer proof
 
-## Initial acceptance proof
+Only after Personal Gummy OS works:
 
-The Social Layer becomes active only after Personal Gummy OS is dependable.
+1. Open two distinct Actors by `@address`.
+2. Verify each has separate Human authority, Agent binding, and Mold state.
+3. Create a private Bowl.
+4. Share a Gummy with an explicit audience.
+5. Establish a Link.
+6. Grab an allowed Gummy.
+7. Inspect Actor, Human sponsor, Agent, Mold, rights, source, and provenance.
+8. Revoke an Agent or Mold and prove future operation is blocked.
+9. Persist and resume the state.
 
-Its first bounded proof is:
+## Legacy compatibility
 
-1. Create or import an Actor.
-2. Create or edit that Actor's Mold.
-3. Create a private or invite-only Bowl.
-4. Place a Gummy into that Bowl with an explicit audience.
-5. Establish a Link to another Actor.
-6. Grab an allowed Gummy into an independent version.
-7. Inspect owner, creator, Mold, audience, source, rights, and `grab-of` provenance.
-8. Produce Receipts for publish, Link, invitation, and Grab actions.
-9. Persist the Social Layer after refresh and return.
-
-## Protocol 0.1 compatibility
-
-The current implementation may still display Snack, Snack Graph, Drop, and Fork. Those are legacy Protocol 0.1 labels and must be migrated according to `docs/VOCABULARY.md` and the active Cursor work order.
+Snack, Snack Graph, Drop, and Fork remain Protocol 0.1 migration inputs. Agent-as-Actor assumptions from the earlier Protocol 0.2 draft are also superseded.

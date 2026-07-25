@@ -1,209 +1,198 @@
 # Gummy OS Canonical Vocabulary
 
-**Status:** Accepted specification target for Protocol 0.2  
+**Status:** Founder-corrected specification target  
 **Date:** 2026-07-25  
-**Implementation state:** Migration pending in the current Protocol 0.1 scaffold
+**Implementation state:** Current scaffold and Protocol 0.2 schemas require revision in Cursor
+
+Read `ACTOR_AGENT_MASTER_CONTROL.md` first. It is the authoritative architecture ruling behind these definitions.
 
 ## The complete mental model
 
 ```text
-Actor = who acts
-Mold = how that Actor is represented and verified
-Gummy = what the Actor creates or operates
+Human = ultimate personal authority
+Actor = persistent addressable entity in the web/world
+Agent = executable intelligence that performs work
+Mold = permissioned embodiment and operating contract for an Actor
+Master Control = where authority, placement, and synchronization are decided
+Gummy OS = the Web OS where Actors are opened and deployed
+Glyphd OS = the native AI execution and device-sovereignty environment
+@address = the stable protocol identity and route for an Actor
+Gummy = what an Actor creates, owns, receives, or operates
 Bowl = where Actors and Gummies gather
-Link = how they relate
-Grab = how a Gummy becomes yours without altering the source
+Link = how protocol objects relate
+Grab = how a Gummy becomes independent without altering its source
 ```
 
-This vocabulary is the human-facing and protocol-facing foundation of the Gummy OS social layer.
+## Human
+
+A Human is the ultimate personal authority behind one or more Actors and Agents.
+
+A Human may:
+
+- directly open and control an Actor;
+- authorize an Agent;
+- choose a Mold;
+- decide what synchronizes;
+- approve or deny consequential work;
+- revoke access through Master Control.
+
+A Human is not automatically identical to an Actor record. The same Human may operate multiple Actors in different roles and contexts.
 
 ## Actor
 
-An **Actor** is the accountable principal that performs an action or is credited with one.
+An **Actor** is a persistent, addressable computational entity expressed through the web and shared protocol.
 
-Actor classes may include:
-
-- human;
-- AI agent;
-- organization;
-- service;
-- application;
-- licensed character.
-
-A celebrity or public figure remains a human Actor. Their official status is established through a verified Mold, not through a special celebrity protocol class.
+An Actor may embody a person, celebrity, character, organization, project role, service, world, or other persistent presence.
 
 An Actor:
 
-- receives or sponsors capability grants;
+- has a stable `@address`;
+- can be opened through Gummy OS from a compatible device;
 - owns or operates Gummies;
-- joins Bowls;
-- creates Links;
-- appears in Action Receipts;
-- may authorize an agent Actor to act on its behalf.
+- joins Bowls and creates Links;
+- carries state, memory, permissions, relationships, and provenance;
+- may be directly controlled by a Human;
+- may be operated by an authorized Agent;
+- may synchronize between web and native execution environments;
+- remains the same Actor when its location or operator changes.
 
-**Invariant:** authority belongs to the Actor. A Mold does not independently act.
+**Invariant:** Actor is not merely an account, profile, human, model, or operating-system process.
+
+## Agent
+
+An **Agent** is an executable intelligence or operating process.
+
+An Agent may run locally inside Glyphd OS, another AI-native Linux environment, a governed server, a cloud runtime, or a bounded browser/Wasm runtime.
+
+An Agent:
+
+- plans and executes work;
+- uses tools and applications;
+- accesses only granted resources;
+- may deploy or operate Actors;
+- may synchronize Actor state under Master Control;
+- identifies itself in Action Receipts;
+- never becomes the Actor merely because it acts through it.
+
+Zeke is the primary first-party example of a native Agent.
 
 ## Mold
 
-A **Mold** is the portable representation and verification profile through which an Actor appears inside Gummy OS.
+A **Mold** is the permissioned embodiment and reusable Actor definition through which a Human or Agent may open, instantiate, represent, or operate an Actor.
 
-A Mold may contain:
+A Mold may specify:
 
-- a handle;
-- name and public description;
-- visual form, shape, color, and presentation;
-- Actor class disclosure;
-- operator disclosure for AI agents;
-- identity proofs;
-- public keys and key-rotation history;
-- organization or licensing assertions;
-- compatibility and protocol versions;
-- public and private field separation.
+- Actor identity;
+- authorized Human or Agent operators;
+- visual and behavioral presentation;
+- role and context;
+- permitted capabilities;
+- allowed runtime and device locations;
+- synchronization policy;
+- disclosure requirements;
+- identity, organization, celebrity, character, or license proofs;
+- duration, expiry, and revocation;
+- which state may be read, changed, or published.
 
-One Actor may use more than one Mold when different roles or contexts require distinct presentation. Every Mold must point to one Actor. A Mold cannot create independent authority, hide that an Actor is non-human, or prove identity through appearance alone.
+A Mold may be personal, professional, temporary, delegated, official, character-bound, or organization-controlled.
 
-**Invariant:** a Mold is how an Actor is represented and verified—not who acts.
+**Invariant:** a Mold does not independently act. It is the permissioned form and operating contract for the Actor.
+
+## Master Control
+
+**Master Control** is the human-controlled authority layer that decides:
+
+- where an Actor runs;
+- which copy of state is authoritative;
+- what synchronizes between web and OS;
+- which Agent may operate an Actor;
+- which Mold is required;
+- what approval is needed;
+- what may leave the device;
+- how access is revoked;
+- what evidence must be retained.
+
+Master Control prevents sync from becoming ambient replication or invisible platform ownership.
+
+## Gummy OS
+
+**Gummy OS** is the Web OS plane: the familiar computer that can be opened through the browser.
+
+It contains desktops, windows, applications, files, Gummies, Bowls, Links, Receipts, and Actor surfaces.
+
+Actors can be deployed and opened there. Gummy OS does not silently inherit host-machine authority.
+
+## Glyphd OS
+
+**Glyphd OS** is the native AI execution and device-sovereignty plane.
+
+It may host Zeke or another Agent with explicit access to local compute, files, models, devices, applications, and protected runtimes.
+
+A native Agent may deploy or synchronize Actors into Gummy OS through the protocol.
+
+## @address
+
+An **@address** is the stable human-facing protocol identity and route for an Actor.
+
+It supports identity resolution, opening, messaging, invitations, permission, synchronization, Agent binding, Bowl membership, Gummy ownership, provenance, and revocation.
 
 ## Gummy
 
-A **Gummy** is anything an Actor creates, keeps, receives, shares, or operates inside Gummy OS.
+A **Gummy** is anything an Actor creates, owns, keeps, receives, shares, or operates.
 
-Examples include:
+Examples include notes, files, images, videos, projects, conversations, applications, workflows, invitations, generated results, and verified artifacts.
 
-- note;
-- file;
-- image;
-- video;
-- project;
-- conversation;
-- application;
-- workflow;
-- invitation;
-- generated result;
-- verified artifact.
-
-A Gummy can carry:
-
-- stable identity;
-- owner Actor;
-- creator Actor;
-- current operator Actor;
-- audience and visibility;
-- provenance;
-- revision history;
-- rights and usage terms;
-- required capabilities;
-- source and dependency Links;
-- cryptographic hashes or signatures.
-
-**Invariant:** a Gummy is the thing. It is not the Actor and it is not the shared environment.
+A Gummy may carry owner Actor, creator Actor, operating Agent, Mold, audience, provenance, revision history, rights, capabilities, hashes, and Links.
 
 ## Bowl
 
-A **Bowl** is a shared environment in which Actors and Gummies gather under explicit rules.
-
-A Bowl may be:
-
-- private;
-- invitation-only;
-- family;
-- project-specific;
-- classroom;
-- organization-controlled;
-- public.
-
-A Bowl defines:
-
-- member Actors;
-- allowed Molds;
-- roles;
-- visibility;
-- contribution and moderation policy;
-- Gummy audience defaults;
-- agent participation rules;
-- revocation and exit behavior.
-
-A Bowl can contain conversations, projects, files, applications, and other Gummies. It is more than a chat room or feed.
+A **Bowl** is a shared environment in which Actors and Gummies gather under explicit membership, roles, visibility, and rules.
 
 ## Link
 
 A **Link** is an intentional, inspectable relationship between protocol objects.
 
-Examples include:
-
-- follows;
-- member-of;
-- belongs-to;
-- created-by;
-- operated-by;
-- represented-by;
-- collaborates-with;
-- delegates-to;
-- trusts-for;
-- shared-with;
-- derived-from;
-- grab-of;
-- approved-by.
-
-Links are typed, scoped, attributable, and reversible where the relationship permits it. Gummy OS must not silently replace explicit Links with inferred advertising or engagement relationships.
+Examples include represented-by, operated-by-agent, controlled-by-human, deployed-to, synchronized-with, member-of, created-by, delegates-to, shared-with, derived-from, grab-of, and approved-by.
 
 ## Grab
 
-A **Grab** is the action that creates an independent Gummy from an existing Gummy while preserving provenance.
-
-A successful Grab:
-
-1. creates a new Gummy identity;
-2. preserves a cryptographic or otherwise verifiable reference to the source;
-3. records a `grab-of` Link;
-4. carries forward applicable attribution, license, and usage obligations;
-5. never modifies the source Gummy;
-6. allows the new owner to continue independently within the source's policy.
-
-The user-facing verb is **Grab**. `Fork`, `Drop`, and `Clone` are not canonical social-layer language. `Fork` may still appear in source-control documentation when referring literally to software-repository operations.
+A **Grab** creates an independent Gummy from an existing Gummy while preserving provenance, source identity, applicable rights, and a `grab-of` Link. The source is never changed.
 
 ## Natural language examples
 
 Correct:
 
-- “Which Actor created this Gummy?”
-- “Open Hayden's Mold.”
-- “Put this Gummy in the project Bowl.”
-- “This Link shows that the agent Actor operated the application for Hayden.”
-- “Grab this Gummy to make an independent version.”
-- “The Receipt identifies the Actor, Mold, Grant, source Gummy, and result Gummy.”
+- “Open the Actor at `@hayden`.”
+- “Hayden is controlling this Actor directly.”
+- “Zeke is the Agent operating the Actor through a work Mold.”
+- “Master Control keeps this Actor local-only.”
+- “Sync this Actor's approved Gummies to Gummy OS.”
+- “Which Actor owns this Gummy?”
+- “Which Agent performed the work?”
+- “Which Mold authorized that operation?”
+- “Grab this Gummy without changing the source.”
 
 Incorrect:
 
-- “Which Mold created this?”
-- “The Mold has permission.”
-- “The visual shape proves this is the official Actor.”
-- “Grabbing changed the original.”
+- “The Mold created this.”
+- “The profile is the Actor.”
+- “The Agent and Actor are the same thing.”
+- “Opening the Actor grants control automatically.”
+- “Sync everything because the account is signed in.”
 
-## Protocol 0.1 migration
+## Protocol migration consequence
 
-| Legacy term | Canonical target | Migration rule |
-| --- | --- | --- |
-| Snack | Actor + Mold | Split acting identity from representation and verification. |
-| Snack Bar | Mold editor | Final UI label may be selected during implementation without changing the object model. |
-| Snack Graph | Gummy OS Social Layer | Preserve graph mechanics; replace user-facing identity. |
-| Drop | Gummy | Preserve stable identity, owner, audience, provenance, and content. |
-| Graph object | Actor, Mold, Gummy, Bowl, or Link | Convert by object kind. |
-| Fork | Grab | Create a new Gummy and a `grab-of` Link. |
-| fork-of | grab-of | Preserve source lineage. |
+The earlier Protocol 0.2 draft correctly separated Mold from Actor, but still made Actor too similar to an acting account and treated Agent as an Actor class.
 
-Deterministic example:
+Cursor must correct that model:
 
-```text
-snack:hayden
-→ actor:hayden
-→ mold:hayden:default
+- Actor becomes the persistent addressable web entity;
+- Agent becomes a separate executable object;
+- Human authority is represented separately from Actor execution;
+- Mold expands into a permissioned embodiment and operating contract;
+- Master Control governs placement and synchronization;
+- Actor records gain stable `@address`, deployment, Agent-binding, and sync state;
+- Receipts identify Human sponsor, Actor, Agent, Mold, Grant, source, and result;
+- no existing local data is silently discarded.
 
-drop:welcome
-→ gummy:welcome
-
-fork-of drop:welcome
-→ grab record + grab-of Link to gummy:welcome
-```
-
-Legacy Protocol 0.1 inputs remain readable during migration. New Protocol 0.2 writes must use the canonical model after the Cursor migration is accepted.
+The initial build still proves one local Personal Gummy OS loop before implementing distributed Glyphd OS ↔ Gummy OS synchronization.

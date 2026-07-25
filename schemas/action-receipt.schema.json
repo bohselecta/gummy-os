@@ -2,25 +2,32 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/action-receipt.schema.json",
   "title": "Gummy OS Action Receipt",
-  "description": "User-readable and machine-readable evidence of an Actor request, authority, resources, route, outcome, and produced Gummies.",
+  "description": "Evidence of a Human-sponsored action performed directly or by an Agent through an Actor, Mold, Grant, and Master Control policy.",
   "type": "object",
-  "required": ["schema", "id", "action", "actorId", "application", "outcome", "createdAt"],
+  "required": ["schema", "id", "action", "humanAuthorityId", "actorId", "operatorType", "operatorId", "moldId", "application", "outcome", "createdAt"],
   "properties": {
     "schema": { "const": "gummy.action-receipt/v0" },
     "id": { "type": "string", "pattern": "^receipt:" },
     "action": { "type": "string", "minLength": 1 },
+    "humanAuthorityId": { "type": "string", "pattern": "^human:" },
     "actorId": { "type": "string", "pattern": "^actor:" },
-    "sponsorActorId": { "type": "string", "pattern": "^actor:" },
+    "actorAddress": { "type": "string", "pattern": "^@" },
+    "operatorType": { "enum": ["human", "agent"] },
+    "operatorId": { "type": "string", "pattern": "^(human|agent):" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
     "moldId": { "type": "string", "pattern": "^mold:" },
+    "masterControlId": { "type": "string", "pattern": "^master-control:" },
     "application": { "type": "string" },
     "applicationPackId": { "type": "string", "pattern": "^pack:" },
-    "modelRoute": {
+    "executionRoute": {
       "type": "object",
       "properties": {
         "providerClass": { "type": "string" },
         "model": { "type": "string" },
         "runtime": { "type": "string" },
-        "locality": { "enum": ["local", "lan", "cloud", "organization", "unknown"] }
+        "locality": { "enum": ["web", "local", "lan", "cloud", "organization", "unknown"] },
+        "authoritativeLocation": { "type": "string" },
+        "syncMode": { "enum": ["none", "manual", "approved", "continuous"] }
       },
       "additionalProperties": true
     },
@@ -46,13 +53,14 @@
       "properties": {
         "sourceHashes": { "type": "array", "items": { "type": "string" } },
         "resultHashes": { "type": "array", "items": { "type": "string" } },
-        "traceRef": { "type": "string" }
+        "traceRef": { "type": "string" },
+        "revocationProof": { "type": "string" }
       },
       "additionalProperties": true
     },
     "detail": { "type": "string" },
     "createdAt": { "type": "string", "format": "date-time" },
-    "legacyActor": { "type": "string", "description": "Protocol 0.1 compatibility input only. New writes use actorId." },
+    "legacyActor": { "type": "string", "description": "Protocol 0.1 compatibility input only." },
     "extensions": { "type": "object" }
   },
   "additionalProperties": true

@@ -2,265 +2,357 @@
 
 ## Architectural thesis
 
-Gummy OS is one protocol expressed through three product modes:
+Gummy OS is the browser-delivered **Web OS plane** where persistent, addressable Actors are opened and experienced.
 
-1. **Personal computer** — private desktop, Gummies, applications, companion, and local or connected intelligence.
-2. **Gummy OS Social Layer** — portable Actors and Molds, Bowls, Gummies, Links, sharing, and Grabs.
-3. **Enterprise Habitat** — organizations, Actor roles, policies, registries, runtime pools, audit, and deployment controls.
+Glyphd OS is the native AI execution and device-sovereignty plane where Agents such as Zeke may run.
 
-These are not separate products glued together. They operate on the same object, capability, provenance, and Receipt model.
-
-The current build priority is the first mode: a dependable Personal Gummy OS file-to-agent-to-artifact loop.
-
-## Canonical object model
+Master Control connects those planes and keeps Human authority above both.
 
 ```text
-Actor = who acts
-Mold = how that Actor is represented and verified
-Gummy = what the Actor creates or operates
-Bowl = where Actors and Gummies gather
-Link = how they relate
-Grab = how a Gummy becomes yours without altering the source
+Human authority
+      │
+      ▼
+Master Control
+placement · sync · permission · revocation
+      │
+      ├──────────── protocol / @address ────────────┐
+      │                                              │
+      ▼                                              ▼
+Actor in Gummy OS                               Agent in Glyphd OS
+persistent web entity                          executable intelligence
 ```
 
-### Actor authority
+The Actor and Agent can produce one coherent experience without becoming the same object.
 
-Actor is the principal used for capability, ownership, delegation, and Receipt semantics. Human, agent, organization, service, application, and licensed-character Actors must disclose their class where relevant.
+## Core entities
 
-### Mold representation
+### Human
 
-Mold is the presentation and verification profile for an Actor. One Actor may have multiple Molds. Every Mold points to one Actor. A Mold cannot grant itself authority and visual appearance is never authentication.
+The ultimate personal authority. A Human may directly control an Actor, authorize an Agent, choose a Mold, approve synchronization, and revoke access.
 
-### Gummy object
+### Actor
 
-Gummy is the general owned or operated object class: file, note, image, video, project, conversation, application, workflow, invitation, or generated artifact.
+A persistent, addressable computational entity expressed through the web and shared protocol.
 
-### Bowl environment
+An Actor has:
 
-Bowl is a governed shared environment containing Actors, Molds, Gummies, and Links.
+- stable ID and `@address`;
+- state and memory references;
+- Gummies;
+- Molds;
+- Agent bindings;
+- Links and Bowl membership;
+- deployment location;
+- synchronization policy;
+- provenance and Receipts.
 
-### Link relation
+An Actor may embody a person, public figure, character, organization, service, project role, world, or other persistent presence.
 
-Link is a typed, explicit relation between protocol objects.
+### Agent
 
-### Grab derivation
+An executable intelligence or operating process.
 
-Grab creates a new independent Gummy and a `grab-of` Link while preserving the source.
+An Agent has:
 
-## Planes
+- stable ID;
+- runtime and locality;
+- provider/model disclosure;
+- capability ceiling;
+- Human authority references;
+- Actor bindings;
+- Mold bindings;
+- status and version;
+- evidence and Receipt obligations.
 
-### 1. Experience Plane
+Zeke is the primary first-party native Agent example.
 
-The browser-native interface:
+### Mold
 
-- desktop and window manager;
-- dock and launcher;
-- My Files and object browser;
-- Gummy Browser;
-- native chat and companion;
-- Mold editor;
-- Gummy OS Social Layer;
-- Enterprise Habitat;
-- approvals and Receipts.
+A permissioned embodiment and operating contract for one Actor.
 
-The Experience Plane must remain useful before any capsule or external model starts.
+A Mold defines:
 
-### 2. Object and Relationship Plane
+- which Humans or Agents may use it;
+- representation and role;
+- capability scope;
+- read/write/publish scope;
+- runtime and locality rules;
+- synchronization policy;
+- proof and licensing requirements;
+- disclosure;
+- issue, expiry, and revocation.
 
-Everything a person can possess, open, share, operate, or relate is represented with stable identity, ownership, audience, provenance, and capabilities.
+### Master Control
 
-Core object classes:
+The Human-controlled authority record and interface that decides:
 
-- Actor;
-- Mold;
-- Gummy;
-- Bowl;
-- Link;
-- Grab record;
-- Application Pack;
-- organization;
-- policy pack;
-- capability grant;
-- Action Receipt.
+- authoritative location;
+- web/local/hybrid placement;
+- active Agent;
+- active Mold;
+- allowed data flow;
+- synchronization direction and frequency;
+- approval requirements;
+- revocation and lock state.
 
-The relationship model is not a surveillance profile. It exists to answer explicit questions:
+### Gummy
 
-- Which Actor owns this Gummy?
-- Which Actor created or operated it?
-- Which Mold represented that Actor?
-- Who may see it?
-- Which Bowl contains it?
-- Which Links explain its relationships?
-- Was it Grabbed, and from which source?
-- Which Grant authorized the action?
+An object an Actor creates, owns, receives, shares, or operates: file, note, project, conversation, application, workflow, result, or artifact.
 
-### 3. Agent Plane
+### Bowl, Link, and Grab
 
-The Agent Plane owns model adapters, routing, task planning, memory selection, tool and application selection, handoffs, recovery, cost controls, and explanation.
+Bowls are shared environments. Links are explicit relationships. Grabs create independent Gummies while preserving source provenance.
 
-No model provider is architectural. A personal Gummy OS may use a local model, a user-funded provider, a managed service, or an organization broker.
+## Product modes
 
-An agent is an Actor. It must not be confused with its Mold, provider, or application host.
+### 1. Personal Gummy OS
 
-### 4. Capability Plane
+The first active product mode:
 
-The Capability Plane is Gummy OS's security kernel.
+- browser-native desktop;
+- personal Actor;
+- local Master Control;
+- one bounded Agent route;
+- permissioned Mold;
+- local Gummies and Receipts;
+- durable return continuity.
 
-A Capability Grant identifies:
+### 2. Gummy OS Social Layer
 
-- Actor;
-- optional sponsoring Actor;
-- optional Mold used for presentation or verification;
-- action;
-- resource Gummy or other resource;
-- scope;
-- risk;
-- reason;
-- issuer;
-- approval source;
-- issue and expiry times;
-- revocation state.
+Later:
 
-Connectors, models, applications, capsules, Links, Grabs, and sharing all cross this plane. Long-lived credentials remain in a trusted broker and are not copied into model prompts.
+- public and private Actors;
+- verified Molds;
+- Bowls;
+- social Links;
+- Grabs;
+- invitations;
+- provenance and audience controls;
+- public-figure and licensed-character structures.
 
-### 5. Runtime Plane
+### 3. Native Agent Bridge
 
-The runtime router selects the least expensive compatible execution environment:
+Later:
 
-```text
-web-native → Wasm-native → Linux compatibility → governed cloud
-```
+- Actor in Gummy OS;
+- Agent in Glyphd OS;
+- protocol binding through `@address`;
+- Master Control placement and synchronization;
+- local-device capabilities;
+- native applications and protected resources.
 
-Runtime categories:
+### 4. Enterprise Habitat
 
-- **Web-native application** — ordinary Gummy OS or SaaS application.
-- **Wasm capsule** — fast local process and filesystem environment.
-- **Linux compatibility capsule** — Linux or x86 software through an evaluated compatibility runtime.
-- **Governed cloud capsule** — hardware-dependent, long-running, proprietary, or enterprise-controlled execution.
+Later:
 
-The user experiences one computer regardless of runtime location.
-
-### 6. Enterprise Plane
-
-The Enterprise Plane adds policy and administration without inventing an incompatible object system:
-
-- organization identity and Actor roles;
-- tenant boundaries;
-- policy packs;
+- organization-controlled Humans, Actors, Agents, and Molds;
+- policy overlays;
 - Application Pack registries;
 - model and connector brokers;
 - runtime pools;
-- data residency;
-- retention and legal hold;
-- audit export;
-- deployment controls;
-- incident response.
+- audit, retention, deployment, and revocation.
 
-Enterprise policy narrows what an Actor may do. It does not silently expand authority.
+## Architecture planes
 
-### 7. Federation Plane
+### Experience Plane
 
-Federation allows compatible Gummy OS editions to exchange signed protocol objects without one mandatory central social network.
+- desktop and window manager;
+- dock and launcher;
+- Gummy Browser;
+- Actor surface;
+- Agent surface;
+- Mold surface;
+- Master Control;
+- My Gummies;
+- Bowls, Links, Grabs;
+- approvals and Receipts.
 
-It defines portable Actor and Mold documents, discovery endpoints, signatures, Bowl invitations, Gummy exchange, Links, Grab lineage, compatibility declarations, revocation, key rotation, and organization trust policies.
+The Experience Plane remains useful before any native Agent or external model starts.
 
-Federation is phased after strong local identity, object, sharing, and migration semantics exist.
+### Authority Plane
+
+The security kernel:
+
+- Human authority;
+- Master Control;
+- Molds;
+- Capability Grants;
+- approval rules;
+- revocation;
+- data-flow and sync policy.
+
+No prompt creates authority.
+
+### Actor and Object Plane
+
+Stores:
+
+- Actors and `@addresses`;
+- Gummies and bytes;
+- Bowls;
+- Links;
+- Grab lineage;
+- ownership, audience, rights, revisions, and provenance.
+
+### Agent Plane
+
+Owns:
+
+- Agent identities;
+- model adapters;
+- routing;
+- planning;
+- tool and application selection;
+- execution;
+- recovery;
+- cost and locality disclosure;
+- native Glyphd OS binding later.
+
+**An Agent is not an Actor class.**
+
+### Runtime Plane
+
+```text
+web-native → browser/Wasm → Linux-native → governed server/cloud
+```
+
+Gummy OS chooses the least-authoritative compatible runtime under Master Control and Mold policy.
+
+### Protocol Plane
+
+Provides:
+
+- stable `@address` resolution;
+- Actor discovery and opening;
+- Agent binding;
+- permission exchange;
+- synchronization;
+- messaging;
+- Bowl invitations;
+- Gummy routing;
+- Receipt and revocation signals;
+- compatibility negotiation.
+
+### Enterprise and Federation Plane
+
+Adds organization policy, trusted registries, signed object exchange, independent editions, deployment modes, and cross-domain trust without changing the core Human/Actor/Agent/Mold separation.
+
+## Runtime stack from the founder drawing
+
+```text
+Physical device and Human input
+        ↓
+Reality / device layer
+        ↓
+Network and protocol layer
+        ↓
+AI-native Linux distribution / Glyphd OS
+        ↓
+Agent runtime
+        ↓ Mold + Grant + Master Control
+Gummy OS / Web OS
+        ↓
+Addressable Actor and owned Gummies
+```
+
+The layers may be distributed. The user experiences one coherent computer.
 
 ## Trust boundaries
 
 ```text
-Host browser / physical computer
-        │ browser sandbox
-Trusted Gummy OS origin
-        │ capability broker
-Actors, Gummies, object stores, connectors, Bowls, organizations
-        │ task Grants
-Runtime capsules and vendor software
-        │ verified outputs
-Result Gummies + Action Receipts
+Physical device / host OS
+        │
+        ├── Human input and hardware authority
+        │
+Glyphd OS / governed native runtime
+        │ Agent capabilities
+        │
+Protocol + Master Control
+        │ Mold + Grant + sync policy
+        │
+Gummy OS trusted origin
+        │ Actor and Gummy state
+        │
+External sites, services, Bowls, and applications
 ```
 
-No boundary is replaced by prompt instructions. Prompts may guide reasoning; capability grants determine authority.
+The host remains outside Gummy OS authority unless an explicit native Agent capability crosses the boundary.
 
 ## Data architecture
 
-### Local-first personal state
+### Personal local state
 
-Personal Gummy OS stores:
+- Human authority record;
+- Actor record and provisional `@address`;
+- Agent record;
+- Mold contracts;
+- Master Control record;
+- Gummy metadata in IndexedDB;
+- Gummy bytes in OPFS;
+- Links, Grants, and Receipts;
+- deterministic legacy migration state.
 
-- Actor and Mold metadata;
-- desktop preferences;
-- project and Gummy index;
-- actual local Gummy bytes in OPFS;
-- cached Bowls and Links where enabled;
-- Receipt ledger;
-- encrypted connector references;
-- deterministic Protocol 0.1 migration state.
+### Authoritative state
 
-### Object persistence
+Every Actor declares an authoritative location. Master Control—not sign-in state—decides whether other locations are mirrors, caches, approved replicas, or active peers.
 
-Structured metadata belongs in IndexedDB or an equivalently explicit local-first store. File and artifact bytes belong in OPFS or an equivalently explicit byte store. A Gummy identity must not be confused with its storage location.
+### Synchronization
 
-### Sync service
+Future synchronization is selective and explicit:
 
-A future sync service replicates encrypted Gummies and relationship changes with object-level versioning, conflict-safe merges, offline operation, selective synchronization, revocation, portable export, and organization policy overlays.
-
-### Relationship service
-
-The relationship service stores explicit Links and audience decisions, not inferred behavioral advertising profiles. Public discovery indexes only fields an Actor deliberately publishes through a Mold.
+- data classes are allowlisted;
+- direction is visible;
+- approval is configurable;
+- conflicts preserve evidence;
+- revocation blocks future flow;
+- sync never silently expands Agent authority.
 
 ## Application Pack architecture
 
-An Application Pack contains:
-
-```text
-application.agentpack/
-├── manifest.json
-├── capabilities.json
-├── permissions.json
-├── semantic-interface-map.json
-├── workflows/
-├── documentation/
-├── policies/
-├── verification/
-├── recovery/
-└── signatures/
-```
-
-Preferred control hierarchy:
+An Application Pack teaches an authorized Agent how to operate one application through the highest-reliability available interface:
 
 1. typed application capability;
 2. vendor API or MCP tool;
-3. semantic interface command;
+3. semantic command;
 4. accessibility-tree interaction;
 5. visual GUI interaction;
-6. coordinate interaction as a last resort.
+6. coordinate interaction as last resort.
 
-## Protocol 0.1 compatibility bridge
+The Pack does not grant authority. Mold, Master Control, policy, and Grants do.
 
-The current scaffold stores `snack`, `drop`, and `fork` concepts. The accepted target is Protocol 0.2.
+## Legacy migration
 
-The bridge must:
+The current scaffold contains Snack, Drop, Fork, demo companion, and Actor-as-account assumptions.
 
-- split each Snack into an Actor and at least one Mold;
-- convert each Drop or compatible graph object into a Gummy;
-- preserve Bowls;
-- convert relationship objects into Links;
-- convert fork lineage into Grab records and `grab-of` Links;
-- preserve IDs through deterministic mapping where possible;
-- keep source data readable until migration is verified;
-- never write new Protocol 0.1 social objects after migration acceptance.
+Cursor must migrate them into:
+
+```text
+legacy Snack
+→ Human authority + Actor + Mold
+
+legacy companion/model
+→ Agent
+
+legacy file/drop
+→ Gummy
+
+legacy fork
+→ Grab + grab-of Link
+```
+
+Migration must be deterministic, idempotent, and non-destructive.
 
 ## Architecture invariants
 
-- Gummy OS remains useful without a social account.
-- Gummy OS remains useful without an enterprise organization.
-- Actor is the authority principal.
-- Mold is representation and verification, not authority.
-- Every Gummy carries ownership and provenance appropriate to its risk.
-- Every shared Gummy declares audience.
-- Every Grab creates a new Gummy identity and preserves a `grab-of` Link.
-- Every consequential Actor action is receiptable.
-- Every runtime is replaceable through an adapter.
-- Every provider is replaceable through an adapter.
-- Every compatible independent edition may remain protocol-compatible without using Gummy-hosted services.
+- Human authority remains above Actor and Agent.
+- Actor and Agent are distinct.
+- Actor has a stable address independent of execution location.
+- Mold is an operating contract, not merely presentation.
+- Master Control makes placement and synchronization explicit.
+- Gummy OS remains useful without Glyphd OS.
+- Glyphd OS may enhance an Actor without owning it.
+- No model, Agent, application, or synchronized device receives ambient authority.
+- Every consequential action is receiptable.
+- Every provider and runtime is replaceable.
+- Every Grab preserves source provenance.
+- Personal Gummy OS works before broad social, enterprise, native bridge, or federation expansion.

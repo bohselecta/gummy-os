@@ -1,0 +1,24 @@
+{
+  "schema": "gummy.master-control/v0",
+  "id": "master-control:hayden",
+  "humanAuthorityId": "human:hayden",
+  "actorId": "actor:hayden",
+  "activeAgentId": "agent:personal-broker",
+  "activeMoldId": "mold:hayden:personal",
+  "authoritativeLocation": "gummy-os:local-browser",
+  "deploymentMode": "web-only",
+  "syncMode": "manual",
+  "syncDirections": [],
+  "allowedData": ["gummies", "receipts", "links"],
+  "approvalRules": {
+    "default": "ask",
+    "externalNetwork": "ask",
+    "publish": "deny",
+    "destructive": "ask",
+    "sync": "ask"
+  },
+  "revokedAgentIds": [],
+  "revokedMoldIds": [],
+  "status": "active",
+  "updatedAt": "2026-07-25T00:00:00Z"
+}
