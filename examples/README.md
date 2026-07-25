@@ -6,6 +6,7 @@
 - `glopper-web.agent.json` — distinct first-party web Agent executor
 - `hayden.mold.json` — permissioned operating contract connecting Human, Actor, and Glopper Web
 - `hayden.master-control.json` — local placement, approval, assignment, sync, and revocation authority
+- `project-brief.task-lease.json` — exclusive bounded ownership of one task by Glopper Web
 - `welcome.gummy.json` — source Gummy owned by the Actor
 - `builders.bowl.json` — shared Bowl
 - `welcome-created-by.link.json` — explicit relationship
@@ -18,8 +19,10 @@ Human authority
 → Master Control
 → Actor in Gummy OS
 ↔ agent:glopper-web
-through a Mold, Grant, task lease, and protocol route
+through a Mold, Grant, Task Lease, and protocol route
 ```
+
+The Task Lease prevents Web, Cloud, Native, or Phone Glopper executors from silently taking overlapping ownership of the same authoritative work.
 
 The Grab set remains:
 
