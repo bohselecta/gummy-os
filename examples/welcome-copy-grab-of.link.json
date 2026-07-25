@@ -1,0 +1,25 @@
+{
+  "schema": "gummy.link/v0",
+  "id": "link:welcome-copy-grab-of-welcome",
+  "type": "grab-of",
+  "source": {
+    "kind": "gummy",
+    "id": "gummy:welcome-copy"
+  },
+  "target": {
+    "kind": "gummy",
+    "id": "gummy:welcome"
+  },
+  "createdByActorId": "actor:hayden",
+  "moldId": "mold:hayden:default",
+  "scope": {
+    "grabId": "grab:welcome-copy"
+  },
+  "consent": {
+    "sourceApproved": true,
+    "targetApproved": true,
+    "policyReference": "source-gummy-rights"
+  },
+  "status": "active",
+  "createdAt": "2026-07-25T00:00:00Z"
+}

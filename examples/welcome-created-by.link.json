@@ -1,0 +1,25 @@
+{
+  "schema": "gummy.link/v0",
+  "id": "link:welcome-created-by-hayden",
+  "type": "created-by",
+  "source": {
+    "kind": "gummy",
+    "id": "gummy:welcome"
+  },
+  "target": {
+    "kind": "actor",
+    "id": "actor:hayden"
+  },
+  "createdByActorId": "actor:hayden",
+  "moldId": "mold:hayden:default",
+  "scope": {
+    "project": "Gummy OS"
+  },
+  "consent": {
+    "sourceApproved": true,
+    "targetApproved": true,
+    "policyReference": "personal-owner"
+  },
+  "status": "active",
+  "createdAt": "2026-07-25T00:00:00Z"
+}

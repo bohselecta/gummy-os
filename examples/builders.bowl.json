@@ -1,0 +1,28 @@
+{
+  "schema": "gummy.bowl/v0",
+  "id": "bowl:gummy-builders",
+  "name": "Gummy Builders",
+  "description": "Actors building protocol-compatible Gummy OS editions.",
+  "ownerActorId": "actor:hayden",
+  "visibility": "invite",
+  "members": [
+    {
+      "actorId": "actor:hayden",
+      "moldId": "mold:hayden:default",
+      "role": "owner",
+      "status": "active",
+      "joinedAt": "2026-07-25T00:00:00Z"
+    }
+  ],
+  "gummyIds": ["gummy:welcome"],
+  "policy": {
+    "whoCanInvite": ["owner"],
+    "whoCanPublish": ["owner", "member"],
+    "agentActorsAllowed": true,
+    "defaultGummyVisibility": "bowl",
+    "grabPolicy": "per-gummy"
+  },
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z",
+  "legacyIds": ["bowl:builders"]
+}

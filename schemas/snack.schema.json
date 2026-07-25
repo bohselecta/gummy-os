@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/snack.schema.json",
-  "title": "Gummy Snack",
+  "title": "Legacy Gummy Snack — Protocol 0.1 Migration Input",
+  "description": "Legacy Protocol 0.1 object that conflates acting identity and representation. Read only for migration into one gummy.actor/v0 plus at least one gummy.mold/v0. Do not emit new Snack objects after Protocol 0.2 migration acceptance.",
   "type": "object",
   "required": ["schema", "id", "name", "handle", "shape", "colors"],
   "properties": {

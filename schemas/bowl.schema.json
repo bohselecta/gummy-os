@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/bowl.schema.json",
+  "title": "Gummy OS Bowl",
+  "description": "A shared environment where Actors and Gummies gather under explicit membership, visibility, and policy.",
+  "type": "object",
+  "required": ["schema", "id", "name", "ownerActorId", "visibility", "members", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.bowl/v0" },
+    "id": { "type": "string", "pattern": "^bowl:" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "visibility": { "enum": ["private", "invite", "organization", "public"] },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["actorId", "role", "status"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "moldId": { "type": "string", "pattern": "^mold:" },
+          "role": { "type": "string" },
+          "status": { "enum": ["invited", "active", "suspended", "left", "removed"] },
+          "joinedAt": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "gummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "policy": {
+      "type": "object",
+      "properties": {
+        "whoCanInvite": { "type": "array", "items": { "type": "string" } },
+        "whoCanPublish": { "type": "array", "items": { "type": "string" } },
+        "agentActorsAllowed": { "type": "boolean" },
+        "defaultGummyVisibility": { "enum": ["private", "invite", "bowl", "organization", "public"] },
+        "grabPolicy": { "enum": ["allow", "deny", "per-gummy"] }
+      },
+      "additionalProperties": true
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}

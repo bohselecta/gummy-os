@@ -1,0 +1,11 @@
+{
+  "schema": "gummy.actor/v0",
+  "id": "actor:hayden",
+  "class": "human",
+  "name": "Hayden",
+  "status": "active",
+  "moldIds": ["mold:hayden:default"],
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z",
+  "legacyIds": ["snack:hayden"]
+}

@@ -1,21 +1,59 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/action-receipt.schema.json",
-  "title": "Gummy Action Receipt",
+  "title": "Gummy OS Action Receipt",
+  "description": "User-readable and machine-readable evidence of an Actor request, authority, resources, route, outcome, and produced Gummies.",
   "type": "object",
-  "required": ["schema", "id", "action", "actor", "application", "outcome", "createdAt"],
+  "required": ["schema", "id", "action", "actorId", "application", "outcome", "createdAt"],
   "properties": {
     "schema": { "const": "gummy.action-receipt/v0" },
     "id": { "type": "string", "pattern": "^receipt:" },
-    "action": { "type": "string" },
-    "actor": { "type": "string" },
+    "action": { "type": "string", "minLength": 1 },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "sponsorActorId": { "type": "string", "pattern": "^actor:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
     "application": { "type": "string" },
-    "resources": { "type": "array", "items": { "type": "string" } },
-    "capabilities": { "type": "array", "items": { "type": "string" } },
-    "outcome": { "enum": ["completed", "denied", "failed", "rolled-back"] },
+    "applicationPackId": { "type": "string", "pattern": "^pack:" },
+    "modelRoute": {
+      "type": "object",
+      "properties": {
+        "providerClass": { "type": "string" },
+        "model": { "type": "string" },
+        "runtime": { "type": "string" },
+        "locality": { "enum": ["local", "lan", "cloud", "organization", "unknown"] }
+      },
+      "additionalProperties": true
+    },
+    "grantIds": { "type": "array", "items": { "type": "string", "pattern": "^grant:" }, "uniqueItems": true },
+    "sourceGummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "resultGummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "linkIds": { "type": "array", "items": { "type": "string", "pattern": "^link:" }, "uniqueItems": true },
+    "grabIds": { "type": "array", "items": { "type": "string", "pattern": "^grab:" }, "uniqueItems": true },
+    "resources": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "capabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "outcome": { "enum": ["completed", "denied", "failed", "cancelled", "rolled-back"] },
     "reversible": { "type": "boolean" },
+    "cost": {
+      "type": "object",
+      "properties": {
+        "currency": { "type": "string" },
+        "amount": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "sourceHashes": { "type": "array", "items": { "type": "string" } },
+        "resultHashes": { "type": "array", "items": { "type": "string" } },
+        "traceRef": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
     "detail": { "type": "string" },
-    "createdAt": { "type": "string", "format": "date-time" }
+    "createdAt": { "type": "string", "format": "date-time" },
+    "legacyActor": { "type": "string", "description": "Protocol 0.1 compatibility input only. New writes use actorId." },
+    "extensions": { "type": "object" }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }

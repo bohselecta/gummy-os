@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/link.schema.json",
+  "title": "Gummy OS Link",
+  "description": "An intentional, typed, inspectable relationship between Gummy OS protocol objects.",
+  "type": "object",
+  "required": ["schema", "id", "type", "source", "target", "createdByActorId", "status", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.link/v0" },
+    "id": { "type": "string", "pattern": "^link:" },
+    "type": {
+      "enum": [
+        "represented-by",
+        "created-by",
+        "operated-by",
+        "owned-by",
+        "member-of",
+        "belongs-to",
+        "follows",
+        "collaborates-with",
+        "delegates-to",
+        "trusts-for",
+        "shared-with",
+        "derived-from",
+        "grab-of",
+        "approved-by"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["actor", "mold", "gummy", "bowl", "organization", "application-pack", "receipt"] },
+        "id": { "type": "string", "minLength": 3 }
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["actor", "mold", "gummy", "bowl", "organization", "application-pack", "receipt"] },
+        "id": { "type": "string", "minLength": 3 }
+      },
+      "additionalProperties": false
+    },
+    "createdByActorId": { "type": "string", "pattern": "^actor:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "scope": { "type": "object" },
+    "consent": {
+      "type": "object",
+      "properties": {
+        "sourceApproved": { "type": "boolean" },
+        "targetApproved": { "type": "boolean" },
+        "policyReference": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "status": { "enum": ["active", "expired", "revoked", "rejected"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": "string", "format": "date-time" },
+    "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}

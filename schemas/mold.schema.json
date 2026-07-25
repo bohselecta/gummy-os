@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/mold.schema.json",
+  "title": "Gummy OS Mold",
+  "description": "Portable representation and verification profile for exactly one Actor.",
+  "type": "object",
+  "required": ["schema", "id", "actorId", "actorClass", "handle", "displayName", "visibility", "verificationStatus", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.mold/v0" },
+    "id": { "type": "string", "pattern": "^mold:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "actorClass": { "enum": ["human", "agent", "organization", "service", "application", "character"] },
+    "handle": { "type": "string", "pattern": "^@", "minLength": 2 },
+    "displayName": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "visibility": { "enum": ["private", "invite", "organization", "public"] },
+    "verificationStatus": { "enum": ["unverified", "self-asserted", "verified", "revoked"] },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "shape": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "secondaryColor": { "type": "string" },
+        "accentColor": { "type": "string" },
+        "avatarGummyId": { "type": "string", "pattern": "^gummy:" }
+      },
+      "additionalProperties": true
+    },
+    "publicFields": { "type": "object" },
+    "privateFields": { "type": "object" },
+    "proofs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "issuer", "status"],
+        "properties": {
+          "type": { "type": "string" },
+          "issuer": { "type": "string" },
+          "status": { "enum": ["unverified", "verified", "expired", "revoked"] },
+          "evidence": { "type": "string" },
+          "expiresAt": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "operatorDisclosure": {
+      "type": "object",
+      "properties": {
+        "operatorActorId": { "type": "string", "pattern": "^actor:" },
+        "mode": { "enum": ["human", "assisted", "autonomous", "service"] },
+        "providerClass": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "keys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "status": { "enum": ["active", "rotated", "revoked"] },
+          "publicKey": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "supportedProtocolVersions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}

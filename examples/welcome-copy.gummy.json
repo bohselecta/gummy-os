@@ -1,0 +1,31 @@
+{
+  "schema": "gummy.gummy/v0",
+  "id": "gummy:welcome-copy",
+  "kind": "note",
+  "title": "Welcome to Gummy OS — Independent Copy",
+  "ownerActorId": "actor:hayden",
+  "creatorActorId": "actor:hayden",
+  "moldId": "mold:hayden:default",
+  "visibility": "private",
+  "audienceActorIds": ["actor:hayden"],
+  "bowlIds": [],
+  "revision": 1,
+  "content": {
+    "mediaType": "text/markdown",
+    "inlineText": "Gummy OS is a computer you can open.",
+    "sizeBytes": 36
+  },
+  "provenance": {
+    "sourceGummyIds": ["gummy:welcome"],
+    "linkIds": ["link:welcome-copy-grab-of-welcome"],
+    "grabId": "grab:welcome-copy"
+  },
+  "rights": {
+    "license": "private",
+    "attributionRequired": false,
+    "grabAllowed": false,
+    "commercialUse": "unspecified"
+  },
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z"
+}

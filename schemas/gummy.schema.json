@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/gummy.schema.json",
+  "title": "Gummy OS Gummy",
+  "description": "A user-owned or operated object created, kept, received, shared, or operated inside Gummy OS.",
+  "type": "object",
+  "required": ["schema", "id", "kind", "ownerActorId", "creatorActorId", "visibility", "revision", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.gummy/v0" },
+    "id": { "type": "string", "pattern": "^gummy:" },
+    "kind": { "enum": ["note", "file", "image", "video", "project", "conversation", "application", "workflow", "invitation", "result", "artifact"] },
+    "title": { "type": "string" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "creatorActorId": { "type": "string", "pattern": "^actor:" },
+    "operatorActorId": { "type": "string", "pattern": "^actor:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "visibility": { "enum": ["private", "invite", "bowl", "organization", "public"] },
+    "audienceActorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" }, "uniqueItems": true },
+    "bowlIds": { "type": "array", "items": { "type": "string", "pattern": "^bowl:" }, "uniqueItems": true },
+    "revision": { "type": "integer", "minimum": 1 },
+    "content": {
+      "type": "object",
+      "properties": {
+        "mediaType": { "type": "string" },
+        "byteRef": { "type": "string" },
+        "inlineText": { "type": "string" },
+        "sizeBytes": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "hash": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "enum": ["sha256", "sha512", "blake3"] },
+        "value": { "type": "string", "minLength": 16 }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "sourceGummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+        "receiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true },
+        "linkIds": { "type": "array", "items": { "type": "string", "pattern": "^link:" }, "uniqueItems": true },
+        "grabId": { "type": "string", "pattern": "^grab:" }
+      },
+      "additionalProperties": true
+    },
+    "rights": {
+      "type": "object",
+      "properties": {
+        "license": { "type": "string" },
+        "attributionRequired": { "type": "boolean" },
+        "grabAllowed": { "type": "boolean" },
+        "commercialUse": { "enum": ["allowed", "prohibited", "permission-required", "unspecified"] }
+      },
+      "additionalProperties": true
+    },
+    "capabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}

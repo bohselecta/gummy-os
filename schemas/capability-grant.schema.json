@@ -1,21 +1,30 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mygum.my/schemas/capability-grant.schema.json",
-  "title": "Gummy Capability Grant",
+  "title": "Gummy OS Capability Grant",
+  "description": "Temporary, explicit authority for one Actor to perform one bounded action on one resource.",
   "type": "object",
-  "required": ["schema", "id", "actor", "action", "resource", "risk", "issuedAt", "expiresAt"],
+  "required": ["schema", "id", "actorId", "action", "resource", "risk", "issuedAt", "expiresAt", "revoked"],
   "properties": {
     "schema": { "const": "gummy.capability-grant/v0" },
     "id": { "type": "string", "pattern": "^grant:" },
-    "actor": { "type": "string" },
-    "action": { "type": "string" },
-    "resource": { "type": "string" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "sponsorActorId": { "type": "string", "pattern": "^actor:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "action": { "type": "string", "minLength": 1 },
+    "resource": { "type": "string", "minLength": 1 },
+    "resourceKind": { "enum": ["gummy", "bowl", "link", "application", "connector", "runtime", "organization", "conversation", "other"] },
     "risk": { "enum": ["low", "medium", "high", "critical"] },
     "reason": { "type": "string" },
     "scope": { "type": "object" },
-    "approval": { "enum": ["policy", "human", "organization"] },
+    "approval": { "enum": ["policy", "human", "organization", "combined"] },
+    "issuerActorId": { "type": "string", "pattern": "^actor:" },
     "issuedAt": { "type": "string", "format": "date-time" },
-    "expiresAt": { "type": "string", "format": "date-time" }
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "revoked": { "type": "boolean" },
+    "revokedAt": { "type": "string", "format": "date-time" },
+    "legacyActor": { "type": "string", "description": "Protocol 0.1 compatibility input only. New writes use actorId." },
+    "extensions": { "type": "object" }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }
