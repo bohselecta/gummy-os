@@ -1,0 +1,36 @@
+{
+  "schema": "gummy.box/v0",
+  "id": "box:hayden",
+  "humanAuthorityId": "human:hayden",
+  "actorId": "actor:hayden",
+  "provider": {
+    "type": "github",
+    "connectionId": "connection:github:hayden",
+    "rootRef": "github:bohselecta/private-gummy-box",
+    "displayName": "Hayden's Gummy Box",
+    "scope": ["contents:read", "contents:write"]
+  },
+  "authoritativeLocation": "github:bohselecta/private-gummy-box",
+  "mirrorLocations": ["gummy-os:local-browser"],
+  "allowedWriterRefs": ["human:hayden", "model:frontier-approved", "agent:glopper-web"],
+  "allowedReaderRefs": ["human:hayden", "actor:hayden", "agent:glopper-web"],
+  "paths": {
+    "inbox": "inbox/",
+    "claimed": "claimed/",
+    "running": "running/",
+    "returns": "returns/",
+    "artifacts": "artifacts/",
+    "receipts": "receipts/",
+    "archive": "archive/",
+    "profile": "profile/"
+  },
+  "syncPolicy": {
+    "mode": "approved",
+    "allowedData": ["work-orders", "returns", "artifacts", "receipts", "approved-preferences"],
+    "requiresHumanApproval": true
+  },
+  "protocolVersion": "0.2",
+  "status": "active",
+  "createdAt": "2026-07-25T00:00:00Z",
+  "updatedAt": "2026-07-25T00:00:00Z"
+}

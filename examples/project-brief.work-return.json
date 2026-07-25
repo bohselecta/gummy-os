@@ -1,0 +1,42 @@
+{
+  "schema": "gummy.work-return/v0",
+  "id": "return:project-brief",
+  "boxId": "box:hayden",
+  "workOrderId": "work-order:project-brief",
+  "taskLeaseId": "lease:project-brief",
+  "humanAuthorityId": "human:hayden",
+  "actorId": "actor:hayden",
+  "agentId": "agent:glopper-web",
+  "moldId": "mold:hayden:personal",
+  "baseState": {
+    "sourceHashes": ["sha256:example-source-hash"]
+  },
+  "filesChanged": ["artifacts/project-brief.md"],
+  "gummiesChanged": ["gummy:project-brief"],
+  "actionsPerformed": [
+    "Read the approved source Gummy.",
+    "Called the approved frontier inference route.",
+    "Created a new Markdown result Gummy.",
+    "Preserved the source Gummy unchanged."
+  ],
+  "checks": [
+    {
+      "name": "Source unchanged",
+      "outcome": "pass",
+      "detail": "Pre- and post-task source hashes match."
+    },
+    {
+      "name": "Result exists",
+      "outcome": "pass",
+      "detail": "A new Markdown Gummy was written to the approved target."
+    }
+  ],
+  "artifactRefs": ["box:hayden/artifacts/project-brief.md"],
+  "receiptIds": ["receipt:project-brief"],
+  "knownLimitations": ["Example hashes and provider identifiers must be replaced by runtime evidence."],
+  "provenClaims": ["The Work Order produced a separate result object."],
+  "unprovenClaims": ["No production provider or storage adapter is proven by this static example."],
+  "recommendedNextAction": "Human reviews and accepts or revises the result.",
+  "result": "completed",
+  "createdAt": "2026-07-25T00:10:00Z"
+}

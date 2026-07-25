@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/gummy-box.schema.json",
+  "title": "Gummy Box",
+  "description": "A user-owned durable handoff space connecting frontier models, Gummy OS, Glopper executors, Returns, artifacts, and Receipts.",
+  "type": "object",
+  "required": ["schema", "id", "humanAuthorityId", "actorId", "provider", "authoritativeLocation", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.box/v0" },
+    "id": { "type": "string", "pattern": "^box:" },
+    "humanAuthorityId": { "type": "string", "pattern": "^human:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "provider": {
+      "type": "object",
+      "required": ["type", "connectionId", "rootRef"],
+      "properties": {
+        "type": { "enum": ["local", "github", "google-drive", "other"] },
+        "connectionId": { "type": "string" },
+        "rootRef": { "type": "string" },
+        "displayName": { "type": "string" },
+        "scope": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "authoritativeLocation": { "type": "string" },
+    "mirrorLocations": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "allowedWriterRefs": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "allowedReaderRefs": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "paths": {
+      "type": "object",
+      "properties": {
+        "inbox": { "type": "string" },
+        "claimed": { "type": "string" },
+        "running": { "type": "string" },
+        "returns": { "type": "string" },
+        "artifacts": { "type": "string" },
+        "receipts": { "type": "string" },
+        "archive": { "type": "string" },
+        "profile": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "syncPolicy": {
+      "type": "object",
+      "properties": {
+        "mode": { "enum": ["none", "manual", "approved", "continuous"] },
+        "allowedData": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "requiresHumanApproval": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "protocolVersion": { "type": "string" },
+    "status": { "enum": ["active", "paused", "disconnected", "revoked", "archived"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/work-order.schema.json",
+  "title": "Gummy OS Work Order",
+  "description": "A structured proposal for bounded work written into a Gummy Box by a Human, frontier model, Actor, or authorized service. A Work Order is not a Capability Grant.",
+  "type": "object",
+  "required": ["schema", "id", "boxId", "issuer", "target", "goal", "scope", "acceptance", "status", "createdAt", "expiresAt"],
+  "properties": {
+    "schema": { "const": "gummy.work-order/v0" },
+    "id": { "type": "string", "pattern": "^work-order:" },
+    "boxId": { "type": "string", "pattern": "^box:" },
+    "issuer": {
+      "type": "object",
+      "required": ["type", "id", "displayName"],
+      "properties": {
+        "type": { "enum": ["human", "actor", "agent", "model", "service", "organization"] },
+        "id": { "type": "string" },
+        "displayName": { "type": "string" },
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "signature": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "target": {
+      "type": "object",
+      "required": ["humanAuthorityId", "actorId"],
+      "properties": {
+        "humanAuthorityId": { "type": "string", "pattern": "^human:" },
+        "actorId": { "type": "string", "pattern": "^actor:" },
+        "preferredAgentFamily": { "type": "string" },
+        "preferredAgentId": { "type": "string", "pattern": "^agent:" },
+        "moldId": { "type": "string", "pattern": "^mold:" },
+        "masterControlId": { "type": "string", "pattern": "^master-control:" }
+      },
+      "additionalProperties": true
+    },
+    "goal": { "type": "string", "minLength": 1 },
+    "context": { "type": "string" },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "ref"],
+        "properties": {
+          "kind": { "enum": ["gummy", "github", "google-drive", "url", "box-artifact", "local-required", "other"] },
+          "ref": { "type": "string" },
+          "hash": { "type": "string" },
+          "required": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": ["requestedCapabilities"],
+      "properties": {
+        "requestedCapabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "repository": { "type": "string" },
+        "branch": { "type": "string" },
+        "directory": { "type": "string" },
+        "gummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+        "allowedWriteTargets": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "forbiddenActions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "maxCost": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "requiredLocality": { "enum": ["any", "web", "cloud", "local", "phone", "organization"] },
+        "privacy": { "enum": ["public", "approved-cloud", "private-local", "organization", "mixed"] },
+        "preferredInference": { "enum": ["any", "frontier-cloud", "managed-cloud", "local-model", "no-model"] },
+        "requiresNative": { "type": "boolean" },
+        "offlineAllowed": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "acceptance": {
+      "type": "object",
+      "required": ["checks", "expectedReturn"],
+      "properties": {
+        "checks": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "expectedReturn": { "type": "object" },
+        "humanAcceptanceRequired": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "required": { "type": "boolean" },
+        "risk": { "enum": ["low", "medium", "high", "critical"] },
+        "approvedBy": { "type": "string" },
+        "approvedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": true
+    },
+    "taskLeaseId": { "type": "string", "pattern": "^lease:" },
+    "status": { "enum": ["proposed", "validated", "awaiting-approval", "approved", "claimed", "running", "returned", "accepted", "rejected", "held", "expired", "cancelled", "failed"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
