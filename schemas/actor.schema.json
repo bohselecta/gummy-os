@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/actor.schema.json",
+  "title": "Gummy OS Actor",
+  "description": "The accountable principal that acts, owns, delegates, or appears in a Capability Grant or Action Receipt.",
+  "type": "object",
+  "required": ["schema", "id", "class", "name", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.actor/v0" },
+    "id": { "type": "string", "pattern": "^actor:" },
+    "class": { "enum": ["human", "agent", "organization", "service", "application", "character"] },
+    "name": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["active", "suspended", "revoked", "archived"] },
+    "moldIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^mold:" },
+      "uniqueItems": true
+    },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "operatorActorId": { "type": "string", "pattern": "^actor:" },
+    "organizationId": { "type": "string", "pattern": "^org:" },
+    "license": {
+      "type": "object",
+      "properties": {
+        "holderActorId": { "type": "string", "pattern": "^actor:" },
+        "scope": { "type": "string" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": true
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "legacyIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "additionalProperties": true
+}
