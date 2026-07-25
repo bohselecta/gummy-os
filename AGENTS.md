@@ -19,7 +19,7 @@ Do not import code, product definitions, or architecture from older repositories
 5. `docs/ARCHITECTURE.md`
 6. `docs/PROTOCOL.md`
 7. `docs/SECURITY_MODEL.md`
-8. `docs/SOCIAL_GRAPH.md`
+8. `docs/SOCIAL_LAYER.md`
 9. `docs/ENTERPRISE_FRAMEWORK.md`
 10. `docs/ROADMAP.md`
 11. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
