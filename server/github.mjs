@@ -10,9 +10,26 @@ function app() {
   return new App({ appId: process.env.GITHUB_APP_ID, privateKey: process.env.GITHUB_APP_PRIVATE_KEY.replace(/\\n/g, '\n') });
 }
 
+export function automatedPreviewRepository(session, environment = process.env) {
+  if (session?.githubInstallationId) return null;
+  if (environment.VERCEL_ENV !== 'preview') return null;
+  if (environment.VERCEL_GIT_COMMIT_REF !== 'agent/standalone-personal-gummy-os') return null;
+  return environment.GITHUB_TEST_REPOSITORY || null;
+}
+
 async function octokit(session) {
-  if (!configured() || !session?.githubInstallationId) throw new Error('GitHub App is not configured or installed.');
-  return app().getInstallationOctokit(session.githubInstallationId);
+  if (!configured()) throw new Error('GitHub App is not configured.');
+  const githubApp = app();
+  let installationId = session?.githubInstallationId;
+  const previewRepository = automatedPreviewRepository(session);
+  if (!installationId && previewRepository) {
+    const [owner, repo] = previewRepository.split('/');
+    if (!owner || !repo) throw new Error('GITHUB_TEST_REPOSITORY must be owner/repository.');
+    const installation = await githubApp.octokit.request('GET /repos/{owner}/{repo}/installation', { owner, repo });
+    installationId = installation.data.id;
+  }
+  if (!installationId) throw new Error('GitHub App is not installed for this session.');
+  return githubApp.getInstallationOctokit(installationId);
 }
 
 export function installUrl(state) {
@@ -23,10 +40,15 @@ export function installUrl(state) {
 export async function listRepositories(session) {
   const client = await octokit(session);
   const response = await client.request('GET /installation/repositories', { per_page: 100 });
-  return response.data.repositories.filter(repo => repo.private).map(repo => ({ id: repo.id, fullName: repo.full_name, private: repo.private, defaultBranch: repo.default_branch }));
+  const previewRepository = automatedPreviewRepository(session);
+  return response.data.repositories
+    .filter(repo => repo.private && (!previewRepository || repo.full_name === previewRepository))
+    .map(repo => ({ id: repo.id, fullName: repo.full_name, private: repo.private, defaultBranch: repo.default_branch }));
 }
 
 export async function connectBox(session, input) {
+  const previewRepository = automatedPreviewRepository(session);
+  if (previewRepository && input.repository !== previewRepository) throw new Error('Preview acceptance is scoped to the configured test repository.');
   const client = await octokit(session);
   const [owner, repo] = input.repository.split('/');
   const repository = (await client.request('GET /repos/{owner}/{repo}', { owner, repo })).data;

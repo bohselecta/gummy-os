@@ -8,6 +8,7 @@ import { mapLegacyState, migrateLegacy } from '../src/core/migration.js';
 import { CAPABILITIES, SOURCE_TEXT, createReceipt, makeGrant, personalRecords } from '../src/core/records.js';
 import { PolicyEngine } from '../src/core/policy-engine.js';
 import { transformExecution } from '../server/execution.mjs';
+import { automatedPreviewRepository } from '../server/github.mjs';
 import { GitHubBoxAdapter, LocalBoxAdapter } from '../src/core/box-adapters.js';
 
 function repository() {
@@ -243,4 +244,16 @@ test('Local and mocked GitHub Box adapters expose commit state, revisions, and h
   globalThis.fetch = originalFetch;
   delete globalThis.sessionStorage;
   repo.close();
+});
+
+test('live GitHub acceptance auto-resolution is restricted to the named preview branch and repository', () => {
+  const preview = {
+    VERCEL_ENV: 'preview',
+    VERCEL_GIT_COMMIT_REF: 'agent/standalone-personal-gummy-os',
+    GITHUB_TEST_REPOSITORY: 'bohselecta/gummy-box-storage'
+  };
+  assert.equal(automatedPreviewRepository({}, preview), 'bohselecta/gummy-box-storage');
+  assert.equal(automatedPreviewRepository({ githubInstallationId: 123 }, preview), null);
+  assert.equal(automatedPreviewRepository({}, { ...preview, VERCEL_ENV: 'production' }), null);
+  assert.equal(automatedPreviewRepository({}, { ...preview, VERCEL_GIT_COMMIT_REF: 'main' }), null);
 });
