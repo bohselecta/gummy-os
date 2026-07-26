@@ -18,17 +18,32 @@ Do not import code or architecture from older repositories that reused the Gummy
 4. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
 5. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
 6. `docs/GUMMY_BOX_WORK_ORDERS.md`
-7. `docs/VOCABULARY.md`
-8. `docs/PRODUCT_SPEC.md`
-9. `docs/ARCHITECTURE.md`
-10. `docs/PROTOCOL.md`
-11. `docs/SECURITY_MODEL.md`
-12. `docs/SOCIAL_LAYER.md`
-13. `docs/ROADMAP.md`
-14. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-15. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
-16. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
-17. `docs/BUILD_RUNBOOK.md`
+7. `docs/AUTOMATED_ACCEPTANCE.md`
+8. `docs/VOCABULARY.md`
+9. `docs/PRODUCT_SPEC.md`
+10. `docs/ARCHITECTURE.md`
+11. `docs/PROTOCOL.md`
+12. `docs/SECURITY_MODEL.md`
+13. `docs/SOCIAL_LAYER.md`
+14. `docs/ROADMAP.md`
+15. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+16. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
+17. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
+18. `plans/active/2026-07-25-automated-acceptance-cursor-addendum.md`
+19. `docs/BUILD_RUNBOOK.md`
+
+## Founder rule
+
+```text
+Hayden is not the test harness.
+The computer tests the computer.
+```
+
+Routine validation must be automated through unit, integration, browser E2E, accessibility, visual-regression, persistence, migration, security-boundary, and failure-path testing.
+
+Do not return ordinary manual regression instructions to Hayden when browser automation can perform the same work.
+
+Manual founder review is reserved for strategic product judgment, delight, personality, visual approval, and irreversible decisions—not discovering broken buttons.
 
 ## Locked naming
 
@@ -155,11 +170,48 @@ Human opens Actor
 → revoke and prove blocked
 → quarantine and burn/reset proof
 → return continuity
+→ automated acceptance suite passes
 ```
 
 Local Gummy Box must work without an external account. Complete exactly one external adapter cleanly before broadening provider scope.
 
 Inspect the already-built native AI Linux distribution only after the standalone proof passes and the native bridge is the remaining step.
+
+## Automated acceptance requirements
+
+Establish a sustainable test architecture early. Preferred default when no blocker exists:
+
+```text
+Vite + TypeScript
+Vitest
+Playwright
+axe-core
+fake-indexeddb or equivalent
+GitHub Actions
+production-like preview deployment
+```
+
+Equivalent tools require a written rationale.
+
+The repository must expose stable non-interactive commands for static checks, unit tests, integration tests, E2E, accessibility, visual regression, acceptance, build, and verify.
+
+Critical PR journeys must be browser-automated. CI must retain screenshots/traces/video/logs on failure.
+
+A feature is not complete until its critical user journey is automated.
+
+Before saying `founder-ready`, prove:
+
+- clean checkout builds;
+- critical acceptance passes against an exact production-like build;
+- no uncaught console errors in critical journeys;
+- Night and Day visual evidence exists;
+- accessibility gate passes or exceptions are explicitly approved;
+- source/result immutability is proven;
+- Work Order, Task Lease, Grant, Return, and Receipt evidence exists;
+- revocation blocks execution;
+- reload and browser-context restart preserve state;
+- known limitations are visible;
+- exact commit and preview URL are supplied.
 
 ## Open-ended platform rule
 
@@ -207,9 +259,27 @@ Recursive composition is allowed. **Creation never transfers authority automatic
 - Do not inspect native distro before standalone proof requires it.
 - Do not expand broad social, enterprise, federation, public-figure, character, multi-runtime, or theme-marketplace scope before proof passes.
 - Migration is deterministic, idempotent, traceable, and non-destructive.
+- Do not ask Hayden to perform routine testing that automation can perform.
+- Do not update visual baselines without explaining why the visual change is correct.
+- Do not mark tests skipped merely to obtain a green build without documenting the unproven boundary.
 
 ## Completion standard
 
-A lane is complete only when the visible journey works, brand/authority/storage/provider boundaries are typed, deterministic behavior has tests, denial/failure/revocation are truthful, accessibility is verified, documentation matches code, state survives return, `npm run verify` passes, and the builder returns exact artifacts and limitations.
+A lane is complete only when:
+
+- the visible journey works;
+- brand, authority, storage, and provider boundaries are typed;
+- deterministic behavior has unit/integration tests;
+- critical journeys have browser E2E tests;
+- denial, failure, revocation, offline, and persistence paths are truthful;
+- accessibility and visual regression are verified;
+- documentation matches code;
+- state survives return;
+- `npm run verify` passes;
+- `npm run test:acceptance` passes against a production-like build;
+- CI artifacts identify the exact commit/browser/viewport;
+- the builder returns exact evidence and limitations.
 
 The builder does not accept its own Return.
+
+> **The computer tests the computer. Hayden builds the world.**

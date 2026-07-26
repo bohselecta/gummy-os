@@ -342,7 +342,12 @@ npm run brand:generate
 npm run dev
 npm run check
 npm test
+npm run test:unit
+npm run test:integration
 npm run test:e2e
+npm run test:a11y
+npm run test:visual
+npm run test:acceptance
 npm run build
 npm run verify
 npm run evidence
