@@ -1,4 +1,5 @@
 import { createId, sha256 } from './hash.js';
+import { LOCAL_OPERATOR_ID, localOperatorRecord } from '../integrations/local-operator.js';
 
 export const CAPABILITIES = Object.freeze(['gummy.read', 'transform.bounded', 'gummy.create']);
 export const SOURCE_TEXT = `# Project brief
@@ -42,6 +43,7 @@ export function personalRecords({ name = 'Hayden', address = '@hayden', sourceHa
     disclosure: { operator: 'OpenAI Responses through the local Gummy server', autonomy: 'human-directed', providerDisclosure: 'OpenAI / gpt-5.6-sol' },
     createdAt: timestamp, updatedAt: timestamp, extensions: { legacyIds: ['snack:zeke'], characterOnly: true }
   };
+  const localOperator = localOperatorRecord({ humanId: human.id, actorId: actor.id, now: timestamp });
   const mold = {
     schema: 'gummy.mold/v0', id: 'mold:hayden:personal', actorId: actor.id, name: 'Personal Gummy',
     handle: address, status: 'active', allowedHumanIds: [human.id], allowedAgentIds: [agent.id],
@@ -96,7 +98,21 @@ export function personalRecords({ name = 'Hayden', address = '@hayden', sourceHa
     { id: 'profile:hayden:portable', type: 'approved-portable-profile', actorId: actor.id, syncEligible: true, status: 'draft', content: 'Preferred concise, evidence-forward summaries.', updatedAt: timestamp },
     { id: 'profile:hayden:task', type: 'current-task-context', actorId: actor.id, syncEligible: false, workOrderId: workOrder.id, content: 'Project brief transformation context.', updatedAt: timestamp }
   ];
-  return { human, actor, testActor, agent, mold, masterControl, box, gummy, workOrder, profiles };
+  return { human, actor, testActor, agent, localOperator, mold, masterControl, box, gummy, workOrder, profiles };
+}
+
+export async function ensureFullProductRecords(repository) {
+  if (await repository.get('agents', LOCAL_OPERATOR_ID)) return false;
+  const [human, actor] = await Promise.all([
+    repository.get('humans', 'human:hayden'),
+    repository.get('actors', 'actor:hayden')
+  ]);
+  if (!human || !actor) return false;
+  await repository.putValidated('agents', localOperatorRecord({
+    humanId: human.id,
+    actorId: actor.id
+  }));
+  return true;
 }
 
 export async function createReceipt(repository, input) {

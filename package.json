@@ -9,7 +9,7 @@
     "dev": "node scripts/dev.mjs",
     "start": "NODE_ENV=production node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node scripts/validate.mjs && node scripts/audit-colors.mjs && node scripts/check-brand-assets.mjs",
+    "check": "node scripts/validate.mjs && npm run verify:product-preservation && node scripts/audit-colors.mjs && node scripts/check-brand-assets.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:unit": "node --test tests/*.test.mjs",
     "test:integration": "node --test tests/phase1.test.mjs",
@@ -17,7 +17,8 @@
     "test:a11y": "playwright test tests/e2e/app.spec.mjs --grep accessibility",
     "test:visual": "playwright test tests/e2e/evidence.spec.mjs",
     "test:acceptance": "playwright test",
-    "verify": "npm run check && npm test && npm run build && npm run test:e2e",
+    "verify:product-preservation": "node scripts/verify-product-preservation.mjs",
+    "verify": "npm run check && npm test && npm run build && npm run test:e2e && npm run verify:product-preservation -- --suite-complete",
     "test:live": "node scripts/live-smoke.mjs",
     "evidence": "playwright test tests/e2e/evidence.spec.mjs"
   },

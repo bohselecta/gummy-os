@@ -258,7 +258,7 @@ After the standalone browser system works, evaluate the existing native distribu
 - Repository-scoped private GitHub App adapter using a `gummy-box` branch, one commit per multi-file operation, and expected-head reconciliation.
 - Chromium acceptance tests for onboarding, reload continuity, Work Order execution, accessibility, revocation/restoration, composition, phone layout, and visual evidence.
 
-Final mascot and wordmark masters remain replaceable labeled slots. Production authentication, verified identity, native execution, Google Drive, public discovery, social/federated expansion, billing, and enterprise expansion remain outside this standalone lane.
+Production authentication, verified identity, native execution, Google Drive, public discovery, broad social/federated execution, billing, and enterprise expansion are not claimed by this standalone proof. They remain staged Gummy OS pillars or connector lanes rather than discarded product scope.
 
 ## Product map
 
@@ -273,6 +273,12 @@ Gummy OS
 ├── Glopper Panel      conversation/control surface
 ├── Glopper Inbox      pending Work Orders
 ├── Gummy Box          local/GitHub/Drive handoff space
+├── Gummy Operator     local approximately-4B routing, queues, continuity
+├── VideoBoss          AI video production workbench
+├── ImageHoss          image direction, provenance, and handoff studio
+├── 3D Bee             World Seed and Blender package studio
+├── Gummy Rooms        collaborative AI rooms and social presence
+├── Social computing   Actors/Homes/Bowls/Links/Grabs/sharing
 ├── Work Order         proposed bounded task
 ├── Task Lease         executor ownership
 ├── Return             execution report
@@ -289,6 +295,8 @@ Gummy OS
 ├── Bridge             deny-by-default native connection
 └── Receipt            evidence of authority, route, movement, outcome
 ```
+
+The doorway may be simple. The product map remains complete. Specialist applications retain their own repositories, interfaces, execution boundaries, protocols, and evidence, and connect through the first-party registry and versioned handoffs.
 
 ## Founding rules
 

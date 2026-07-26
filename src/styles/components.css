@@ -38,6 +38,12 @@
 .choice strong, .choice span { display: block; }
 .choice span { margin-top: var(--space-2); }
 .choice[aria-pressed="true"] { border-color: var(--g-gold); }
+.doorway { margin-bottom: var(--space-6); }
+.doorway h1 { margin-bottom: var(--space-2); }
+.doorway-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.doorway-choice { min-height: 112px; cursor: pointer; }
+.doorway-choice:focus-visible, .doorway-choice:hover { border-color: var(--g-gold); }
+.gummy-orientation { margin-bottom: var(--space-6); border-color: color-mix(in srgb, var(--g-purple) 72%, var(--line)); }
 .field { display: grid; gap: var(--space-2); margin: var(--space-4) 0; }
 .field input, .field select, .field textarea { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .65rem .8rem; background: var(--surface); color: var(--text); }
 .glopper-panel {
@@ -62,5 +68,17 @@
 .toast strong { display: block; }
 .receipt-hash { font-family: ui-monospace, monospace; font-size: .72rem; overflow-wrap: anywhere; }
 .legacy-preview { opacity: .76; border-style: dashed; }
+.application-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: var(--space-6) 0; }
+.application-card { display: flex; flex-direction: column; min-height: 330px; }
+.application-card > p { flex: 0 0 auto; }
+.application-card .button-row { margin-top: auto; }
+.application-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.application-heading .eyebrow { overflow-wrap: anywhere; }
+.compact-notice { padding: var(--space-3); font-size: .8rem; }
+.application-card details { margin-top: var(--space-3); border-top: 1px solid var(--line); padding-top: var(--space-3); }
+.application-card summary { cursor: pointer; font-weight: 800; }
+.application-card .facts { font-size: .82rem; }
+.product-map-section { margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--line); }
+.product-pillar-list { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
 .empty { padding: var(--space-8); text-align: center; color: var(--muted); }

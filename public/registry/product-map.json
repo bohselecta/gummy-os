@@ -1,0 +1,80 @@
+{
+  "schema": "gummy.product-map/v1",
+  "id": "product-map:gummy-os:full",
+  "title": "Full Gummy OS",
+  "controllingRule": "Simplify the doorway. Do not flatten the house.",
+  "pillars": [
+    {
+      "id": "pillar:gummy-os",
+      "name": "Gummy OS",
+      "canonicalSource": "bohselecta/gummy-os",
+      "productPurpose": "Canvas, Bar, windows, projects, Gummies, Glopper, authority, applications, protocol, and durable continuity.",
+      "visibility": "visible",
+      "integrationStatus": "integrated",
+      "surfaceIds": ["guide", "gummies", "browser", "work-orders", "receipts", "control", "applications"]
+    },
+    {
+      "id": "pillar:local-4b-operator",
+      "name": "Local approximately-4B Operator",
+      "canonicalSource": "bohselecta/gummy2",
+      "productPurpose": "Offline and low-cost first response, routing, queue management, continuity, and bounded Work Order preparation.",
+      "visibility": "visible",
+      "integrationStatus": "interface-ready",
+      "surfaceIds": ["guide", "control", "applications"]
+    },
+    {
+      "id": "pillar:videoboss",
+      "name": "VideoBoss",
+      "canonicalSource": "bohselecta/videoboss",
+      "productPurpose": "AI video production planning, shot boards, model routing, Cost Shield, cinematic review, continuity, and exports.",
+      "visibility": "visible",
+      "integrationStatus": "interface-ready",
+      "surfaceIds": ["applications"]
+    },
+    {
+      "id": "pillar:imagehoss",
+      "name": "ImageHoss",
+      "canonicalSource": "bohselecta/imagehoss",
+      "productPurpose": "Image direction, bounded local execution, comparison, acceptance, durable Assets, provenance, rights, and handoff.",
+      "visibility": "visible",
+      "integrationStatus": "interface-ready",
+      "surfaceIds": ["applications"]
+    },
+    {
+      "id": "pillar:3d-bee",
+      "name": "3D Bee",
+      "canonicalSource": "bohselecta/3d-bee",
+      "productPurpose": "World Seed planning, approved Blender operations, checkpoints, previews, 3D packages, and engine continuation.",
+      "visibility": "visible",
+      "integrationStatus": "interface-ready",
+      "surfaceIds": ["applications"]
+    },
+    {
+      "id": "pillar:social",
+      "name": "Social computing",
+      "canonicalSource": "docs/SOCIAL_LAYER.md",
+      "productPurpose": "Actors, Actor Homes, stable addresses, Bowls, Links, Grabs, follows, memberships, collaboration, sharing, and public/private state.",
+      "visibility": "visible",
+      "integrationStatus": "staged",
+      "surfaceIds": ["actors", "applications"]
+    },
+    {
+      "id": "pillar:gummy-rooms",
+      "name": "Gummy Rooms",
+      "canonicalSource": "bohselecta/gummy2",
+      "productPurpose": "Collaborative AI rooms with fair queues, live streaming, isolated threads, live mirrors, and explicit Agent operation.",
+      "visibility": "visible",
+      "integrationStatus": "lineage-preserved",
+      "surfaceIds": ["actors", "applications"]
+    },
+    {
+      "id": "pillar:gummy-box",
+      "name": "Gummy Box",
+      "canonicalSource": "bohselecta/gummy-os",
+      "productPurpose": "Local-first project storage and handoff with optional managed sync, GitHub, and Google Drive connectors.",
+      "visibility": "visible",
+      "integrationStatus": "integrated",
+      "surfaceIds": ["work-orders", "control"]
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/application-registry.schema.json",
+  "title": "Gummy OS First-Party Application Registry",
+  "type": "object",
+  "required": ["schema", "id", "applications"],
+  "properties": {
+    "schema": { "const": "gummy.application-registry/v1" },
+    "id": { "type": "string", "pattern": "^application-registry:" },
+    "applications": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "canonicalRepository",
+          "productPurpose",
+          "launchMode",
+          "webRoute",
+          "nativeRoute",
+          "capabilities",
+          "acceptedInputs",
+          "producedArtifacts",
+          "protocolVersions",
+          "locality",
+          "connectionStatus",
+          "releaseStatus",
+          "unavailableReason"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^app:" },
+          "name": { "type": "string", "minLength": 1 },
+          "canonicalRepository": { "type": "string", "pattern": "^bohselecta/" },
+          "supportingRepositories": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^bohselecta/" },
+            "uniqueItems": true
+          },
+          "productPurpose": { "type": "string", "minLength": 1 },
+          "launchMode": {
+            "enum": ["routed-web", "installed-pwa", "native-bridge", "unavailable"]
+          },
+          "webRoute": { "type": ["string", "null"], "format": "uri" },
+          "nativeRoute": { "type": ["string", "null"] },
+          "capabilities": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "acceptedInputs": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "producedArtifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "protocolVersions": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "locality": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": ["browser", "web", "local", "lan", "cloud", "native"]
+            },
+            "uniqueItems": true
+          },
+          "connectionStatus": {
+            "enum": ["available", "not-connected", "capability-required", "unavailable"]
+          },
+          "releaseStatus": { "type": "string", "minLength": 1 },
+          "unavailableReason": { "type": ["string", "null"] }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "launchMode": { "const": "routed-web" } } },
+            "then": { "properties": { "webRoute": { "type": "string", "format": "uri" } } }
+          },
+          {
+            "if": { "properties": { "launchMode": { "const": "native-bridge" } } },
+            "then": { "properties": { "nativeRoute": { "type": "string", "minLength": 1 } } }
+          },
+          {
+            "if": { "properties": { "launchMode": { "const": "unavailable" } } },
+            "then": { "properties": { "unavailableReason": { "type": "string", "minLength": 1 } } }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

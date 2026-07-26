@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['schemas/*.json', 'brand/gummy/web/*.webp', 'brand/gummy/favicons/*.png'],
+      includeAssets: ['schemas/*.json', 'registry/*.json', 'brand/gummy/web/*.webp', 'brand/gummy/favicons/*.png'],
       manifest: {
         name: 'Gummy OS',
         short_name: 'Gummy',
@@ -34,7 +34,8 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           { urlPattern: ({ url }) => url.pathname.startsWith('/api/'), handler: 'NetworkOnly' },
-          { urlPattern: ({ url }) => url.pathname.startsWith('/schemas/'), handler: 'CacheFirst', options: { cacheName: 'gummy-schemas-v1' } }
+          { urlPattern: ({ url }) => url.pathname.startsWith('/schemas/'), handler: 'CacheFirst', options: { cacheName: 'gummy-schemas-v1' } },
+          { urlPattern: ({ url }) => url.pathname.startsWith('/registry/'), handler: 'CacheFirst', options: { cacheName: 'gummy-product-registry-v1' } }
         ]
       }
     })

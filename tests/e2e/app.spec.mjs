@@ -107,6 +107,29 @@ test('onboarding, Night/Day continuity, Canvas windows, Bar keyboard, and access
   expect(results.violations).toEqual([]);
 });
 
+test('simple doorway preserves the full product map and truthful first-party launches', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await onboard(page, 'night');
+  await expect(page.getByRole('button', { name: /Add a project/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Talk to Gummy/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Open an existing project/ })).toBeVisible();
+  await expect(page.getByRole('tab', { name: /Actors/ })).toBeVisible();
+  await page.getByRole('tab', { name: /Applications/ }).click();
+
+  const applications = page.getByTestId('first-party-applications');
+  await expect(applications.locator('[data-application-id]')).toHaveCount(4);
+  for (const name of ['VideoBoss', 'ImageHoss', '3D Bee', 'Gummy Rooms']) {
+    await expect(applications.getByRole('heading', { name })).toBeVisible();
+  }
+  await expect(applications.getByRole('link', { name: 'Open VideoBoss' })).toHaveAttribute('target', '_blank');
+  await expect(applications.getByText(/authenticated local ImageHoss bridge/)).toBeVisible();
+  await expect(applications.getByText(/Pair the authenticated 3D Bee supervisor/)).toBeVisible();
+  await expect(applications.getByText(/No authenticated Gummy Rooms service/)).toBeVisible();
+  await expect(page.locator('[data-pillar-id]')).toHaveCount(8);
+  await expect(page.getByText('Simplify the doorway. Do not flatten the house.')).toBeVisible();
+  await expect(page.getByText(/Social computing may ship after the personal proof/)).toBeVisible();
+});
+
 test('approved Work Order produces separate result, Return, links, lease release, and Receipt', async ({ page }) => {
   await onboard(page);
   await page.getByRole('tab', { name: /Work Orders/ }).click();

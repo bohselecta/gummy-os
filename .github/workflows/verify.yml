@@ -29,4 +29,5 @@ jobs:
             artifacts/playwright-report
             artifacts/test-results
             artifacts/evidence
+            artifacts/product-preservation-report.json
             examples/standalone-acceptance.return.json

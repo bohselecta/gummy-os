@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/product-map.schema.json",
+  "title": "Gummy OS Product Map",
+  "type": "object",
+  "required": ["schema", "id", "title", "controllingRule", "pillars"],
+  "properties": {
+    "schema": { "const": "gummy.product-map/v1" },
+    "id": { "type": "string", "pattern": "^product-map:" },
+    "title": { "type": "string", "minLength": 1 },
+    "controllingRule": { "const": "Simplify the doorway. Do not flatten the house." },
+    "pillars": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "canonicalSource", "productPurpose", "visibility", "integrationStatus"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^pillar:" },
+          "name": { "type": "string", "minLength": 1 },
+          "canonicalSource": { "type": "string", "minLength": 1 },
+          "productPurpose": { "type": "string", "minLength": 1 },
+          "visibility": { "const": "visible" },
+          "integrationStatus": {
+            "enum": ["integrated", "interface-ready", "staged", "lineage-preserved"]
+          },
+          "surfaceIds": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

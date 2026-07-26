@@ -5,9 +5,10 @@ import { ByteStore, ByteStoreError } from './core/byte-store.js';
 import { LocalBoxAdapter, GitHubBoxAdapter } from './core/box-adapters.js';
 import { PolicyEngine } from './core/policy-engine.js';
 import { WorkOrderWorkflow } from './core/workflow.js';
-import { CAPABILITIES, SOURCE_TEXT, createReceipt, personalRecords } from './core/records.js';
+import { CAPABILITIES, SOURCE_TEXT, createReceipt, ensureFullProductRecords, personalRecords } from './core/records.js';
 import { createId, sha256 } from './core/hash.js';
 import { migrateLegacy } from './core/migration.js';
+import { applicationLaunchState, loadProductCatalog } from './core/product-registry.js';
 import { WindowManager } from './window-manager.js';
 import { gummyAssets } from './brand/gummy-assets.js';
 
@@ -87,6 +88,7 @@ async function seedPersonalGummy({ name, address, mode }) {
   await repository.putValidated('actors', records.actor);
   await repository.putValidated('actors', records.testActor);
   await repository.putValidated('agents', records.agent);
+  await repository.putValidated('agents', records.localOperator);
   await repository.putValidated('molds', records.mold);
   await repository.putValidated('masterControls', records.masterControl);
   await localBox.initialize(records.box);
@@ -167,6 +169,7 @@ function onboarding() {
           ['Human', `${choices.name} · local, non-verified`],
           ['Actor', `actor:hayden · ${choices.address}`],
           ['Agent', 'agent:glopper-web · OpenAI / gpt-5.6-sol'],
+          ['Local Operator', 'agent:gummy-operator-local · Gemma 3 4B · offline until paired'],
           ['Mold', 'mold:hayden:personal'],
           ['Master Control', 'master-control:hayden'],
           ['Authoritative location', 'Local Gummy Box'],
@@ -302,7 +305,7 @@ async function openSurface(id) {
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
     control: ['Master Control', 'authority and revocation'],
-    applications: ['Applications', 'standalone phase']
+    applications: ['Applications', 'full Gummy OS product map']
   };
   const content = await buildSurface(id);
   const existing = windowManager.windows.get(id);
@@ -335,6 +338,39 @@ async function buildSurface(id) {
 function guideSurface() {
   return h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Gummy guide · orientation and continuity' }),
+    h('section', { class: 'doorway', 'aria-label': 'Start in Gummy OS' }, [
+      h('h1', { text: 'What would you like to do?' }),
+      h('p', { class: 'lede', text: 'Start simply. The full Canvas, Applications, People & Spaces, Glopper, Activity, and Access & Control remain available in the Gummy Bar.' }),
+      h('div', { class: 'doorway-actions' }, [
+        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('gummies') }, [
+          h('strong', { text: 'Add a project' }),
+          h('span', { text: 'Bring files and work into your Local Gummy Box.' })
+        ]),
+        h('button', { class: 'choice doorway-choice', onclick: () => document.querySelector('#gummy-conversation')?.focus() }, [
+          h('strong', { text: 'Talk to Gummy' }),
+          h('span', { text: 'Ask for orientation without granting execution authority.' })
+        ]),
+        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('gummies') }, [
+          h('strong', { text: 'Open an existing project' }),
+          h('span', { text: 'Continue from durable Gummies without replacing the source.' })
+        ])
+      ])
+    ]),
+    h('section', {
+      id: 'gummy-conversation',
+      class: 'card gummy-orientation',
+      tabindex: '-1',
+      dataset: { gummyAssistant: 'gummy' },
+      'aria-label': 'Talk to Gummy'
+    }, [
+      h('h2', { text: 'Talk to Gummy' }),
+      h('p', { text: 'Gummy helps you understand where projects, applications, people, spaces, and controls belong. Glopper remains the separate action companion.' }),
+      h('label', { class: 'field' }, [
+        h('span', { text: 'Orientation question' }),
+        h('textarea', { rows: '2', placeholder: 'Where should I begin?' })
+      ]),
+      h('button', { class: 'button', disabled: true }, 'Orientation conversation is staged')
+    ]),
     h('div', { class: 'split' }, [
       h('div', {}, [
         h('h1', { text: 'A computer you can open.' }),
@@ -364,6 +400,11 @@ function guideSurface() {
         h('div', { class: 'mascot-slot', 'aria-label': 'Temporary Glopper mascot slot', text: '✦' }),
         h('h2', { text: 'Glopper helps you act.' }),
         h('p', { text: 'agent:glopper-web · OpenAI Responses · gpt-5.6-sol · cloud locality' })
+      ]),
+      h('article', { class: 'card' }, [
+        h('h2', { text: 'Local Operator' }),
+        h('p', { text: 'agent:gummy-operator-local · Gemma 3 4B reference lane · offline until a trusted local supervisor is paired' }),
+        h('span', { class: 'status offline', text: 'No ambient authority' })
       ]),
       h('article', { class: 'card' }, [h('h2', { text: 'Authority' }), h('p', { text: 'human:hayden sponsors actor:hayden through Master Control.' })]),
       h('article', { class: 'card' }, [h('h2', { text: 'Boundaries' }), h('p', { text: 'No shell, native runtime, public discovery, billing, or production identity.' })]),
@@ -517,6 +558,7 @@ async function actorsSurface() {
   const root = h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Persistent identities, explicit composition' }),
     h('h2', { text: 'Actors & Bowls' }),
+    h('p', { class: 'lede', text: 'People & Spaces is a first-class Gummy OS pillar. Actor Homes, stable @addresses, follows, memberships, sharing, Links, Grabs, and collaborative Rooms remain staged—not removed.' }),
     h('div', { class: 'card-grid' }, actors.map(actor => h('article', { class: 'card' }, [
       h('h3', { text: actor.name }), h('p', { text: `${actor.id} · ${actor.address}` }),
       h('span', { class: 'status', text: `${actor.kind} · ${actor.status}` })
@@ -731,6 +773,7 @@ async function controlSurface() {
   const control = await repository.get('masterControls', 'master-control:hayden');
   const mold = await repository.get('molds', control.activeMoldId);
   const agent = await repository.get('agents', control.activeAgentId);
+  const localOperator = await repository.get('agents', 'agent:gummy-operator-local');
   const root = h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Human-controlled authority' }),
     h('h2', { text: 'Master Control' }),
@@ -738,6 +781,7 @@ async function controlSurface() {
       ['Human', 'human:hayden · local non-verified'],
       ['Actor', 'actor:hayden · @hayden'],
       ['Agent', `${agent.id} · ${agent.status} · ${agent.locality}`],
+      ['Local Operator', `${localOperator.id} · ${localOperator.model} · ${localOperator.status} · no active authority`],
       ['Mold', `${mold.id} · ${mold.status}`],
       ['Active lease', control.activeTaskLeaseId || 'none'],
       ['Authoritative location', control.authoritativeLocation],
@@ -752,7 +796,15 @@ async function controlSurface() {
     ]),
     h('p', { class: 'notice', text: 'Revocation is append-only. Restoration issues a new Mold ID; the revoked Mold is never erased or reactivated.' })
   ]);
-  root.append(await githubSurface());
+  root.append(
+    h('section', { class: 'card' }, [
+      h('h3', { text: 'Managed Gummy Box' }),
+      h('p', { text: 'Optional managed synchronization infrastructure. It never replaces Local Box, Gummy OS, Applications, the Operator, or Social computing.' }),
+      h('span', { class: 'status offline', text: 'Staged · explicit opt-in only' }),
+      h('p', { class: 'meta', text: 'Local Gummy Box remains authoritative. No managed provider has been connected or granted access.' })
+    ]),
+    await githubSurface()
+  );
   return root;
 }
 
@@ -927,19 +979,76 @@ async function loadGitHubRepositories(card) {
   }
 }
 
-function applicationsSurface() {
-  return h('div', {}, [
-    h('p', { class: 'eyebrow', text: 'Standalone Phase 1' }),
+async function applicationsSurface() {
+  const root = h('div', {}, [
+    h('p', { class: 'eyebrow', text: 'First-party Gummy OS applications' }),
     h('h2', { text: 'Applications' }),
-    h('div', { class: 'card-grid' }, surfaces.filter(([id]) => id !== 'glopper').map(([id, icon, label]) =>
-      h('button', { class: 'card button', onclick: () => openSurface(id) }, [h('strong', { text: `${icon} ${label}` }), h('p', { text: 'Open on Gummy Canvas' })])
-    )),
-    h('section', { class: 'card legacy-preview' }, [
-      h('h3', { text: 'Legacy enterprise proof · preview only' }),
-      h('p', { text: 'Retained outside the default Gummy Bar. Social, federation, enterprise expansion, and native distribution are not part of this build.' }),
-      h('button', { class: 'button', disabled: true }, 'Preview unavailable in standalone lane')
-    ])
+    h('p', { class: 'lede', text: 'Specialist products keep their own interfaces, repositories, protocols, evidence, and execution boundaries. Gummy OS launches or connects them truthfully.' })
   ]);
+  try {
+    const { productMap, applicationRegistry } = await loadProductCatalog();
+    const applicationGrid = h('div', { class: 'card-grid application-grid', dataset: { testid: 'first-party-applications' } });
+    for (const application of applicationRegistry.applications) {
+      const launch = applicationLaunchState(application);
+      const action = launch.available
+        ? h('a', { class: 'button primary', href: launch.route, target: '_blank', rel: 'noopener noreferrer', text: launch.label })
+        : h('button', { class: 'button', disabled: true, text: launch.label });
+      applicationGrid.append(h('article', { class: 'card application-card', dataset: { applicationId: application.id } }, [
+        h('div', { class: 'application-heading' }, [
+          h('div', {}, [
+            h('p', { class: 'eyebrow', text: application.id }),
+            h('h3', { text: application.name })
+          ]),
+          h('span', {
+            class: `status ${launch.available ? '' : 'offline'}`,
+            text: launch.available ? 'Available' : application.connectionStatus.replaceAll('-', ' ')
+          })
+        ]),
+        h('p', { text: application.productPurpose }),
+        h('p', { class: 'meta', text: `${application.canonicalRepository} · ${application.releaseStatus}` }),
+        h('div', { class: 'button-row' }, [action]),
+        !launch.available ? h('p', { class: 'notice compact-notice', text: launch.reason }) : null,
+        h('details', {}, [
+          h('summary', { text: 'Capabilities and continuity' }),
+          facts([
+            ['Launch mode', application.launchMode],
+            ['Locality', application.locality.join(', ')],
+            ['Capabilities', application.capabilities.join(', ')],
+            ['Accepted inputs', application.acceptedInputs.join(', ') || 'none'],
+            ['Produces', application.producedArtifacts.join(', ')],
+            ['Protocols', application.protocolVersions.join(', ')]
+          ])
+        ])
+      ]));
+    }
+    const pillarGrid = h('div', { class: 'product-pillar-list' });
+    for (const pillar of productMap.pillars) {
+      pillarGrid.append(h('article', { class: 'record-row', dataset: { pillarId: pillar.id } }, [
+        h('div', {}, [
+          h('strong', { text: pillar.name }),
+          h('small', { text: pillar.productPurpose }),
+          h('small', { text: pillar.canonicalSource })
+        ]),
+        h('span', { class: 'status', text: pillar.integrationStatus.replaceAll('-', ' ') })
+      ]));
+    }
+    root.append(
+      applicationGrid,
+      h('section', { class: 'product-map-section' }, [
+        h('p', { class: 'eyebrow', text: 'Protected full product map' }),
+        h('h3', { text: productMap.controllingRule }),
+        h('p', { text: 'Social computing may ship after the personal proof, but it remains visible and architectural. Cloudflare storage, GitHub, and Google Drive remain optional infrastructure.' }),
+        pillarGrid
+      ])
+    );
+  } catch (error) {
+    root.append(h('section', { class: 'card' }, [
+      h('h3', { text: 'Product registry unavailable' }),
+      h('p', { text: error.message }),
+      h('p', { class: 'notice', text: 'Protected applications are not silently hidden. Launch remains blocked until the registry can be validated.' })
+    ]));
+  }
+  return root;
 }
 
 async function togglePanel(force) {
@@ -1025,6 +1134,7 @@ async function bootstrap() {
     await initializeSession();
     await repository.open();
     await migrateLegacy(repository);
+    await ensureFullProductRecords(repository);
     const mode = await repository.get('meta', 'preference:mode');
     await applyMode(mode?.value, false);
     document.querySelector('#boot')?.remove();

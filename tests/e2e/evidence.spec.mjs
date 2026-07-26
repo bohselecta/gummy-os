@@ -30,6 +30,9 @@ test('captures founder-review visual evidence', async ({ page }) => {
   await page.getByRole('button', { name: 'Close Glopper Panel' }).click();
   await page.screenshot({ path: 'artifacts/evidence/day-canvas-bar.png', fullPage: true });
   await expect(page.locator('html')).toHaveAttribute('data-gummy-mode', 'day');
+  await page.getByRole('tab', { name: /Applications/ }).click();
+  await expect(page.getByTestId('first-party-applications').locator('[data-application-id]')).toHaveCount(4);
+  await page.screenshot({ path: 'artifacts/evidence/full-product-applications.png', fullPage: true });
   await page.getByRole('tab', { name: /My Gummies/ }).click();
   await page.locator('input[type="file"]').setInputFiles({ name: 'quarantine-proof.md', mimeType: 'text/markdown', buffer: Buffer.from('# quarantine proof') });
   await page.getByRole('button', { name: 'Deny promotion' }).click();
@@ -51,4 +54,7 @@ test('captures phone and reduced-motion evidence', async ({ page }) => {
   await expect(page.locator('.toast-layer .toast')).toHaveCount(0, { timeout: 6_000 });
   await page.getByAltText('Gummy, the VR-goggled chimp guide').scrollIntoViewIfNeeded();
   await page.screenshot({ path: 'artifacts/evidence/day-phone-brand.png', fullPage: true });
+  await page.getByRole('tab', { name: /Applications/ }).click();
+  await expect(page.getByTestId('first-party-applications').locator('[data-application-id]')).toHaveCount(4);
+  await page.screenshot({ path: 'artifacts/evidence/full-product-applications-phone.png', fullPage: true });
 });
