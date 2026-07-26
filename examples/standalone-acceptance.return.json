@@ -23,7 +23,8 @@
     "Validated and executed a bounded project-brief Work Order through agent:glopper-web",
     "Created a separate result Gummy, Return, provenance Links, and chained Receipt",
     "Proved exclusive lease collision, revocation blocking, replacement Mold restoration, quarantine, bounded export, burn/reset, and two-Actor Bowl composition",
-    "Implemented a repository-scoped private GitHub Gummy Box adapter with expected-head reconciliation"
+    "Implemented a repository-scoped private GitHub Gummy Box adapter with expected-head reconciliation",
+    "Integrated all eight hash-verified production Gummy masters, deterministic WebP derivatives, favicons, PWA icons, and responsive boot, top-bar, onboarding, and guide placements"
   ],
   "checks": [
     {
@@ -39,7 +40,12 @@
     {
       "name": "Brand system cursor addendum requirements",
       "outcome": "pass",
-      "detail": "Night and Day use exactly the five locked colors; reference imagery is direction-only and temporary slots are labeled."
+      "detail": "Night and Day use exactly the five locked colors; production Gummy artwork is rendered without recoloring, distortion, clipping, or substitution for Glopper."
+    },
+    {
+      "name": "Production brand assets cursor addendum requirements",
+      "outcome": "pass",
+      "detail": "All eight canonical PNG source hashes, eight responsive WebP derivatives, six favicon/PWA outputs, centralized runtime paths, metadata, responsive placements, and placeholder-removal checks are automated."
     },
     {
       "name": "Hermetic verification",
@@ -55,6 +61,9 @@
   "artifactRefs": [
     "artifacts/playwright-report/",
     "artifacts/evidence/",
+    "public/brand/gummy/source/",
+    "public/brand/gummy/web/",
+    "public/brand/gummy/favicons/",
     "examples/standalone-acceptance.return.json"
   ],
   "receiptIds": [
@@ -64,7 +73,8 @@
     "No production authentication or identity verification",
     "No native bridge or agent:glopper-native",
     "No Google Drive, social, federation, enterprise expansion, billing, or public address resolution",
-    "Live provider and GitHub acceptance requires founder-supplied credentials"
+    "Live private GitHub acceptance requires GitHub App credentials",
+    "No production Glopper mascot or wordmark was included in this Gummy-only asset handoff; the separate temporary Glopper slot remains explicit"
   ],
   "provenClaims": [
     "Hermetic tests exercise a mocked OpenAI provider and Chromium durable browser storage",
