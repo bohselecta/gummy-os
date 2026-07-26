@@ -1,0 +1,93 @@
+---
+description: Make Gummy OS useful before any external provider setup
+alwaysApply: true
+---
+
+# User-First Gummy Box
+
+Read:
+
+1. `docs/USER_FIRST_GUMMY_BOX.md`
+2. `plans/active/2026-07-26-user-first-gummy-box-cursor-addendum.md`
+3. `docs/AUTOMATED_ACCEPTANCE.md`
+
+## Locked product law
+
+```text
+A Gummy Box exists when Gummy OS opens.
+GitHub and Google Drive are optional connections, never prerequisites.
+```
+
+Do not design any ordinary user flow that requires the user to:
+
+- register a GitHub App;
+- generate or paste a PEM key;
+- locate App or installation IDs;
+- create environment variables;
+- configure Vercel, Cloudflare, OAuth clients, buckets, or databases;
+- understand protocol vocabulary before adding a project.
+
+## Default experience
+
+Within five seconds the user understands:
+
+```text
+Gummy is a place to bring a project and get help finishing it.
+```
+
+Within ten seconds the user can choose:
+
+```text
+Add a project
+Talk to Gummy
+```
+
+Open to one waiting assistant presence, not an architecture dashboard.
+
+## Vocabulary
+
+Keep exact protocol terms internally. Use ordinary language by default:
+
+```text
+Work Order       → What Glopper will do
+Capability Grant → Permission needed
+Task Lease       → Working on it
+Return           → Your result
+Receipt          → What happened / Activity
+Gummy Box        → Your projects / Storage & sync
+Master Control   → Access & control
+```
+
+Technical terms belong under Details, diagnostics, developer mode, evidence exports, schemas, and documentation.
+
+## Storage
+
+Preserve:
+
+- IndexedDB/OPFS local-first operation;
+- provider-neutral Box identity;
+- explicit authority and revocation;
+- source/result separation;
+- truthful executor/provider/locality/cost evidence.
+
+Target managed service:
+
+```text
+Cloudflare Worker + D1 + R2 + Durable Object per Box + Queues where justified
+```
+
+Never send permanent R2 or provider credentials to browser code.
+
+## Connectors
+
+Production GitHub and Drive integrations are platform-owned apps.
+
+Users click Connect, consent, select a repository/file/folder, and return. They never create developer credentials.
+
+The current founder-owned GitHub App is a test fixture, not the consumer onboarding model.
+
+## Build discipline
+
+Do not destabilize the active standalone proof while its acceptance is in progress. Implement this as the next bounded lane with feature flags and automated acceptance.
+
+No founder regression checklist. The computer tests the computer.
