@@ -9,6 +9,7 @@
     }
   },
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api/[...path].mjs" },
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }
   ]
