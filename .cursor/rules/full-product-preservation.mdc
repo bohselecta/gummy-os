@@ -1,0 +1,35 @@
+---
+description: Preserve the full Gummy OS product while simplifying the user experience
+alwaysApply: true
+---
+
+# Full Product Preservation
+
+Read `docs/FULL_PRODUCT_PRESERVATION_DIRECTIVE.md` before planning or editing Gummy OS.
+
+## Locked law
+
+```text
+Simplify the doorway. Do not flatten the house.
+```
+
+The user-first shell is additive. It does not redefine Gummy OS as a generic assistant, storage client, or project manager.
+
+Protected product pillars:
+
+- Gummy OS shell and protocol;
+- local approximately 4B Gummy Operator lane;
+- VideoBoss (`bohselecta/videoboss`);
+- ImageHoss (`bohselecta/imagehoss`);
+- 3D Bee (`bohselecta/3d-bee`);
+- Actors, Actor Homes, Bowls, Links, Grabs, rooms, and the Social Layer;
+- Local and managed Gummy Box plus optional GitHub/Drive connectors;
+- production branding and current migrations.
+
+Do not remove, rename away, hide indefinitely, or replace these pillars because they are outside one implementation lane.
+
+Do not copy specialist repositories wholesale. Integrate through a first-party app registry, versioned contracts, truthful launch modes, and protocol adapters.
+
+Before any broad shell, storage, or conversation rewrite, return a gap audit covering all protected pillars and state exactly what will and will not change.
+
+Do not merge or flatten the product without explicit founder authorization.
