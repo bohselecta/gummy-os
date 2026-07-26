@@ -2,6 +2,8 @@
   .os-shell { grid-template-rows: 56px 1fr 82px; }
   .authority-strip { display: none; }
   .topbar { padding: 0 var(--space-2); }
+  .brand-picture { width: 40px; height: 40px; }
+  .brand-lockup { object-fit: contain; }
   .gummy-window { inset: 8px !important; width: auto !important; height: auto !important; min-width: 0; resize: none; }
   .window-subtitle { display: none; }
   .window-body { padding: var(--space-4); }
@@ -9,6 +11,9 @@
   .bar-candy { flex-basis: 68px; min-height: 60px; }
   .glopper-panel { top: auto; left: 0; right: 0; bottom: 82px; width: auto; height: min(72dvh, 610px); border-left: 0; border-top: 1px solid var(--line); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
   .choice-grid, .split { grid-template-columns: 1fr; }
+  .onboarding-brand { width: 56px; height: 56px; }
+  .onboarding-brand img { object-fit: contain; }
+  .gummy-guide-figure img { height: 240px; }
   .facts { grid-template-columns: 1fr; gap: .15rem; }
 }
 

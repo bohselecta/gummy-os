@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['schemas/*.json'],
+      includeAssets: ['schemas/*.json', 'brand/gummy/web/*.webp', 'brand/gummy/favicons/*.png'],
       manifest: {
         name: 'Gummy OS',
         short_name: 'Gummy',
@@ -14,7 +14,21 @@ export default defineConfig({
         theme_color: '#4B187A',
         background_color: '#100817',
         display: 'standalone',
-        start_url: '/'
+        start_url: '/',
+        icons: [
+          {
+            src: '/brand/gummy/favicons/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/brand/gummy/favicons/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          }
+        ]
       },
       workbox: {
         navigateFallbackDenylist: [/^\/api\//],

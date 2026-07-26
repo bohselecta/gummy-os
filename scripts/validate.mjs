@@ -11,6 +11,7 @@ const required = [
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
   'docs/BRAND_SYSTEM.md',
+  'docs/BRAND_ASSET_CATALOG.md',
   'docs/GLOPPER_NAMING.md',
   'docs/ACTOR_AGENT_MASTER_CONTROL.md',
   'docs/PLATFORM_PLAYGROUND_SECURITY.md',
@@ -31,7 +32,8 @@ const required = [
   'examples/standalone-acceptance.return.json',
   'plans/active/2026-07-25-personal-gummy-cursor-work-order.md',
   'plans/active/2026-07-25-gummy-box-cursor-addendum.md',
-  'plans/active/2026-07-25-brand-system-cursor-addendum.md'
+  'plans/active/2026-07-25-brand-system-cursor-addendum.md',
+  'plans/active/2026-07-25-production-brand-assets-cursor-addendum.md'
 ];
 
 for (const path of required) await access(path);

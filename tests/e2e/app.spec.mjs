@@ -25,6 +25,68 @@ test.afterEach(async ({ page }) => {
   expect(page.runtimeErrors).toEqual([]);
 });
 
+test('production Gummy identity is intact, responsive, addressable, and separate from Glopper', async ({ page, request }) => {
+  await page.route('**/api/v1/session', async route => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    await route.continue();
+  });
+  await page.goto('/');
+  const bootMark = page.locator('.boot-mark');
+  await expect(bootMark).toBeVisible();
+  await expect(bootMark).toHaveAttribute('src', '/brand/gummy/web/gummy-app-icon-monogram.webp');
+  await expect(page.getByAltText('Gummy OS')).toBeVisible();
+  await page.getByTestId('mode-night').click();
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
+  await page.getByRole('button', { name: 'Continue without connecting' }).click();
+  await page.getByTestId('enter-canvas').click();
+
+  const topbarBrand = page.getByRole('button', { name: 'Gummy OS — open Gummy guide' }).locator('img');
+  await expect(topbarBrand).toBeVisible();
+  expect(await topbarBrand.evaluate(image => ({
+    currentSrc: image.currentSrc,
+    natural: [image.naturalWidth, image.naturalHeight],
+    fit: getComputedStyle(image).objectFit
+  }))).toEqual({
+    currentSrc: expect.stringContaining('/brand/gummy/web/gummy-lockup-horizontal.webp'),
+    natural: [768, 512],
+    fit: 'cover'
+  });
+
+  const guide = page.getByAltText('Gummy, the VR-goggled chimp guide');
+  await expect(guide).toBeVisible();
+  expect(await guide.evaluate(image => ({
+    natural: [image.naturalWidth, image.naturalHeight],
+    fit: getComputedStyle(image).objectFit
+  }))).toEqual({ natural: [512, 768], fit: 'cover' });
+
+  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await expect(page.getByRole('complementary', { name: 'Glopper Panel' }).locator('img[src*="/brand/gummy/"]')).toHaveCount(0);
+  await expect(page.getByText(/temporary artwork slot/i)).toHaveCount(0);
+
+  const requiredAssets = [
+    '/brand/gummy/web/gummy-lockup-horizontal.webp',
+    '/brand/gummy/web/gummy-mark-head-square.webp',
+    '/brand/gummy/web/gummy-mascot-head.webp',
+    '/brand/gummy/favicons/favicon-16x16.png',
+    '/brand/gummy/favicons/favicon-32x32.png',
+    '/brand/gummy/favicons/favicon-48x48.png',
+    '/brand/gummy/favicons/apple-touch-icon.png',
+    '/brand/gummy/favicons/pwa-192x192.png',
+    '/brand/gummy/favicons/pwa-512x512.png'
+  ];
+  for (const path of requiredAssets) {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(200);
+  }
+  const manifest = await (await request.get('/manifest.webmanifest')).json();
+  expect(manifest.icons).toEqual(expect.arrayContaining([
+    expect.objectContaining({ src: '/brand/gummy/favicons/pwa-192x192.png', sizes: '192x192' }),
+    expect.objectContaining({ src: '/brand/gummy/favicons/pwa-512x512.png', sizes: '512x512' })
+  ]));
+});
+
 test('onboarding, Night/Day continuity, Canvas windows, Bar keyboard, and accessibility', async ({ page }) => {
   await onboard(page, 'night');
   await expect(page.locator('html')).toHaveAttribute('data-gummy-mode', 'night');
@@ -189,6 +251,22 @@ test('revocation blocks before provider, replacement Mold is additive, and two A
 test('phone Glopper panel is a bottom sheet and 320px layout remains operable', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 720 });
   await onboard(page);
+  const compactBrand = page.getByRole('button', { name: 'Gummy OS — open Gummy guide' }).locator('img');
+  await expect(compactBrand).toBeVisible();
+  expect(await compactBrand.evaluate(image => ({
+    currentSrc: image.currentSrc,
+    natural: [image.naturalWidth, image.naturalHeight],
+    fit: getComputedStyle(image).objectFit
+  }))).toEqual({
+    currentSrc: expect.stringContaining('/brand/gummy/web/gummy-mark-head-square.webp'),
+    natural: [512, 512],
+    fit: 'contain'
+  });
+  const phoneGuide = page.getByAltText('Gummy, the VR-goggled chimp guide');
+  await phoneGuide.scrollIntoViewIfNeeded();
+  const guideBox = await phoneGuide.boundingBox();
+  expect(guideBox.y).toBeGreaterThanOrEqual(56);
+  expect(guideBox.y + guideBox.height).toBeLessThanOrEqual(638);
   await page.getByRole('tab', { name: /Glopper/ }).click();
   const panel = page.getByRole('complementary', { name: 'Glopper Panel' });
   await expect(panel).toBeVisible();

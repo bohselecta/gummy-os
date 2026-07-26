@@ -18,7 +18,7 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } }
   ],
   webServer: {
-    command: 'GUMMY_TEST_MODE=1 npm run dev',
+    command: 'npm run build && GUMMY_TEST_MODE=1 npm start',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000

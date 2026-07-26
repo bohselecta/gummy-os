@@ -28,11 +28,15 @@
   background: radial-gradient(circle at 20% 10%, var(--g-purple-deep), var(--g-ink) 72%); color: var(--g-cream);
 }
 .onboarding-card { width: min(680px, 100%); max-height: calc(100dvh - 32px); overflow: auto; border: 1px solid color-mix(in srgb, var(--g-cream) 22%, transparent); border-radius: var(--radius-lg); padding: clamp(1.25rem, 4vw, 2.5rem); background: color-mix(in srgb, var(--g-ink) 88%, var(--g-purple-deep)); box-shadow: var(--shadow); }
+.onboarding-brand { display: block; width: 168px; height: 60px; margin: 0 0 var(--space-4); overflow: hidden; }
+.onboarding-brand img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .step-meter { display: flex; gap: var(--space-2); margin-bottom: var(--space-6); }
 .step-meter span { height: 5px; flex: 1; border-radius: 9px; background: color-mix(in srgb, var(--g-cream) 18%, transparent); }
 .step-meter span.active { background: var(--g-gold); }
 .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
 .choice { min-height: 130px; text-align: left; border: 2px solid transparent; border-radius: var(--radius-md); padding: var(--space-4); background: var(--g-purple-deep); color: var(--g-cream); }
+.choice strong, .choice span { display: block; }
+.choice span { margin-top: var(--space-2); }
 .choice[aria-pressed="true"] { border-color: var(--g-gold); }
 .field { display: grid; gap: var(--space-2); margin: var(--space-4) 0; }
 .field input, .field select, .field textarea { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .65rem .8rem; background: var(--surface); color: var(--text); }

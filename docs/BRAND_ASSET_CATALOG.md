@@ -7,11 +7,11 @@ The canonical operating rules remain in [`BRAND_SYSTEM.md`](BRAND_SYSTEM.md). Th
 
 ## Source archive
 
-The organized full-resolution masters are stored in Hayden's Drive folder while repository binary import is completed:
+The organized full-resolution masters remain archived in Hayden's Drive folder:
 
 `https://drive.google.com/drive/folders/1YVnQchNUauRJ4DFPVd4fM6qGRSXVkMH4`
 
-Do not use Drive URLs as production application dependencies. Checked-in repository assets are the runtime source of truth.
+The hash-verified PNG masters are checked in under `public/brand/gummy/source/`; generated WebP and browser/PWA derivatives live beside them under `web/` and `favicons/`. Drive URLs are not production application dependencies.
 
 ## Catalog
 

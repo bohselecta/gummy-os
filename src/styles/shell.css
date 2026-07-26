@@ -25,10 +25,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 }
 .boot h1 { margin: var(--space-4) 0 0; }
 .boot p { color: var(--muted); }
-.temporary-mark {
-  display: grid; place-items: center; width: 92px; aspect-ratio: 1;
-  border: 2px dashed var(--g-gold); border-radius: 42% 58% 54% 46%;
-  background: var(--g-purple); color: var(--g-cream); font-size: 3rem; font-weight: 900;
+.boot-mark {
+  display: block; width: 96px; height: 96px; object-fit: contain;
+  border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow);
 }
 .os-shell { height: 100dvh; display: grid; grid-template-rows: 64px 1fr 92px; background: var(--surface); }
 .topbar {
@@ -37,8 +36,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   backdrop-filter: blur(18px);
 }
 .brand-cluster, .authority-strip, .top-actions { display: flex; align-items: center; gap: var(--space-3); }
-.brand-button { border: 0; border-radius: var(--radius-md); background: transparent; color: var(--text); display: flex; align-items: center; gap: var(--space-2); }
-.brand-glyph { display: grid; place-items: center; width: 34px; aspect-ratio: 1; border-radius: 42% 58% 52% 48%; background: var(--g-purple); color: var(--g-cream); font-weight: 900; }
+.brand-button { border: 0; border-radius: var(--radius-md); padding: 0; background: transparent; color: var(--text); display: flex; align-items: center; }
+.brand-picture { display: block; width: 132px; height: 48px; overflow: hidden; }
+.brand-lockup { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .authority-strip { font-size: .78rem; color: var(--muted); }
 .authority-strip strong { color: var(--text); }
 .canvas {
@@ -64,6 +64,18 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .window-title { font-weight: 800; }
 .window-subtitle { color: var(--muted); font-size: .78rem; }
 .window-body { overflow: auto; padding: var(--space-6); flex: 1; }
+.gummy-guide-figure {
+  min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg);
+  background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--g-purple) 46%, transparent), var(--surface-soft) 72%);
+}
+.gummy-guide-figure img {
+  display: block; width: 100%; height: clamp(250px, 30vw, 320px); object-fit: cover; object-position: center;
+}
+.gummy-guide-figure figcaption {
+  display: grid; gap: 2px; padding: var(--space-3) var(--space-4); border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
+}
+.gummy-guide-figure figcaption span { color: var(--muted); font-size: .78rem; }
 .gummy-bar {
   z-index: 1100; display: flex; align-items: center; gap: var(--space-2); overflow-x: auto; padding: var(--space-3) max(var(--space-4), calc((100vw - 980px) / 2));
   border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(18px);

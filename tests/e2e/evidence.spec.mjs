@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 
-async function onboarding(page, mode) {
+async function onboarding(page, mode, layout = 'desktop') {
   await page.goto('/');
   await page.getByTestId(`mode-${mode}`).click();
-  await page.screenshot({ path: `artifacts/evidence/${mode}-theme-selector.png`, fullPage: true });
+  const selectorName = layout === 'desktop' ? `${mode}-theme-selector.png` : `${mode}-${layout}-theme-selector.png`;
+  await page.screenshot({ path: `artifacts/evidence/${selectorName}`, fullPage: true });
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
@@ -39,7 +40,15 @@ test('captures founder-review visual evidence', async ({ page }) => {
 test('captures phone and reduced-motion evidence', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 720 });
-  await onboarding(page, 'night');
+  await onboarding(page, 'night', 'phone');
+  await page.screenshot({ path: 'artifacts/evidence/night-phone-reduced-motion.png', fullPage: true });
+  await page.getByAltText('Gummy, the VR-goggled chimp guide').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: 'artifacts/evidence/night-phone-brand.png', fullPage: true });
   await page.getByRole('tab', { name: /Glopper/ }).click();
   await page.screenshot({ path: 'artifacts/evidence/phone-reduced-motion.png', fullPage: true });
+  await page.getByRole('button', { name: 'Switch Night or Day Gummy' }).click();
+  await page.getByRole('button', { name: 'Close Glopper Panel' }).click();
+  await expect(page.locator('.toast-layer .toast')).toHaveCount(0, { timeout: 6_000 });
+  await page.getByAltText('Gummy, the VR-goggled chimp guide').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: 'artifacts/evidence/day-phone-brand.png', fullPage: true });
 });

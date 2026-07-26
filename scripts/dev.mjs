@@ -10,7 +10,8 @@ const root = process.cwd();
 const types = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.js', 'text/javascript; charset=utf-8'],
   ['.css', 'text/css; charset=utf-8'], ['.json', 'application/json; charset=utf-8'],
-  ['.svg', 'image/svg+xml'], ['.webmanifest', 'application/manifest+json']
+  ['.svg', 'image/svg+xml'], ['.png', 'image/png'], ['.webp', 'image/webp'],
+  ['.ico', 'image/x-icon'], ['.webmanifest', 'application/manifest+json']
 ]);
 const api = createApiHandler();
 const vite = production ? null : await (await import('vite')).createServer({

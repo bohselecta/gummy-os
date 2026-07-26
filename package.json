@@ -5,10 +5,11 @@
   "type": "module",
   "description": "Gummy is a provider-neutral personal AI computer, social protocol, and governed enterprise software habitat delivered through the browser.",
   "scripts": {
+    "brand:generate": "node scripts/generate-brand-assets.mjs",
     "dev": "node scripts/dev.mjs",
     "start": "NODE_ENV=production node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node scripts/validate.mjs && node scripts/audit-colors.mjs",
+    "check": "node scripts/validate.mjs && node scripts/audit-colors.mjs && node scripts/check-brand-assets.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:e2e": "playwright test",
     "verify": "npm run check && npm test && npm run build && npm run test:e2e",
@@ -33,6 +34,7 @@
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.62.0",
     "fake-indexeddb": "^6.2.5",
+    "sharp": "^0.35.3",
     "vite": "^7.3.6",
     "vite-plugin-pwa": "^1.2.0"
   }

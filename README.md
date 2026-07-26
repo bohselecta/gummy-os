@@ -314,28 +314,31 @@ Gummy OS
 ## Read order
 
 1. `docs/BRAND_SYSTEM.md`
-2. `docs/GLOPPER_NAMING.md`
-3. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-4. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
-5. `docs/GUMMY_BOX_WORK_ORDERS.md`
-6. `docs/VOCABULARY.md`
-7. `docs/PRODUCT_SPEC.md`
-8. `docs/ARCHITECTURE.md`
-9. `docs/PROTOCOL.md`
-10. `docs/SECURITY_MODEL.md`
-11. `docs/SOCIAL_LAYER.md`
-12. `docs/ROADMAP.md`
-13. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-14. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
-15. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
-16. `docs/BUILD_RUNBOOK.md`
-17. `AGENTS.md`
+2. `docs/BRAND_ASSET_CATALOG.md`
+3. `docs/GLOPPER_NAMING.md`
+4. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
+5. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
+6. `docs/GUMMY_BOX_WORK_ORDERS.md`
+7. `docs/VOCABULARY.md`
+8. `docs/PRODUCT_SPEC.md`
+9. `docs/ARCHITECTURE.md`
+10. `docs/PROTOCOL.md`
+11. `docs/SECURITY_MODEL.md`
+12. `docs/SOCIAL_LAYER.md`
+13. `docs/ROADMAP.md`
+14. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+15. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
+16. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
+17. `plans/active/2026-07-25-production-brand-assets-cursor-addendum.md`
+18. `docs/BUILD_RUNBOOK.md`
+19. `AGENTS.md`
 
 ## Run and verify
 
 Requirements: Node.js 22 or newer.
 
 ```bash
+npm run brand:generate
 npm run dev
 npm run check
 npm test

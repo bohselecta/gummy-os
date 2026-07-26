@@ -9,6 +9,7 @@ import { CAPABILITIES, SOURCE_TEXT, createReceipt, personalRecords } from './cor
 import { createId, sha256 } from './core/hash.js';
 import { migrateLegacy } from './core/migration.js';
 import { WindowManager } from './window-manager.js';
+import { gummyAssets } from './brand/gummy-assets.js';
 
 const appRoot = document.querySelector('#app');
 const announcer = document.querySelector('#announcer');
@@ -72,9 +73,9 @@ async function initializeSession() {
 
 async function applyMode(mode, persist = true) {
   const safe = ['night', 'day'].includes(mode) ? mode : 'night';
+  if (persist) await repository.put('meta', { id: 'preference:mode', value: safe, updatedAt: new Date().toISOString() }, { validate: false });
   document.documentElement.dataset.gummyMode = safe;
   document.querySelector('meta[name="theme-color"]').content = safe === 'night' ? '#4B187A' : '#FFF1C7';
-  if (persist) await repository.put('meta', { id: 'preference:mode', value: safe, updatedAt: new Date().toISOString() }, { validate: false });
 }
 
 async function seedPersonalGummy({ name, address, mode }) {
@@ -108,9 +109,19 @@ function onboarding() {
 
   const render = () => {
     card.replaceChildren();
+    const identity = h('picture', { class: 'onboarding-brand' }, [
+      h('source', { media: '(max-width: 520px)', srcset: gummyAssets.compactHeadMark }),
+      h('img', {
+        src: gummyAssets.horizontalLockup,
+        alt: 'Gummy OS',
+        width: '168',
+        height: '60',
+        decoding: 'async'
+      })
+    ]);
     const meter = h('div', { class: 'step-meter', 'aria-label': `Step ${step + 1} of 5` });
     for (let index = 0; index < 5; index += 1) meter.append(h('span', { class: index <= step ? 'active' : '' }));
-    card.append(meter, h('p', { class: 'eyebrow', text: `Personal Gummy · ${step + 1} / 5` }));
+    card.append(identity, meter, h('p', { class: 'eyebrow', text: `Personal Gummy · ${step + 1} / 5` }));
     if (step === 0) {
       card.append(
         h('h1', { text: 'Choose how Gummy feels' }),
@@ -204,9 +215,22 @@ async function renderShell() {
   appRoot.replaceChildren();
   const shell = h('main', { class: 'os-shell' });
   const topbar = h('header', { class: 'topbar' }, [
-    h('div', { class: 'brand-cluster' }, h('button', { class: 'brand-button', onclick: () => openSurface('guide'), 'aria-label': 'Open Gummy guide' }, [
-      h('span', { class: 'brand-glyph', 'aria-hidden': 'true', text: 'G' }), h('strong', { text: 'Gummy OS' })
-    ])),
+    h('div', { class: 'brand-cluster' }, h('button', {
+      class: 'brand-button',
+      onclick: () => openSurface('guide'),
+      'aria-label': 'Gummy OS — open Gummy guide'
+    }, h('picture', { class: 'brand-picture' }, [
+      h('source', { media: '(max-width: 760px)', srcset: gummyAssets.compactHeadMark }),
+      h('img', {
+        class: 'brand-lockup',
+        src: gummyAssets.horizontalLockup,
+        alt: '',
+        width: '132',
+        height: '48',
+        decoding: 'async',
+        fetchpriority: 'high'
+      })
+    ]))),
     h('div', { class: 'authority-strip' }, [
       h('span', { text: 'Human ' }), h('strong', { text: human.name }), h('span', { text: '· Actor ' }), h('strong', { text: actor.address }), h('span', { text: '· Authority ' }), h('strong', { text: 'Local Gummy Box' })
     ]),
@@ -310,7 +334,7 @@ async function buildSurface(id) {
 
 function guideSurface() {
   return h('div', {}, [
-    h('p', { class: 'eyebrow', text: 'Gummy guide · temporary artwork slot' }),
+    h('p', { class: 'eyebrow', text: 'Gummy guide · orientation and continuity' }),
     h('div', { class: 'split' }, [
       h('div', {}, [
         h('h1', { text: 'A computer you can open.' }),
@@ -320,13 +344,27 @@ function guideSurface() {
           h('button', { class: 'button', onclick: () => openSurface('gummies') }, 'Open My Gummies')
         ])
       ]),
-      h('div', { class: 'card' }, [
-        h('div', { class: 'mascot-slot', 'aria-label': 'Temporary Glopper mascot slot', text: '✦' }),
-        h('h2', { text: 'Glopper is the character. The Agent is explicit.' }),
-        h('p', { text: 'agent:glopper-web · OpenAI Responses · gpt-5.6-sol · cloud locality' })
+      h('figure', { class: 'gummy-guide-figure', dataset: { gummyAssistant: 'gummy' } }, [
+        h('img', {
+          src: gummyAssets.mascotHead,
+          alt: 'Gummy, the VR-goggled chimp guide',
+          width: '512',
+          height: '768',
+          loading: 'lazy',
+          decoding: 'async'
+        }),
+        h('figcaption', {}, [
+          h('strong', { text: 'Gummy keeps your place.' }),
+          h('span', { text: 'Purple-dominant orientation · gold action cues' })
+        ])
       ])
     ]),
     h('div', { class: 'card-grid' }, [
+      h('article', { class: 'card', dataset: { gummyAssistant: 'glopper' } }, [
+        h('div', { class: 'mascot-slot', 'aria-label': 'Temporary Glopper mascot slot', text: '✦' }),
+        h('h2', { text: 'Glopper helps you act.' }),
+        h('p', { text: 'agent:glopper-web · OpenAI Responses · gpt-5.6-sol · cloud locality' })
+      ]),
       h('article', { class: 'card' }, [h('h2', { text: 'Authority' }), h('p', { text: 'human:hayden sponsors actor:hayden through Master Control.' })]),
       h('article', { class: 'card' }, [h('h2', { text: 'Boundaries' }), h('p', { text: 'No shell, native runtime, public discovery, billing, or production identity.' })]),
       h('article', { class: 'card' }, [h('h2', { text: 'Durability' }), h('p', { text: 'Metadata lives in IndexedDB; Gummy bytes live in origin-private storage.' })])
@@ -912,7 +950,7 @@ async function togglePanel(force) {
 async function renderPanel() {
   document.querySelector('.glopper-panel')?.remove();
   if (!panelOpen) return;
-  const panel = h('aside', { class: 'glopper-panel', 'aria-label': 'Glopper Panel' });
+  const panel = h('aside', { class: 'glopper-panel', 'aria-label': 'Glopper Panel', dataset: { gummyAssistant: 'glopper' } });
   const header = h('header', { class: 'panel-header' }, [
     h('div', { class: 'glopper-identity' }, [
       h('div', { class: 'mascot-slot', 'aria-label': 'Temporary Glopper mascot slot', text: '✦' }),
