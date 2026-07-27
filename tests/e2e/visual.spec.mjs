@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  if (process.env.GUMMY_SHARE_URL) await page.goto(process.env.GUMMY_SHARE_URL);
+});
+
 test('Ranch Day Production desktop visual', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Start private Ranch Day Production' }).click();

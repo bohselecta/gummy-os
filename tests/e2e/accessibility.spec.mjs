@@ -4,6 +4,10 @@ import { expect, test } from '@playwright/test';
 const require = createRequire(import.meta.url);
 const axePath = require.resolve('axe-core/axe.min.js');
 
+test.beforeEach(async ({ page }) => {
+  if (process.env.GUMMY_SHARE_URL) await page.goto(process.env.GUMMY_SHARE_URL);
+});
+
 test('Production and Master Control have no serious or critical axe violations and support keyboard flow', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Start private Ranch Day Production' }).click();

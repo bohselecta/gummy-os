@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  if (process.env.GUMMY_SHARE_URL) await page.goto(process.env.GUMMY_SHARE_URL);
+});
+
 test('Ranch Day completes, persists, and future Runs stop after relationship revocation', async ({ page, context, browser }) => {
   const errors = [];
   page.on('console', message => {
