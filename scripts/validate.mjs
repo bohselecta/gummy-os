@@ -3,6 +3,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
 const required = [
+  '.env.example',
   'index.html',
   'src/app.js',
   'src/styles.css',
@@ -40,6 +41,7 @@ const required = [
   'docs/FULL_PRODUCT_GAP_AUDIT.md',
   'docs/MANAGED_GUMMY_BOX_LANE.md',
   'docs/GUMMY_UTILITY_TILE_SYSTEM.md',
+  'docs/IMAGEHOSS_PRODUCTION_CONTRACT_RECONCILIATION.md',
   'docs/PRODUCTION_ACTOR_RUNTIME.md',
   'docs/ACTOR_FIRST_PRODUCTION_MODEL.md',
   'plans/active/2026-07-27-production-runtime-reconciliation-and-utility-tiles.md',
@@ -68,6 +70,50 @@ for (const path of required) await access(path);
 
 const pkg = JSON.parse(await readFile('package.json', 'utf8'));
 if (pkg.name !== 'gummy-os') throw new Error('package name must remain gummy-os');
+
+const environmentExample = await readFile('.env.example', 'utf8');
+for (const name of [
+  'HOST',
+  'PORT',
+  'GUMMY_PUBLIC_ORIGIN',
+  'GUMMY_SESSION_SECRET',
+  'GUMMY_TEST_MODE',
+  'OPENAI_API_KEY',
+  'OPENAI_MODEL',
+  'OPENAI_INPUT_USD_PER_MILLION',
+  'OPENAI_OUTPUT_USD_PER_MILLION',
+  'OPENAI_PRICE_TABLE_VERSION',
+  'GITHUB_APP_ID',
+  'GITHUB_APP_PRIVATE_KEY',
+  'GITHUB_APP_SLUG',
+  'GITHUB_INSTALLATION_ID',
+  'GITHUB_TEST_REPOSITORY'
+]) {
+  if (!environmentExample.match(new RegExp(`^${name}=`, 'm'))) {
+    throw new Error(`.env.example is missing current server setting: ${name}`);
+  }
+}
+for (const staleName of [
+  'GUMMY_MODEL_BROKER_URL',
+  'GUMMY_MODEL_PROVIDER',
+  'GUMMY_DEPLOYMENT_MODE'
+]) {
+  if (environmentExample.match(new RegExp(`^${staleName}=`, 'm'))) {
+    throw new Error(`.env.example still advertises unused setting: ${staleName}`);
+  }
+}
+
+const readme = await readFile('README.md', 'utf8');
+for (const releaseFact of [
+  'https://gummy-os-six.vercel.app',
+  'bohselecta/mygummy/blob/main/TECHNOLOGY_POSITION.md',
+  'b544485e14d3f708651f24a8c78dab5e7760f03c',
+  '855172b66e3e854491d7284905e8cd33616be339'
+]) {
+  if (!readme.includes(releaseFact)) {
+    throw new Error(`README is missing release provenance: ${releaseFact}`);
+  }
+}
 
 const schemas = [
   'schemas/human.schema.json',

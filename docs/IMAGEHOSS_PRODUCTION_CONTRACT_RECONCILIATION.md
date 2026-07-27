@@ -2,13 +2,13 @@
 
 **Date:** 2026-07-27
 
-**Status:** Proposed contract package — founder review required before implementation
+**Status:** Historical reconciliation package — implemented, live-proven, and Human accepted
 
 **Repositories:** `bohselecta/gummy-os`, `bohselecta/imagehoss`
 
 ## Decision
 
-ImageHoss should become the first real specialist application connected to the
+ImageHoss is the first real specialist application connected to the
 Gummy OS Production runtime through a narrow, versioned, authority-checked
 adapter.
 
@@ -25,9 +25,27 @@ Opening `@ImageHoss`, editing a configuration, or previewing a Prompt Package
 does not execute. `Make Production` is the only Production transition that may
 create execution authority and submit ImageHoss work.
 
-This document is the requested reconciliation package. It proposes contracts,
-file boundaries, one bounded vertical slice, and acceptance evidence. It does
-not authorize or contain the implementation.
+This document is the historical reconciliation package that preceded the
+implementation. Its contracts, file boundaries, bounded adapter, and acceptance
+requirements were carried into the founder-ready release. Where its historical
+anchors or proposal-stage language differ from current code, the finish-up kit,
+merged implementation, and Phase 10 evidence take precedence.
+
+## Implementation outcome
+
+The proposal-stage review gate was superseded by the authorized finish-up
+program and completed with these exact accepted heads:
+
+| Repository | Accepted head | Outcome |
+|---|---|---|
+| `bohselecta/gummy-os` | `4369d7181868cfd173f88698816b9190f9c0ad11` | Live specialist dispatch merged and deployed |
+| `bohselecta/imagehoss` | `340f819b20c5b6d7ea988459c9380759941c757f` | Paired bounded ComfyUI runtime and accepted `.hoss` |
+| `bohselecta/videoboss` | `e67db769219e5a764821f7bac74638f3791dca98` | Trusted fal.ai route and Human-accepted delivery take |
+| `bohselecta/3d-bee` | `0c911f7552739f2e0bdefaf863a78a53f04a04c0` | Authenticated Blender route and accepted scene package |
+
+Configuration remains non-executing, **Make Production** remains the sole
+Production-wide execution boundary, specialist-native evidence remains
+distinct and linked, and artistic acceptance remains Human-owned.
 
 ## Repository anchors and ancestry
 
@@ -702,11 +720,12 @@ The later implementation Receipt must include:
 - a generic specialist-app SDK before this adapter proves the pattern;
 - rewriting ImageHoss inside Gummy OS;
 - changing the existing R1–R5 frozen Receipts;
-- implementing the contract before founder review accepts this package.
+- destructive implementation that bypasses the accepted finish-up kit or
+  rewrites frozen R1–R5 Receipts.
 
-## Review gate
+## Closed review gate
 
-Implementation remains blocked until the founder accepts or amends:
+The original founder review gate covered:
 
 1. contract ownership and version names;
 2. Prompt Package semantics;
@@ -716,6 +735,7 @@ Implementation remains blocked until the founder accepts or amends:
 6. `.hoss` v2 compatibility strategy;
 7. the bounded first vertical slice and its explicit quality limitations.
 
-After acceptance, implementation should proceed only through that vertical
-slice, collect exact-head evidence, and stop again for review before expanding
-routes or specialist integrations.
+That gate is closed. The founder authorized the finish-up program, accepted the
+ImageHoss result, accepted the Meshmallow scene, and accepted the final
+VideoBoss delivery take. Exact live evidence and remaining limitations are
+recorded in `docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md`.

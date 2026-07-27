@@ -1,37 +1,38 @@
 {
   "schema": "gummy.final-release-manifest/v1",
-  "createdAt": "2026-07-27T08:45:00.000Z",
-  "releaseRef": "codex/final-release-2026-07-27",
+  "createdAt": "2026-07-27T19:19:08.628Z",
+  "releaseRef": "main / phase-10-live-activation",
   "repositories": {
     "gummyOs": {
       "repository": "bohselecta/gummy-os",
       "baselineHead": "c1279e5f45d51e64febf4c29a701bbd5b21e62f1",
       "phase8Head": "6a5ebbe6fd33dcf283d60b52d39e83be00c28ee5",
-      "releaseHeadBinding": "the phase 9 commit containing this manifest, preserved by PR #20",
-      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/20"
+      "phase10MergedHead": "4369d7181868cfd173f88698816b9190f9c0ad11",
+      "releaseHeadBinding": "the exact release-closure commit containing this manifest",
+      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/22"
     },
     "imageHoss": {
       "repository": "bohselecta/imagehoss",
       "implementationCheckpoint": "f39cbe96829110bffcdc3414b9f088aa7b3d0d45",
       "releaseCheckpoint": "c86554781eb8e655c5e88eb34ec9e6be7f3faf69",
-      "mergedHead": "384109c8136b24f9f1843727020d92dee213bfba",
-      "pullRequest": "https://github.com/bohselecta/imagehoss/pull/6",
+      "mergedHead": "340f819b20c5b6d7ea988459c9380759941c757f",
+      "pullRequest": "https://github.com/bohselecta/imagehoss/pull/7",
       "status": "merged"
     },
     "videoBoss": {
       "repository": "bohselecta/videoboss",
       "implementationCheckpoint": "3fe1a8f8043086faaa98c938ad7f044ef2be6494",
       "releaseCheckpoint": "b2db6e57edb7624835f16421c3a252c6be19637c",
-      "mergedHead": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
-      "pullRequest": "https://github.com/bohselecta/videoboss/pull/4",
+      "mergedHead": "e67db769219e5a764821f7bac74638f3791dca98",
+      "pullRequest": "https://github.com/bohselecta/videoboss/pull/5",
       "status": "merged"
     },
     "meshmallow": {
       "repository": "bohselecta/3d-bee",
       "implementationCheckpoint": "f53d9210c6bb25fcba422de8b3ec341e33c3c04e",
       "releaseCheckpoint": "8e3e5835131b4e42b7d3902d0d2ec7da987233d6",
-      "mergedHead": "78cd86b2482490bbfdc0881ffafa101133850f29",
-      "pullRequest": "https://github.com/bohselecta/3d-bee/pull/5",
+      "mergedHead": "0c911f7552739f2e0bdefaf863a78a53f04a04c0",
+      "pullRequest": "https://github.com/bohselecta/3d-bee/pull/6",
       "status": "merged",
       "compatibilityIdentity": [
         "bohselecta/3d-bee",
@@ -47,8 +48,10 @@
     "projectId": "prj_iN4lDNquY0Y2xf297UvDZCVGWmsY",
     "canonicalUrl": "https://gummy-os-six.vercel.app",
     "mainAlias": "https://gummy-os-git-main-mygummy.vercel.app",
+    "acceptedActivationDeploymentId": "dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa",
+    "acceptedActivationCommit": "4369d7181868cfd173f88698816b9190f9c0ad11",
     "buildCommitBinding": "VERCEL_GIT_COMMIT_SHA, displayed in About / Limits and verified against the merged PR head",
-    "promotionRule": "production only after PR #20 merges and every deterministic release gate passes"
+    "promotionRule": "production only after the exact release PR merges and every deterministic release gate passes"
   },
   "contracts": [
     "gummy.imagehoss-production-configuration/v1",
@@ -87,13 +90,20 @@
     "evidence/phase-8-release-hardening.json",
     "evidence/performance-budget.json",
     "evidence/final-acceptance-summary.json",
+    "docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md",
     "evidence/rollback-plan.md",
     "artifacts/evidence/"
   ],
+  "publicTechnologyPosition": {
+    "repository": "bohselecta/mygummy",
+    "path": "TECHNOLOGY_POSITION.md",
+    "positionCommit": "b544485e14d3f708651f24a8c78dab5e7760f03c",
+    "readmeAndAuthorshipCommit": "855172b66e3e854491d7284905e8cd33616be339"
+  },
   "rollback": {
     "plan": "evidence/rollback-plan.md",
-    "priorProductionCommit": "c1279e5f45d51e64febf4c29a701bbd5b21e62f1",
-    "priorDeploymentId": "dpl_2vHQChhogRqYeBndN2HFEsJj49oV",
-    "priorDeploymentUrl": "https://gummy-re97al5i9-mygummy.vercel.app"
+    "priorProductionCommit": "4369d7181868cfd173f88698816b9190f9c0ad11",
+    "priorDeploymentId": "dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa",
+    "priorDeploymentUrl": "https://gummy-os-six.vercel.app"
   }
 }

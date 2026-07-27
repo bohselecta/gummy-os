@@ -1,9 +1,9 @@
 # Gummy OS final-release rollback
 
-The application rollback anchor is Gummy OS commit
-`c1279e5f45d51e64febf4c29a701bbd5b21e62f1`, deployed by Vercel as
-`dpl_2vHQChhogRqYeBndN2HFEsJj49oV` at
-`https://gummy-re97al5i9-mygummy.vercel.app`.
+The application rollback anchor is the accepted Phase 10 Gummy OS commit
+`4369d7181868cfd173f88698816b9190f9c0ad11`, deployed by Vercel as
+`dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa` at
+`https://gummy-os-six.vercel.app`.
 
 ## Trigger
 
@@ -16,9 +16,9 @@ unavailable; that is already an explicit product state.
 ## Application rollback
 
 Promote the retained Vercel deployment
-`dpl_2vHQChhogRqYeBndN2HFEsJj49oV` for project
+`dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa` for project
 `prj_iN4lDNquY0Y2xf297UvDZCVGWmsY`, or redeploy the exact baseline commit
-`c1279e5f45d51e64febf4c29a701bbd5b21e62f1`. Verify that the canonical
+`4369d7181868cfd173f88698816b9190f9c0ad11`. Verify that the canonical
 production alias reports that commit before declaring rollback complete.
 
 ## Local Box safety
@@ -32,13 +32,14 @@ to the final release rather than destructively coercing the record.
 
 ## Specialist rollback
 
-The specialist merge anchors are ImageHoss
-`384109c8136b24f9f1843727020d92dee213bfba`, VideoBoss
-`1b5c83f9765ca93efb3b37f4c0d89b47e5489143`, and Meshmallow/3D Bee
-`78cd86b2482490bbfdc0881ffafa101133850f29`. If a specialist must be reverted,
-revert its merge commit without rewriting history, then update Gummy OS's
-contract head and cross-repository fixture in the same release transaction.
-Never rename or rewrite historical 3D Bee IDs or receipts.
+The accepted specialist heads are ImageHoss
+`340f819b20c5b6d7ea988459c9380759941c757f`, VideoBoss
+`e67db769219e5a764821f7bac74638f3791dca98`, and Meshmallow/3D Bee
+`0c911f7552739f2e0bdefaf863a78a53f04a04c0`. If a specialist must be
+reverted, revert its Phase 10 merge commit without rewriting history, then
+update Gummy OS's contract head and cross-repository fixture in the same
+release transaction. Never delete accepted artifacts or rename/rewrite
+historical 3D Bee IDs or receipts.
 
 ## Verification after rollback
 

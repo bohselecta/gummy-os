@@ -1,28 +1,28 @@
 {
   "schema": "gummy.final-acceptance-summary/v1",
-  "createdAt": "2026-07-27T08:45:00.000Z",
+  "createdAt": "2026-07-27T19:19:08.628Z",
   "status": "PASS",
   "releaseLevel": "founder-ready",
-  "releaseRef": "codex/final-release-2026-07-27",
+  "releaseRef": "main / phase-10-live-activation",
   "repositories": {
     "gummyOs": {
-      "branch": "codex/final-release-2026-07-27",
-      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/20",
-      "headBinding": "phase 9 commit containing this summary"
+      "branch": "main",
+      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/22",
+      "headBinding": "4369d7181868cfd173f88698816b9190f9c0ad11 plus the release-closure commit containing this summary"
     },
     "imageHoss": {
-      "head": "384109c8136b24f9f1843727020d92dee213bfba",
-      "pullRequest": "https://github.com/bohselecta/imagehoss/pull/6",
+      "head": "340f819b20c5b6d7ea988459c9380759941c757f",
+      "pullRequest": "https://github.com/bohselecta/imagehoss/pull/7",
       "status": "merged"
     },
     "videoBoss": {
-      "head": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
-      "pullRequest": "https://github.com/bohselecta/videoboss/pull/4",
+      "head": "e67db769219e5a764821f7bac74638f3791dca98",
+      "pullRequest": "https://github.com/bohselecta/videoboss/pull/5",
       "status": "merged"
     },
     "meshmallow": {
-      "head": "78cd86b2482490bbfdc0881ffafa101133850f29",
-      "pullRequest": "https://github.com/bohselecta/3d-bee/pull/5",
+      "head": "0c911f7552739f2e0bdefaf863a78a53f04a04c0",
+      "pullRequest": "https://github.com/bohselecta/3d-bee/pull/6",
       "status": "merged"
     }
   },
@@ -31,14 +31,14 @@
       "repository": "bohselecta/imagehoss",
       "command": "npm ci && npm run verify",
       "environment": "fresh shared-object checkout",
-      "tests": 64,
+      "tests": 65,
       "status": "PASS"
     },
     {
       "repository": "bohselecta/videoboss",
       "command": "npm ci && npm run verify",
       "environment": "fresh shared-object checkout",
-      "tests": 41,
+      "tests": 43,
       "status": "PASS"
     },
     {
@@ -58,7 +58,7 @@
       "command": "npm run verify",
       "environment": "production build plus Playwright Chromium",
       "tests": {
-        "node": 90,
+        "node": 95,
         "browser": 23
       },
       "status": "PASS"
@@ -120,32 +120,57 @@
   "specialists": {
     "imageHoss": {
       "capabilityReady": "PASS",
-      "liveProven": "NOT CLAIMED",
-      "blocker": "Authenticated supported ComfyUI bridge is not running."
+      "liveProven": "PASS",
+      "humanAcceptance": "PASS",
+      "acceptedAssetSha256": "2f53ecd6891137462908154427bf0bf8eaaf2b37bfe193309ff2050819c0956a",
+      "acceptedHossSha256": "c31c39ab8ec0dadb0bd0b12d9b57dbdca636450990971f2076f3e7e4e8e78b97"
     },
     "videoBoss": {
       "capabilityReady": "PASS",
-      "liveProven": "NOT CLAIMED",
-      "blocker": "Trusted provider broker credential is not configured."
+      "liveProven": "PASS",
+      "humanAcceptance": "PASS",
+      "providerRequestId": "019fa4f4-25ba-7193-ba4f-739bc9b87f4f",
+      "costUsd": 0.5,
+      "deliverySha256": "391a41f2a34a9bd8e5dbb2b8deb4f8b8633ad317860af2c0ef03770b79f2f247"
     },
     "meshmallow": {
       "capabilityReady": "PASS",
-      "liveProven": "NOT CLAIMED",
-      "blocker": "Supported Blender 4.5 LTS and authenticated project-scoped supervisor are unavailable."
+      "liveProven": "PASS",
+      "humanAcceptance": "PASS",
+      "blendSha256": "d714fd7cc3b1f759a77c63ab3714de876cfe96a960ce21bf1d46ea6d04e630ae",
+      "glbSha256": "62bbeb6125bee051567d584ace151bda9a1b5ccffaee8a30f2846195a08834b2"
     }
   },
   "deployment": {
     "provider": "Vercel",
     "projectId": "prj_iN4lDNquY0Y2xf297UvDZCVGWmsY",
     "productionUrl": "https://gummy-os-six.vercel.app",
-    "commitBinding": "VERCEL_GIT_COMMIT_SHA displayed in About / Limits and matched to merged PR #20 head"
+    "acceptedActivationDeploymentId": "dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa",
+    "acceptedActivationCommit": "4369d7181868cfd173f88698816b9190f9c0ad11",
+    "commitBinding": "VERCEL_GIT_COMMIT_SHA displayed in About / Limits and matched to the exact merged release head"
   },
   "knownLimitations": [
     "Exported .gummybox files are integrity-hashed but not encrypted or signed.",
     "Managed Box, Google Drive authority, Gummy Rooms hosting, social federation, and enterprise habitat remain deferred.",
-    "Live specialist output is unavailable until the exact external runtimes above are connected.",
+    "Live specialist execution remains bound to trusted local/server adapters and is not exposed as ambient authority in the public browser deployment.",
+    "The provider-original VideoBoss result contained AAC despite no audio input; the immutable original is retained and the Human-accepted delivery removes audio by video stream copy.",
+    "Meshmallow hosted Actions did not start because the account Actions budget prevented runner assignment; the complete exact-head local suite passed.",
     "Performance evidence is local Chromium lab data, not field Core Web Vitals."
   ],
   "rollback": "evidence/rollback-plan.md",
-  "founderDecision": null
+  "founderDecision": {
+    "status": "accepted",
+    "acceptedImageRoles": [
+      "production-image",
+      "video-first-frame"
+    ],
+    "acceptedSceneRoles": [
+      "accepted-scene",
+      "engine-handoff"
+    ],
+    "acceptedVideoRoles": [
+      "accepted-take",
+      "delivery-take"
+    ]
+  }
 }
