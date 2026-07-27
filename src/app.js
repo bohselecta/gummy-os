@@ -9,6 +9,16 @@ import { CAPABILITIES, SOURCE_TEXT, createReceipt, ensureFullProductRecords, per
 import { createId, sha256 } from './core/hash.js';
 import { migrateLegacy } from './core/migration.js';
 import { ProductionRuntimeRepository } from './core/production-repository.js';
+import {
+  applyBackupPackage,
+  applyReset,
+  BACKUP_MIME,
+  createBackupPackage,
+  inspectBackupPackage,
+  previewReset,
+  recoverLocalBox,
+  serializeBackupPackage
+} from './core/box-backup.js';
 import { actorSurfaceWindowId } from './core/production-runtime.js';
 import { applicationLaunchState, loadProductCatalog } from './core/product-registry.js';
 import { createProductionApp } from './apps/production.js';
@@ -167,10 +177,54 @@ function onboarding() {
         nextButton('Continue', () => step += 1, () => Boolean(choices.name && /^@[a-zA-Z0-9._-]+$/.test(choices.address)))
       );
     } else if (step === 2) {
+      const restoreInput = h('input', {
+        type: 'file',
+        accept: '.gummybox,application/vnd.gummy.box-backup+json',
+        class: 'sr-only',
+        'aria-label': 'Restore a Gummy Box backup'
+      });
+      const restoreStatus = h('div', { 'aria-live': 'polite' });
+      restoreInput.addEventListener('change', async () => {
+        const file = restoreInput.files?.[0];
+        if (!file) return;
+        restoreStatus.replaceChildren(h('p', { class: 'notice', text: 'Inspecting backup without changing current state…' }));
+        try {
+          const inspection = await inspectBackupPackage(await file.text(), { repository });
+          const apply = h('button', {
+            class: 'button primary',
+            onclick: async event => {
+              event.currentTarget.disabled = true;
+              try {
+                const result = await applyBackupPackage({ inspection, repository, byteStore });
+                productionState = { productionRuntime: await productionRepository.initialize() };
+                root.remove();
+                await renderShell();
+                announce(`Backup restored: ${result.counts.added} records added and ${result.counts.conflicting} conflicts preserved.`);
+              } catch (error) {
+                event.currentTarget.disabled = false;
+                restoreStatus.append(h('p', { class: 'notice', text: `Restore blocked: ${error.message}` }));
+              }
+            }
+          }, 'Restore inspected backup');
+          restoreStatus.replaceChildren(
+            h('article', { class: 'card' }, [
+              h('strong', { text: 'Backup inspection complete' }),
+              h('p', { text: `${inspection.counts.records} records · ${inspection.counts.bytes} byte entries · ${inspection.counts.added} added · ${inspection.counts.conflicting} conflicts` }),
+              h('p', { class: 'meta', text: `Package sha256:${inspection.packageHash}` }),
+              apply
+            ])
+          );
+        } catch (error) {
+          restoreStatus.replaceChildren(h('p', { class: 'notice', text: `Backup inspection blocked: ${error.message}` }));
+        }
+      });
       card.append(
         h('h1', { text: 'Your Local Gummy Box is ready.' }),
         h('p', { class: 'lede', text: 'It keeps your Productions, Gummies, Returns, and Receipts in this browser. You can export a backup or connect another location later.' }),
         h('div', { class: 'card' }, [h('h3', { text: 'Local Gummy Box' }), h('p', { text: 'Private on this device · no external account required' }), h('span', { class: 'status', text: 'Ready' })]),
+        restoreInput,
+        h('button', { class: 'button', onclick: () => restoreInput.click() }, 'Restore a Gummy Box backup'),
+        restoreStatus,
         nextButton('Create Local Gummy Box', () => step += 1)
       );
     } else if (step === 3) {
@@ -928,6 +982,7 @@ async function controlSurface() {
     h('p', { class: 'notice', text: 'Revocation is append-only. Restoration issues a new Mold ID; the revoked Mold is never erased or reactivated.' })
   ]);
   root.append(
+    await gummyBoxRecoverySurface(),
     h('section', { class: 'card' }, [
       h('h3', { text: 'Managed Gummy Box' }),
       h('p', { text: 'Optional managed synchronization infrastructure. It never replaces Local Box, Gummy OS, Applications, the Operator, or Social computing.' }),
@@ -937,6 +992,137 @@ async function controlSurface() {
     await githubSurface()
   );
   return root;
+}
+
+function downloadPrivateFile(name, content, type = 'application/json') {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const anchor = h('a', { href: url, download: name });
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function exportLocalBoxBackup() {
+  const backup = await createBackupPackage({
+    repository,
+    byteStore,
+    sourceVersion: '0.1.0',
+    sourceCommit: 'release-candidate'
+  });
+  downloadPrivateFile(`gummy-box-${backup.createdAt.slice(0, 10)}.gummybox`, serializeBackupPackage(backup), BACKUP_MIME);
+  await createReceipt(repository, {
+    action: 'export-gummy-box-backup',
+    resources: [backup.box.id, backup.packageHash],
+    outcome: 'completed',
+    reversible: false,
+    evidence: { packageHash: backup.packageHash, recordCount: Object.values(backup.records).reduce((sum, values) => sum + values.length, 0) },
+    detail: 'Exported a complete inspect-first Local Gummy Box backup. Provider secrets, session state, lease claims, and pending outbox work were excluded.'
+  });
+  announce(`Gummy Box backup exported · sha256:${backup.packageHash.slice(0, 12)}…`);
+}
+
+async function gummyBoxRecoverySurface() {
+  const card = h('section', { class: 'card', dataset: { testid: 'gummy-box-recovery' } }, [
+    h('h3', { text: 'Local Gummy Box backup and recovery' }),
+    h('p', { text: 'Export a complete private backup, inspect one before restore, or preview a narrowly scoped reset. Local remains authoritative.' })
+  ]);
+  const status = h('div', { 'aria-live': 'polite' });
+  const input = h('input', {
+    type: 'file',
+    accept: '.gummybox,application/vnd.gummy.box-backup+json',
+    class: 'sr-only',
+    'aria-label': 'Inspect a Gummy Box backup'
+  });
+  input.addEventListener('change', async () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    status.replaceChildren(h('p', { class: 'notice', text: 'Inspecting backup. No records are changing yet…' }));
+    try {
+      const inspection = await inspectBackupPackage(await file.text(), { repository });
+      status.replaceChildren(h('article', { class: 'card' }, [
+        h('strong', { text: 'Inspected and ready' }),
+        h('p', { text: `${inspection.counts.records} records · ${inspection.counts.added} added · ${inspection.counts.unchanged} unchanged · ${inspection.counts.conflicting} conflicts preserved as both versions` }),
+        h('p', { class: 'meta', text: `sha256:${inspection.packageHash}` }),
+        h('button', {
+          class: 'button primary',
+          onclick: async event => {
+            event.currentTarget.disabled = true;
+            try {
+              const result = await applyBackupPackage({ inspection, repository, byteStore });
+              productionState = { productionRuntime: await productionRepository.load() };
+              announce(`Backup restored: ${result.counts.added} added, ${result.counts.conflicting} conflicts preserved.`);
+              await refreshSurface('control');
+            } catch (error) {
+              event.currentTarget.disabled = false;
+              status.append(h('p', { class: 'notice', text: `Restore blocked: ${error.message}` }));
+            }
+          }
+        }, 'Apply inspected backup')
+      ]));
+    } catch (error) {
+      status.replaceChildren(h('p', { class: 'notice', text: `Backup inspection blocked: ${error.message}` }));
+    }
+  });
+  const productionSelect = h('select', { 'aria-label': 'Production to remove' });
+  for (const production of productionState.productionRuntime.productions) {
+    productionSelect.append(h('option', { value: production.id, text: production.title }));
+  }
+  const resetArea = h('div');
+  const showReset = async scope => {
+    const productionId = scope === 'production' ? productionSelect.value : null;
+    const preview = await previewReset(repository, { scope, productionId });
+    const confirmation = h('input', {
+      'aria-label': `Type ${preview.confirmation} to confirm`,
+      placeholder: preview.confirmation,
+      autocomplete: 'off'
+    });
+    resetArea.replaceChildren(h('section', { class: 'card', role: 'dialog', 'aria-label': `${scope} reset preview` }, [
+      h('strong', { text: `${scope === 'box' ? 'Erase Local Gummy Box' : `Reset ${scope}`} preview` }),
+      h('p', { text: `${preview.count} records will be removed. ${preview.preserves.length ? `Preserves: ${preview.preserves.join(', ')}.` : 'This erases the Local Box.'}` }),
+      h('p', { class: 'notice', text: 'Export a backup first if you may need this state again.' }),
+      h('label', { class: 'field' }, [h('span', { text: `Type ${preview.confirmation}` }), confirmation]),
+      h('div', { class: 'button-row' }, [
+        h('button', { class: 'button', onclick: () => resetArea.replaceChildren() }, 'Cancel'),
+        h('button', {
+          class: 'button danger',
+          onclick: async event => {
+            event.currentTarget.disabled = true;
+            try {
+              const result = await applyReset(repository, preview, confirmation.value);
+              if (result.finalReceipt) {
+                downloadPrivateFile('gummy-box-final-reset-receipt.json', JSON.stringify(result.finalReceipt, null, 2));
+                location.reload();
+                return;
+              }
+              productionState = { productionRuntime: await productionRepository.load() };
+              announce(`${scope} reset completed after exact preview and confirmation.`);
+              await refreshSurface('control');
+            } catch (error) {
+              event.currentTarget.disabled = false;
+              resetArea.append(h('p', { class: 'notice', text: `Reset blocked: ${error.message}` }));
+            }
+          }
+        }, scope === 'box' ? 'Erase Local Gummy Box' : 'Apply exact reset')
+      ])
+    ]));
+  };
+  card.append(
+    input,
+    h('div', { class: 'button-row' }, [
+      h('button', { class: 'button primary', onclick: () => void exportLocalBoxBackup().catch(error => announce(`Backup blocked: ${error.message}`)) }, 'Export complete backup'),
+      h('button', { class: 'button', onclick: () => input.click() }, 'Inspect and restore backup')
+    ]),
+    h('h4', { text: 'Reset scopes' }),
+    h('label', { class: 'field' }, [h('span', { text: 'Remove one Production' }), productionSelect]),
+    h('div', { class: 'button-row' }, [
+      h('button', { class: 'button', onclick: () => void showReset('layout') }, 'Reset layout and preferences'),
+      h('button', { class: 'button', onclick: () => void showReset('workspace') }, 'Clear disposable workspace'),
+      h('button', { class: 'button danger', disabled: !productionSelect.options.length, onclick: () => void showReset('production') }, 'Remove selected Production'),
+      h('button', { class: 'button danger', onclick: () => void showReset('box') }, 'Erase Local Gummy Box')
+    ]),
+    status,
+    resetArea
+  );
+  return card;
 }
 
 async function revokeMold() {
@@ -1266,6 +1452,7 @@ async function bootstrap() {
     await repository.open();
     await migrateLegacy(repository);
     await ensureFullProductRecords(repository);
+    const recovery = await recoverLocalBox(repository);
     const mode = await repository.get('meta', 'preference:mode');
     await applyMode(mode?.value, false);
     document.querySelector('#boot')?.remove();
@@ -1274,6 +1461,7 @@ async function bootstrap() {
     else {
       productionState = { productionRuntime: await productionRepository.initialize() };
       await renderShell();
+      if (recovery.status !== 'clean') announce(`Local Box recovery: ${recovery.status}. ${[...recovery.recovered, ...recovery.unresolved].join(', ')}`);
     }
     registerSW({ immediate: true });
     window.addEventListener('online', () => void resumeApprovedOutbox());
