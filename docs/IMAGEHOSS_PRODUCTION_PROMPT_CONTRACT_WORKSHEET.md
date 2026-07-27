@@ -1,29 +1,13 @@
-# ImageHoss Production Prompt Contract Worksheet
+# ImageHoss Production Prompt Contract — Founder Answer
 
-**Status:** Founder input required before the first real ImageHoss adapter pass  
+**Status:** Founder product definition complete; waiting for Codex repository reconciliation and contract review  
 **Date:** 2026-07-27  
-**Next Human deliverable:** Hayden defines how ImageHoss should understand, compile, expose, and preserve visual direction inside a Gummy OS Production.
+**Canonical implementation repositories:** `bohselecta/gummy-os`, `bohselecta/imagehoss`  
+**Related product contract:** `docs/CREATIVE_SPECIALIST_PRODUCTION_CONTRACTS.md`
 
-> **Do not begin the real ImageHoss adapter implementation from generic assumptions. Complete this prompt contract first.**
+> **ImageHoss is not a prompt box and not merely a reference-preparation utility. It is the specialist relationship that turns Human and Production intent into structured visual direction, routes that direction truthfully, generates controlled candidates, compares them, records Human acceptance, and hands authoritative visual Assets forward with evidence.**
 
-## Why this worksheet exists
-
-The consolidated Gummy OS runtime now has a stable technical seam:
-
-```text
-@ImageHoss service Actor
-→ Actor App Surface
-→ Production Actor Configuration
-→ frozen Context Envelope
-→ actual Agent identity
-→ Mold + Task Lease + Grant
-→ capability adapter
-→ result Gummy + Return + Receipt
-```
-
-The current deterministic `@ImageHoss` reference Agent proves routing and evidence. It does not define ImageHoss's real creative intelligence.
-
-The existing `bohselecta/imagehoss` product is already broader than "reference preparation." Its proven loop is:
+Its complete relationship remains:
 
 ```text
 Direction
@@ -36,470 +20,529 @@ Direction
 → Receipt
 ```
 
-This worksheet defines the missing founder-level contract between Production intent and that complete ImageHoss loop.
+## 1. One complete Production-scoped example
 
-## Locked mode distinction
+This example defines the intended behavior before any schema or adapter design. It is a Production-specific exercise, not a lock on the final Gummy OS Underground wallpaper canon.
 
-ImageHoss must support three truthful modes.
-
-### Standalone ImageHoss
-
-The user opens ImageHoss outside a Gummy OS Production and may run its own explicit Jobs under ImageHoss authority and evidence rules.
-
-### Production-scoped configuration
-
-The user opens `@ImageHoss` inside a Production.
-
-This mode may:
-
-- receive the permitted Production context;
-- assign references and their roles;
-- compose visual direction;
-- preview the compiled prompt package;
-- choose a detected route;
-- configure output and acceptance requirements;
-- save Production-specific settings.
-
-It must not call a model or generate an image merely because the window opened, settings changed, or configuration was saved.
-
-### Production Run execution
-
-**Make Production** freezes the approved ImageHoss configuration and creates the Work Order, Context Envelope, Task Lease, Grant, actual ImageHoss Job, outputs, Return, and Receipt.
-
-A later explicit Production revision creates a new Run. It does not mutate the frozen prior Run.
-
-## Current ImageHoss input vocabulary
-
-The existing ImageHoss application already recognizes:
+### Production
 
 ```text
-Direction
-- brief
-- target use
-- aspect: 16:9 | 4:5 | 1:1 | 9:16
-- privacy: local-only | connected-ok
-- constraints
-- negative
-
-Reference roles
-- subject
-- composition
-- style
-- lighting
-- material
-- color
-- camera
-- layout
-- negative
+Gummy OS — Lantern Chamber Launch
 ```
 
-The founder prompt contract may refine or extend this vocabulary, but must preserve the ability to identify what each reference is supposed to influence.
+The Production needs a 16:9 Night Gummy hero image that can serve as:
 
-## Founder section 1 — What the Human says
+- a 3840 × 2160 desktop wallpaper;
+- launch-page key art;
+- the accepted start frame for a later 12-second VideoBoss reveal.
 
-Define the shortest natural instruction that should be sufficient to begin an ImageHoss Production configuration.
-
-Complete or replace this pattern:
+### What the Human tells ImageHoss
 
 ```text
-With @ImageHoss, create [DELIVERABLE / TARGET USE]
-for [PRODUCTION PURPOSE]
-using [ACTORS / REFERENCES / GUMMIES]
-while preserving [NON-NEGOTIABLES].
-The image should feel [CREATIVE DIRECTION].
-Avoid [NEGATIVE / FAILURE MODES].
+With @ImageHoss, create a Night Gummy hero image for the Lantern Chamber launch.
+
+Use the canonical Gummy mascot and Glopper references as exact identity locks. Use the approved horizontal wordmark without changing its geometry. Follow the composition sketch strongly: Gummy is left of center, Glopper is low on the right, and the center must remain calm enough for interface windows.
+
+Use the Night Gummy purple and gold as the only interface-brand colors. Use the stone reference only for material language and the film-lighting reference only for lighting.
+
+The image should feel like a warm, strange, premium place below the ordinary web—not a dungeon and not a generic sci-fi cave.
+
+Explore the chamber architecture, depth, fog, secondary practical lights, and a lens between 28 and 35 mm. Do not add text beyond the approved wordmark. Do not add extra mascots, blue or green interface accents, glossy toy-plastic skin, weapons, or dense crystal clutter.
+
+Keep this private to the Production until launch approval. Produce four candidates: two tightly adjacent and two meaningfully different within the allowed exploration space.
 ```
 
-Founder decisions:
+### Absolute locks
 
-- Which facts should ImageHoss infer from the Production?
-- Which facts must the Human state explicitly?
-- Which omissions should become questions?
-- Which omissions may use a visible default?
-- Which omissions must block Make Production?
-- How conversational should ImageHoss be before showing the structured direction?
+1. **Gummy identity:** silhouette, face, proportions, and approved character details come from the canonical Asset.
+2. **Glopper identity:** silhouette, proportions, and approved details come from the canonical Asset.
+3. **Wordmark:** approved geometry only; no regenerated lettering.
+4. **Composition:** Gummy left of center, Glopper low right, central interface-safe negative space.
+5. **Palette:** Night Gummy purple and gold remain the branded interface colors.
+6. **Deliverable:** 16:9, 3840 × 2160 master, lossless original plus display proxy.
+7. **Rights and audience:** private Production use until an explicit launch approval.
+8. **Downstream continuity:** accepted protected regions must be preserved in the VideoBoss handoff.
 
-### Founder answer
+A route that cannot honor an absolute lock is not "close enough." ImageHoss must choose another truthful route, ask the Human to approve a named tradeoff, or block Make Production.
+
+### What each reference influences
+
+| Reference | Assigned role | Influence | Must ignore |
+| --- | --- | --- | --- |
+| Canonical Gummy Asset | Subject identity | Exact lock | Its old background, crop, lighting, and camera |
+| Canonical Glopper Asset | Subject identity | Exact lock | Its old background, crop, lighting, and camera |
+| Approved wordmark Asset | Layout/identity | Exact lock; place existing Asset | Any baked background around it |
+| Composition sketch | Composition/layout | Strong lock on placement and negative space | Rough drawing style and colors |
+| Night Gummy brand board | Color | Exact palette lock for branded elements | Example composition and materials |
+| Stone chamber image | Material | Guide | Its architecture, color grade, and lighting |
+| Film still | Lighting/camera mood | Guide | Its people, location, wardrobe, and palette |
+| Failure board | Negative | Exclusion | Nothing is copied; listed failures are avoided |
+
+References influence only their assigned roles. ImageHoss must not treat an attractive reference as permission to absorb every visible quality.
+
+### What ImageHoss may explore
+
+- chamber architecture outside the protected composition zones;
+- depth and atmospheric layering;
+- secondary props that do not compete with the mascots or interface-safe center;
+- fog density within a visible range;
+- secondary practical-light placement;
+- a 28–35 mm lens and small camera-height variations;
+- degrees of surface age and tactile detail;
+- two adjacent candidates and two deliberately different candidates.
+
+Exploration is a named budget, not permission for general drift.
+
+### What remains unchanged during revision
+
+Suppose Candidate B is accepted as the baseline but the arch is too ornate. The Human says:
 
 ```text
-[WRITE HERE]
+Keep everything except the central arch. Simplify that arch by about one third. Preserve the characters, wordmark, camera, lighting, palette, negative space, fog, and every other accepted quality.
 ```
 
-## Founder section 2 — Direction hierarchy
+ImageHoss creates a delta revision from Candidate B. All accepted dimensions become carry-forward locks except the named arch complexity. It does not silently reinterpret the whole prompt or present an unrelated fresh composition as a correction.
 
-Define the hierarchy ImageHoss must preserve when instructions conflict.
+If the selected route cannot preserve the baseline closely enough, ImageHoss must say so before execution and offer a more controllable route, a mask/control workflow, or a clearly labeled broader regeneration.
 
-Suggested classes:
+### How the result is accepted
+
+ImageHoss may automatically mark a candidate ineligible for:
+
+- mascot or wordmark identity failure;
+- composition-lock failure;
+- forbidden colors or text;
+- wrong aspect or dimensions;
+- visible artifact defects that make the Asset unusable;
+- unresolved rights or provenance;
+- missing required evidence.
+
+Eligible candidates are compared on identity fidelity, composition fidelity, reference-role coverage, atmosphere, technical quality, and downstream usefulness. ImageHoss can score and explain; it cannot make the artistic acceptance decision for the Human.
+
+The Human accepts Candidate B for two explicit roles:
 
 ```text
-LOCKED IDENTITY
-people, products, characters, approved likeness, logos, protected details
-
-LOCKED COMPOSITION
-required objects, relationships, framing, placement, visual continuity
-
-DELIVERABLE CONTRACT
-target use, dimensions, aspect, transparency, output count, file requirements
-
-CREATIVE DIRECTION
-mood, era, atmosphere, genre, visual language
-
-PREFERENCES
-lighting, palette, camera, materials, texture, rendering choices
-
-EXCLUSIONS
-forbidden content, unwanted style drift, anatomical failures, text errors
-
-MODEL-SPECIFIC HINTS
-provider or workflow instructions that may be translated or omitted by route
+wallpaper.master
+videoboss.start-frame
 ```
 
-Founder decisions:
+Acceptance is role-specific. It does not make Candidate B the universal visual truth for every future Gummy OS Production.
 
-- Which class always wins?
-- Can creative direction override a reference?
-- Can a reference override written instructions?
-- How should contradictory references be handled?
-- What is a blocker versus a warning versus an accepted tradeoff?
+### What goes to VideoBoss
 
-### Founder answer
+The typed handoff contains:
+
+- accepted original Asset and display proxy references;
+- immutable hashes and lineage;
+- role and Production references;
+- rights, audience, retention, and contribution policy;
+- the provider-neutral Visual Direction and accepted revision;
+- protected regions for Gummy, Glopper, wordmark, and interface-safe space;
+- allowed motion regions and explicitly forbidden changes;
+- camera/lens intent and composition anchors;
+- start-frame hold guidance;
+- available masks, alpha, depth, or segmentation Assets, identified truthfully;
+- unresolved risks and known limitations;
+- ImageHoss specialist Receipt;
+- the Gummy OS Return and linked Production Receipt.
+
+VideoBoss receives read-only source authority by default. It may create derived Assets, but it must not overwrite the accepted ImageHoss source.
+
+---
+
+## 2. Locked Production behavior
+
+### Opening `@ImageHoss` inside Production
+
+Opening the Actor App Surface is configuration, not execution.
+
+It may:
+
+- receive only permitted Production context;
+- show Production title, purpose, target deliverables, and downstream needs;
+- assign reference roles and strengths;
+- define locks, direction, preferences, exclusions, exploration, route, output, and acceptance requirements;
+- discover available capabilities without generating;
+- compile and preview the prompt package deterministically from structured state;
+- save isolated Production-specific configuration.
+
+It must not:
+
+- call an image model;
+- create a provider Job;
+- spend credits;
+- execute ComfyUI;
+- reserve a Task Lease as though work has begun;
+- silently infer unresolved identity, rights, or deliverable facts;
+- mutate the personal Actor's durable preferences or Creative DNA.
+
+No hidden LLM call is required to make the preview look intelligent. Ambiguous free text remains visible as unresolved direction until the Human structures or confirms it. Configuration may use deterministic parsing, capability discovery, validation, and compilation only.
+
+### `Make Production`
+
+`Make Production` is the sole Production execution transition.
+
+It:
+
+1. freezes the approved ImageHoss configuration;
+2. records the exact configuration revision and source hashes;
+3. creates the Work Order and Context Envelope;
+4. binds the actual ImageHoss Agent/runtime, Mold, Task Lease, and Capability Grant;
+5. revalidates rights, route capability, cost/locality, and required locks;
+6. invokes the real ImageHoss runtime;
+7. creates candidate Assets and comparison evidence;
+8. records Human acceptance or a truthful non-completed outcome;
+9. returns Assets, Gummies, `.hoss` evidence, Return, and linked Receipts.
+
+A later revision creates a new frozen Run. It never mutates the evidence of the prior Run.
+
+---
+
+## 3. What the Human must say, what Production may supply, and what blocks execution
+
+The shortest useful natural instruction is:
 
 ```text
-[WRITE HERE]
+With @ImageHoss, create [deliverable and target use]
+for [Production purpose]
+using [Actors, Assets, and references]
+while preserving [non-negotiable locks].
+It should feel [creative direction].
+Explore [named degrees of freedom].
+Avoid [failure modes].
 ```
 
-## Founder section 3 — Reference influence
+Production may visibly supply, when already explicit and permissioned:
 
-For each reference role, define what ImageHoss should extract, what it should ignore, and how strongly it should influence the result.
+- Production title and purpose;
+- accepted brand Assets and palette;
+- target platform already chosen by the Production;
+- participating Actors;
+- existing accepted Assets and continuity anchors;
+- downstream VideoBoss or Meshmallow requirements;
+- audience and privacy defaults already approved for this Production.
 
-| Role | Extract | Ignore | Default strength | Lockable? |
+The Human must explicitly confirm:
+
+- the primary deliverable and target use;
+- any represented identity or protected product/character;
+- absolute locks;
+- public, commercial, or identity-sensitive rights;
+- the final acceptance decision;
+- any tradeoff that weakens a lock.
+
+Visible defaults may cover candidate count, adjacent/diverse variation mix, seed policy, display-proxy dimensions, and a preferred available route. Defaults must be shown and editable.
+
+`Make Production` is blocked when any of the following is unresolved:
+
+- required deliverable type or dimensions;
+- primary subject/identity;
+- required reference rights;
+- a material contradiction between locks;
+- no route capable of honoring the locks;
+- missing Production approval, Mold, Lease, or Grant;
+- unknown audience for sensitive likeness or private references;
+- no acceptance contract for a deliverable that must become authoritative downstream.
+
+---
+
+## 4. Direction hierarchy
+
+When instructions conflict, ImageHoss uses this order:
+
+1. **Human authority, consent, law, rights, and safety boundaries.**
+2. **Frozen Production locks and accepted continuity Assets.**
+3. **Deliverable contract:** use, dimensions, format, count, transparency, audience, cost/locality.
+4. **Current explicit Human instruction.**
+5. **Role-assigned references within their declared scope.**
+6. **Creative direction.**
+7. **Preferences and visible defaults.**
+8. **Route-specific hints.**
+
+Identity, rights, and deliverable locks are never overridden by style. A written instruction overrides a reference only when the conflict is explicit and the affected lock is not absolute. A reference never overrides written intent outside its assigned role.
+
+Contradictions are handled as follows:
+
+- **Blocker:** two absolute locks cannot coexist, rights are missing, or no route can honor a required lock.
+- **Warning:** a route can attempt the request but has a known fidelity or cost risk.
+- **Visible tradeoff:** the Human may weaken a named lock for this Run only.
+- **Preference conflict:** ImageHoss chooses the higher-priority preference and states the choice in the preview.
+
+---
+
+## 5. Reference roles, extraction, and strength
+
+A reference assignment always states:
+
+```text
+Asset
++ owner/provenance
++ role
++ what to extract
++ what to ignore
++ strength
++ whether it is a lock
++ rights/audience/retention
+```
+
+### Strength vocabulary
+
+- **Exact:** use the supplied Asset or control signal as the authoritative source for that role; do not approximate when placement/compositing is possible.
+- **Strong:** this quality should dominate candidate design, but small route-dependent variance is allowed.
+- **Guide:** use the quality as clear direction without copying unrelated details.
+- **Accent:** minor influence only.
+- **Negative:** detect and avoid the named quality.
+
+A reference may carry several roles, but each role is assigned separately. The interface should encourage role precision, not force one file per role.
+
+| Role | Extract | Ignore by default | Typical default | Lockable? |
 | --- | --- | --- | --- | --- |
-| Subject |  |  |  |  |
-| Composition |  |  |  |  |
-| Style |  |  |  |  |
-| Lighting |  |  |  |  |
-| Material |  |  |  |  |
-| Color |  |  |  |  |
-| Camera |  |  |  |  |
-| Layout |  |  |  |  |
-| Negative |  |  |  |  |
+| Subject | identity, silhouette, proportions, approved details | background, crop, lighting, style | Strong | Yes |
+| Composition | framing, placement, scale relationships, negative space | subject identity, palette, rendering style | Strong | Yes |
+| Style | mark-making, abstraction, rendering language, era | identities, exact layout, logos | Guide | Yes, for art-direction continuity |
+| Lighting | key/fill/rim relationship, softness, direction, contrast | subjects, location, palette unless also assigned | Guide | Yes |
+| Material | surface response, roughness, translucency, wear | object identity and geometry | Guide | Yes |
+| Color | palette and relative color hierarchy | composition, lighting geometry, subject identity | Strong | Yes |
+| Camera | lens character, height, angle, distance, depth behavior | subject design, palette, location | Guide | Yes |
+| Layout | graphic zones, text-safe areas, logo placement | illustration style and subjects | Strong | Yes |
+| Negative | named failures and forbidden qualities | all desirable qualities | Exclusion | Always |
 
-Founder decisions:
+"Copy this exactly" is accepted only when the Human has rights and the route can use the source Asset/control faithfully. Otherwise ImageHoss translates it into a scoped lock or blocks the request rather than promising impossible exactness.
 
-- Can one image hold several roles?
-- Should ImageHoss encourage one role per reference?
-- How should the Human express "copy this exactly" versus "use only this one quality"?
-- How should references from another person's Actor be labeled and permission-checked?
-- How should conflicting visual identities be surfaced?
-- Which reference-derived facts may be saved to the Production?
-- Which may become an ActorUpdateProposal only after repeated accepted evidence?
+---
 
-## Founder section 4 — Actor and permission context
+## 6. Personal Actor and permission context
 
-Define how ImageHoss uses personal Actors inside a Production.
+A personal Actor contributes only a permissioned visual context slice. ImageHoss never receives complete Actor memory merely because the Actor participates in the Production.
 
-Example:
+A represented Actor may contribute:
 
-```text
-@Hoyt × @ImageHoss
-
-May provide:
 - approved likeness Assets;
-- approved clothing or appearance guidance;
-- approved beagle references;
-- private family-use permission.
+- approved wardrobe/appearance guidance;
+- approved body, product, pet, location, or relationship references;
+- audience, term, territory, commercial-use, and derivative-use permissions;
+- explicit exclusions;
+- a revocation path.
 
-May not provide:
-- complete Actor memory;
-- unrelated private photos;
-- voice data;
-- commercial or public rights not granted;
-- inferred personal traits unrelated to the image.
-```
+The represented Human must see, before approval:
 
-Founder decisions:
+- the intended depiction and target use;
+- the exact source Assets;
+- whether the result is private, shared, public, promotional, or commercial;
+- whether generation may create altered poses, ages, clothes, settings, or expressions;
+- whether the Asset may enter `.hoss` export or downstream handoff;
+- how long the permission lasts and how revocation affects future Runs.
 
-- What should a represented person see before approval?
-- Which private uses may be pre-authorized?
-- Which public, commercial, or identity-sensitive uses always require approval?
-- What must appear in the final Receipt?
-- How should ImageHoss behave when a required Actor context slice is unavailable or revoked?
+Public, commercial, biometric/identity-sensitive, sexualized, political endorsement, or materially reputation-affecting uses always require explicit approval. Private uses may be pre-authorized only by a narrow standing policy that identifies purpose, audience, and allowed transformations.
 
-### Founder answer
+If a required context slice is unavailable or revoked, ImageHoss blocks new execution. Prior evidence and Receipts remain truthful; they are not silently rewritten. Retained Assets follow the original rights and retention envelope.
 
-```text
-[WRITE HERE]
-```
+The final Receipt identifies represented Actors, source Assets, permission version, audience, permitted transformations, route, actual Agent/runtime, and accepted output role.
 
-## Founder section 5 — Prompt compiler output
+---
 
-Define what ImageHoss should produce before execution.
+## 7. Prompt compiler output
 
-Recommended visible package:
+Before execution, the Human sees an inspectable package with:
 
-```text
-1. Human-readable Visual Direction
-2. Locked requirements
-3. Reference influence map
-4. Positive prompt
-5. Negative prompt
-6. Model/workflow route
-7. Aspect and dimensions
-8. Seed policy
-9. Output count
-10. Cost/locality/privacy disclosure
-11. Acceptance criteria
-12. Known risks or unresolved conflicts
-```
+1. plain-language visual direction;
+2. deliverable and target use;
+3. absolute locks;
+4. reference influence map;
+5. allowed exploration space;
+6. positive semantic prompt;
+7. negative semantic prompt;
+8. route and capability explanation;
+9. aspect, dimensions, count, and seed policy;
+10. cost, locality, privacy, and rights disclosure;
+11. acceptance criteria;
+12. unresolved conflicts, warnings, and known limitations;
+13. downstream handoff requirements.
 
-Recommended machine package:
+The positive prompt should be complete enough to preserve meaning but not repeat every workflow fact. Rights, hashes, file movement, acceptance rules, cost ceilings, and authority remain in structured workflow state rather than being stuffed into model prose.
 
-```text
-ImageHossPromptPackage
-- schema and version
-- Production and Run refs
-- target capability
-- normalized direction
-- reference Assets with role, hash, rights, and influence
-- locked facts
-- preference facts
-- exclusions
-- provider-neutral semantic prompt
-- route-specific compiled payload
-- output contract
-- acceptance contract
-- provenance requirements
-- retention/contribution policy
-```
+There is one canonical provider-neutral semantic intent. Candidate prompts may vary only inside the approved exploration budget. The Human edits structured state and plain-language direction; route-specific syntax is inspectable in an advanced view but is regenerated from structured state rather than treated as the source of truth.
 
-Founder decisions:
+---
 
-- Should the positive prompt be concise or exhaustive?
-- Which information belongs outside the literal model prompt but inside the workflow?
-- Should ImageHoss generate one canonical prompt or a family of candidates?
-- Should the Human see provider-specific syntax?
-- What should be editable directly?
-- What must be regenerated from structured state rather than hand-edited?
+## 8. Provider-neutral intent and route translation
 
-### Founder answer
+The provider-neutral contract preserves:
 
-```text
-[WRITE HERE]
-```
+- deliverable purpose;
+- identity and composition locks;
+- reference roles and influence;
+- creative direction;
+- allowed exploration;
+- exclusions;
+- output and acceptance contract;
+- rights, privacy, locality, and provenance requirements.
 
-## Founder section 6 — Route translation
+A ComfyUI payload, cloud-provider request, or future local workflow is a compiled implementation of that intent—not the intent itself.
 
-ImageHoss must preserve one provider-neutral visual intent while translating it to the selected route.
+Route-specific controls may include checkpoint, sampler, steps, CFG, denoise, seed, ControlNet/IP-adapter choices, masks, latent size, or workflow node configuration. They may not silently change semantic locks.
 
-Current proven route:
+When a route cannot honor a lock, ImageHoss must:
 
-```text
-local ComfyUI
-```
+1. select a more capable approved route when policy allows;
+2. explain the route change and any cost/locality effect;
+3. request a named Human tradeoff; or
+4. block execution.
 
-Future routes may include approved cloud image providers.
+Equivalent outputs across routes means equivalent satisfaction of the Production's declared locks and use—not identical pixels.
 
-Founder decisions:
+---
 
-- Which semantic facts must survive every route?
-- Which controls may be route-specific?
-- What should happen when a route cannot honor a lock?
-- Should ImageHoss block, ask for a tradeoff, or select another route?
-- How should model/checkpoint/workflow choice be explained?
-- What counts as an equivalent output across routes?
+## 9. Controlled variation
 
-### Founder answer
+Identity, rights, deliverable, accepted continuity, and explicit composition locks remain fixed by default.
 
-```text
-[WRITE HERE]
-```
+ImageHoss varies only named dimensions, such as:
 
-## Founder section 7 — Variation strategy
+- camera within an approved range;
+- lighting arrangement;
+- atmosphere;
+- environment detail;
+- palette only when not locked;
+- material treatment;
+- pose/expression only when permitted;
+- degree of stylization;
+- composition only when explicitly open.
 
-Define how ImageHoss should explore without losing intent.
+Default candidate set:
 
-Possible controlled variations:
+- two tightly adjacent candidates that test execution quality;
+- two meaningfully different candidates that use different parts of the allowed exploration space.
 
-- composition;
-- camera;
-- lighting;
-- material;
-- palette;
-- expression or pose;
-- environment;
-- degree of stylization.
+The Human may request fewer, more, all-adjacent, or all-diverse candidates. Candidate count must respect the cost ceiling.
 
-Founder decisions:
+"Keep everything except X" creates a delta revision whose baseline is an accepted or selected candidate. Everything observable and previously accepted is carried forward as a lock except the named change. ImageHoss records what it can and cannot technically preserve before the Run.
 
-- Which dimensions should remain locked by default?
-- Which dimensions should vary first?
-- How many candidates are useful?
-- Should variations be deliberately diverse or tightly adjacent?
-- How does the Human ask for "same image, only fix X"?
-- How does ImageHoss prevent a correction from changing unrelated accepted qualities?
+---
 
-### Founder answer
+## 10. Compare and accept
+
+Automatic evaluation may:
+
+- verify dimensions, format, transparency, hashes, and evidence;
+- check required Asset presence and protected-region integrity;
+- detect obvious identity, anatomy, text, artifact, and layout failures;
+- compare candidate coverage of assigned references;
+- flag continuity and route-limit risks;
+- calculate cost and production usefulness.
+
+Automatic evaluation cannot decide whether the work is beautiful, emotionally right, surprising in the right way, or the final artistic choice.
+
+The acceptance sequence is:
 
 ```text
-[WRITE HERE]
+Eligibility gate
+→ explained comparison
+→ Human selection
+→ accepted role(s)
+→ immutable acceptance record
+→ handoff eligibility
+→ Receipt
 ```
 
-## Founder section 8 — Compare and accept
+Several candidates may be accepted for distinct roles, such as hero image, alternate crop, thumbnail, concept variant, or VideoBoss start frame.
 
-Define the evaluation system.
+An Asset becomes authoritative downstream only for the role declared at acceptance. It permanently retains source hashes, prompt-package revision, reference map, route/runtime facts, rights envelope, actual Agent identity, comparison record, acceptance authority, and linked Receipts.
 
-Possible dimensions:
+---
 
-```text
-identity fidelity
-composition fidelity
-reference-role coverage
-prompt adherence
-continuity
-technical quality
-legibility
-artifact defects
-production usefulness
-```
+## 11. Revision and correction language
 
-Founder decisions:
-
-- What should ImageHoss evaluate automatically?
-- What is only the Human's judgment?
-- Which failures make a candidate ineligible?
-- Can multiple candidates be accepted for different uses?
-- What makes an accepted Asset authoritative for downstream VideoBoss or 3D-Bee work?
-- What information must remain attached to the Asset forever?
-
-### Founder answer
-
-```text
-[WRITE HERE]
-```
-
-## Founder section 9 — Revision and correction language
-
-Define the natural correction grammar ImageHoss should understand.
+ImageHoss understands corrections as edits to structured state, not just new prose.
 
 Examples:
 
 ```text
 Keep everything except the camera angle.
-
-Lock the face and clothing. Explore the environment.
-
-Use the lighting from Reference C, not its color palette.
-
-This is the right composition, but the product is too small.
-
-Make this the accepted subject reference for the Production.
+Lock the face and clothing; explore only the environment.
+Use Reference C for lighting, not color.
+This composition is accepted, but make the product 15% larger.
+Branch a warmer version without changing the current accepted direction.
+Make Candidate B the Production's accepted subject reference.
 ```
 
-Founder decisions:
+A **revision** preserves the same direction and changes named dimensions. A **branch** intentionally creates a new direction while retaining lineage to its source.
 
-- What does "keep everything" lock?
-- When should ImageHoss create a new prompt revision?
-- When should it branch a new direction instead?
-- How should accepted qualities be carried forward?
-- How should rejected qualities be remembered for this Production without becoming permanent Actor memory?
+Accepted qualities carry forward as explicit locks. Rejected qualities may be retained as Production-scoped negative evidence, but they do not become personal Actor memory. Repeated Human choices may create a separate ActorUpdateProposal with evidence and confidence; they never silently rewrite the Actor.
 
-### Founder answer
+---
+
+## 12. Durable outputs
+
+Every completed ImageHoss Production Run returns, at minimum:
+
+- original candidate Assets and display proxies;
+- accepted Asset(s), if the Human accepts any;
+- immutable source and result hashes;
+- provider-neutral prompt package / Visual Intent Graph;
+- route-specific compiled payload or a safe inspectable representation;
+- reference-role and rights map;
+- candidate comparison record;
+- model/workflow/seed and actual runtime facts;
+- acceptance or rejection record;
+- `.hoss` project/evidence bundle where supported;
+- typed downstream handoff(s), when requested;
+- ImageHoss WorkOrder, Job, evidence, and specialist Receipt;
+- Gummy OS Work Return and linked Production Receipt.
+
+GummyStorage preserves accepted originals, proxies, hashes, structured intent, rights, handoffs, and Receipts by default. Temporary intermediates follow visible retention policy.
+
+The personal Actor's Living Self Page may show the Production, accepted public-safe work, Human acceptance decisions, and evidence-backed contribution. Private prompts, references, rejected candidates, and Production-only rights remain inside the Production unless separately approved.
+
+Sharing with another Production creates a reviewed versioned copy or read-only handoff. It never silently shares complete context or grants broader rights.
+
+---
+
+## 13. ImageHoss voice
+
+ImageHoss behaves like a strong visual director paired with a careful production technician.
+
+It is:
+
+- direct;
+- visually literate;
+- concrete about what each reference is doing;
+- opinionated when direction is weak or contradictory;
+- honest about model and route limitations;
+- economical with questions;
+- clear about artistic judgment versus technical fact.
+
+It challenges weak direction by naming the missing decision:
 
 ```text
-[WRITE HERE]
+The composition reference and the written placement conflict. Which one is the lock?
 ```
 
-## Founder section 10 — Durable outputs
-
-Define what the ImageHoss execution node returns to Gummy OS.
-
-Recommended outputs:
+It offers alternatives only inside the declared exploration budget. It explains blocked capability in production language:
 
 ```text
-accepted original image Asset
-accepted display proxy
-ImageHoss Prompt Package
-VisualIntentGraph or equivalent structured direction
-candidate comparison record
-model/workflow/seed facts
-source and result hashes
-rights and audience envelope
-.hoss project or exchange bundle
-optional typed VideoBoss handoff
-Work Return
-Action Receipt
+This route cannot preserve the approved wordmark geometry. I can composite the supplied Asset after generation, switch to the controlled local workflow, or stop this Run.
 ```
 
-Founder decisions:
+It never uses bureaucratic policy language when a plain production explanation will do.
 
-- Which outputs are always required?
-- Which are optional?
-- What should appear on the personal Actor's Living Self Page?
-- What should remain only inside the Production?
-- What should GummyStorage preserve by default?
-- What may be shared with another Production?
+---
 
-### Founder answer
+## 14. Codex reconciliation required next
 
-```text
-[WRITE HERE]
-```
+This founder answer completes the product-definition dependency. It does not authorize broad implementation without repository reconciliation.
 
-## Founder section 11 — ImageHoss personality and guidance
+Codex must now return, before the first real adapter implementation:
 
-Define the product voice while configuring visual intent.
+- exact `bohselecta/gummy-os` and `bohselecta/imagehoss` ancestry and current heads;
+- mapping from this contract to existing ImageHoss Direction, VisualIntentGraph, reference-role, Asset, `.hoss`, Job, Receipt, and VideoBoss handoff types;
+- a proposed versioned provider-neutral Prompt Package;
+- a proposed Production-scoped ImageHoss configuration contract;
+- exact separation between deterministic configuration preview and Make Production execution;
+- adapter interface and authenticated runtime boundary;
+- files to change in each repository;
+- one vertical implementation slice;
+- automated acceptance evidence;
+- explicit non-goals and limitations.
 
-ImageHoss should be a specialist instrument, not a generic assistant.
-
-Founder decisions:
-
-- Is it terse, direct, encouraging, opinionated, technical, or cinematic?
-- When should it challenge weak direction?
-- When should it offer creative alternatives?
-- How does it explain a blocked capability without sounding bureaucratic?
-- How does it distinguish artistic judgment from technical truth?
-
-### Founder answer
-
-```text
-[WRITE HERE]
-```
-
-## Founder section 12 — One complete reference example
-
-Write one complete Production-scoped example from natural request through accepted output.
-
-Use a real Gummy OS scenario, preferably one with:
-
-- at least one personal Actor;
-- several references with distinct roles;
-- one strong identity or composition lock;
-- one creative choice ImageHoss may explore;
-- a clear downstream use such as VideoBoss;
-- explicit private/public rights;
-- an accepted Asset and Receipt.
-
-### Founder example
-
-```text
-[WRITE HERE]
-```
-
-## Technical reconciliation required after founder completion
-
-Once the founder sections are complete, the implementation pass must reconcile the contract with:
-
-- `bohselecta/imagehoss` Direction and reference-role types;
-- ImageHoss R1–R5 local capability and evidence model;
-- the current `.hoss` project/Asset portability contract;
-- `gummy.application-registry/v1`;
-- `gummy.app-handoff/v1`;
-- `gummy.production-actor-configuration/v0`;
-- `gummy.context-envelope/v0`;
-- Work Orders, Task Leases, Grants, Returns, and Receipts;
-- the personal Actor memory proposal boundary;
-- the rule that Make Production is the only execution transition inside a Production.
-
-## Reminder
-
-> **Hayden's next product-definition task is the ImageHoss Prompt Contract. Do this before asking Codex to attach the real ImageHoss adapter.**
+The existing `capability:imagehoss.reference-preparation/v0` proof remains useful evidence infrastructure. It must be expanded into the complete ImageHoss relationship rather than renamed and mistaken for the finished product.

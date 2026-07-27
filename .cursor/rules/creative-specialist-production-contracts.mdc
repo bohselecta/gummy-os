@@ -1,0 +1,42 @@
+---
+description: Preserve the complete ImageHoss, VideoBoss, and Meshmallow Production relationships
+alwaysApply: true
+---
+
+# Creative Specialist Production Contracts
+
+Before planning or editing ImageHoss, VideoBoss, the current 3D Bee line, first-party application adapters, specialist Actor App Surfaces, prompt/scene/shot packages, app handoffs, or Production execution, read:
+
+1. `docs/CREATIVE_SPECIALIST_PRODUCTION_CONTRACTS.md`
+2. `docs/IMAGEHOSS_PRODUCTION_PROMPT_CONTRACT_WORKSHEET.md`
+3. `plans/active/2026-07-27-imagehoss-first-real-adapter-preflight.md`
+4. `plans/active/2026-07-27-creative-specialist-founder-contract-handoff.md`
+
+## Locked execution distinction
+
+```text
+Open or configure @Specialist inside Production
+→ structure and preview configuration
+→ save Production-specific state
+→ no creative model call and no specialist runtime execution
+
+Make Production
+→ freeze configuration
+→ Work Order + Context Envelope + Mold + Lease + Grant
+→ actual specialist Agent/runtime
+→ results + Return + linked Receipts
+```
+
+## Product preservation
+
+- ImageHoss is `Direction → References → Route → Generate → Compare → Accept → Handoff → Receipt`, not merely reference preparation.
+- VideoBoss is direction, continuity, sequence, shots, routing/Cost Shield, takes, review, acceptance, delivery, and evidence—not a video prompt box.
+- Meshmallow is the public name for the current 3D Bee product line. Preserve `3d-bee` implementation and historical identity until a reviewed compatibility migration is accepted.
+- `keep everything except X` creates a delta revision from a selected baseline and preserves every unmentioned accepted quality.
+- Human acceptance is final and role-specific.
+- Specialist-native Receipts and Gummy OS Receipts remain separate and linked.
+- Production-specific choices do not silently become Actor memory.
+
+## Current gate
+
+The founder product contracts are complete. The next Codex action is contract reconciliation and one proposed ImageHoss vertical slice—not broad implementation, VideoBoss execution wiring, Meshmallow execution wiring, or wallpaper production.
