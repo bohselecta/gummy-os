@@ -19,10 +19,17 @@ test('Vercel static delivery carries the same CSP plus transport and immutable a
   const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
   const global = Object.fromEntries(config.headers[0].headers.map(item => [item.key.toLowerCase(), item.value]));
   const assets = Object.fromEntries(config.headers[1].headers.map(item => [item.key.toLowerCase(), item.value]));
+  const shell = Object.fromEntries(config.headers[2].headers.map(item => [item.key.toLowerCase(), item.value]));
   assert.match(global['content-security-policy'], /frame-ancestors 'none'/);
   assert.match(global['strict-transport-security'], /max-age=63072000/);
   assert.equal(global['x-frame-options'], 'DENY');
   assert.equal(assets['cache-control'], 'public, max-age=31536000, immutable');
+  assert.equal(shell['cache-control'], 'no-store');
+  assert.equal(config.routes, undefined, 'legacy routes must not bypass the top-level security headers');
+  assert.deepEqual(config.rewrites, [
+    { source: '/api/(.*)', destination: '/api/[...path].mjs' },
+    { source: '/(.*)', destination: '/index.html' }
+  ]);
 });
 
 test('external preview remains sandboxed and every new-tab link is opener-safe', async () => {
