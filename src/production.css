@@ -345,6 +345,44 @@
   line-height: 1.45;
 }
 
+.actor-presence-detail {
+  display: grid;
+  gap: 3px;
+  margin: 10px 0;
+  padding: 10px;
+  border-left: 3px solid var(--gummy-violet);
+  background: color-mix(in srgb, var(--gummy-warm-cream) 4%, transparent);
+}
+
+.actor-presence-detail strong {
+  margin-top: 5px;
+  font-size: 10px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.actor-presence-detail span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.route-review-list {
+  margin: 14px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.route-review-list p {
+  margin: 7px 0 0;
+}
+
+.technical-blockers code {
+  display: block;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
 .actor-kind {
   padding: 5px 8px;
   border-radius: 999px;

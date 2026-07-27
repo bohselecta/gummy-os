@@ -1,4 +1,3 @@
-import { registerSW } from 'virtual:pwa-register';
 import { RecordRepository } from './core/repository.js';
 import { RecordValidator } from './core/schema-validator.js';
 import { ByteStore, ByteStoreError } from './core/byte-store.js';
@@ -19,7 +18,11 @@ import {
   recoverLocalBox,
   serializeBackupPackage
 } from './core/box-backup.js';
-import { actorSurfaceWindowId } from './core/production-runtime.js';
+import {
+  actorSurfaceWindowId,
+  addNightGummyLaunchRoster,
+  createProduction
+} from './core/production-runtime.js';
 import { applicationLaunchState, loadProductCatalog } from './core/product-registry.js';
 import { createProductionApp } from './apps/production.js';
 import { createActorSurface } from './apps/actor-surface.js';
@@ -46,6 +49,7 @@ let panelTab = 'conversation';
 let selectedApp = 'guide';
 let selectedWorkOrderId = 'work-order:project-brief';
 let productionState = { productionRuntime: null };
+let uxCopy;
 const productionStore = {
   getState: () => productionState,
   setState(updater) {
@@ -115,6 +119,14 @@ async function initializeSession() {
   }
 }
 
+async function loadFirstUserExperience() {
+  const response = await fetch('/registry/first-user-experience.json', { cache: 'no-cache' });
+  if (!response.ok) throw new Error(`First-user experience copy unavailable: ${response.status}`);
+  const copy = await response.json();
+  if (copy.schema !== 'gummy.first-user-experience/v1') throw new Error('First-user experience copy has an unsupported schema');
+  return copy;
+}
+
 async function applyMode(mode, persist = true) {
   const safe = ['night', 'day'].includes(mode) ? mode : 'night';
   if (persist) await repository.put('meta', { id: 'preference:mode', value: safe, updatedAt: new Date().toISOString() }, { validate: false });
@@ -146,9 +158,44 @@ async function seedPersonalGummy({ name, address, mode }) {
   productionState = { productionRuntime: await productionRepository.initialize() };
 }
 
+async function startProduction(kind, { open = true } = {}) {
+  const runtime = productionState.productionRuntime;
+  let production = kind === 'sample'
+    ? runtime.productions.find(item => item.id === 'production:night-gummy-launch')
+    : null;
+  let nextRuntime = runtime;
+
+  if (!production) {
+    const created = kind === 'sample'
+      ? createProduction(runtime, {
+          id: 'production:night-gummy-launch',
+          title: 'Night Gummy Launch',
+          description: 'Create brand-owned launch image, motion, and editable scene concepts without private likenesses or external credentials.',
+          audience: 'public-launch',
+          sourceGummyIds: ['gummy:night-gummy-launch-brief', 'gummy:night-gummy-launch-brand-kit']
+        })
+      : createProduction(runtime, {
+          title: 'Untitled Production',
+          description: 'A private Production ready for your direction, sources, and specialist choices.',
+          sourceGummyIds: []
+        });
+    production = created.production;
+    nextRuntime = created.runtime;
+    if (kind === 'sample') {
+      nextRuntime = addNightGummyLaunchRoster(nextRuntime, production.id, 'sample');
+    }
+    productionState = { productionRuntime: nextRuntime };
+    await productionRepository.persist(nextRuntime);
+  }
+
+  if (open && windowManager) await openProduction(production.id);
+  return production;
+}
+
 function onboarding() {
   let step = 0;
-  const choices = { mode: null, name: 'Hayden', address: '@hayden' };
+  const copy = uxCopy.onboarding;
+  const choices = { mode: null, name: '', address: '', addressEdited: false };
   const root = h('section', { class: 'onboarding', 'aria-label': 'Gummy OS onboarding' });
   const card = h('div', { class: 'onboarding-card' });
   root.append(card);
@@ -170,17 +217,17 @@ function onboarding() {
       role: 'progressbar',
       'aria-label': 'Onboarding progress',
       'aria-valuemin': '1',
-      'aria-valuemax': '5',
+      'aria-valuemax': '4',
       'aria-valuenow': String(step + 1),
-      'aria-valuetext': `Step ${step + 1} of 5`
+      'aria-valuetext': `Step ${step + 1} of 4`
     });
-    for (let index = 0; index < 5; index += 1) meter.append(h('span', { class: index <= step ? 'active' : '' }));
-    card.append(identity, meter, h('p', { class: 'eyebrow', text: `Personal Gummy · ${step + 1} / 5` }));
+    for (let index = 0; index < 4; index += 1) meter.append(h('span', { class: index <= step ? 'active' : '' }));
+    card.append(identity, meter, h('p', { class: 'eyebrow', text: `Personal Gummy · ${step + 1} / 4` }));
     if (step === 0) {
       card.append(
-        h('h1', { text: 'Your creative computer, with you in control.' }),
-        h('p', { class: 'lede', text: 'Start locally. Bring an idea, file, or project. Configure what you want. Nothing runs until you choose Make Production.' }),
-        h('p', { text: 'Choose Night or Day Gummy. Start locally without an account; connect more only when you choose.' }),
+        h('h1', { text: copy.welcome.title }),
+        h('p', { class: 'lede', text: copy.welcome.lede }),
+        h('p', { text: copy.welcome.detail }),
         h('div', { class: 'choice-grid' }, ['night', 'day'].map(mode => h('button', {
           class: 'choice', 'aria-pressed': String(choices.mode === mode), dataset: { testid: `mode-${mode}` },
           onclick: () => { choices.mode = mode; void applyMode(mode, false); render(); }
@@ -188,16 +235,46 @@ function onboarding() {
         nextButton('Enter Gummy OS', () => step += 1, () => Boolean(choices.mode))
       );
     } else if (step === 1) {
-      const name = h('input', { id: 'human-name', value: choices.name, autocomplete: 'name' });
-      const address = h('input', { id: 'actor-address', value: choices.address, pattern: '^@[a-zA-Z0-9._-]+$' });
-      name.addEventListener('input', () => { choices.name = name.value.trim(); });
-      address.addEventListener('input', () => { choices.address = address.value.trim(); });
+      const name = h('input', {
+        id: 'human-name',
+        value: choices.name,
+        autocomplete: 'name',
+        placeholder: 'Your name'
+      });
+      const address = h('input', {
+        id: 'actor-address',
+        value: choices.address,
+        pattern: '^@[a-zA-Z0-9._-]+$',
+        placeholder: '@your-name'
+      });
+      const continueRow = nextButton(
+        'Continue',
+        () => step += 1,
+        () => Boolean(choices.name && /^@[a-zA-Z0-9._-]+$/.test(choices.address))
+      );
+      const syncIdentity = () => {
+        continueRow.querySelector('button').disabled = !(choices.name && /^@[a-zA-Z0-9._-]+$/.test(choices.address));
+      };
+      name.addEventListener('input', () => {
+        choices.name = name.value.trim();
+        if (!choices.addressEdited) {
+          const slug = choices.name.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-|-$/g, '');
+          choices.address = slug ? `@${slug}` : '';
+          address.value = choices.address;
+        }
+        syncIdentity();
+      });
+      address.addEventListener('input', () => {
+        choices.addressEdited = true;
+        choices.address = address.value.trim();
+        syncIdentity();
+      });
       card.append(
-        h('h1', { text: 'Name your local authority' }),
-        h('p', { class: 'lede', text: 'This creates a local Human and personal Actor. The provisional @address is not public discovery or verified identity.' }),
-        h('label', { class: 'field', for: 'human-name' }, [h('span', { text: 'Human display name' }), name]),
-        h('label', { class: 'field', for: 'actor-address' }, [h('span', { text: 'Provisional @address' }), address]),
-        nextButton('Continue', () => step += 1, () => Boolean(choices.name && /^@[a-zA-Z0-9._-]+$/.test(choices.address)))
+        h('h1', { text: copy.identity.title }),
+        h('p', { class: 'lede', text: copy.identity.lede }),
+        h('label', { class: 'field', for: 'human-name' }, [h('span', { text: copy.identity.nameLabel }), name]),
+        h('label', { class: 'field', for: 'actor-address' }, [h('span', { text: copy.identity.addressLabel }), address]),
+        continueRow
       );
     } else if (step === 2) {
       const restoreInput = h('input', {
@@ -242,57 +319,73 @@ function onboarding() {
         }
       });
       card.append(
-        h('h1', { text: 'Your Local Gummy Box is ready.' }),
-        h('p', { class: 'lede', text: 'It keeps your Productions, Gummies, Returns, and Receipts in this browser. You can export a backup or connect another location later.' }),
-        h('div', { class: 'card' }, [h('h3', { text: 'Local Gummy Box' }), h('p', { text: 'Private on this device · no external account required' }), h('span', { class: 'status', text: 'Ready' })]),
+        h('h1', { text: copy.box.title }),
+        h('p', { class: 'lede', text: copy.box.lede }),
+        h('div', { class: 'card' }, [h('h3', { text: 'Local Gummy Box' }), h('p', { text: copy.box.state }), h('span', { class: 'status', text: 'Ready' })]),
         restoreInput,
         h('button', { class: 'button', onclick: () => restoreInput.click() }, 'Restore a Gummy Box backup'),
         restoreStatus,
         nextButton('Create Local Gummy Box', () => step += 1)
       );
-    } else if (step === 3) {
-      card.append(
-        h('h1', { text: 'Connections are optional' }),
-        h('div', { class: 'card-grid' }, [
-          h('div', { class: 'card' }, [h('h3', { text: 'Private GitHub' }), h('p', { text: 'Connectable after onboarding through a repository-scoped GitHub App.' }), h('span', { class: `status ${session.githubConfigured ? '' : 'offline'}`, text: session.githubConfigured ? 'Server configured' : 'Requires server configuration' })]),
-          h('div', { class: 'card' }, [h('h3', { text: 'Google Drive' }), h('p', { text: 'Visible for orientation; unavailable in this standalone proof.' }), h('span', { class: 'status offline', text: 'Unavailable' })])
-        ]),
-        nextButton('Continue without connecting', () => step += 1)
-      );
     } else {
+      const finish = async (kind, button) => {
+        button.disabled = true;
+        button.textContent = 'Creating your private starting place…';
+        try {
+          await seedPersonalGummy(choices);
+          const production = kind === 'none' ? null : await startProduction(kind, { open: false });
+          root.remove();
+          await renderShell();
+          if (production) await openProduction(production.id);
+          announce(kind === 'sample'
+            ? 'Night Gummy Launch is ready to explore. No specialist work has run.'
+            : kind === 'blank'
+            ? 'Your blank Production is ready. No specialist work has run.'
+            : 'Your Canvas is ready. Start or open a Production when you choose.');
+        } catch (error) {
+          button.disabled = false;
+          button.textContent = kind === 'sample'
+            ? 'Open the sample Production'
+            : kind === 'blank'
+            ? 'Start a blank Production'
+            : 'Explore my Canvas first';
+          card.append(h('p', {
+            class: 'notice',
+            text: error instanceof ByteStoreError ? `Persistence blocked: ${error.message}` : error.message
+          }));
+        }
+      };
       card.append(
-        h('h1', { text: 'Configure freely. Nothing runs yet.' }),
-        h('p', { class: 'lede', text: 'Add specialists, assign references, choose routes, and preview the package. Make Production is the only step that starts authorized work.' }),
-        h('details', {}, [
-          h('summary', { text: 'Review technical authority details' }),
-        facts([
-          ['Human', `${choices.name} · local, non-verified`],
-          ['Actor', `actor:hayden · ${choices.address}`],
-          ['Agent', 'agent:glopper-web · OpenAI / gpt-5.6-sol'],
-          ['Local Operator', 'agent:gummy-operator-local · Gemma 3 4B · offline until paired'],
-          ['Mold', 'mold:hayden:personal'],
-          ['Master Control', 'master-control:hayden'],
-          ['Authoritative location', 'Local Gummy Box'],
-          ['Native authority', 'false']
-        ])
+        h('h1', { text: copy.starting.title }),
+        h('p', { class: 'lede', text: copy.starting.lede }),
+        h('div', { class: 'boundary-callout' }, [
+          h('strong', { text: copy.starting.boundaryTitle }),
+          h('p', { text: copy.starting.boundaryDetail })
         ]),
-        h('button', {
-          class: 'button primary', dataset: { testid: 'enter-canvas' },
-          onclick: async event => {
-            const button = event.currentTarget;
-            button.disabled = true;
-            button.textContent = 'Creating durable state…';
-            try {
-              await seedPersonalGummy(choices);
-              root.remove();
-              await renderShell();
-            } catch (error) {
-              button.disabled = false;
-              button.textContent = 'Try again';
-              card.append(h('p', { class: 'notice', text: error instanceof ByteStoreError ? `Persistence blocked: ${error.message}` : error.message }));
-            }
-          }
-        }, 'Got it — open my Canvas')
+        h('div', { class: 'choice-grid first-production-choices' }, [
+          h('button', {
+            class: 'choice',
+            onclick: event => void finish('blank', event.currentTarget)
+          }, [
+            h('strong', { text: 'Start a blank Production' }),
+            h('span', { text: copy.starting.blankDetail })
+          ]),
+          h('button', {
+            class: 'choice',
+            onclick: event => void finish('sample', event.currentTarget)
+          }, [
+            h('strong', { text: 'Open the sample Production' }),
+            h('span', { text: copy.starting.sampleDetail })
+          ])
+        ]),
+        h('div', { class: 'button-row' }, [
+          h('button', {
+            class: 'button',
+            dataset: { testid: 'enter-canvas' },
+            onclick: event => void finish('none', event.currentTarget)
+          }, 'Explore my Canvas first')
+        ]),
+        h('p', { class: 'meta', text: copy.starting.optional })
       );
     }
   };
@@ -462,7 +555,8 @@ function productionSurface(productionId = null) {
     openMasterControl: openProductionMasterControl,
     openProduction,
     toast: (title, detail) => announce(`${title}. ${detail}`),
-    specialistAdapters
+    specialistAdapters,
+    copy: uxCopy.production
   }).node;
 }
 
@@ -545,19 +639,20 @@ async function openProductionMasterControl(productionId) {
 }
 
 function guideSurface() {
+  const copy = uxCopy.guide;
   return h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Gummy guide · orientation and continuity' }),
     h('section', { class: 'doorway', 'aria-label': 'Start in Gummy OS' }, [
       h('h1', { text: 'Your creative computer, with you in control.' }),
       h('p', { class: 'lede', text: 'Start locally. Configure what you want. Nothing runs until you choose Make Production.' }),
       h('div', { class: 'doorway-actions' }, [
-        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('productions') }, [
+        h('button', { class: 'choice doorway-choice', onclick: () => void startProduction('blank') }, [
           h('strong', { text: 'Start a blank Production' }),
           h('span', { text: 'Create a private workspace. No specialist work starts.' })
         ]),
-        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('productions') }, [
+        h('button', { class: 'choice doorway-choice', onclick: () => void startProduction('sample') }, [
           h('strong', { text: 'Open the Night Gummy Launch sample' }),
-          h('span', { text: 'Use safe brand-owned sources and deterministic demonstration routes.' })
+          h('span', { text: 'Meet the specialist Actors using safe brand-owned sources and demonstration routes.' })
         ])
       ]),
       h('div', { class: 'button-row secondary-doorway-actions' }, [
@@ -573,52 +668,30 @@ function guideSurface() {
       dataset: { gummyAssistant: 'gummy' },
       'aria-label': 'Talk to Gummy'
     }, [
-      h('h2', { text: 'Talk to Gummy' }),
-      h('p', { text: 'Gummy helps you understand where projects, applications, people, spaces, and controls belong. Glopper remains the separate action companion.' }),
-      h('label', { class: 'field' }, [
-        h('span', { text: 'Orientation question' }),
-        h('textarea', { rows: '2', placeholder: 'Where should I begin?' })
-      ]),
-      h('button', { class: 'button', disabled: true }, 'Orientation conversation is staged')
-    ]),
-    h('div', { class: 'split' }, [
-      h('div', {}, [
-        h('h1', { text: 'A computer you can open.' }),
-        h('p', { class: 'lede', text: 'Your Canvas keeps continuity while Glopper carries out only the work you approve. Every meaningful action leaves local evidence.' }),
-        h('div', { class: 'button-row' }, [
-          h('button', { class: 'button primary', onclick: () => { panelTab = 'inbox'; togglePanel(true); } }, 'Review the Work Order'),
-          h('button', { class: 'button', onclick: () => openSurface('gummies') }, 'Open My Gummies')
-        ])
-      ]),
-      h('figure', { class: 'gummy-guide-figure', dataset: { gummyAssistant: 'gummy' } }, [
-        h('img', {
-          src: gummyAssets.mascotHead,
-          alt: 'Gummy, the VR-goggled chimp guide',
-          width: '512',
-          height: '768',
-          loading: 'lazy',
-          decoding: 'async'
-        }),
-        h('figcaption', {}, [
-          h('strong', { text: 'Gummy keeps your place.' }),
-          h('span', { text: 'Purple-dominant orientation · gold action cues' })
-        ])
+      h('h2', { text: 'Gummy can help you find your way' }),
+      h('p', { text: 'Gummy explains where work lives. Glopper is the separate companion that helps you take approved action.' }),
+      h('div', { class: 'orientation-topics' }, copy.topics.map(([question, answer]) => h('details', {}, [
+        h('summary', { text: question }),
+        h('p', { text: answer })
+      ]))),
+      h('div', { class: 'button-row' }, [
+        h('button', { class: 'button', onclick: () => openSurface('actors') }, 'Meet the Actors'),
+        h('button', { class: 'button', onclick: () => { panelTab = 'conversation'; void togglePanel(true); } }, 'Ask Glopper what to do next')
       ])
     ]),
-    h('div', { class: 'card-grid' }, [
-      h('article', { class: 'card', dataset: { gummyAssistant: 'glopper' } }, [
-        h('div', { class: 'mascot-slot', 'aria-label': 'Temporary Glopper mascot slot', text: '✦' }),
-        h('h2', { text: 'Glopper helps you act.' }),
-        h('p', { text: 'agent:glopper-web · OpenAI Responses · gpt-5.6-sol · cloud locality' })
-      ]),
-      h('article', { class: 'card' }, [
-        h('h2', { text: 'Local Operator' }),
-        h('p', { text: 'agent:gummy-operator-local · Gemma 3 4B reference lane · offline until a trusted local supervisor is paired' }),
-        h('span', { class: 'status offline', text: 'No ambient authority' })
-      ]),
-      h('article', { class: 'card' }, [h('h2', { text: 'Authority' }), h('p', { text: 'human:hayden sponsors actor:hayden through Master Control.' })]),
-      h('article', { class: 'card' }, [h('h2', { text: 'Boundaries' }), h('p', { text: 'No shell, native runtime, public discovery, billing, or production identity.' })]),
-      h('article', { class: 'card' }, [h('h2', { text: 'Durability' }), h('p', { text: 'Metadata lives in IndexedDB; Gummy bytes live in origin-private storage.' })])
+    h('figure', { class: 'gummy-guide-figure compact-guide-figure', dataset: { gummyAssistant: 'gummy' } }, [
+      h('img', {
+        src: gummyAssets.mascotHead,
+        alt: 'Gummy, the VR-goggled chimp guide',
+        width: '512',
+        height: '768',
+        loading: 'lazy',
+        decoding: 'async'
+      }),
+      h('figcaption', {}, [
+        h('strong', { text: 'Gummy keeps your place.' }),
+        h('span', { text: 'Purple-dominant orientation · gold action cues' })
+      ])
     ])
   ]);
 }
@@ -762,18 +835,69 @@ function browserSurface() {
 }
 
 async function actorsSurface() {
-  const actors = await repository.all('actors');
+  const localActors = await repository.all('actors');
   const bowls = await repository.all('bowls');
   const profiles = await repository.all('profiles');
+  const runtime = productionState.productionRuntime;
+  const copy = uxCopy.presence;
+  const activeProduction = [...runtime.productions].reverse().find(item => !['completed', 'cancelled'].includes(item.status))
+    || runtime.productions.at(-1);
+  const glopperConfigured = session.openaiConfigured || session.testMode;
+  const presence = copy.cards.map(item => {
+    const glopper = item.id === 'agent:glopper-web';
+    const config = activeProduction && runtime.configurations.find(entry => (
+      entry.productionId === activeProduction.id && entry.actorId === item.id
+    ));
+    return {
+      ...item,
+      tone: item.tone || 'limited',
+      capability: glopper && glopperConfigured ? item.configured : item.capability,
+      current: activeProduction
+        ? glopper ? `Following ${activeProduction.title}` : `${activeProduction.title} · ${config?.readiness?.replaceAll('-', ' ') || 'not assigned'}`
+        : 'Waiting for your first Production',
+      action: glopper ? 'Open Glopper' : activeProduction ? `Open in ${activeProduction.title}` : 'Open with the sample',
+      interact: glopper
+        ? () => { panelTab = 'conversation'; void togglePanel(true); }
+        : () => activeProduction
+          ? openActorSurface(item.id, activeProduction.id)
+          : void startProduction('sample').then(production => openActorSurface(item.id, production.id))
+    };
+  });
   const root = h('div', {}, [
-    h('p', { class: 'eyebrow', text: 'Persistent identities, explicit composition' }),
-    h('h2', { text: 'Actors & Bowls' }),
-    h('p', { class: 'lede', text: 'People & Spaces is a first-class Gummy OS pillar. Actor Homes, stable @addresses, follows, memberships, sharing, Links, Grabs, and collaborative Rooms remain staged—not removed.' }),
-    h('div', { class: 'card-grid' }, actors.map(actor => h('article', { class: 'card', dataset: { actorId: actor.id } }, [
+    h('p', { class: 'eyebrow', text: 'Living entry points · truthful presence' }),
+    h('h2', { text: 'Actors & companions' }),
+    h('p', { class: 'lede', text: copy.intro }),
+    h('div', {
+      class: 'presence-grid',
+      dataset: { testid: 'actor-presence-grid' }
+    }, presence.map(item => h('article', {
+      class: 'presence-card',
+      dataset: { presenceId: item.id }
+    }, [
+      h('div', { class: 'presence-heading' }, [
+        h('div', {}, [h('h3', { text: item.name }), h('p', { class: 'meta', text: item.identity })]),
+        h('span', { class: `status ${item.tone === 'ready' ? '' : 'review'}`, text: item.state })
+      ]),
+      h('p', { class: 'presence-capability', text: item.capability }),
+      h('div', { class: 'presence-current' }, [
+        h('strong', { text: 'Current state' }),
+        h('span', { text: item.current })
+      ]),
+      h('p', { class: 'boundary-note compact', text: item.truth }),
+      h('div', { class: 'button-row' }, [
+        h('button', { class: 'button primary', onclick: item.interact }, item.action),
+        item.id !== 'agent:glopper-web'
+          ? h('button', { class: 'button', onclick: () => openActorSurface(item.id) }, 'Open standalone Actor view')
+          : null
+      ])
+    ]))),
+    h('h3', { text: 'Your local Actors' }),
+    h('p', { text: 'These identities live only in this browser unless you explicitly connect or share them.' }),
+    h('div', { class: 'card-grid' }, localActors.map(actor => h('article', { class: 'card', dataset: { actorId: actor.id } }, [
       h('h3', { text: actor.name }),
-      h('p', { text: `${actor.id} · ${actor.address}` }),
-      h('span', { class: 'status', text: `${actor.kind} · ${actor.status}` }),
-      h('button', { class: 'button', onclick: () => openActorSurface(actor.id) }, 'Open standalone Actor view')
+      h('p', { text: actor.address }),
+      h('span', { class: 'status', text: `${actor.kind} Actor · local` }),
+      h('button', { class: 'button', onclick: () => openActorSurface(actor.id) }, 'Open Actor')
     ]))),
     h('div', { class: 'button-row' }, [
       h('button', { class: 'button primary', onclick: composeBowl, disabled: bowls.some(bowl => bowl.id === 'bowl:composition-proof') }, 'Compose temporary private Bowl')
@@ -1477,17 +1601,52 @@ async function renderPanel() {
 
 async function panelContent() {
   if (panelTab === 'conversation') {
-    const file = h('input', { type: 'file', accept: '.md,.txt', hidden: true });
+    const copy = uxCopy.glopper;
+    const human = await repository.get('humans', 'human:hayden');
+    const productions = productionState.productionRuntime.productions;
+    const active = [...productions].reverse().find(item => !['completed', 'cancelled'].includes(item.status))
+      || productions.at(-1);
+    const workOrders = await repository.all('workOrders');
+    const pending = workOrders.filter(order => ['awaiting-approval', 'held'].includes(order.status));
+    const results = (await repository.all('gummies')).filter(gummy => gummy.kind === 'result');
+    const receipts = await repository.all('receipts');
+    const configured = session.testMode || session.openaiConfigured;
+    const welcome = active
+      ? `Welcome back, ${human?.name || 'Human'}. You have ${productions.length} Production${productions.length === 1 ? '' : 's'}, ${pending.length} pending decision${pending.length === 1 ? '' : 's'}, and ${results.length} completed result Gumm${results.length === 1 ? 'y' : 'ies'}.`
+      : `Welcome, ${human?.name || 'Human'}. Your Local Gummy Box is ready. Start a Production when you have an idea, file, or outcome you want to organize.`;
     return h('div', {}, [
-      h('div', { class: 'message human' }, [h('strong', { text: 'Human · Hayden' }), h('span', { text: 'Help me turn the project brief into a concise summary.' })]),
-      h('div', { class: 'message gummy' }, [h('strong', { text: 'Gummy · @hayden' }), h('span', { text: 'The selected Canvas context stays attached to this task only.' })]),
-      h('div', { class: 'message glopper' }, [h('strong', { text: 'Glopper · agent:glopper-web' }), h('span', { text: 'I can act only after the Work Order, lease, and three Grants all pass.' })]),
-      h('div', { class: 'message system' }, [h('strong', { text: 'System' }), h('span', { text: `Provider ${session.testMode ? 'mocked for hermetic verification' : 'OpenAI'} · gpt-5.6-sol · cloud · cost policy ${session.testMode || session.openaiConfigured ? 'available' : 'unconfigured'}` })]),
-      h('div', { class: 'conversation-compose' }, [
-        h('label', { class: 'field' }, [h('span', { text: 'Message (local placeholder)' }), h('textarea', { rows: '3', placeholder: 'Conversation input does not execute work.' })]),
-        h('div', { class: 'drop-zone', tabindex: '0', text: 'Attach a Markdown file or selected Canvas context' }),
-        h('div', { class: 'button-row' }, [h('button', { class: 'button', onclick: () => file.click() }, 'Choose file'), h('button', { class: 'button', disabled: true }, 'Voice placeholder')]),
-        file
+      h('div', { class: 'message glopper glopper-summary', role: 'status' }, [
+        h('strong', { text: 'Glopper' }),
+        h('span', { text: welcome })
+      ]),
+      active ? h('article', { class: 'current-production-card' }, [
+        h('p', { class: 'eyebrow', text: 'CURRENT PRODUCTION' }),
+        h('h3', { text: active.title }),
+        h('p', { text: `${active.status.replaceAll('-', ' ')} · revision ${active.revision}` }),
+        h('button', { class: 'button primary', onclick: () => openProduction(active.id) }, `Continue ${active.title}`)
+      ]) : null,
+      h('div', { class: 'glopper-action-menu', 'aria-label': 'Glopper actions' }, [
+        h('h3', { text: 'What would you like to do?' }),
+        pending.length ? h('button', {
+          class: 'button',
+          onclick: () => { panelTab = 'inbox'; void renderPanel(); }
+        }, `Review ${pending.length} pending decision${pending.length === 1 ? '' : 's'}`) : null,
+        h('button', { class: 'button', onclick: () => void startProduction('blank') }, 'Start a new Production'),
+        h('button', { class: 'button', onclick: () => openSurface('gummies') }, `See result Gummies (${results.length})`),
+        h('button', {
+          class: 'button',
+          onclick: () => { panelTab = 'evidence'; void renderPanel(); }
+        }, `Explain recent activity (${receipts.length} Receipts)`)
+      ])
+      ,
+      h('details', { class: 'execution-disclosure' }, [
+        h('summary', { text: 'What Glopper can do right now' }),
+        h('p', { text: configured
+          ? copy.configured
+          : copy.unconfigured }),
+        h('p', { class: 'meta', text: configured
+          ? `Execution route: ${session.testMode ? 'hermetic test provider' : 'OpenAI'} · cloud · approval required`
+          : 'Execution route: unavailable · no provider cost can be incurred' })
       ])
     ]);
   }
@@ -1520,7 +1679,17 @@ async function panelContent() {
   }
   if (panelTab === 'results') {
     const results = (await repository.all('gummies')).filter(gummy => gummy.kind === 'result');
-    return h('div', {}, results.length ? results.map(result => h('div', { class: 'card' }, [h('strong', { text: result.title }), h('p', { text: `${result.hash.algorithm}:${result.hash.value}` }), h('button', { class: 'button', onclick: () => boundedExport(result) }, 'Bounded browser export')])) : [h('p', { class: 'empty', text: 'No result Gummies yet.' })]);
+    return h('div', {}, results.length
+      ? results.map(result => h('div', { class: 'card' }, [
+          h('strong', { text: result.title }),
+          h('p', { text: `${result.hash.algorithm}:${result.hash.value}` }),
+          h('button', { class: 'button', onclick: () => boundedExport(result) }, 'Export this result')
+        ]))
+      : [h('div', { class: 'empty-state compact-empty' }, [
+          h('strong', { text: 'No result Gummies yet' }),
+          h('p', { text: uxCopy.glopper.emptyResults }),
+          h('button', { class: 'button primary', onclick: () => void startProduction('sample') }, 'Open the sample Production')
+        ])]);
   }
   const receipts = (await repository.all('receipts')).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 8);
   return h('div', {}, receipts.map(receipt => h('div', { class: 'card' }, [h('strong', { text: receipt.action }), h('small', { text: `${receipt.outcome} · ${receipt.createdAt}` })])));
@@ -1528,7 +1697,7 @@ async function panelContent() {
 
 async function bootstrap() {
   try {
-    await initializeSession();
+    [, uxCopy] = await Promise.all([initializeSession(), loadFirstUserExperience()]);
     await repository.open();
     await migrateLegacy(repository);
     await ensureFullProductRecords(repository);
@@ -1543,7 +1712,11 @@ async function bootstrap() {
       await renderShell();
       if (recovery.status !== 'clean') announce(`Local Box recovery: ${recovery.status}. ${[...recovery.recovered, ...recovery.unresolved].join(', ')}`);
     }
-    registerSW({ immediate: true });
+    if ('serviceWorker' in navigator) {
+      void navigator.serviceWorker.register('/sw.js').catch(error => {
+        announce(`Offline cache unavailable: ${error.message}`);
+      });
+    }
     window.addEventListener('online', () => void resumeApprovedOutbox());
     window.addEventListener('offline', () => announce('Offline. Provider execution is unavailable; approvals will be revalidated before resuming.'));
     window.addEventListener('gummy:open-actor-surface', event => {

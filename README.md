@@ -20,6 +20,7 @@ Open the current production release:
 - **Gummy OS:** [https://gummy-os-six.vercel.app](https://gummy-os-six.vercel.app)
 - **Release evidence:** [`docs/release/FINAL_RELEASE.md`](docs/release/FINAL_RELEASE.md)
 - **Ubuntu live activation:** [`docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md`](docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md)
+- **First-user readiness:** [`docs/release/PHASE-11-TEST-USER-READINESS.md`](docs/release/PHASE-11-TEST-USER-READINESS.md)
 
 The controlling finish-up kit remains the reproducible build and acceptance
 contract:

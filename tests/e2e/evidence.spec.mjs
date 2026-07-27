@@ -7,9 +7,9 @@ async function onboarding(page, mode, layout = 'desktop') {
   const selectorName = layout === 'desktop' ? `${mode}-theme-selector.png` : `${mode}-${layout}-theme-selector.png`;
   await page.screenshot({ path: evidencePath(selectorName), fullPage: true });
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
+  await page.getByLabel('What should Gummy call you?').fill('Test User');
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
-  await page.getByRole('button', { name: 'Continue without connecting' }).click();
   await page.getByTestId('enter-canvas').click();
   await expect(page.getByRole('region', { name: 'Gummy Canvas' })).toBeVisible();
 }

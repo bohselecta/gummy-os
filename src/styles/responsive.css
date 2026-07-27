@@ -10,7 +10,7 @@
   .gummy-bar { padding: var(--space-2); }
   .bar-candy { flex-basis: 68px; min-height: 60px; }
   .glopper-panel { top: auto; left: 0; right: 0; bottom: 82px; width: auto; height: min(72dvh, 610px); border-left: 0; border-top: 1px solid var(--line); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-  .choice-grid, .split, .doorway-actions, .application-grid { grid-template-columns: 1fr; }
+  .choice-grid, .split, .doorway-actions, .application-grid, .presence-grid { grid-template-columns: 1fr; }
   .onboarding-brand { width: 56px; height: 56px; }
   .onboarding-brand img { object-fit: contain; }
   .gummy-guide-figure img { height: 240px; }

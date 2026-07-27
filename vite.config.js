@@ -8,7 +8,16 @@ const buildCommit = process.env.VERCEL_GIT_COMMIT_SHA
 
 export default defineConfig({
   define: { __GUMMY_BUILD_COMMIT__: JSON.stringify(buildCommit) },
-  build: { outDir: 'build', sourcemap: false, emptyOutDir: true },
+  build: {
+    outDir: 'build',
+    sourcemap: false,
+    emptyOutDir: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: { passes: 2 },
+      format: { comments: false }
+    }
+  },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',

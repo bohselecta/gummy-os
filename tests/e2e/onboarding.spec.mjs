@@ -7,12 +7,12 @@ async function completeOnboarding(page) {
   await expect(page.getByText(/Nothing runs until you choose Make Production/)).toBeVisible();
   await page.getByTestId('mode-night').click();
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
+  await page.getByLabel('What should Gummy call you?').fill('Test User');
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.getByRole('heading', { name: 'Your Local Gummy Box is ready.' })).toBeVisible();
   await expect(page.getByText(/no external account required/i)).toBeVisible();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
-  await page.getByRole('button', { name: 'Continue without connecting' }).click();
-  await expect(page.getByRole('heading', { name: 'Configure freely. Nothing runs yet.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Choose your first Production' })).toBeVisible();
   await page.getByTestId('enter-canvas').click();
   await expect(page.getByRole('region', { name: 'Gummy Canvas' })).toBeVisible();
 }
@@ -46,9 +46,12 @@ test('first run creates a local Box, offers exactly two primary paths, and prese
   expect((await stores(page)).boxes).toHaveLength(1);
 
   await guide.getByRole('button', { name: /Open the Night Gummy Launch sample/ }).click();
-  const productions = page.locator('[data-window-id="productions"]');
-  await productions.getByRole('button', { name: 'Open the Night Gummy Launch sample' }).click();
+  const productions = page.getByRole('region', { name: 'Night Gummy Launch window' });
   await expect(productions.getByRole('heading', { name: 'Night Gummy Launch' })).toBeVisible();
+  await expect(productions.getByRole('heading', { name: 'ImageHoss' })).toBeVisible();
+  await expect(productions.getByText('Needs direction')).toBeVisible();
+  await expect(productions.getByText(/Real generation requires the authenticated local runtime/)).toBeVisible();
+  await expect(productions.getByText('Cost before Make Production')).toBeVisible();
   await expect.poll(async () => (await stores(page)).productions.length).toBe(1);
   let durable = await stores(page);
   expect(durable.productions).toHaveLength(1);
@@ -56,7 +59,7 @@ test('first run creates a local Box, offers exactly two primary paths, and prese
   expect(durable.grants).toHaveLength(0);
 
   await page.reload();
-  await expect(page.locator('[data-window-id="productions"]').getByRole('heading', { name: 'Night Gummy Launch' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Night Gummy Launch window' }).getByRole('heading', { name: 'Night Gummy Launch' })).toBeVisible();
   durable = await stores(page);
   expect(durable.productions[0].gummyIds).toEqual([
     'gummy:night-gummy-launch-brief',
@@ -69,8 +72,7 @@ test('first run creates a local Box, offers exactly two primary paths, and prese
 test('blank Production starts without sources, execution, or external connection', async ({ page }) => {
   await completeOnboarding(page);
   await page.locator('[data-window-id="guide"]').getByRole('button', { name: /Start a blank Production/ }).click();
-  const productions = page.locator('[data-window-id="productions"]');
-  await productions.getByRole('button', { name: 'Start a blank Production' }).click();
+  const productions = page.getByRole('region', { name: 'Untitled Production window' });
   await expect(productions.getByRole('heading', { name: 'Untitled Production' })).toBeVisible();
   await expect.poll(async () => (await stores(page)).productions.length).toBe(1);
   const durable = await stores(page);
