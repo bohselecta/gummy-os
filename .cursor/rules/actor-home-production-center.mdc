@@ -1,0 +1,48 @@
+---
+description: Keep the Human-owned living Actor, Production, and Underground model at the center of Gummy OS
+alwaysApply: true
+---
+
+# Actor Home and Production Center
+
+Read `docs/ACTOR_HOME_PRODUCTION_UNDERGROUND_CENTER.md` before planning or editing Actor, Production, application, social, discovery, memory, onboarding, or shell behavior.
+
+## Architectural center
+
+```text
+Human authority
+→ personal Actor / Living Self Page
+→ Productions and discovery
+→ participating Actors and Actor App Surfaces
+→ bounded Agents and adapters
+→ Gummies, Returns, Receipts, and approved Actor updates
+```
+
+The Human-owned personal Actor is the experiential center. Production is the durable undertaking. Applications extend Actors. Agents perform bounded work. Master Control governs authority and data flow.
+
+Do not make the app launcher, chat transcript, Agent graph, file browser, storage provider, or Production dashboard the sole conceptual center of Gummy OS.
+
+## Locked distinctions
+
+- Human and Actor do not collapse.
+- Actor and Agent do not collapse.
+- Living Self Page is a surface, not authority.
+- Personal, service, Production, organization, and collective Actors may use one protocol without pretending every Actor is a person.
+- Production-specific state does not silently become Actor memory.
+- Actor learning requires evidence and an ActorUpdateProposal.
+- AI-assisted output is not independent Human mastery.
+- Actor branches inherit only explicitly selected knowledge references, never ambient authority or private memory.
+- Underground is an experience/discovery/spatial layer, not an authority, storage, or protocol substitute.
+- Exact cave visuals, wallpapers, crystals, and mandatory 3D navigation are not locked canon without founder approval.
+
+## Next specialist milestone
+
+Do not attach the real ImageHoss adapter until Hayden completes:
+
+`docs/IMAGEHOSS_PRODUCTION_PROMPT_CONTRACT_WORKSHEET.md`
+
+Then read:
+
+`plans/active/2026-07-27-imagehoss-first-real-adapter-preflight.md`
+
+The current deterministic ImageHoss reference Agent is proof infrastructure, not the final ImageHoss capability model.
