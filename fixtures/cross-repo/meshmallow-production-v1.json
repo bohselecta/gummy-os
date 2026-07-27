@@ -1,7 +1,7 @@
 {
   "schema": "gummy.meshmallow-production-configuration/v1",
   "specialistRepository": "bohselecta/3d-bee",
-  "specialistHead": "f53d9210c6bb25fcba422de8b3ec341e33c3c04e",
+  "specialistHead": "78cd86b2482490bbfdc0881ffafa101133850f29",
   "publicName": "Meshmallow",
   "legacyIdentity": {
     "applicationId": "app:3d-bee",

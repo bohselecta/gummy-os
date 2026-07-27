@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { evidencePath } from './evidence-path.mjs';
 
 async function onboard(page, mode = 'night') {
   await page.goto('/');
@@ -80,9 +81,9 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
   await expect(productionWindow.locator('.setup-rail [data-utility-id]')).toHaveCount(7);
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
   await productionWindow.locator('.window-body').evaluate(node => { node.scrollTop = 0; });
-  await productionWindow.screenshot({ path: 'artifacts/evidence/production-desktop-night.png' });
+  await productionWindow.screenshot({ path: evidencePath('production-desktop-night.png') });
   await productionWindow.locator('.setup-rail').scrollIntoViewIfNeeded();
-  await productionWindow.screenshot({ path: 'artifacts/evidence/production-desktop-utility-tiles.png' });
+  await productionWindow.screenshot({ path: evidencePath('production-desktop-utility-tiles.png') });
 
   const initial = await durableProductionState(page);
   expect(initial.runs).toHaveLength(0);
@@ -158,7 +159,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
   await expect(agentRows.first()).toContainText(/Mold .* Lease .* Grant/);
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
   await agentRows.first().scrollIntoViewIfNeeded();
-  await master.screenshot({ path: 'artifacts/evidence/production-master-control.png' });
+  await master.screenshot({ path: evidencePath('production-master-control.png') });
 
   await master.getByRole('button', { name: 'Revocation · locks' }).click();
   await master.getByRole('button', { name: 'Revoke future use' }).click();
@@ -242,7 +243,7 @@ test('phone and reduced-motion Production keep utility meaning and critical acti
   await expect(productionWindow.locator('img[data-utility-id]').first()).toHaveCSS('height', /.+/);
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
   await productionWindow.locator('.window-body').evaluate(node => { node.scrollTop = 0; });
-  await page.screenshot({ path: 'artifacts/evidence/production-phone-day-reduced-motion.png', fullPage: true });
+  await page.screenshot({ path: evidencePath('production-phone-day-reduced-motion.png'), fullPage: true });
   await productionWindow.locator('.setup-rail').scrollIntoViewIfNeeded();
-  await page.screenshot({ path: 'artifacts/evidence/production-phone-day-utility-tiles.png', fullPage: true });
+  await page.screenshot({ path: evidencePath('production-phone-day-utility-tiles.png'), fullPage: true });
 });

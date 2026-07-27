@@ -3,7 +3,10 @@
   "phase": 5,
   "specialist": "VideoBoss",
   "repository": "bohselecta/videoboss",
-  "head": "3fe1a8f8043086faaa98c938ad7f044ef2be6494",
+  "head": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
+  "implementationCheckpoint": "3fe1a8f8043086faaa98c938ad7f044ef2be6494",
+  "finalReleaseCheckpoint": "b2db6e57edb7624835f16421c3a252c6be19637c",
+  "pullRequest": "https://github.com/bohselecta/videoboss/pull/4",
   "contracts": [
     "gummy.videoboss-production-configuration/v1",
     "videoboss.sequence-package/v1",

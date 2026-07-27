@@ -2,7 +2,7 @@
   "schema": "gummy.cross-repository-contract-fixture/v1",
   "source": {
     "repository": "bohselecta/imagehoss",
-    "head": "f39cbe96829110bffcdc3414b9f088aa7b3d0d45",
+    "head": "384109c8136b24f9f1843727020d92dee213bfba",
     "configuration": "gummy.imagehoss-production-configuration/v1",
     "package": "imagehoss.prompt-package/v1",
     "job": "imagehoss.production-job/v1",

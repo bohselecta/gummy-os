@@ -38,7 +38,7 @@ const legacy = {
 };
 
 test('Gummy reconciles the exact VideoBoss Phase 5 head and shared adapter surface', () => {
-  assert.equal(VIDEOBOSS_CONTRACT.head, '3fe1a8f8043086faaa98c938ad7f044ef2be6494');
+  assert.equal(VIDEOBOSS_CONTRACT.head, '1b5c83f9765ca93efb3b37f4c0d89b47e5489143');
   assertSpecialistAdapter(new GummyVideoBossAdapter());
 });
 

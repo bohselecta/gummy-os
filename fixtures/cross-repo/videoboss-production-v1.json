@@ -1,7 +1,7 @@
 {
   "schema": "gummy.videoboss-production-configuration/v1",
   "specialistRepository": "bohselecta/videoboss",
-  "specialistHead": "3fe1a8f8043086faaa98c938ad7f044ef2be6494",
+  "specialistHead": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
   "productionId": "production:night-gummy-launch",
   "sourceImageHossAssetId": "accepted-asset:night-gummy-launch:keyframe",
   "sourceImageHossAssetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",

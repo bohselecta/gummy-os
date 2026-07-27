@@ -7,7 +7,7 @@ import {
 
 export const IMAGEHOSS_CONTRACT = Object.freeze({
   repository: 'bohselecta/imagehoss',
-  head: 'f39cbe96829110bffcdc3414b9f088aa7b3d0d45',
+  head: '384109c8136b24f9f1843727020d92dee213bfba',
   configurationSchema: 'gummy.imagehoss-production-configuration/v1',
   referenceSchema: 'imagehoss.reference-assignment/v1',
   packageSchema: 'imagehoss.prompt-package/v1',

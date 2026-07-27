@@ -3,7 +3,10 @@
   "phase": 4,
   "specialist": "ImageHoss",
   "repository": "bohselecta/imagehoss",
-  "head": "f39cbe96829110bffcdc3414b9f088aa7b3d0d45",
+  "head": "384109c8136b24f9f1843727020d92dee213bfba",
+  "implementationCheckpoint": "f39cbe96829110bffcdc3414b9f088aa7b3d0d45",
+  "finalReleaseCheckpoint": "c86554781eb8e655c5e88eb34ec9e6be7f3faf69",
+  "pullRequest": "https://github.com/bohselecta/imagehoss/pull/6",
   "contracts": [
     "gummy.imagehoss-production-configuration/v1",
     "imagehoss.reference-assignment/v1",

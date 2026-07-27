@@ -3,7 +3,10 @@
   "phase": 6,
   "specialist": "Meshmallow",
   "repository": "bohselecta/3d-bee",
-  "head": "f53d9210c6bb25fcba422de8b3ec341e33c3c04e",
+  "head": "78cd86b2482490bbfdc0881ffafa101133850f29",
+  "implementationCheckpoint": "f53d9210c6bb25fcba422de8b3ec341e33c3c04e",
+  "finalReleaseCheckpoint": "8e3e5835131b4e42b7d3902d0d2ec7da987233d6",
+  "pullRequest": "https://github.com/bohselecta/3d-bee/pull/5",
   "legacyIdentity": {
     "applicationId": "app:3d-bee",
     "actorId": "actor:3d-bee",

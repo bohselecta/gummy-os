@@ -24,7 +24,7 @@
     "verify": "npm run check && npm test && npm run build && npm run security:audit && npm run test:e2e && npm run verify:product-preservation -- --suite-complete",
     "security:audit": "node scripts/release-hardening.mjs",
     "test:live": "node scripts/live-smoke.mjs",
-    "evidence": "playwright test tests/e2e/evidence.spec.mjs"
+    "evidence": "GUMMY_EVIDENCE_DIR=artifacts/evidence playwright test tests/e2e/evidence.spec.mjs"
   },
   "engines": {
     "node": ">=22"

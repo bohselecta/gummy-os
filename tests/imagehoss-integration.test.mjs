@@ -38,7 +38,7 @@ const legacy = {
 };
 
 test('Gummy reconciles the exact ImageHoss Phase 4 head and shared adapter surface', () => {
-  assert.equal(IMAGEHOSS_CONTRACT.head, 'f39cbe96829110bffcdc3414b9f088aa7b3d0d45');
+  assert.equal(IMAGEHOSS_CONTRACT.head, '384109c8136b24f9f1843727020d92dee213bfba');
   assertSpecialistAdapter(new GummyImageHossAdapter());
 });
 

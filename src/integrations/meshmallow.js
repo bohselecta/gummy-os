@@ -7,7 +7,7 @@ import {
 
 export const MESHMALLOW_CONTRACT = Object.freeze({
   repository: 'bohselecta/3d-bee',
-  head: 'f53d9210c6bb25fcba422de8b3ec341e33c3c04e',
+  head: '78cd86b2482490bbfdc0881ffafa101133850f29',
   applicationId: 'app:3d-bee',
   actorId: 'actor:3d-bee',
   configurationSchema: 'gummy.meshmallow-production-configuration/v1',

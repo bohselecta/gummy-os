@@ -7,7 +7,7 @@ import {
 
 export const VIDEOBOSS_CONTRACT = Object.freeze({
   repository: 'bohselecta/videoboss',
-  head: '3fe1a8f8043086faaa98c938ad7f044ef2be6494',
+  head: '1b5c83f9765ca93efb3b37f4c0d89b47e5489143',
   configurationSchema: 'gummy.videoboss-production-configuration/v1',
   sequenceSchema: 'videoboss.sequence-package/v1',
   shotSchema: 'videoboss.shot-packet/v1',

@@ -62,7 +62,7 @@
       "classification": "release-requirement",
       "finding": "Ranch Day was the only visible Production first action.",
       "resolution": "Add blank and Night Gummy Launch choices in Phase 2; retain Ranch Day only as a compatibility fixture.",
-      "status": "scheduled-phase-2"
+      "status": "closed"
     },
     {
       "id": "readiness-004",

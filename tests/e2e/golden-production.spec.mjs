@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { evidencePath } from './evidence-path.mjs';
 
 async function onboard(page) {
   await page.goto('/');
@@ -85,7 +86,7 @@ test('Night Gummy Launch runs, compares, accepts, revises, and restarts with com
   await production.getByRole('button', { name: 'Accept as launch-image' }).click();
   await expect(production.getByText('accepted · launch-image')).toBeVisible();
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
-  await production.screenshot({ path: 'artifacts/evidence/night-gummy-launch-golden.png' });
+  await production.screenshot({ path: evidencePath('night-gummy-launch-golden.png') });
 
   let state = await durable(page);
   expect(state.runs).toHaveLength(1);

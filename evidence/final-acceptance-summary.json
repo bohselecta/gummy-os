@@ -1,0 +1,151 @@
+{
+  "schema": "gummy.final-acceptance-summary/v1",
+  "createdAt": "2026-07-27T08:45:00.000Z",
+  "status": "PASS",
+  "releaseLevel": "founder-ready",
+  "releaseRef": "codex/final-release-2026-07-27",
+  "repositories": {
+    "gummyOs": {
+      "branch": "codex/final-release-2026-07-27",
+      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/20",
+      "headBinding": "phase 9 commit containing this summary"
+    },
+    "imageHoss": {
+      "head": "384109c8136b24f9f1843727020d92dee213bfba",
+      "pullRequest": "https://github.com/bohselecta/imagehoss/pull/6",
+      "status": "merged"
+    },
+    "videoBoss": {
+      "head": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
+      "pullRequest": "https://github.com/bohselecta/videoboss/pull/4",
+      "status": "merged"
+    },
+    "meshmallow": {
+      "head": "78cd86b2482490bbfdc0881ffafa101133850f29",
+      "pullRequest": "https://github.com/bohselecta/3d-bee/pull/5",
+      "status": "merged"
+    }
+  },
+  "verification": [
+    {
+      "repository": "bohselecta/imagehoss",
+      "command": "npm ci && npm run verify",
+      "environment": "fresh shared-object checkout",
+      "tests": 64,
+      "status": "PASS"
+    },
+    {
+      "repository": "bohselecta/videoboss",
+      "command": "npm ci && npm run verify",
+      "environment": "fresh shared-object checkout",
+      "tests": 41,
+      "status": "PASS"
+    },
+    {
+      "repository": "bohselecta/3d-bee",
+      "command": "npm ci && npm run verify",
+      "environment": "fresh shared-object checkout",
+      "tests": {
+        "rust": 37,
+        "pythonBridge": 21,
+        "jsonContractsAndFixtures": 14
+      },
+      "status": "PASS",
+      "hostedActions": "NOT CLAIMED — GitHub prevented both jobs from starting because the account Actions budget was exhausted"
+    },
+    {
+      "repository": "bohselecta/gummy-os",
+      "command": "npm run verify",
+      "environment": "production build plus Playwright Chromium",
+      "tests": {
+        "node": 89,
+        "browser": 23
+      },
+      "status": "PASS"
+    },
+    {
+      "repository": "bohselecta/gummy-os",
+      "command": "npm run test:acceptance",
+      "environment": "exact production-like build plus Playwright Chromium",
+      "tests": 23,
+      "status": "PASS"
+    }
+  ],
+  "gates": {
+    "exactSource": "PASS",
+    "cleanCheckout": "PASS",
+    "productPreservation": "PASS",
+    "configurationTruth": "PASS",
+    "executionBoundary": "PASS",
+    "authority": "PASS",
+    "sourceImmutability": "PASS",
+    "persistence": "PASS",
+    "truthfulCapability": "PASS",
+    "deterministicGoldenProduction": "PASS",
+    "localBoxBackupRestore": "PASS",
+    "accessibility": "PASS — zero critical or serious axe violations",
+    "visualAndResponsive": "PASS",
+    "security": "PASS",
+    "reliability": "PASS",
+    "performance": "PASS",
+    "migration": "PASS",
+    "rollback": "PASS",
+    "deploymentExactHead": "bound to the post-merge Vercel promotion and smoke required by this release transaction"
+  },
+  "goldenProduction": {
+    "productionId": "production:night-gummy-launch",
+    "status": "PASS",
+    "executionNodes": 5,
+    "workOrders": 5,
+    "contextEnvelopes": 5,
+    "taskLeases": 5,
+    "grants": 5,
+    "returns": 5,
+    "specialistNodeReceipts": 5,
+    "resultGummies": 5,
+    "sourceAndAcceptedPriorResultImmutability": "PASS",
+    "restartRecovery": "PASS",
+    "evidence": "evidence/night-gummy-launch-golden-path.json"
+  },
+  "localBox": {
+    "status": "PASS",
+    "cleanContextRestore": "PASS",
+    "inspectBeforeApply": "PASS",
+    "tamperAndPathTraversalRejection": "PASS",
+    "idempotentRepeat": "PASS",
+    "conflictPreservesBothVersions": "PASS",
+    "scopedResetPreviewAndTypedConfirmation": "PASS",
+    "evidence": "evidence/phase-7-gummy-box.json"
+  },
+  "specialists": {
+    "imageHoss": {
+      "capabilityReady": "PASS",
+      "liveProven": "NOT CLAIMED",
+      "blocker": "Authenticated supported ComfyUI bridge is not running."
+    },
+    "videoBoss": {
+      "capabilityReady": "PASS",
+      "liveProven": "NOT CLAIMED",
+      "blocker": "Trusted provider broker credential is not configured."
+    },
+    "meshmallow": {
+      "capabilityReady": "PASS",
+      "liveProven": "NOT CLAIMED",
+      "blocker": "Supported Blender 4.5 LTS and authenticated project-scoped supervisor are unavailable."
+    }
+  },
+  "deployment": {
+    "provider": "Vercel",
+    "projectId": "prj_iN4lDNquY0Y2xf297UvDZCVGWmsY",
+    "productionUrl": "https://gummy-os-six.vercel.app",
+    "commitBinding": "VERCEL_GIT_COMMIT_SHA displayed in About / Limits and matched to merged PR #20 head"
+  },
+  "knownLimitations": [
+    "Exported .gummybox files are integrity-hashed but not encrypted or signed.",
+    "Managed Box, Google Drive authority, Gummy Rooms hosting, social federation, and enterprise habitat remain deferred.",
+    "Live specialist output is unavailable until the exact external runtimes above are connected.",
+    "Performance evidence is local Chromium lab data, not field Core Web Vitals."
+  ],
+  "rollback": "evidence/rollback-plan.md",
+  "founderDecision": null
+}

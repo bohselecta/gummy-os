@@ -32,7 +32,7 @@ const legacy = {
 };
 
 test('Gummy reconciles the exact Meshmallow Phase 6 head and shared adapter surface', () => {
-  assert.equal(MESHMALLOW_CONTRACT.head, 'f53d9210c6bb25fcba422de8b3ec341e33c3c04e');
+  assert.equal(MESHMALLOW_CONTRACT.head, '78cd86b2482490bbfdc0881ffafa101133850f29');
   assert.equal(MESHMALLOW_CONTRACT.applicationId, 'app:3d-bee');
   assert.equal(MESHMALLOW_CONTRACT.actorId, 'actor:3d-bee');
   assertSpecialistAdapter(new GummyMeshmallowAdapter());
