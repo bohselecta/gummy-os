@@ -1,0 +1,25 @@
+{
+  "schema": "gummy.videoboss-production-configuration/v1",
+  "specialistRepository": "bohselecta/videoboss",
+  "specialistHead": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
+  "productionId": "production:night-gummy-launch",
+  "sourceImageHossAssetId": "accepted-asset:night-gummy-launch:keyframe",
+  "sourceImageHossAssetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "preservedRegions": {
+    "protected": [
+      "right-side-interface-safe-space"
+    ],
+    "movable": [
+      "ambient-gummy-lights"
+    ]
+  },
+  "sequence": [
+    "Reveal",
+    "Settle",
+    "Logo-safe hold"
+  ],
+  "execution": {
+    "deterministicSimulation": "passed",
+    "liveProviderOutput": "not-claimed"
+  }
+}

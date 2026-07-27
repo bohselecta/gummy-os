@@ -32,7 +32,12 @@ async function serveProduction(request, response) {
   if (!info) return false;
   if (info.isDirectory()) filePath = join(filePath, 'index.html');
   const body = await readFile(filePath);
-  response.writeHead(200, { ...securityHeaders(), 'content-type': types.get(extname(filePath)) || 'application/octet-stream', 'cache-control': filePath.endsWith('index.html') ? 'no-store' : 'public, max-age=3600' });
+  const cacheControl = filePath.endsWith('index.html')
+    ? 'no-store'
+    : pathname.startsWith('/assets/')
+      ? 'public, max-age=31536000, immutable'
+      : 'public, max-age=86400';
+  response.writeHead(200, { ...securityHeaders(), 'content-type': types.get(extname(filePath)) || 'application/octet-stream', 'cache-control': cacheControl });
   response.end(body);
   return true;
 }

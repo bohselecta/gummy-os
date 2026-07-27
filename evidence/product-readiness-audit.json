@@ -1,0 +1,97 @@
+{
+  "schema": "gummy.product-readiness-audit/v1",
+  "createdAt": "2026-07-27T00:00:00.000Z",
+  "branch": "codex/final-release-2026-07-27",
+  "baselineHead": "c1279e5f45d51e64febf4c29a701bbd5b21e62f1",
+  "classificationVocabulary": [
+    "release-blocker",
+    "release-requirement",
+    "deferred-enhancement",
+    "rejected-drift"
+  ],
+  "inspectedSurfaces": [
+    "boot",
+    "first-run",
+    "canvas-windows",
+    "gummy-bar",
+    "glopper-conversation-and-inbox",
+    "applications",
+    "actors-and-bowls",
+    "production-empty-roster-setup-plan-shelf-history",
+    "master-control",
+    "specialist-actor-surfaces",
+    "local-box",
+    "work-orders-returns-receipts"
+  ],
+  "viewports": [
+    { "name": "desktop", "width": 1280, "height": 720 },
+    { "name": "laptop", "width": 1024, "height": 768 },
+    { "name": "tablet", "width": 768, "height": 1024 },
+    { "name": "phone", "width": 390, "height": 844 },
+    { "name": "narrow-phone", "width": 320, "height": 720 }
+  ],
+  "states": [
+    "empty",
+    "loading",
+    "unavailable",
+    "denied",
+    "failed",
+    "revoked",
+    "offline",
+    "stale",
+    "cancelled",
+    "completed"
+  ],
+  "findings": [
+    {
+      "id": "readiness-001",
+      "classification": "release-requirement",
+      "finding": "Public 3D specialist identity used the historical 3D Bee name.",
+      "resolution": "Use Meshmallow publicly and preserve app:3d-bee, actor:3d-bee, repository, protocol, and receipt lineage.",
+      "status": "closed"
+    },
+    {
+      "id": "readiness-002",
+      "classification": "release-requirement",
+      "finding": "Specialist roles exposed narrow implementation-era descriptions.",
+      "resolution": "Describe full direction, planning, execution, review, acceptance, continuity, and handoff relationships.",
+      "status": "closed"
+    },
+    {
+      "id": "readiness-003",
+      "classification": "release-requirement",
+      "finding": "Ranch Day was the only visible Production first action.",
+      "resolution": "Add blank and Night Gummy Launch choices in Phase 2; retain Ranch Day only as a compatibility fixture.",
+      "status": "closed"
+    },
+    {
+      "id": "readiness-004",
+      "classification": "release-requirement",
+      "finding": "Unavailable applications did not consistently identify both the current usable lane and the next safe action.",
+      "resolution": "Registry and Applications copy now state current deterministic/planning behavior, required connection, and safe next step.",
+      "status": "closed"
+    },
+    {
+      "id": "readiness-005",
+      "classification": "deferred-enhancement",
+      "finding": "Live specialist runtimes and credentials are absent on this machine.",
+      "resolution": "Complete adapters and live-smoke commands without claiming live output.",
+      "status": "external-capability-absent"
+    },
+    {
+      "id": "readiness-006",
+      "classification": "rejected-drift",
+      "finding": "A generic prompt surface could simplify implementation at the cost of protected products.",
+      "resolution": "Retain separate specialist interfaces, contracts, evidence, and execution boundaries.",
+      "status": "rejected"
+    }
+  ],
+  "releaseBlockersOpen": 0,
+  "visualEvidenceDirectory": "artifacts/evidence",
+  "limitations": [
+    "ImageHoss live output is not claimed without its authenticated bridge and ComfyUI.",
+    "VideoBoss live output is not claimed without a server-side provider credential.",
+    "Meshmallow live output is not claimed without Blender and the authenticated supervisor.",
+    "Managed Box and social hosting remain deferred."
+  ]
+}

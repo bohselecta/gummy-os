@@ -1,0 +1,55 @@
+{
+  "schema": "gummy.specialist-integration-evidence/v1",
+  "phase": 5,
+  "specialist": "VideoBoss",
+  "repository": "bohselecta/videoboss",
+  "head": "1b5c83f9765ca93efb3b37f4c0d89b47e5489143",
+  "implementationCheckpoint": "3fe1a8f8043086faaa98c938ad7f044ef2be6494",
+  "finalReleaseCheckpoint": "b2db6e57edb7624835f16421c3a252c6be19637c",
+  "pullRequest": "https://github.com/bohselecta/videoboss/pull/4",
+  "contracts": [
+    "gummy.videoboss-production-configuration/v1",
+    "videoboss.sequence-package/v1",
+    "videoboss.shot-packet/v1",
+    "videoboss.take/v1",
+    "videoboss.take-acceptance/v1",
+    "videoboss.production-job/v1",
+    "videoboss.production-receipt/v1"
+  ],
+  "adapterMethods": [
+    "discover",
+    "validateConfiguration",
+    "compilePackage",
+    "execute",
+    "recover",
+    "cancel",
+    "inspectResult"
+  ],
+  "specialistVerification": {
+    "command": "npm run check",
+    "tests": 41,
+    "productionBuild": "pass",
+    "audit": "0 vulnerabilities"
+  },
+  "gummyVerification": {
+    "structuredVideoBossSurface": "browser-tested",
+    "crossRepositoryFixture": "fixtures/cross-repo/videoboss-production-v1.json"
+  },
+  "live": {
+    "command": "npm run live:production",
+    "status": "not-claimed",
+    "discovery": "not-configured",
+    "blocker": "FAL_KEY and FAL_QUEUE_URL are not configured on the trusted server."
+  },
+  "truth": {
+    "deterministicSimulation": "pass",
+    "liveOutput": "not-claimed",
+    "providerCredentialsServerOnly": "enforced-and-tested",
+    "providerMetadataCostAndDisclosure": "tested",
+    "ambiguousSubmissionRecovery": "inspect-first-tested",
+    "restartRecovery": "shared-store-tested",
+    "ownedJobCancellation": "tested",
+    "productionIsolation": "tested",
+    "specialistAndGummyReceiptsDistinctAndLinked": "tested"
+  }
+}

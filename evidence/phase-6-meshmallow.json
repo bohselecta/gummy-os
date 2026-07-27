@@ -1,0 +1,63 @@
+{
+  "schema": "gummy.specialist-integration-evidence/v1",
+  "phase": 6,
+  "specialist": "Meshmallow",
+  "repository": "bohselecta/3d-bee",
+  "head": "78cd86b2482490bbfdc0881ffafa101133850f29",
+  "implementationCheckpoint": "f53d9210c6bb25fcba422de8b3ec341e33c3c04e",
+  "finalReleaseCheckpoint": "8e3e5835131b4e42b7d3902d0d2ec7da987233d6",
+  "pullRequest": "https://github.com/bohselecta/3d-bee/pull/5",
+  "legacyIdentity": {
+    "applicationId": "app:3d-bee",
+    "actorId": "actor:3d-bee",
+    "protocolPrefix": "three-d-bee",
+    "historyRewritten": false
+  },
+  "contracts": [
+    "gummy.meshmallow-production-configuration/v1",
+    "meshmallow.world-intent/v1",
+    "meshmallow.scene-package/v1",
+    "meshmallow.checkpoint/v1",
+    "meshmallow.engine-handoff/v1",
+    "three-d-bee.scene-plan/1"
+  ],
+  "adapterMethods": [
+    "discover",
+    "validateConfiguration",
+    "compilePackage",
+    "execute",
+    "recover",
+    "cancel",
+    "inspectResult"
+  ],
+  "specialistVerification": {
+    "command": "npm run verify",
+    "rustTests": 37,
+    "pythonBridgeTests": 21,
+    "clippy": "pass",
+    "format": "pass",
+    "desktopBuildAndCheck": "pass",
+    "audit": "0 vulnerabilities"
+  },
+  "gummyVerification": {
+    "structuredMeshmallowSurface": "browser-tested",
+    "crossRepositoryFixture": "fixtures/cross-repo/meshmallow-production-v1.json"
+  },
+  "live": {
+    "command": "npm run live:production",
+    "status": "not-claimed",
+    "discovery": "not-available",
+    "blocker": "Supported Blender 4.5 LTS is not installed or selected on the release machine."
+  },
+  "truth": {
+    "deterministicSimulation": "pass",
+    "liveBlendPreviewAndExport": "not-claimed",
+    "exactPackageAndPlanDigestApproval": "tested",
+    "namedOperationsOnly": "tested",
+    "pathContainment": "tested",
+    "restartRecovery": "shared-store-tested",
+    "ownedJobCancellation": "tested",
+    "productionIsolation": "tested",
+    "specialistAndGummyReceiptsDistinctAndLinked": "tested"
+  }
+}

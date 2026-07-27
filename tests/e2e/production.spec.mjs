@@ -1,16 +1,17 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { evidencePath } from './evidence-path.mjs';
 
 async function onboard(page, mode = 'night') {
   await page.goto('/');
   await page.getByTestId(`mode-${mode}`).click();
-  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
   await page.getByRole('button', { name: 'Continue without connecting' }).click();
   await page.getByTestId('enter-canvas').click();
   await page.getByRole('tab', { name: /Productions/ }).click();
-  await expect(page.getByRole('heading', { name: /Start with the undertaking/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Start a Production' })).toBeVisible();
 }
 
 async function durableProductionState(page) {
@@ -80,9 +81,9 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
   await expect(productionWindow.locator('.setup-rail [data-utility-id]')).toHaveCount(7);
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
   await productionWindow.locator('.window-body').evaluate(node => { node.scrollTop = 0; });
-  await productionWindow.screenshot({ path: 'artifacts/evidence/production-desktop-night.png' });
+  await productionWindow.screenshot({ path: evidencePath('production-desktop-night.png') });
   await productionWindow.locator('.setup-rail').scrollIntoViewIfNeeded();
-  await productionWindow.screenshot({ path: 'artifacts/evidence/production-desktop-utility-tiles.png' });
+  await productionWindow.screenshot({ path: evidencePath('production-desktop-utility-tiles.png') });
 
   const initial = await durableProductionState(page);
   expect(initial.runs).toHaveLength(0);
@@ -102,7 +103,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
 
   for (const [actorId, actorName] of [
     ['imagehoss', 'ImageHoss'],
-    ['3d-bee', '3D-Bee'],
+    ['3d-bee', 'Meshmallow'],
     ['videoboss', 'VideoBoss'],
     ['project-composer', 'ProjectComposer'],
     ['gummy-storage', 'GummyStorage']
@@ -127,7 +128,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
 
   await productionWindow.getByRole('button', { name: 'Make Production' }).click();
   const runPreview = productionWindow.getByRole('dialog', { name: 'Master Control Run preview' });
-  await expect(runPreview).toContainText('Ready for Human approval');
+  await expect(runPreview).toContainText('Ready to review');
   await expect(runPreview).toContainText('Human → Master Control');
   await expect(runPreview.locator('[data-utility-id="gummy.utility.progress"]')).toBeVisible();
   await runPreview.getByRole('button', { name: 'Approve & Make Production' }).click();
@@ -158,7 +159,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
   await expect(agentRows.first()).toContainText(/Mold .* Lease .* Grant/);
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
   await agentRows.first().scrollIntoViewIfNeeded();
-  await master.screenshot({ path: 'artifacts/evidence/production-master-control.png' });
+  await master.screenshot({ path: evidencePath('production-master-control.png') });
 
   await master.getByRole('button', { name: 'Revocation · locks' }).click();
   await master.getByRole('button', { name: 'Revoke future use' }).click();
@@ -242,7 +243,7 @@ test('phone and reduced-motion Production keep utility meaning and critical acti
   await expect(productionWindow.locator('img[data-utility-id]').first()).toHaveCSS('height', /.+/);
   await page.locator('.toast-layer .toast').evaluateAll(nodes => nodes.forEach(node => node.remove()));
   await productionWindow.locator('.window-body').evaluate(node => { node.scrollTop = 0; });
-  await page.screenshot({ path: 'artifacts/evidence/production-phone-day-reduced-motion.png', fullPage: true });
+  await page.screenshot({ path: evidencePath('production-phone-day-reduced-motion.png'), fullPage: true });
   await productionWindow.locator('.setup-rail').scrollIntoViewIfNeeded();
-  await page.screenshot({ path: 'artifacts/evidence/production-phone-day-utility-tiles.png', fullPage: true });
+  await page.screenshot({ path: evidencePath('production-phone-day-utility-tiles.png'), fullPage: true });
 });

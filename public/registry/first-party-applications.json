@@ -7,7 +7,7 @@
       "name": "VideoBoss",
       "canonicalRepository": "bohselecta/videoboss",
       "supportingRepositories": [],
-      "productPurpose": "AI video production workbench for planning, shot boards, model routing, Cost Shield, cinematic review, continuity memory, and exports.",
+      "productPurpose": "Plan sequences and shots, choose bounded render routes, compare takes, protect continuity, and deliver an evidence-backed video package.",
       "launchMode": "routed-web",
       "webRoute": "https://videoboss.vercel.app/",
       "nativeRoute": null,
@@ -17,7 +17,7 @@
       "protocolVersions": ["glyphd.shared/1.0.0", "imagehoss.video-boss-handoff/r3", "gummy.app-handoff/v1"],
       "locality": ["browser", "web"],
       "connectionStatus": "available",
-      "releaseStatus": "active-r3-local-first; real video providers are not wired",
+      "releaseStatus": "Planning, simulated rendering, review, and export work now. Connect a supported server-side provider to render real video.",
       "unavailableReason": null
     },
     {
@@ -25,7 +25,7 @@
       "name": "ImageHoss",
       "canonicalRepository": "bohselecta/imagehoss",
       "supportingRepositories": [],
-      "productPurpose": "Image direction, reference roles, comparison, bounded ComfyUI execution, durable Assets, .hoss portability, provenance, rights, and VideoBoss handoff.",
+      "productPurpose": "Direct images with role-aware references, compare candidates, accept durable Assets, keep rights and provenance, and hand results to VideoBoss.",
       "launchMode": "native-bridge",
       "webRoute": null,
       "nativeRoute": "imagehoss-local-bridge",
@@ -35,15 +35,15 @@
       "protocolVersions": ["imagehoss.v5-1", "imagehoss.video-boss-handoff/r3", "gummy.app-handoff/v1"],
       "locality": ["local", "native"],
       "connectionStatus": "capability-required",
-      "releaseStatus": "active-r5-local-comfyui-proof",
-      "unavailableReason": "Connect the authenticated local ImageHoss bridge and a supported project-scoped ComfyUI runtime."
+      "releaseStatus": "Configuration, compiled previews, portability, and deterministic demonstration work now.",
+      "unavailableReason": "To make real images, start the authenticated local ImageHoss bridge and its project-scoped ComfyUI runtime. You can keep configuring or use the demonstration route now."
     },
     {
       "id": "app:3d-bee",
-      "name": "3D Bee",
+      "name": "Meshmallow",
       "canonicalRepository": "bohselecta/3d-bee",
       "supportingRepositories": [],
-      "productPurpose": "World Seed studio for editable scene planning, approved Blender operations, checkpoints, previews, 3D packages, and Unity or Unreal continuation.",
+      "productPurpose": "Shape an editable world and scene plan, approve bounded Blender operations, inspect checkpoints, and export source and engine packages.",
       "launchMode": "native-bridge",
       "webRoute": null,
       "nativeRoute": "3d-bee-authenticated-supervisor",
@@ -53,8 +53,8 @@
       "protocolVersions": ["3d-bee.r2d", "3d-bee.scene-package/r2d", "gummy.app-handoff/v1"],
       "locality": ["local", "native"],
       "connectionStatus": "capability-required",
-      "releaseStatus": "active-r2d-supervisor-foundation; live Blender artifact not yet claimed",
-      "unavailableReason": "Pair the authenticated 3D Bee supervisor, detect supported Blender capabilities, and approve the exact operation plan."
+      "releaseStatus": "World planning, compiled previews, mock execution, and package validation work now; legacy 3D Bee identity remains in IDs and protocols.",
+      "unavailableReason": "To build real 3D files, pair the authenticated Meshmallow supervisor and a supported Blender runtime, then approve the exact operation plan. You can keep planning or use mock mode now."
     },
     {
       "id": "app:gummy-rooms",

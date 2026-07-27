@@ -97,6 +97,32 @@
   padding: 14px 18px;
 }
 
+.production-first-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fixture-disclosure {
+  margin-top: 22px;
+  color: var(--muted);
+}
+
+.demonstration-lane {
+  display: grid;
+  gap: 5px;
+  margin: 0 0 18px;
+  padding: 12px 15px;
+  border: 1px solid var(--gummy-honey-gold);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--gummy-honey-gold) 8%, transparent);
+}
+
+.demonstration-lane span {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .production-header {
   display: flex;
   justify-content: space-between;
@@ -495,6 +521,47 @@
 
 .actor-config-fields {
   margin: 15px 0;
+}
+
+.specialist-config-sections {
+  display: grid;
+  gap: 14px;
+  margin: 15px 0;
+}
+
+.specialist-config-section,
+.compiled-preview {
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+
+.specialist-config-section h3,
+.compiled-preview h3 {
+  margin: 0;
+}
+
+.specialist-config-section > p,
+.compiled-preview > p {
+  margin: 5px 0 10px;
+  color: var(--muted);
+}
+
+.compiled-preview-list {
+  display: grid;
+  grid-template-columns: minmax(150px, .45fr) 1fr;
+  gap: 8px 14px;
+}
+
+.compiled-preview-list dt {
+  color: var(--gummy-honey-gold);
+  font-weight: 800;
+}
+
+.compiled-preview-list dd {
+  margin: 0;
+  color: var(--muted);
 }
 
 .actor-config-fields .field span {

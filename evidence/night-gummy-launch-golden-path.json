@@ -1,0 +1,52 @@
+{
+  "schema": "gummy.golden-production-evidence/v1",
+  "productionId": "production:night-gummy-launch",
+  "title": "Night Gummy Launch",
+  "sourcePolicy": {
+    "repositoryOwnedOnly": true,
+    "privateLikeness": false,
+    "externalCredentialsRequired": false
+  },
+  "routes": {
+    "deterministicDemonstration": "implemented-and-tested",
+    "imagehossLive": "not-claimed-runtime-unavailable",
+    "videobossLive": "not-claimed-credential-unavailable",
+    "meshmallowLive": "not-claimed-blender-unavailable"
+  },
+  "journey": [
+    "create",
+    "add-specialists",
+    "configure-isolated-surfaces",
+    "compile-plan",
+    "review-authority",
+    "make-production",
+    "freeze-run",
+    "execute-deterministic-nodes",
+    "return-linked-results",
+    "compare",
+    "accept-role",
+    "create-delta-revision",
+    "restart-and-recover"
+  ],
+  "expectedNodeEvidence": {
+    "executionNodes": 5,
+    "workOrders": 5,
+    "contextEnvelopes": 5,
+    "taskLeases": 5,
+    "grants": 5,
+    "returns": 5,
+    "specialistNodeReceipts": 5,
+    "resultGummies": 5
+  },
+  "privacy": {
+    "hoytParticipantIncluded": false,
+    "privatePersonRelationshipLinks": 0,
+    "completeActorMemoryExcluded": true,
+    "unapprovedActorContextForbidden": true
+  },
+  "automatedBy": [
+    "tests/golden-production.test.mjs",
+    "tests/e2e/golden-production.spec.mjs"
+  ],
+  "screenshot": "artifacts/evidence/night-gummy-launch-golden.png"
+}

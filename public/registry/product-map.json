@@ -42,9 +42,9 @@
     },
     {
       "id": "pillar:3d-bee",
-      "name": "3D Bee",
+      "name": "Meshmallow",
       "canonicalSource": "bohselecta/3d-bee",
-      "productPurpose": "World Seed planning, approved Blender operations, checkpoints, previews, 3D packages, and engine continuation.",
+      "productPurpose": "Editable world and scene planning, approved Blender operations, checkpoints, previews, source packages, and engine continuation; legacy 3D Bee IDs stay stable.",
       "visibility": "visible",
       "integrationStatus": "interface-ready",
       "surfaceIds": ["applications"]

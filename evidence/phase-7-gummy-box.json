@@ -1,0 +1,41 @@
+{
+  "schema": "gummy.box-release-evidence/v1",
+  "phase": 7,
+  "authority": {
+    "default": "Local Gummy Box",
+    "externalAccountRequired": false,
+    "optionalConnections": "mirror unless explicitly promoted after reviewed migration"
+  },
+  "backup": {
+    "schema": "gummy-box-backup/v1",
+    "extension": ".gummybox",
+    "format": "bounded integrity-hashed JSON package",
+    "inspectBeforeApply": true,
+    "contentAddressedBytes": true,
+    "tamperPathTraversalActiveContentAndSizeRejection": "tested",
+    "cleanContextRestore": "browser-tested",
+    "idempotentRepeat": "tested",
+    "conflicts": "both versions preserved in gummy.backup-conflict/v1 envelopes"
+  },
+  "recovery": {
+    "staleLeaseExpiry": "tested",
+    "corruptPreferenceRepair": "tested",
+    "unrecoverableActiveRun": "reported without destructive mutation"
+  },
+  "resetScopes": [
+    "layout-and-preferences",
+    "disposable-workspace",
+    "one-production",
+    "entire-local-box"
+  ],
+  "resetSafety": {
+    "preview": "required",
+    "typedConfirmation": "required",
+    "backupOffer": "visible",
+    "fullEraseFinalReceipt": "downloaded before reload"
+  },
+  "limitations": [
+    "The current package is integrity-hashed but not encrypted or signed.",
+    "Managed Box infrastructure remains optional and is not connected on the release machine."
+  ]
+}

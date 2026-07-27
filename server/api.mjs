@@ -11,7 +11,8 @@ export function securityHeaders({ development = false } = {}) {
     'x-content-type-options': 'nosniff',
     'referrer-policy': 'no-referrer',
     'permissions-policy': 'camera=(), geolocation=(), microphone=()',
-    'cross-origin-opener-policy': 'same-origin'
+    'cross-origin-opener-policy': 'same-origin',
+    'x-frame-options': 'DENY'
   };
 }
 

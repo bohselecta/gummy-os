@@ -1,0 +1,27 @@
+{
+  "schema": "gummy.cross-repository-contract-fixture/v1",
+  "source": {
+    "repository": "bohselecta/imagehoss",
+    "head": "384109c8136b24f9f1843727020d92dee213bfba",
+    "configuration": "gummy.imagehoss-production-configuration/v1",
+    "package": "imagehoss.prompt-package/v1",
+    "job": "imagehoss.production-job/v1",
+    "receipt": "imagehoss.production-receipt/v1",
+    "acceptedAsset": "imagehoss.accepted-asset/v1"
+  },
+  "target": {
+    "repository": "bohselecta/gummy-os",
+    "wrapper": "gummy.app-handoff/v1",
+    "return": "gummy.work-return/v0",
+    "receipt": "gummy.action-receipt/v0"
+  },
+  "invariants": [
+    "compilePackage creates no Job",
+    "execute requires exact Make Production authorization",
+    "deterministic studies are simulation true",
+    "live output is claimed only after live smoke",
+    "specialist and Gummy Receipts remain distinct and linked",
+    "two Production contexts remain isolated",
+    "cancel targets only an owned Job"
+  ]
+}

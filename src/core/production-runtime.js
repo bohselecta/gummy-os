@@ -20,6 +20,11 @@ export const RANCH_DAY_ACTOR_IDS = Object.freeze([
   ...SERVICE_ACTOR_IDS
 ]);
 
+export const NIGHT_GUMMY_LAUNCH_ACTOR_IDS = Object.freeze([
+  'actor:hayden',
+  ...SERVICE_ACTOR_IDS
+]);
+
 const dragUtilityByAction = Object.freeze({
   'participant-membership': 'gummy.utility.setup',
   'actor-routing': 'gummy.utility.agent',
@@ -36,41 +41,41 @@ const serviceDefinitions = [
     id: 'actor:imagehoss',
     address: '@ImageHoss',
     name: 'ImageHoss',
-    role: 'reference-preparation',
+    role: 'image-direction, generation, comparison, acceptance, and handoff',
     capability: 'capability:imagehoss.reference-preparation/v0',
     inputs: ['image/*', 'gummy/reference', 'text/brief'],
     outputs: ['gummy/reference-set'],
     setupDependencies: ['actor:hayden'],
     agentId: 'agent:reference-imagehoss-browser',
     moldId: 'mold:imagehoss:production-reference',
-    settings: { referenceMode: 'approved-only', crop: 'cinematic', identityPreservation: true }
+    settings: { direction: 'Gummy OS at night; confident, warm, tactile', deliverable: '16:9 launch image', locks: 'five-color brand palette; clear interface-safe space', references: 'repository-owned Gummy brand kit', exploration: 'two composition studies', exclusions: 'private likeness; third-party marks; unapproved colors', route: 'deterministic-demonstration', acceptance: 'brand legibility, safe space, exact palette' }
   },
   {
     id: 'actor:3d-bee',
-    address: '@3D-Bee',
-    name: '3D-Bee',
-    role: 'scene-preparation',
+    address: '@Meshmallow',
+    name: 'Meshmallow',
+    role: 'editable world, scene, checkpoint, and engine-package production',
     capability: 'capability:3d-bee.scene-preparation/v0',
     inputs: ['gummy/reference-set', 'text/scene-brief'],
     outputs: ['gummy/scene-manifest'],
     setupDependencies: ['actor:imagehoss'],
     agentId: 'agent:reference-3d-bee-browser',
     moldId: 'mold:3d-bee:production-scene',
-    settings: { environment: 'ranch', assetDetail: 'reference', includeMule: true },
+    settings: { worldIntent: 'stylized underground Gummy launch chamber', targetUse: 'editable environment concept', scale: 'meters; Z-up source with declared engine conversion', references: 'accepted ImageHoss launch keyframe with explicit rights', locks: 'five-color palette; Gummy silhouette language', exploration: 'layout and lighting only', exclusions: 'arbitrary Python, shell, path escape, manufacturing or finished-game claims', operations: 'create-scene, add-approved-primitives, assign-approved-materials, checkpoint, export', route: 'deterministic-demonstration; supervised Blender only when discovered', outputs: 'blend-source, glb-package, engine-handoff', acceptance: 'contained editable scene with validated manifest' },
     optional: true
   },
   {
     id: 'actor:videoboss',
     address: '@VideoBoss',
     name: 'VideoBoss',
-    role: 'video-generation',
+    role: 'video planning, routing, rendering, review, continuity, and delivery',
     capability: 'capability:videoboss.video-generation/v0',
     inputs: ['gummy/reference-set', 'gummy/scene-manifest', 'gummy/approved-likeness'],
     outputs: ['gummy/video-manifest'],
     setupDependencies: ['actor:imagehoss', 'actor:3d-bee'],
     agentId: 'agent:reference-videoboss-browser',
     moldId: 'mold:videoboss:private-family-video',
-    settings: { durationSeconds: 30, aspectRatio: '16:9', audience: 'private-family', voiceCloning: false }
+    settings: { purpose: 'Gummy OS launch motion plan', audience: 'public launch', durationSeconds: 8, aspectRatio: '16:9', continuityLocks: 'accepted launch image, exact palette, readable safe space', references: 'accepted ImageHoss launch keyframe with protected and movable regions', sequence: 'reveal, settle, logo-safe hold', route: 'deterministic-demonstration', variationBudget: 2, exclusions: 'private likeness, unapproved marks, credential exposure', acceptance: 'continuity, motion clarity, camera restraint, downstream usefulness' }
   },
   {
     id: 'actor:project-composer',
@@ -83,7 +88,7 @@ const serviceDefinitions = [
     setupDependencies: ['actor:videoboss'],
     agentId: 'agent:reference-project-composer-browser',
     moldId: 'mold:project-composer:private-assembly',
-    settings: { title: 'Ranch Day', soundtrack: 'instrumental-placeholder', outputFormat: 'reference-manifest' }
+    settings: { title: 'Night Gummy Launch', assembly: 'accepted image, motion plan, scene concept, linked evidence', soundtrack: 'none', outputFormat: 'versioned-production-package' }
   },
   {
     id: 'actor:gummy-storage',
@@ -261,6 +266,36 @@ export function createInitialProductionRuntime() {
     gummies: [
       {
         schema: 'gummy.gummy/v0',
+        id: 'gummy:night-gummy-launch-brief',
+        name: 'Night Gummy Launch brief.md',
+        kind: 'source',
+        mediaType: 'text/markdown',
+        content: '# Night Gummy Launch\nCreate a 16:9 Gummy OS launch image, a short motion plan, and a simple stylized chamber using only repository-owned brand assets.\n',
+        revision: '1',
+        hash: 'sha256:f2f29d98e0813d803558a673f5d1761b2ce407e11aa8d7f50d36ae6a755b9f90',
+        ownerActorId: 'actor:hayden',
+        creatorActorId: 'actor:hayden',
+        authoritativeLocation: 'browser:local-origin',
+        status: 'source',
+        linkIds: []
+      },
+      {
+        schema: 'gummy.gummy/v0',
+        id: 'gummy:night-gummy-launch-brand-kit',
+        name: 'Approved Gummy brand kit',
+        kind: 'reference',
+        mediaType: 'application/vnd.gummy.reference+json',
+        content: '{"asset":"gummy-brand-kit","rights":"repository-owned","audience":"public-launch","privateLikeness":false}',
+        revision: '1',
+        hash: 'sha256:7bbd0e8097e99959e69d711936fffcc5573259e9ab66f0ca70b5e808d121c9a2',
+        ownerActorId: 'actor:hayden',
+        creatorActorId: 'actor:hayden',
+        authoritativeLocation: 'browser:local-origin',
+        status: 'source',
+        linkIds: []
+      },
+      {
+        schema: 'gummy.gummy/v0',
         id: 'gummy:ranch-day-source-brief',
         name: 'Ranch Day source brief.md',
         kind: 'source',
@@ -309,9 +344,9 @@ export function productionRole(actorId) {
   const roles = {
     'actor:hayden': ['owner', 'creative-context', 'approver'],
     'actor:hoyt': ['represented-subject', 'context-contributor', 'optional-reviewer'],
-    'actor:imagehoss': ['reference-preparation', 'executor'],
-    'actor:3d-bee': ['scene-preparation', 'executor', 'optional'],
-    'actor:videoboss': ['video-generation', 'executor'],
+    'actor:imagehoss': ['image-direction', 'generation', 'comparison', 'acceptance', 'handoff', 'executor'],
+    'actor:3d-bee': ['world-intent', 'scene-planning', 'checkpointing', 'engine-handoff', 'executor', 'optional'],
+    'actor:videoboss': ['planning', 'model-routing', 'rendering', 'review', 'continuity', 'delivery', 'executor'],
     'actor:project-composer': ['project-assembly', 'executor'],
     'actor:gummy-storage': ['storage', 'executor']
   };
@@ -322,11 +357,16 @@ export function createProduction(runtime, {
   title = 'Ranch Day',
   description = 'Private Ranch Day family video Production',
   ownerActorId = 'actor:hayden',
-  visibility = 'private'
+  visibility = 'private',
+  audience = 'private',
+  id: requestedId = null,
+  sourceGummyIds = ['gummy:ranch-day-source-brief', 'gummy:hoyt-likeness-approved']
 } = {}) {
   const next = clone(runtime);
   const stamp = now();
-  const id = title === 'Ranch Day' && !next.productions.some(item => item.id === 'production:ranch-day')
+  const id = requestedId && !next.productions.some(item => item.id === requestedId)
+    ? requestedId
+    : title === 'Ranch Day' && !next.productions.some(item => item.id === 'production:ranch-day')
     ? 'production:ranch-day'
     : uid('production');
   const production = {
@@ -338,11 +378,12 @@ export function createProduction(runtime, {
     ownerActorId,
     status: 'configuring',
     visibility,
+    audience,
     participantIds: [],
     bowlIds: [],
     actorPlanIds: [],
     runIds: [],
-    gummyIds: ['gummy:ranch-day-source-brief', 'gummy:hoyt-likeness-approved'],
+    gummyIds: clone(sourceGummyIds),
     deliverableIds: [],
     authoritativeLocation: 'browser:local-origin',
     revision: '1',
@@ -389,6 +430,13 @@ export function addActorToProduction(runtime, productionId, actorId, source = 's
   production.updatedAt = now();
   if (definition) {
     const descriptor = next.actorAppDescriptors.find(item => item.actorId === actorId);
+    const initialSettings = clone(next.actorDefaults[actorId] || descriptor.defaultSettings);
+    if (production.id === 'production:ranch-day' && actorId === 'actor:videoboss') {
+      initialSettings.purpose = 'Private Ranch Day family video';
+      initialSettings.audience = 'private-family';
+      initialSettings.durationSeconds = 30;
+      initialSettings.voiceCloning = false;
+    }
     next.configurations.push({
       schema: 'gummy.production-actor-configuration/v0',
       id: `production-config:${productionId.slice(11)}:${actorId.slice(6)}`,
@@ -402,7 +450,7 @@ export function addActorToProduction(runtime, productionId, actorId, source = 's
       relationshipLinkIds: actorId === 'actor:videoboss' ? ['link:hoyt-videoboss-private-family'] : [],
       inputGummyIds: [],
       settingsSchemaRef: descriptor.setupSchemaRef,
-      settings: clone(next.actorDefaults[actorId] || descriptor.defaultSettings),
+      settings: initialSettings,
       upstreamActorIds: clone(definition.setupDependencies),
       downstreamActorIds: [],
       outputContract: { types: clone(definition.outputs), deterministicReference: true },
@@ -432,6 +480,14 @@ export function addActorToProduction(runtime, productionId, actorId, source = 's
 export function addRanchDayRoster(runtime, productionId, source = 'mention') {
   let next = runtime;
   for (const actorId of RANCH_DAY_ACTOR_IDS) {
+    next = addActorToProduction(next, productionId, actorId, actorId === 'actor:hayden' ? 'creator' : source).runtime;
+  }
+  return next;
+}
+
+export function addNightGummyLaunchRoster(runtime, productionId, source = 'sample') {
+  let next = runtime;
+  for (const actorId of NIGHT_GUMMY_LAUNCH_ACTOR_IDS) {
     next = addActorToProduction(next, productionId, actorId, actorId === 'actor:hayden' ? 'creator' : source).runtime;
   }
   return next;
@@ -499,10 +555,17 @@ export function validateProductionActorConfiguration(runtime, config) {
   if (!config.settings || Object.keys(config.settings).length === 0) blockers.push('settings-empty');
   if (!config.moldId || !runtime.molds.some(item => item.id === config.moldId && item.status === 'active')) blockers.push('active-mold-required');
   if (config.actorId === 'actor:videoboss') {
+    const representedParticipantIncluded = runtime.participants.some(item => (
+      item.productionId === config.productionId
+      && item.actorId === 'actor:hoyt'
+      && item.status !== 'removed'
+    ));
     const relation = runtime.relationships.find(item => item.id === 'link:hoyt-videoboss-private-family');
-    if (!relation || relation.status !== 'active') blockers.push('hoyt-videoboss-relationship-revoked');
     if (config.settings.voiceCloning) blockers.push('voice-cloning-blocked');
-    if (config.settings.audience !== 'private-family') blockers.push('public-or-commercial-audience-blocked');
+    if (representedParticipantIncluded) {
+      if (!relation || relation.status !== 'active') blockers.push('hoyt-videoboss-relationship-revoked');
+      if (config.settings.audience !== 'private-family') blockers.push('public-or-commercial-audience-blocked');
+    }
   }
   if (config.localityPolicy?.selected !== 'web') blockers.push('native-bridge-unavailable');
   return {
@@ -569,10 +632,10 @@ export function compileActorPlan(runtime, productionId) {
   };
   addNode('actor:hayden', 'context', 'creative owner and approver');
   addNode('actor:hoyt', 'context', 'represented participant and optional reviewer', true);
-  addNode('actor:imagehoss', 'execution', 'approved reference preparation');
-  addNode('actor:3d-bee', 'execution', 'optional scene preparation', true);
-  addNode('actor:videoboss', 'execution', 'private video reference generation');
-  addNode('actor:project-composer', 'execution', 'assembly and finalization');
+  addNode('actor:imagehoss', 'execution', 'image direction, candidates, acceptance, and handoff');
+  addNode('actor:3d-bee', 'execution', 'optional editable world and scene package', true);
+  addNode('actor:videoboss', 'execution', 'sequence planning, takes, review, continuity, and delivery');
+  addNode('actor:project-composer', 'execution', 'accepted-output assembly and finalization');
   addNode('actor:gummy-storage', 'execution', 'preservation and evidence storage');
 
   const edges = [];
@@ -589,16 +652,16 @@ export function compileActorPlan(runtime, productionId) {
       approvalRequired
     });
   };
-  addEdge('actor:hayden', 'actor:imagehoss', 'context', ['creative-brief', 'approved-ranch-references']);
+  addEdge('actor:hayden', 'actor:imagehoss', 'context', ['creative-brief', 'approved-production-assets']);
   addEdge('actor:hoyt', 'actor:videoboss', 'context', ['approved-likeness', 'approved-beagle-references', 'private-family-video'], true, true);
   addEdge('actor:imagehoss', 'actor:3d-bee', 'setup', ['approved-reference-set'], true);
   addEdge('actor:imagehoss', 'actor:videoboss', 'input', ['approved-reference-set']);
   addEdge('actor:3d-bee', 'actor:videoboss', 'input', ['scene-manifest'], true);
-  addEdge('actor:videoboss', 'actor:project-composer', 'execution', ['video-manifest']);
+  addEdge('actor:videoboss', 'actor:project-composer', 'execution', ['sequence-package', 'reviewed-takes']);
   addEdge('actor:hoyt', 'actor:project-composer', 'review', ['private-final-preview'], true, true);
   addEdge('actor:hayden', 'actor:project-composer', 'approval', ['final-deliverable'], false, true);
   addEdge('actor:project-composer', 'actor:gummy-storage', 'storage', ['project-manifest', 'final-deliverable', 'receipts']);
-  addEdge('actor:hayden', 'actor:gummy-storage', 'publication', ['private-only'], false, true);
+  addEdge('actor:hayden', 'actor:gummy-storage', 'publication', [production.visibility === 'private' ? 'private-only' : 'human-approved-release'], false, true);
 
   const previous = next.actorPlans.filter(item => item.productionId === productionId).at(-1);
   const plan = {
@@ -896,7 +959,7 @@ export async function makeProduction(runtime, productionId, { approvedBy = null 
     configurationRevisionIds: configurationSnapshots.map(item => `${item.id}@${item.revision}`),
     sourceGummyRevisions: sourceGummies,
     approval: { approvedBy, approvedAt: now() },
-    policy: { audience: 'private-family', locality: 'web', retention: 'Production-specific', costCeiling: 0 },
+    policy: { audience: production.audience || 'private', locality: 'web', retention: 'Production-specific', costCeiling: 0 },
     status: 'running',
     workOrderIds: [],
     taskLeaseIds: [],
@@ -951,9 +1014,16 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
   const run = next.productionRuns.find(item => item.id === runSnapshot.id);
   const currentProduction = next.productions.find(item => item.id === production.id);
   const relationship = next.relationships.find(item => item.id === 'link:hoyt-videoboss-private-family');
-  const contextRefs = node.actorId === 'actor:videoboss'
+  const representedContextApproved = node.actorId === 'actor:videoboss'
+    && next.participants.some(item => item.productionId === currentProduction.id && item.actorId === 'actor:hoyt' && item.status !== 'removed')
+    && relationship?.status === 'active';
+  const sourceContextRefs = currentProduction.gummyIds
+    .map(id => next.gummies.find(item => item.id === id))
+    .filter(item => item && item.status === 'source')
+    .map(item => item.id);
+  const contextRefs = representedContextApproved
     ? clone(relationship.allowedContextRefs)
-    : currentProduction.gummyIds.slice(0, 1);
+    : sourceContextRefs;
   const envelope = {
     schema: 'gummy.context-envelope/v0',
     id: `context-envelope:${run.id.slice(15)}:${node.actorId.slice(6)}`,
@@ -962,20 +1032,20 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
     targetActorId: node.actorId,
     agentId: node.agentId,
     taskInstruction: node.role,
-    selectedProductionContext: { productionId: currentProduction.id, title: currentProduction.title, audience: 'private-family' },
+    selectedProductionContext: { productionId: currentProduction.id, title: currentProduction.title, audience: currentProduction.audience || 'private' },
     contextRefs,
     sourceGummyRefs: currentProduction.gummyIds.filter(id => contextRefs.includes(id) || id === 'gummy:ranch-day-source-brief'),
     moldIds: [node.moldId],
-    relationshipLinkIds: node.actorId === 'actor:videoboss' ? [relationship.id] : [],
+    relationshipLinkIds: representedContextApproved ? [relationship.id] : [],
     allowedCapabilities: [next.actorAppDescriptors.find(item => item.actorId === node.actorId)?.capabilityIds[0]],
-    forbiddenActions: node.actorId === 'actor:videoboss' ? clone(relationship.blockedCapabilities) : ['ambient-native-access', 'publish'],
+    forbiddenActions: representedContextApproved ? clone(relationship.blockedCapabilities) : ['ambient-native-access', 'publish', 'unapproved-actor-context'],
     outputContract: clone(config.outputContract),
     policy: {
       privacy: config.privacyPolicy,
       retention: config.retentionPolicy,
       locality: config.localityPolicy.selected,
       contribution: config.contributionPolicy,
-      audience: 'private-family'
+      audience: currentProduction.audience || 'private'
     },
     excludes: ['complete-actor-memory', 'unrelated-private-memory', 'provider-credentials', 'ambient-filesystem'],
     createdAt: now()
@@ -1004,7 +1074,7 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
       forbiddenActions: envelope.forbiddenActions,
       maxCost: 0
     },
-    execution: { requiredLocality: 'web', privacy: 'private-local', preferredInference: 'no-model', requiresNative: false, offlineAllowed: true },
+    execution: { requiredLocality: 'web', privacy: currentProduction.visibility === 'private' ? 'private-local' : 'approved-public-assets', preferredInference: 'no-model', requiresNative: false, offlineAllowed: true },
     acceptance: { checks: ['deterministic-manifest-created', 'source-hashes-unchanged'], expectedReturn: { schema: 'gummy.work-return/v0' }, humanAcceptanceRequired: false },
     approval: { required: true, risk: 'medium', approvedBy: 'human:hayden', approvedAt: run.approval.approvedAt },
     status: 'running',
@@ -1093,6 +1163,8 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
     schema: 'gummy.work-return/v0',
     id: `return:${run.id.slice(15)}:${node.actorId.slice(6)}`,
     boxId: 'box:hayden',
+    productionId: currentProduction.id,
+    productionRunId: run.id,
     workOrderId: workOrder.id,
     taskLeaseId: lease.id,
     humanAuthorityId: 'human:hayden',
@@ -1242,6 +1314,104 @@ export function recordTerminalNodeEvidence(runtime, {
   next.returns.push(returned);
   next.receipts.push(receipt);
   return { runtime: next, returned, receipt };
+}
+
+export function acceptProductionResult(runtime, {
+  productionId,
+  resultGummyId,
+  role,
+  acceptedBy = 'human:hayden'
+}) {
+  const next = clone(runtime);
+  const production = next.productions.find(item => item.id === productionId);
+  const result = next.gummies.find(item => item.id === resultGummyId && item.productionId === productionId);
+  if (!production || !result || result.status !== 'result') {
+    return { runtime, denied: true, reason: 'eligible-production-result-required' };
+  }
+  if (!role || acceptedBy !== 'human:hayden') {
+    return { runtime, denied: true, reason: 'human-role-acceptance-required' };
+  }
+  const acceptance = {
+    schema: 'gummy.production-result-acceptance/v1',
+    id: `acceptance:${result.id.slice(6)}:${role}`,
+    productionId,
+    productionRunId: result.productionRunId,
+    resultGummyId: result.id,
+    role,
+    acceptedBy,
+    acceptedAt: now(),
+    sourceHash: result.hash
+  };
+  result.acceptance = acceptance;
+  result.status = 'accepted';
+  if (!production.deliverableIds.includes(result.id)) production.deliverableIds.push(result.id);
+  production.status = 'accepted';
+  production.updatedAt = acceptance.acceptedAt;
+  const link = {
+    schema: 'gummy.link/v0',
+    id: `link:${acceptance.id.slice(11)}:accepted-as`,
+    source: { kind: 'gummy', id: result.id },
+    target: { kind: 'production-role', id: `${productionId}:${role}` },
+    relation: 'accepted-as',
+    productionRunId: result.productionRunId,
+    createdAt: acceptance.acceptedAt
+  };
+  if (!next.links.some(item => item.id === link.id)) next.links.push(link);
+  if (!result.linkIds.includes(link.id)) result.linkIds.push(link.id);
+  const receipt = makeRuntimeReceipt({
+    action: 'production-result.accepted',
+    productionId,
+    actorId: 'actor:hayden',
+    runId: result.productionRunId,
+    outcome: 'completed',
+    summary: `Human accepted ${result.id} as ${role}. Other candidates and prior source bytes remain unchanged.`,
+    resources: [acceptance.id, result.id, result.hash, link.id]
+  });
+  next.receipts.push(receipt);
+  return { runtime: next, acceptance, receipt, link, result };
+}
+
+export function createDeltaRevision(runtime, productionId, {
+  except,
+  note = '',
+  requestedBy = 'human:hayden'
+}) {
+  const next = clone(runtime);
+  const production = next.productions.find(item => item.id === productionId);
+  if (!production || !except || requestedBy !== 'human:hayden') {
+    return { runtime, denied: true, reason: 'human-delta-revision-required' };
+  }
+  const priorRevision = production.revision;
+  const accepted = next.gummies
+    .filter(item => item.productionId === productionId && item.acceptance)
+    .map(item => ({ resultGummyId: item.id, role: item.acceptance.role, hash: item.hash }));
+  production.revision = String(Number(production.revision) + 1);
+  production.status = 'configuring';
+  production.updatedAt = now();
+  production.revisionHistory = [
+    ...(production.revisionHistory || []),
+    {
+      schema: 'gummy.production-delta-revision/v1',
+      fromRevision: priorRevision,
+      toRevision: production.revision,
+      instruction: `Keep everything except ${except}.`,
+      note,
+      carryForwardAcceptedLocks: accepted,
+      requestedBy,
+      createdAt: production.updatedAt
+    }
+  ];
+  const delta = production.revisionHistory.at(-1);
+  const receipt = makeRuntimeReceipt({
+    action: 'production.delta-revision-created',
+    productionId,
+    actorId: 'actor:hayden',
+    outcome: 'completed',
+    summary: `${delta.instruction} Carried forward ${accepted.length} accepted role lock(s); no work executed.`,
+    resources: accepted.map(item => `${item.resultGummyId}:${item.hash}`)
+  });
+  next.receipts.push(receipt);
+  return { runtime: next, production, delta, receipt };
 }
 
 export function makeRuntimeReceipt({
