@@ -75,7 +75,7 @@ const serviceDefinitions = [
     setupDependencies: ['actor:imagehoss', 'actor:3d-bee'],
     agentId: 'agent:reference-videoboss-browser',
     moldId: 'mold:videoboss:private-family-video',
-    settings: { purpose: 'Gummy OS launch motion plan', audience: 'public launch', durationSeconds: 8, aspectRatio: '16:9', continuityLocks: 'accepted launch image, exact palette, readable safe space', sequence: 'reveal, settle, logo-safe hold', route: 'deterministic-demonstration', variationBudget: 2, acceptance: 'continuity, motion clarity, camera restraint, downstream usefulness' }
+    settings: { purpose: 'Gummy OS launch motion plan', audience: 'public launch', durationSeconds: 8, aspectRatio: '16:9', continuityLocks: 'accepted launch image, exact palette, readable safe space', references: 'accepted ImageHoss launch keyframe with protected and movable regions', sequence: 'reveal, settle, logo-safe hold', route: 'deterministic-demonstration', variationBudget: 2, exclusions: 'private likeness, unapproved marks, credential exposure', acceptance: 'continuity, motion clarity, camera restraint, downstream usefulness' }
   },
   {
     id: 'actor:project-composer',
