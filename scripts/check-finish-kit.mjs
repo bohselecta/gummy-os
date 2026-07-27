@@ -118,8 +118,8 @@ for (const item of requiredDeferrals) {
 const textRequirements = new Map([
   ['docs/finish-kit/README.md', [
     'Complete the product now without reopening its architecture.',
-    'Make Production is the only step that starts authorized work.',
-    'Local Box works without an account'
+    'choose **Make Production** as the sole execution transition;',
+    'begin locally without GitHub, Google Drive, a provider account, or infrastructure setup;'
   ]],
   ['docs/finish-kit/MASTER_RELEASE_ROADMAP.md', [
     'Phase 0 — Freeze the release baseline',
@@ -142,7 +142,7 @@ const textRequirements = new Map([
     'recover',
     'cancel',
     'inspectResult',
-    'Specialist and Gummy OS Receipts remain separate and linked'
+    'The specialist Receipt remains separately inspectable.'
   ]],
   ['docs/finish-kit/INFRASTRUCTURE_AND_GUMMY_BOX.md', [
     'Local Box = authoritative',
