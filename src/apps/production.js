@@ -24,7 +24,8 @@ export function createProductionApp({
   openActorSurface,
   openMasterControl,
   openProduction,
-  toast
+  toast,
+  specialistAdapters = null
 }) {
   const root = el('div', { class: 'production-app' });
   let selectedTab = 'canvas';
@@ -553,20 +554,23 @@ export function createProductionApp({
         ...(blocked
           ? preview.blockers.map(item => el('p', { text: item }))
           : [
-              el('p', { text: 'Human → Master Control → active Mold → Work Order → Task Lease → bounded Grant → reference Agent.' }),
-              el('p', { text: 'Context is sliced per node. Native capability remains unavailable.' })
+              el('p', { text: 'Human → Master Control → active Mold → Work Order → Task Lease → bounded Grant → selected Agent.' }),
+              el('p', { text: 'Context is sliced per node. Each frozen route is deterministic or an authenticated specialist boundary.' })
             ])
       ]),
       el('div', { class: 'modal-actions' }, [
         button('Close preview', 'secondary-button', () => { runPreview = null; render(); }),
         button('Inspect full Master Control', 'secondary-button', () => openMasterControl(production.id)),
         button('Approve & Make Production', 'primary-button', async () => {
-          const result = await makeProduction(store.getState().productionRuntime, production.id, { approvedBy: 'human:hayden' });
+          const result = await makeProduction(store.getState().productionRuntime, production.id, {
+            approvedBy: 'human:hayden',
+            specialistAdapters
+          });
           setRuntime(result.runtime);
           runPreview = null;
           if (result.denied) toast('Make Production blocked', result.blockers.join(', '));
           else {
-            toast('Production Run completed', `${result.run.id} created ${result.results.length} deterministic reference results with Returns and Receipts.`);
+            toast('Production Run finished', `${result.run.id} ended ${result.run.status} with ${result.results.length} result Gummies and truthful node evidence.`);
             selectedTab = 'runs';
           }
           render();

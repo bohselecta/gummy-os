@@ -46,6 +46,7 @@ The current canonical baseline includes:
 - Human, Actor, Agent, Mold, and Master Control separation;
 - Productions, participants, isolated Actor configurations, Actor Plans, Context Envelopes, immutable Runs, result Gummies, and evidence;
 - **Make Production** as the sole Production execution transition;
+- explicit frozen per-node deterministic/live route selection with no live-to-simulation fallback;
 - deterministic specialist reference Agents and a complete Production reference path;
 - first-party application registry and full-product preservation gates;
 - automated unit, integration, browser, accessibility, visual, and product-preservation suites;
@@ -54,8 +55,8 @@ The current canonical baseline includes:
 The current specialist repositories prove:
 
 - **ImageHoss** — structured Direction and reference roles, deterministic studies, fail-closed loopback discovery, bounded real local ComfyUI execution evidence, durable original/proxy Assets, `.hoss`, V5-1 evidence, and VideoBoss handoff;
-- **VideoBoss** — production board, planner, router, Cost Shield, review, continuity memory, exports, ImageHoss handoff intake, and a truthful deterministic render simulator; real video providers are not yet wired;
-- **Meshmallow** (`bohselecta/3d-bee`) — World Seed, Scene Plan, exact-plan approval, typed Blender operations, mock execution, and authenticated local supervisor foundation; no genuine Blender artifact is currently claimed by the baseline;
+- **VideoBoss** — production board, planner, router, Cost Shield, review, continuity memory, exports, deterministic simulator, and a trusted official fal.ai queue boundary gated by accepted ImageHoss source evidence;
+- **Meshmallow** (`bohselecta/3d-bee`) — World Seed, exact-plan approval, typed operations, and a genuine Blender 4.5 LTS `.blend`/preview/`.glb` supervisor proof;
 - **Gummy Rooms** — protected product identity and integration contracts, with no authenticated live room runtime currently connected.
 
 The finish-up program connects these proven systems without flattening them.
@@ -79,6 +80,13 @@ open Gummy OS
 ```
 
 Connected specialist runtimes execute when present and authorized. Missing optional capability remains visibly unavailable instead of becoming a fake success or blocking the local deterministic release.
+
+The Ubuntu Phase 10 activation connects Gummy OS at `127.0.0.1:4173` to the
+ephemerally paired ImageHoss bridge at `127.0.0.1:5214`. Server-only video and
+native Blender stay outside the browser bundle and are dispatched only through
+injected trusted specialist adapters. Mixed Runs retain distinct node status,
+native request IDs, Returns, specialist Receipts, and linked Gummy Receipts.
+See `docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md`.
 
 ## Final product names
 

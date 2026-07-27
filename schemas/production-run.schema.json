@@ -30,6 +30,27 @@
     },
     "manifestHash": { "type": "string", "pattern": "^sha256:" },
     "status": { "enum": ["planned", "awaiting-approval", "queued", "running", "paused", "blocked", "partially-completed", "completed", "failed", "cancelled"] },
+    "nodeStatuses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["nodeId", "actorId", "route", "status", "required"],
+        "properties": {
+          "nodeId": { "type": "string", "pattern": "^plan-node:" },
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "route": { "enum": ["deterministic", "live"] },
+          "adapter": { "type": "string" },
+          "status": { "enum": ["completed", "blocked", "failed", "recovery-required", "cancelled"] },
+          "required": { "type": "boolean" },
+          "blockers": { "type": "array", "items": { "type": "string" } },
+          "nativeJobIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "specialistReceiptIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "specialistJobId": { "type": "string" },
+          "specialistJob": { "type": "object" }
+        },
+        "additionalProperties": false
+      }
+    },
     "workOrderIds": { "type": "array", "items": { "type": "string", "pattern": "^work-order:" }, "uniqueItems": true },
     "taskLeaseIds": { "type": "array", "items": { "type": "string", "pattern": "^lease:" }, "uniqueItems": true },
     "grantIds": { "type": "array", "items": { "type": "string", "pattern": "^grant:" }, "uniqueItems": true },

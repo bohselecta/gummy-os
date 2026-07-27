@@ -7,7 +7,7 @@ const limits = new Map();
 
 export function securityHeaders({ development = false } = {}) {
   return {
-    'content-security-policy': `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'${development ? ' ws:' : ''}; frame-src https:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://github.com`,
+    'content-security-policy': `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:5214 http://localhost:5214${development ? ' ws:' : ''}; frame-src https:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://github.com`,
     'x-content-type-options': 'nosniff',
     'referrer-policy': 'no-referrer',
     'permissions-policy': 'camera=(), geolocation=(), microphone=()',
