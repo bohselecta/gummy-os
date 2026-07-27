@@ -1,0 +1,51 @@
+{
+  "schema": "gummy.specialist-integration-evidence/v1",
+  "phase": 4,
+  "specialist": "ImageHoss",
+  "repository": "bohselecta/imagehoss",
+  "head": "f39cbe96829110bffcdc3414b9f088aa7b3d0d45",
+  "contracts": [
+    "gummy.imagehoss-production-configuration/v1",
+    "imagehoss.reference-assignment/v1",
+    "imagehoss.prompt-package/v1",
+    "imagehoss.production-job/v1",
+    "imagehoss.production-receipt/v1",
+    "imagehoss.accepted-asset/v1"
+  ],
+  "adapterMethods": [
+    "discover",
+    "validateConfiguration",
+    "compilePackage",
+    "execute",
+    "recover",
+    "cancel",
+    "inspectResult"
+  ],
+  "specialistVerification": {
+    "command": "npm run check",
+    "testFiles": 12,
+    "tests": 63,
+    "productionBuild": "pass",
+    "audit": "0 vulnerabilities"
+  },
+  "gummyVerification": {
+    "unitTestsAfterIntegration": 63,
+    "structuredImageHossSurface": "browser-tested",
+    "crossRepositoryFixture": "fixtures/cross-repo/imagehoss-production-v1.json"
+  },
+  "live": {
+    "command": "npm run live:production",
+    "status": "not-claimed",
+    "discovery": "bridge-offline",
+    "blocker": "Authenticated ImageHoss bridge and supported project-scoped ComfyUI runtime are not running."
+  },
+  "truth": {
+    "deterministicSimulation": "pass",
+    "liveOutput": "not-claimed",
+    "originalProxyHashPath": "mock-server-tested",
+    "restartRecovery": "shared-store-tested",
+    "ownedJobCancellation": "tested",
+    "productionIsolation": "tested",
+    "specialistAndGummyReceiptsDistinctAndLinked": "tested"
+  }
+}

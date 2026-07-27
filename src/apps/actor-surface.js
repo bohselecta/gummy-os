@@ -66,7 +66,8 @@ export function createActorSurface({ store, actorId, productionId = null, toast,
       el('span', { text: `${config.readiness} · ${config.hash || 'not saved'}` })
     ]));
     const settings = {};
-    const fields = el('div', { class: 'form-grid actor-config-fields' });
+    const fields = el('div', { class: 'specialist-config-sections' });
+    const sectionGroups = new Map();
     for (const [key, currentValue] of Object.entries(config.settings)) {
       let input;
       if (typeof currentValue === 'boolean') {
@@ -80,12 +81,24 @@ export function createActorSurface({ store, actorId, productionId = null, toast,
         input = el('input', { value: String(currentValue), dataset: { setting: key } });
       }
       settings[key] = { input, type: typeof currentValue };
-      fields.append(el('label', { class: 'field' }, [
+      const section = specialistSectionForSetting(actor.id, key);
+      if (!sectionGroups.has(section.title)) {
+        const fieldGroup = el('div', { class: 'form-grid actor-config-fields' });
+        const node = el('section', { class: 'specialist-config-section', dataset: { section: section.title } }, [
+          el('h3', { text: section.title }),
+          el('p', { text: section.description }),
+          fieldGroup
+        ]);
+        sectionGroups.set(section.title, { node, fieldGroup });
+        fields.append(node);
+      }
+      sectionGroups.get(section.title).fieldGroup.append(el('label', { class: 'field' }, [
         el('span', { text: humanize(key) }),
         input
       ]));
     }
     root.append(fields);
+    root.append(readableCompiledPreview(actor.id, config));
 
     root.append(el('div', { class: 'contract-grid' }, [
       contract('Published capability', descriptor.capabilityIds),
@@ -208,6 +221,91 @@ function contract(label, values) {
 
 function humanize(value) {
   return value.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[-_]/g, ' ').replace(/^./, letter => letter.toUpperCase());
+}
+
+function specialistSectionForSetting(actorId, key) {
+  const common = {
+    direction: ['Direction', 'Describe the useful visual relationship before provider syntax.'],
+    purpose: ['Direction', 'Define what this specialist contributes to this Production.'],
+    worldIntent: ['Direction', 'Define the intended world and its downstream use.'],
+    deliverable: ['Deliverable', 'Name the durable output and its intended role.'],
+    targetUse: ['Deliverable', 'Name the durable output and where it will continue.'],
+    locks: ['Locks', 'These facts carry forward unless a Human explicitly revises them.'],
+    continuityLocks: ['Locks', 'Protect accepted continuity across shots and revisions.'],
+    references: ['References / Assets', 'Assign influence and rights without granting unrelated context.'],
+    scale: ['References / Assets', 'Declare scale and coordinate assumptions for editable continuation.'],
+    exploration: ['Exploration', 'Bound what may vary and how many candidates may be created.'],
+    variationBudget: ['Exploration', 'Bound take count and variation before execution.'],
+    exclusions: ['Exclusions', 'State what the route must not introduce or access.'],
+    operations: ['Exclusions', 'Only these reviewed named operations may be requested.'],
+    route: ['Route and capability', 'Choose a truthful deterministic or connected route. Opening this surface never runs it.'],
+    sequence: ['Route and capability', 'Review the sequence package before any render route starts.'],
+    outputs: ['Route and capability', 'Select editable source and interoperable output packages.'],
+    acceptance: ['Acceptance', 'Define the role-specific Human decision before results are accepted.'],
+    creativeDirection: ['Direction', 'Describe the creative choices that may guide bounded exploration.'],
+    preferences: ['Direction', 'Preferences guide comparison but do not override absolute locks.'],
+    audience: ['Cost, locality, privacy, rights', 'Review audience and data boundary before Make Production.'],
+    durationSeconds: ['Deliverable', 'Set the bounded output duration.'],
+    aspectRatio: ['Deliverable', 'Set the required delivery frame.'],
+    title: ['Deliverable', 'Name the assembly package.'],
+    assembly: ['References / Assets', 'Select accepted inputs for final assembly.'],
+    soundtrack: ['References / Assets', 'Audio remains explicit and rights-aware.'],
+    outputFormat: ['Deliverable', 'Choose a durable, inspectable package format.'],
+    sourceRetention: ['Cost, locality, privacy, rights', 'Choose how long sources and evidence remain available.'],
+    resultRetentionDays: ['Cost, locality, privacy, rights', 'Choose result retention without changing source retention.'],
+    receiptRetentionDays: ['Cost, locality, privacy, rights', 'Keep evidence on its own retention schedule.'],
+    location: ['Cost, locality, privacy, rights', 'Confirm the authoritative storage location.']
+  };
+  const [title, description] = common[key] || ['Specialist settings', 'Production-scoped settings remain isolated from Actor-global memory.'];
+  return { title, description, actorId };
+}
+
+function readableCompiledPreview(actorId, config) {
+  const values = config.settings || {};
+  const locks = values.locks || values.continuityLocks || 'No explicit locks yet.';
+  const variation = values.exploration || values.variationBudget || 'No exploration budget stated.';
+  const route = values.route || config.localityPolicy?.selected || 'No route selected.';
+  const acceptance = values.acceptance || 'Human role acceptance required.';
+  return el('section', { class: 'compiled-preview', 'aria-label': 'Compiled preview' }, [
+    el('h3', { text: 'Compiled preview' }),
+    el('p', { text: 'This readable package is compiled without starting a Job or calling a provider.' }),
+    el('dl', { class: 'compiled-preview-list' }, [
+      el('dt', { text: 'What stays fixed' }),
+      el('dd', { text: String(locks) }),
+      el('dt', { text: 'What may vary' }),
+      el('dd', { text: String(variation) }),
+      el('dt', { text: 'What route will run' }),
+      el('dd', { text: String(route) }),
+      el('dt', { text: 'Where data goes' }),
+      el('dd', { text: `${config.localityPolicy?.selected || 'web'} · ${config.privacyPolicy?.audience || 'private'} · cost ceiling ${config.costCeiling?.amount || 0} ${config.costCeiling?.currency || 'USD'}` }),
+      el('dt', { text: 'What counts as acceptable' }),
+      el('dd', { text: String(acceptance) }),
+      el('dt', { text: 'What remains unresolved' }),
+      el('dd', { text: config.validation?.blockers?.join(', ') || 'Nothing in the saved deterministic package.' })
+    ]),
+    el('details', {}, [
+      el('summary', { text: 'View technical package' }),
+      el('pre', { class: 'object-preview', text: JSON.stringify({
+        schema: technicalConfigurationSchema(actorId),
+        productionId: config.productionId,
+        actorId,
+        revision: config.revision,
+        settings: config.settings,
+        localityPolicy: config.localityPolicy,
+        privacyPolicy: config.privacyPolicy,
+        retentionPolicy: config.retentionPolicy,
+        costCeiling: config.costCeiling
+      }, null, 2) })
+    ])
+  ]);
+}
+
+function technicalConfigurationSchema(actorId) {
+  return {
+    'actor:imagehoss': 'gummy.imagehoss-production-configuration/v1',
+    'actor:videoboss': 'gummy.videoboss-production-configuration/v1',
+    'actor:3d-bee': 'gummy.meshmallow-production-configuration/v1'
+  }[actorId] || 'gummy.production-actor-configuration/v0';
 }
 
 function operationForActor(actorId) {
