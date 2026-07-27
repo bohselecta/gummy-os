@@ -1,7 +1,7 @@
 # Automated Acceptance — Cursor / Codex Addendum
 
-**Date:** 2026-07-25  
-**Applies to:** all active Gummy OS implementation work  
+**Date:** 2026-07-25
+**Applies to:** all active Gummy OS implementation work
 **Authority:** Hayden's founder-testing automation directive
 
 ## Mission

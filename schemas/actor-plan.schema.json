@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/actor-plan.schema.json",
+  "title": "Gummy OS Actor Plan",
+  "type": "object",
+  "required": ["schema", "id", "productionId", "revision", "nodes", "edges", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.actor-plan/v0" },
+    "id": { "type": "string", "pattern": "^actor-plan:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "title": { "type": "string" },
+    "revision": { "type": "string" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["schema", "id", "actorId", "nodeType", "role", "expectedOutputs"],
+        "properties": {
+          "schema": { "const": "gummy.actor-plan-node/v0" },
+          "id": { "type": "string", "pattern": "^plan-node:" },
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "nodeType": { "enum": ["context", "execution", "review", "approval", "storage", "publication"] },
+          "role": { "type": "string" },
+          "optional": { "type": "boolean" },
+          "agentId": { "type": "string", "pattern": "^agent:" },
+          "moldId": { "type": "string", "pattern": "^mold:" },
+          "configurationId": { "type": "string", "pattern": "^production-config:" },
+          "expectedOutputs": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["schema", "id", "fromNodeId", "toNodeId", "edgeType", "dataClasses"],
+        "properties": {
+          "schema": { "const": "gummy.actor-plan-edge/v0" },
+          "id": { "type": "string", "pattern": "^plan-edge:" },
+          "fromNodeId": { "type": "string", "pattern": "^plan-node:" },
+          "toNodeId": { "type": "string", "pattern": "^plan-node:" },
+          "edgeType": { "enum": ["setup", "context", "input", "execution", "review", "approval", "storage", "publication"] },
+          "dataClasses": { "type": "array", "items": { "type": "string" } },
+          "optional": { "type": "boolean" },
+          "approvalRequired": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "status": { "enum": ["editable", "frozen", "deprecated"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": true
+}

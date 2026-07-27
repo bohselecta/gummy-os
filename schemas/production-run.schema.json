@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production-run.schema.json",
+  "title": "Gummy OS Production Run",
+  "type": "object",
+  "required": ["schema", "id", "productionId", "productionRevision", "actorPlanRevision", "frozenPlan", "frozenParticipants", "frozenConfigurations", "configurationRevisionIds", "sourceGummyRevisions", "manifestHash", "status", "workOrderIds", "taskLeaseIds", "grantIds", "contextEnvelopeIds", "returnIds", "receiptIds", "resultGummyIds", "approval", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.production-run/v0" },
+    "id": { "type": "string", "pattern": "^production-run:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "productionRevision": { "type": "string" },
+    "actorPlanId": { "type": "string", "pattern": "^actor-plan:" },
+    "actorPlanRevision": { "type": "string" },
+    "frozenPlan": { "type": "object" },
+    "frozenParticipants": { "type": "array", "items": { "type": "object" } },
+    "frozenConfigurations": { "type": "array", "items": { "type": "object" } },
+    "configurationRevisionIds": { "type": "array", "items": { "type": "string" } },
+    "sourceGummyRevisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "revision", "hash"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^gummy:" },
+          "revision": { "type": "string" },
+          "hash": { "type": "string", "pattern": "^sha256:" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "manifestHash": { "type": "string", "pattern": "^sha256:" },
+    "status": { "enum": ["planned", "awaiting-approval", "queued", "running", "paused", "blocked", "partially-completed", "completed", "failed", "cancelled"] },
+    "workOrderIds": { "type": "array", "items": { "type": "string", "pattern": "^work-order:" }, "uniqueItems": true },
+    "taskLeaseIds": { "type": "array", "items": { "type": "string", "pattern": "^lease:" }, "uniqueItems": true },
+    "grantIds": { "type": "array", "items": { "type": "string", "pattern": "^grant:" }, "uniqueItems": true },
+    "contextEnvelopeIds": { "type": "array", "items": { "type": "string", "pattern": "^context-envelope:" }, "uniqueItems": true },
+    "returnIds": { "type": "array", "items": { "type": "string", "pattern": "^return:" }, "uniqueItems": true },
+    "receiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true },
+    "resultGummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "approval": { "type": "object" },
+    "policy": { "type": "object" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

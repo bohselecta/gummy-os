@@ -1,14 +1,28 @@
 import { access, readFile } from 'node:fs/promises';
+import Ajv2020 from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
 
 const required = [
   'index.html',
   'src/app.js',
   'src/styles.css',
   'src/core/state.js',
+  'src/core/production-runtime.js',
+  'src/core/production-repository.js',
   'src/core/capability-broker.js',
+  'src/core/product-registry.js',
+  'src/integrations/app-handoff.js',
+  'src/integrations/local-operator.js',
+  'src/integrations/gummy-rooms.js',
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
+  'src/apps/production.js',
+  'src/apps/actor-surface.js',
+  'src/apps/master-control.js',
+  'src/brand/gummy-utility-tiles.js',
+  'src/production.css',
   'docs/BRAND_SYSTEM.md',
+  'docs/BRAND_ASSET_CATALOG.md',
   'docs/GLOPPER_NAMING.md',
   'docs/ACTOR_AGENT_MASTER_CONTROL.md',
   'docs/PLATFORM_PLAYGROUND_SECURITY.md',
@@ -22,14 +36,31 @@ const required = [
   'docs/SOCIAL_GRAPH.md',
   'docs/ENTERPRISE_FRAMEWORK.md',
   'docs/ROADMAP.md',
+  'docs/FULL_PRODUCT_PRESERVATION_DIRECTIVE.md',
+  'docs/FULL_PRODUCT_GAP_AUDIT.md',
+  'docs/MANAGED_GUMMY_BOX_LANE.md',
+  'docs/GUMMY_UTILITY_TILE_SYSTEM.md',
+  'docs/PRODUCTION_ACTOR_RUNTIME.md',
+  'docs/ACTOR_FIRST_PRODUCTION_MODEL.md',
+  'plans/active/2026-07-27-production-runtime-reconciliation-and-utility-tiles.md',
+  'design/source/gummy-utility-tiles-legacy/manifest.json',
+  'design/source/gummy-utility-tiles-legacy/SOURCE_ARCHIVE.md',
+  'public/brand/gummy/utility-tiles/manifest.json',
+  'scripts/generate-utility-tiles.mjs',
+  'scripts/check-utility-tiles.mjs',
+  'evidence/consolidation-feature-source-map.json',
+  'public/registry/product-map.json',
+  'public/registry/first-party-applications.json',
   'examples/glopper-web.agent.json',
   'examples/hayden.gummy-box.json',
   'examples/project-brief.work-order.json',
   'examples/project-brief.task-lease.json',
   'examples/project-brief.work-return.json',
+  'examples/standalone-acceptance.return.json',
   'plans/active/2026-07-25-personal-gummy-cursor-work-order.md',
   'plans/active/2026-07-25-gummy-box-cursor-addendum.md',
   'plans/active/2026-07-25-brand-system-cursor-addendum.md',
+  'plans/active/2026-07-25-production-brand-assets-cursor-addendum.md',
   'plans/active/2026-07-25-automated-acceptance-cursor-addendum.md'
 ];
 
@@ -39,6 +70,7 @@ const pkg = JSON.parse(await readFile('package.json', 'utf8'));
 if (pkg.name !== 'gummy-os') throw new Error('package name must remain gummy-os');
 
 const schemas = [
+  'schemas/human.schema.json',
   'schemas/actor.schema.json',
   'schemas/agent.schema.json',
   'schemas/mold.schema.json',
@@ -52,17 +84,34 @@ const schemas = [
   'schemas/link.schema.json',
   'schemas/grab.schema.json',
   'schemas/app-pack.schema.json',
+  'schemas/product-map.schema.json',
+  'schemas/application-registry.schema.json',
+  'schemas/app-handoff.schema.json',
   'schemas/capability-grant.schema.json',
   'schemas/action-receipt.schema.json',
   'schemas/organization.schema.json',
   'schemas/policy-pack.schema.json',
   'schemas/snack.schema.json',
-  'schemas/graph-object.schema.json'
+  'schemas/graph-object.schema.json',
+  'schemas/actor-app-descriptor.schema.json',
+  'schemas/production.schema.json',
+  'schemas/production-participant.schema.json',
+  'schemas/production-actor-configuration.schema.json',
+  'schemas/actor-plan.schema.json',
+  'schemas/context-envelope.schema.json',
+  'schemas/production-run.schema.json',
+  'schemas/actor-update-proposal.schema.json',
+  'schemas/drag-intent.schema.json'
 ];
 
+const ajv = new Ajv2020({ allErrors: true, strict: false });
+addFormats(ajv);
+const parsedSchemas = new Map();
 for (const schema of schemas) {
   const parsed = JSON.parse(await readFile(schema, 'utf8'));
   if (!parsed.$id || !parsed.title) throw new Error(`${schema} is missing $id or title`);
+  ajv.addSchema(parsed);
+  parsedSchemas.set(schema, parsed);
 }
 
 const naming = await readFile('docs/GLOPPER_NAMING.md', 'utf8');
@@ -192,9 +241,40 @@ for (const requirement of [
   if (!product.includes(requirement)) throw new Error(`product spec is missing brand requirement: ${requirement}`);
 }
 
+const productionDoctrine = await readFile('docs/PRODUCTION_ACTOR_RUNTIME.md', 'utf8');
+for (const requirement of [
+  'Make Production',
+  'ProductionActorConfiguration',
+  'Context Envelope',
+  'DragIntent',
+  'Drag/drop never grants ambient authority or starts execution.'
+]) {
+  if (!productionDoctrine.includes(requirement)) throw new Error(`Production runtime doctrine is missing: ${requirement}`);
+}
+
+const utilityDoctrine = await readFile('docs/GUMMY_UTILITY_TILE_SYSTEM.md', 'utf8');
+for (const requirement of [
+  'gummy.utility.attach',
+  'gummy.utility.agent',
+  'gummy.utility.bowl',
+  'gummy.utility.deliver',
+  'gummy.utility.setup',
+  'gummy.utility.vision',
+  'gummy.utility.progress',
+  'The tiles are presentation assets only.',
+  'No new CSS hue token is introduced from a tile color.'
+]) {
+  if (!utilityDoctrine.includes(requirement)) throw new Error(`utility tile doctrine is missing: ${requirement}`);
+}
+
 const agent = JSON.parse(await readFile('examples/glopper-web.agent.json', 'utf8'));
 if (agent.id !== 'agent:glopper-web' || agent.characterFamily !== 'Glopper') {
   throw new Error('canonical Glopper Web Agent example is invalid');
+}
+
+const human = JSON.parse(await readFile('examples/hayden.human.json', 'utf8'));
+if (human.id !== 'human:hayden' || human.identityAssurance !== 'local-unverified') {
+  throw new Error('canonical local Human example is invalid');
 }
 
 const box = JSON.parse(await readFile('examples/hayden.gummy-box.json', 'utf8'));
@@ -215,6 +295,24 @@ if (lease.agentId !== 'agent:glopper-web' || lease.mode !== 'exclusive') {
 const returnedWork = JSON.parse(await readFile('examples/project-brief.work-return.json', 'utf8'));
 if (returnedWork.workOrderId !== 'work-order:project-brief' || returnedWork.agentId !== 'agent:glopper-web') {
   throw new Error('canonical Work Return example is invalid');
+}
+
+const acceptanceReturn = JSON.parse(await readFile('examples/standalone-acceptance.return.json', 'utf8'));
+if (acceptanceReturn.extensions.sanitized !== true || acceptanceReturn.checks.length < 5) {
+  throw new Error('sanitized standalone acceptance Return is incomplete');
+}
+
+for (const [schemaPath, record] of [
+  ['schemas/human.schema.json', human],
+  ['schemas/agent.schema.json', agent],
+  ['schemas/gummy-box.schema.json', box],
+  ['schemas/work-order.schema.json', proposedWork],
+  ['schemas/task-lease.schema.json', lease],
+  ['schemas/work-return.schema.json', returnedWork],
+  ['schemas/work-return.schema.json', acceptanceReturn]
+]) {
+  const validate = ajv.getSchema(parsedSchemas.get(schemaPath).$id);
+  if (!validate(record)) throw new Error(`${record.id} fails ${schemaPath}: ${ajv.errorsText(validate.errors)}`);
 }
 
 const legacySocialPath = await readFile('docs/SOCIAL_GRAPH.md', 'utf8');

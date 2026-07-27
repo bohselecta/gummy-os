@@ -1,0 +1,96 @@
+{
+  "schema": "gummy.consolidation-feature-source-map/v1",
+  "generatedAt": "2026-07-26T21:48:16-05:00",
+  "repository": "bohselecta/gummy-os",
+  "targetBranch": "agent/consolidated-gummy-production-runtime",
+  "base": {
+    "source": "PR #13",
+    "sha": "018edef6046de01f21ea54517e1c97e726722309",
+    "reason": "Newest full-product runtime and direct child of the newest PR #11 head."
+  },
+  "ancestry": {
+    "main": "d9dd0cdbb738682c327111755cf160d884cedbcd",
+    "pr11": "3c7c0ec73830b47c141b0bafcd0cb2f634cf7cda",
+    "pr13": "018edef6046de01f21ea54517e1c97e726722309",
+    "pr14": "912b3d873cb0aa46ff2cfb31815eb63080ce1226",
+    "pr13Parent": "3c7c0ec73830b47c141b0bafcd0cb2f634cf7cda",
+    "pr13ContainsNewestPr11": true,
+    "pr14PortStrategy": "feature-donor-only"
+  },
+  "sources": {
+    "pr11": {
+      "features": [
+        "production Gummy identity and locked brand assets",
+        "Night and Day Gummy",
+        "Gummy Canvas, Gummy Bar, and Glopper separation",
+        "IndexedDB records and OPFS bytes",
+        "Gummy Box authority protocol, PWA, accessibility, and acceptance infrastructure"
+      ],
+      "canonicalPaths": [
+        "public/brand/gummy/",
+        "src/core/repository.js",
+        "src/core/byte-store.js",
+        "src/styles/tokens.css",
+        "tests/e2e/app.spec.mjs"
+      ]
+    },
+    "pr13": {
+      "features": [
+        "full-product preservation map",
+        "Applications and first-party registry",
+        "Actors, Bowls, People and Spaces",
+        "provider-neutral specialist seams and local Operator lane"
+      ],
+      "canonicalPaths": [
+        "docs/FULL_PRODUCT_PRESERVATION_DIRECTIVE.md",
+        "public/registry/product-map.json",
+        "public/registry/first-party-applications.json",
+        "src/core/product-registry.js",
+        "src/integrations/"
+      ]
+    },
+    "pr14": {
+      "features": [
+        "Production schemas and runtime records",
+        "Production windows, Actor surfaces, and scoped Master Control",
+        "typed non-executing DragIntents",
+        "immutable approved Runs and deterministic reference execution"
+      ],
+      "canonicalPaths": [
+        "schemas/production.schema.json",
+        "schemas/production-run.schema.json",
+        "src/core/production-runtime.js",
+        "src/apps/production.js",
+        "tests/production-runtime.test.mjs"
+      ],
+      "excludedFromMerge": [
+        "PR #14 shell and state architecture",
+        "PR #14 global styles",
+        "Snack and Zeke concepts",
+        "legacy colors and temporary artwork"
+      ]
+    },
+    "main": {
+      "features": [
+        "controlling utility tile system",
+        "Production reconciliation rulings",
+        "Actor-first Production model"
+      ],
+      "canonicalPaths": [
+        "docs/GUMMY_UTILITY_TILE_SYSTEM.md",
+        "docs/PRODUCTION_ACTOR_RUNTIME.md",
+        "plans/active/2026-07-27-production-runtime-reconciliation-and-utility-tiles.md"
+      ]
+    },
+    "founderUtilityArchive": {
+      "driveFileId": "10JJn88oYrK_3WzD5tuNpnec2riv-9-WE",
+      "fileName": "gummy-utility-tiles-founder-source-2026-07-27.zip",
+      "sha256": "c635a5ff0980531d5c18083639d50dea1245072a868a744f640f4ba7246905cc",
+      "selectedMasters": 7,
+      "excluded": [
+        "screenshot-placeholder.png",
+        "__MACOSX/*"
+      ]
+    }
+  }
+}

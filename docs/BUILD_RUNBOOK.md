@@ -6,21 +6,25 @@ Read in this order:
 
 1. `README.md`
 2. `docs/BRAND_SYSTEM.md`
-3. `docs/GLOPPER_NAMING.md`
-4. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-5. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
-6. `docs/GUMMY_BOX_WORK_ORDERS.md`
-7. `docs/VOCABULARY.md`
-8. `docs/PRODUCT_SPEC.md`
-9. `docs/ARCHITECTURE.md`
-10. `docs/PROTOCOL.md`
-11. `docs/SECURITY_MODEL.md`
-12. `docs/SOCIAL_LAYER.md`
-13. `docs/ROADMAP.md`
-14. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-15. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
-16. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
-17. `AGENTS.md`
+3. `docs/BRAND_ASSET_CATALOG.md`
+4. `docs/GLOPPER_NAMING.md`
+5. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
+6. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
+7. `docs/GUMMY_BOX_WORK_ORDERS.md`
+8. `docs/AUTOMATED_ACCEPTANCE.md`
+9. `docs/VOCABULARY.md`
+10. `docs/PRODUCT_SPEC.md`
+11. `docs/ARCHITECTURE.md`
+12. `docs/PROTOCOL.md`
+13. `docs/SECURITY_MODEL.md`
+14. `docs/SOCIAL_LAYER.md`
+15. `docs/ROADMAP.md`
+16. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
+17. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
+18. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
+19. `plans/active/2026-07-25-production-brand-assets-cursor-addendum.md`
+20. `plans/active/2026-07-25-automated-acceptance-cursor-addendum.md`
+21. `AGENTS.md`
 
 The active repository is `bohselecta/gummy-os`.
 
@@ -164,14 +168,21 @@ Return evidence for:
 ## Verification
 
 ```bash
+npm run brand:generate
 npm run check
 npm test
+npm run test:unit
+npm run test:integration
+npm run test:a11y
+npm run test:visual
+npm run test:acceptance
 npm run build
 npm run verify
 ```
 
 Add:
 
+- production master hash, derivative dimension, favicon/PWA, and placeholder-removal checks;
 - source/semantic brand-token tests;
 - Night/Day persistence and fallback tests;
 - unsupported-theme rejection;

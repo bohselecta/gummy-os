@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production-participant.schema.json",
+  "title": "Gummy OS Production Participant",
+  "type": "object",
+  "required": ["schema", "id", "productionId", "actorId", "roles", "source", "relationshipLinkIds", "approvalState", "status"],
+  "properties": {
+    "schema": { "const": "gummy.production-participant/v0" },
+    "id": { "type": "string", "pattern": "^participant:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "roles": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true },
+    "source": { "enum": ["creator", "mention", "drag", "search", "invite", "template"] },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "relationshipLinkIds": { "type": "array", "items": { "type": "string", "pattern": "^link:" }, "uniqueItems": true },
+    "configurationId": { "type": "string", "pattern": "^production-config:" },
+    "assignedAgentId": { "type": "string", "pattern": "^agent:" },
+    "approvalState": { "enum": ["not-required", "pending", "approved", "denied"] },
+    "status": { "enum": ["invited", "configuring", "ready", "blocked", "active", "removed"] }
+  },
+  "additionalProperties": true
+}

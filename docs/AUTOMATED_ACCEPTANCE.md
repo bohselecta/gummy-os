@@ -1,7 +1,7 @@
 # Gummy OS Automated Acceptance Standard
 
-**Status:** Founder-approved release requirement  
-**Date:** 2026-07-25  
+**Status:** Founder-approved release requirement
+**Date:** 2026-07-25
 **Purpose:** Make routine product testing fully automated so Hayden uses Gummy OS as a founder and customer, not as the regression test department.
 
 ## Founder rule

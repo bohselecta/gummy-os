@@ -1,0 +1,250 @@
+{
+  "schema": "gummy.utility-tile-derivatives/v1",
+  "sourceArchive": "gummy-utility-tiles-founder-source-2026-07-27.zip",
+  "sourceArchiveSha256": "c635a5ff0980531d5c18083639d50dea1245072a868a744f640f4ba7246905cc",
+  "generation": {
+    "tool": "sharp/0.35.3",
+    "format": "webp",
+    "quality": 90,
+    "alphaQuality": 100,
+    "effort": 6,
+    "fit": "inside"
+  },
+  "assets": [
+    {
+      "id": "gummy.utility.attach",
+      "label": "Attach Gummy",
+      "sourceFile": "cliptogummy-tile.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/cliptogummy-tile.png",
+      "sourceSha256": "f9ffadebdb81951141628c289d4a1a4ee7fc77557f2f0f0ab3a51399c07bb5e0",
+      "sourceWidth": 306,
+      "sourceHeight": 306,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/attach-64.webp",
+          "width": 64,
+          "height": 64,
+          "sha256": "6c87ae07e1ad1ed759e70b5aa5e435d116bded5d0ad0c34b849ff816acafc218",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/attach-96.webp",
+          "width": 96,
+          "height": 96,
+          "sha256": "878e65854d8ca1a387ec0e9f75bb489842b05105af97312026646ee765be9236",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/attach-192.webp",
+          "width": 192,
+          "height": 192,
+          "sha256": "014002c68f5b99223c64560dd6c336d821d9c7b359070283524ef787a21abacb",
+          "hasAlpha": true
+        }
+      }
+    },
+    {
+      "id": "gummy.utility.agent",
+      "label": "Agent Runtime",
+      "sourceFile": "gummybot-tile.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/gummybot-tile.png",
+      "sourceSha256": "94976c05d310742d8aafcd05640675cc861eca98f8ef157d3efae3ef1814198f",
+      "sourceWidth": 306,
+      "sourceHeight": 306,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/agent-64.webp",
+          "width": 64,
+          "height": 64,
+          "sha256": "41ad5bee13cf085533810dbfba87efbd93ec27d2376bff90d015a7a4302befe0",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/agent-96.webp",
+          "width": 96,
+          "height": 96,
+          "sha256": "0a337eaf54138ea79b9d6e5f9cbbb5777ac4888cca2c1877812cd2df03dd5aae",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/agent-192.webp",
+          "width": 192,
+          "height": 192,
+          "sha256": "37b4137555b89db5c2f2e2b4307636a477d550d9efad5ff431071500f714e89f",
+          "hasAlpha": true
+        }
+      }
+    },
+    {
+      "id": "gummy.utility.bowl",
+      "label": "Bowl",
+      "sourceFile": "gummybowl-tile.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/gummybowl-tile.png",
+      "sourceSha256": "a87e6af9749c17b839d62f49f199ee9a3ab9f6459dc1f8cfb39ae1587e681c1f",
+      "sourceWidth": 306,
+      "sourceHeight": 306,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/bowl-64.webp",
+          "width": 64,
+          "height": 64,
+          "sha256": "c35f66c30a8d3aa0f9051bed8cfbe1c6e03f9d61c5b113edc7e24efe556193d8",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/bowl-96.webp",
+          "width": 96,
+          "height": 96,
+          "sha256": "e6c24885b5c1da2b642a904b7ce7027bfeeec3ea48eef8bd6e325914dfc9d525",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/bowl-192.webp",
+          "width": 192,
+          "height": 192,
+          "sha256": "62f2b2b846553dc2f3657550fb4db289f9cc24e0a7d03610d55d41df63e8aadb",
+          "hasAlpha": true
+        }
+      }
+    },
+    {
+      "id": "gummy.utility.deliver",
+      "label": "Deliver",
+      "sourceFile": "gummyexport-tile.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/gummyexport-tile.png",
+      "sourceSha256": "58b8c6164405fc0a8ce48e09113d40bd6b3996a34bb8f04cde3e2433c7119dc5",
+      "sourceWidth": 306,
+      "sourceHeight": 306,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/deliver-64.webp",
+          "width": 64,
+          "height": 64,
+          "sha256": "ff46ede650fb5083cd622765f1d163ec54187ee6b96d4f939dc49d97846fa329",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/deliver-96.webp",
+          "width": 96,
+          "height": 96,
+          "sha256": "4e901cc0579fa3b0ad2d96c0cbf9413d8262ce019cb2f38c14470ac3c03c93cd",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/deliver-192.webp",
+          "width": 192,
+          "height": 192,
+          "sha256": "d6c078510d0ea87b808e81a8e1dc6bf04c3129600d996ccd022fe95bc8763a2c",
+          "hasAlpha": true
+        }
+      }
+    },
+    {
+      "id": "gummy.utility.setup",
+      "label": "Production Setup",
+      "sourceFile": "gummylayout-tile.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/gummylayout-tile.png",
+      "sourceSha256": "3e393dfff3ceb072606dc5659a2a09af991a89137a6295561cd0cd1293c3a4ea",
+      "sourceWidth": 306,
+      "sourceHeight": 306,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/setup-64.webp",
+          "width": 64,
+          "height": 64,
+          "sha256": "39f37e9a1e6a66497fac591801bb3a493b22319ebf70580bb68f62b630a30f86",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/setup-96.webp",
+          "width": 96,
+          "height": 96,
+          "sha256": "74d036ff272d0006d2832bd5ba11904976f360d122a5c440db7b9533e11bb0da",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/setup-192.webp",
+          "width": 192,
+          "height": 192,
+          "sha256": "6e35c49192c6bf3af0431774b6368720b891925282ee68ac0aba7d873aa4661c",
+          "hasAlpha": true
+        }
+      }
+    },
+    {
+      "id": "gummy.utility.vision",
+      "label": "Inspect",
+      "sourceFile": "gummyvision-tile.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/gummyvision-tile.png",
+      "sourceSha256": "2fbf61e196a263f05655eb2045af9e0b6841ff27688bbeab42cf0f44cfe9c0b4",
+      "sourceWidth": 306,
+      "sourceHeight": 306,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/vision-64.webp",
+          "width": 64,
+          "height": 64,
+          "sha256": "e391e9e3f7f6120e02a25bf96e2c9cf20b8764003f8fddbfe6539837f7654b73",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/vision-96.webp",
+          "width": 96,
+          "height": 96,
+          "sha256": "0c3a8bcdf740421876f57000b25fe8e6648be68bba95ed80da1a0b8a905a3c8f",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/vision-192.webp",
+          "width": 192,
+          "height": 192,
+          "sha256": "8dc073d43aad0f9c27fbece324270c91565473ef1005f99446dabdddc4b41303",
+          "hasAlpha": true
+        }
+      }
+    },
+    {
+      "id": "gummy.utility.progress",
+      "label": "Gummy Working",
+      "sourceFile": "loading-wheel.png",
+      "sourcePath": "/design/source/gummy-utility-tiles-legacy/loading-wheel.png",
+      "sourceSha256": "f59615d2757845a10c217f047f78f2ee95fdc010445f19aa0ac16ab16a27f558",
+      "sourceWidth": 699,
+      "sourceHeight": 785,
+      "derivatives": {
+        "64": {
+          "path": "/brand/gummy/utility-tiles/progress-64.webp",
+          "width": 57,
+          "height": 64,
+          "sha256": "0d8f6bca6b9066312eba7a57c49e2b1e52ef9e7f6566973550e91087d4491ce7",
+          "hasAlpha": true
+        },
+        "96": {
+          "path": "/brand/gummy/utility-tiles/progress-96.webp",
+          "width": 85,
+          "height": 96,
+          "sha256": "4ac8fa9ecb228aab1dd723448fcaf4021a258e39aa520feab80676668a277446",
+          "hasAlpha": true
+        },
+        "192": {
+          "path": "/brand/gummy/utility-tiles/progress-192.webp",
+          "width": 171,
+          "height": 192,
+          "sha256": "58d899249722d34fa7f62e5c93080de00b754a1b988cc0ae0594cf52aa20a2d5",
+          "hasAlpha": true
+        }
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "sourceFile": "screenshot-placeholder.png",
+      "reason": "Exact duplicate of gummylayout-tile.png",
+      "sha256": "3e393dfff3ceb072606dc5659a2a09af991a89137a6295561cd0cd1293c3a4ea"
+    },
+    {
+      "sourceFile": "__MACOSX/*",
+      "reason": "AppleDouble metadata; not product assets"
+    }
+  ]
+}

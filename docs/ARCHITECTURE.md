@@ -187,6 +187,14 @@ A Pack teaches an authorized Agent how to operate an application through the hig
 
 Pack knowledge never grants authority.
 
+## First-party application registry
+
+VideoBoss, ImageHoss, 3D Bee, and Gummy Rooms remain specialist products with independent repositories and interfaces. Gummy OS advertises them through `gummy.application-registry/v1` and launches them only through truthful routed-web, installed-PWA, native-bridge, or unavailable states.
+
+Cross-product continuity uses `gummy.app-handoff/v1`. The wrapper retains the untouched source envelope, protocol versions, asset IDs, hashes, rights, provenance, evidence, and limitations before any adapter creates a separate Gummy.
+
+The machine-readable `gummy.product-map/v1` keeps Gummy OS, the local approximately-4B Operator, all specialist applications, Social computing, Rooms, and Gummy Box visible even when execution is staged or unavailable.
+
 ## Recursive composition
 
 Humans, Actors, and Agents may create Actors, Agents, Gummies, Molds, tools, apps, worlds, and shared surfaces.

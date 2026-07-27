@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/context-envelope.schema.json",
+  "title": "Gummy OS Context Envelope",
+  "type": "object",
+  "required": ["schema", "id", "productionRunId", "actorPlanNodeId", "targetActorId", "agentId", "taskInstruction", "contextRefs", "sourceGummyRefs", "moldIds", "allowedCapabilities", "forbiddenActions", "outputContract", "policy", "excludes", "hash", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.context-envelope/v0" },
+    "id": { "type": "string", "pattern": "^context-envelope:" },
+    "productionRunId": { "type": "string", "pattern": "^production-run:" },
+    "actorPlanNodeId": { "type": "string", "pattern": "^plan-node:" },
+    "targetActorId": { "type": "string", "pattern": "^actor:" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
+    "taskInstruction": { "type": "string" },
+    "selectedProductionContext": { "type": "object" },
+    "contextRefs": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "sourceGummyRefs": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "moldIds": { "type": "array", "items": { "type": "string", "pattern": "^mold:" }, "uniqueItems": true },
+    "relationshipLinkIds": { "type": "array", "items": { "type": "string", "pattern": "^link:" }, "uniqueItems": true },
+    "allowedCapabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "forbiddenActions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "outputContract": { "type": "object" },
+    "policy": { "type": "object" },
+    "excludes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "hash": { "type": "string", "pattern": "^sha256:" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

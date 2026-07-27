@@ -37,6 +37,22 @@
       },
       "additionalProperties": false
     },
+    "quarantine": {
+      "type": "object",
+      "required": ["status", "source", "nativeAuthority"],
+      "properties": {
+        "status": {
+          "enum": ["quarantined", "contained-approved", "blocked", "exported-bounded"]
+        },
+        "source": { "type": "string" },
+        "classification": { "type": "string" },
+        "decidedByHumanId": { "type": "string", "pattern": "^human:" },
+        "decidedAt": { "type": "string", "format": "date-time" },
+        "decisionReceiptId": { "type": "string", "pattern": "^receipt:" },
+        "nativeAuthority": { "const": false }
+      },
+      "additionalProperties": true
+    },
     "provenance": {
       "type": "object",
       "properties": {

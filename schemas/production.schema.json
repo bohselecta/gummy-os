@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production.schema.json",
+  "title": "Gummy OS Production",
+  "type": "object",
+  "required": ["schema", "id", "title", "creatorHumanId", "ownerActorId", "status", "visibility", "participantIds", "revision", "authoritativeLocation", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.production/v0" },
+    "id": { "type": "string", "pattern": "^production:" },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "creatorHumanId": { "type": "string", "pattern": "^human:" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "status": { "enum": ["draft", "configuring", "ready", "running", "review", "completed", "blocked", "cancelled", "archived", "transferred"] },
+    "visibility": { "enum": ["private", "invite", "unlisted", "public"] },
+    "participantIds": { "type": "array", "items": { "type": "string", "pattern": "^participant:" }, "uniqueItems": true },
+    "bowlIds": { "type": "array", "items": { "type": "string", "pattern": "^bowl:" }, "uniqueItems": true },
+    "actorPlanIds": { "type": "array", "items": { "type": "string", "pattern": "^actor-plan:" }, "uniqueItems": true },
+    "activeActorPlanId": { "type": "string", "pattern": "^actor-plan:" },
+    "runIds": { "type": "array", "items": { "type": "string", "pattern": "^production-run:" }, "uniqueItems": true },
+    "gummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "deliverableIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "authoritativeLocation": { "type": "string" },
+    "revision": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": true
+}

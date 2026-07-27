@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/actor-update-proposal.schema.json",
+  "title": "Gummy OS Actor Update Proposal",
+  "type": "object",
+  "required": ["schema", "id", "actorId", "sourceProductionId", "proposedDefaults", "status", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.actor-update-proposal/v0" },
+    "id": { "type": "string", "pattern": "^actor-update-proposal:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "sourceProductionId": { "type": "string", "pattern": "^production:" },
+    "proposedDefaults": { "type": "object" },
+    "status": { "enum": ["proposed", "approved", "denied"] },
+    "approvedBy": { "type": "string", "pattern": "^human:" },
+    "hash": { "type": "string", "pattern": "^sha256:" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

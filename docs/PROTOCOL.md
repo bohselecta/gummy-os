@@ -54,6 +54,9 @@ These are product/interface names. Candy icons do not create a `candy` protocol 
 | `gummy.link/v0` | Typed relationship. |
 | `gummy.grab/v0` | Independent derivation preserving source. |
 | `gummy.app-pack/v0` | Application operating knowledge/contract. |
+| `gummy.product-map/v1` | Protected full-product pillar map. |
+| `gummy.application-registry/v1` | First-party application identity, purpose, capability, launch, locality, and release truth. |
+| `gummy.app-handoff/v1` | Immutable cross-application continuity wrapper preserving the source envelope and evidence. |
 | `gummy.capability-grant/v0` | Bounded temporary authority. |
 | `gummy.action-receipt/v0` | Evidence of request, participants, route, objects, and outcome. |
 | `gummy.organization/v0` | Enterprise context. |
@@ -253,3 +256,9 @@ Migration is deterministic, idempotent, traceable, and non-destructive. Actor an
 Transport may use local import/export, GitHub, Google Drive, HTTPS, events, content-addressed storage, enterprise buses, signed documents, or federation. Transport never creates authority.
 
 Breaking semantics require a new protocol version; additive fields may be ignored only when authority/provenance remain intact.
+
+## First-party application continuity
+
+The first registry entries are `app:videoboss`, `app:imagehoss`, `app:3d-bee`, and `app:gummy-rooms`.
+
+An application handoff identifies source and target application, source and target protocol versions, project, artifact type, asset references, hashes, rights, provenance, limitations, evidence, creation time, and the untouched source envelope. Unsupported versions, absent hashes or rights, and unavailable capabilities fail closed.

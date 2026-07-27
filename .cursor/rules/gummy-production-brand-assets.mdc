@@ -1,0 +1,66 @@
+---
+description: Use the locked founder-supplied Gummy production artwork and remove temporary Gummy placeholders.
+globs:
+  - "src/**"
+  - "public/**"
+  - "index.html"
+  - "vite.config.js"
+  - "tests/**"
+alwaysApply: true
+---
+
+# Production Gummy branding
+
+Read first:
+
+- `docs/BRAND_SYSTEM.md`
+- `plans/active/2026-07-25-production-brand-assets-cursor-addendum.md`
+
+The founder supplied the final Gummy mascot mark, wordmark, horizontal lockup, vertical lockup, compact head mark, and three app-icon treatments on 2026-07-25.
+
+## Hard rules
+
+- These are production assets, not visual references.
+- Do not redraw, recolor, stretch, crop, trace, approximate, or replace them with generated artwork.
+- Do not recreate the wordmark with live text.
+- Do not use CSS filters or hue rotation.
+- Do not recolor the artwork for Day Gummy or Night Gummy.
+- Do not use the Gummy monkey as Glopper's Agent avatar.
+- Keep Gummy and Glopper explicitly separate.
+- Preserve the full-resolution PNG masters and generate responsive web derivatives.
+- Centralize runtime paths in `src/brand/gummy-assets.js`.
+- Remove temporary `G` glyphs and `temporary artwork slot` copy only when their production replacements are wired and tested.
+
+## Canonical source names
+
+```text
+gummy-mascot-head-master.png
+gummy-lockup-horizontal-master.png
+gummy-wordmark-master.png
+gummy-lockup-vertical-master.png
+gummy-mark-head-square.png
+gummy-app-icon-detailed-square.png
+gummy-app-icon-flat-round.png
+gummy-app-icon-monogram.png
+```
+
+Expected repository root:
+
+```text
+public/brand/gummy/
+```
+
+The exact target paths, hashes, usage map, accessibility rules, and automated acceptance requirements are in the active addendum.
+
+## Default placement
+
+- top bar: horizontal lockup when readable; compact head mark when narrow;
+- boot: monogram or compact head mark;
+- guide/welcome: mascot head or vertical lockup;
+- 16–48 px favicon: monogram;
+- Apple/PWA icon: detailed square;
+- round avatar contexts: flat round icon.
+
+## Definition of done
+
+Do not return a manual founder test list. Run automated visual, accessibility, asset-existence, hash, PWA, responsive, and preview checks. Return exact screenshots, artifact paths, CI result, deployed preview, and limitations.
