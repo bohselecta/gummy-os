@@ -1,0 +1,158 @@
+{
+  "schema": "gummy.final-release-baseline/v1",
+  "capturedAt": "2026-07-27T07:22:23Z",
+  "releaseBranch": "codex/final-release-2026-07-27",
+  "repositories": {
+    "gummy-os": {
+      "repository": "bohselecta/gummy-os",
+      "defaultBranch": "main",
+      "defaultHead": "c1279e5f45d51e64febf4c29a701bbd5b21e62f1",
+      "kitObservedHead": "c46e5f4a0719b06a7dcdfd815bb8f3d5a89daa62",
+      "headMoved": true,
+      "reconciliation": "The only newer default-branch commit adds the controlling finish-up kit, updated builder instructions, release scripts, and documentation. It is the release-branch base.",
+      "baseline": {
+        "status": "PASS",
+        "command": "npm ci && npm run verify && npm audit --audit-level=moderate",
+        "unitTests": 54,
+        "browserTests": 15,
+        "vulnerabilities": 0,
+        "build": "PASS",
+        "productPreservation": {
+          "status": "PASS",
+          "pillars": 8,
+          "applications": 4,
+          "protocolSchemas": 16,
+          "brandMasters": 8
+        }
+      }
+    },
+    "imagehoss": {
+      "repository": "bohselecta/imagehoss",
+      "defaultBranch": "main",
+      "defaultHead": "1c54a527ec290d6da4886a80474aad40c3433fff",
+      "kitObservedHead": "1c54a527ec290d6da4886a80474aad40c3433fff",
+      "headMoved": false,
+      "baseline": {
+        "status": "PASS",
+        "command": "npm ci && npm run check && npm run fixture && npm audit --audit-level=low",
+        "testFiles": 11,
+        "tests": 41,
+        "vulnerabilities": 0,
+        "build": "PASS",
+        "fixture": "PASS",
+        "note": "The existing fixture emitter refreshes timestamps; the generated working-tree delta is not part of this baseline checkpoint."
+      }
+    },
+    "videoboss": {
+      "repository": "bohselecta/videoboss",
+      "defaultBranch": "main",
+      "defaultHead": "cea920cb254194fa9350bb1a04ebc2e88030ca49",
+      "kitObservedHead": "cea920cb254194fa9350bb1a04ebc2e88030ca49",
+      "headMoved": false,
+      "baseline": {
+        "status": "BLOCKED",
+        "command": "npm ci && npm test && npm run build && npm audit --audit-level=low",
+        "tests": 19,
+        "build": "PASS",
+        "audit": "FAIL",
+        "vulnerabilities": {
+          "high": 1,
+          "package": "postcss",
+          "advisory": "GHSA-r28c-9q8g-f849"
+        },
+        "classification": "pre-existing release blocker to repair during hardening; functional baseline tests and build pass"
+      }
+    },
+    "3d-bee": {
+      "repository": "bohselecta/3d-bee",
+      "publicName": "Meshmallow",
+      "defaultBranch": "main",
+      "defaultHead": "4b56cf01824f0db27b86800e547b3fefc168c407",
+      "kitObservedHead": "4b56cf01824f0db27b86800e547b3fefc168c407",
+      "headMoved": false,
+      "baseline": {
+        "status": "PASS",
+        "command": "npm ci && cargo test --workspace --locked && cargo fmt --all -- --check && cargo clippy --workspace --all-targets --locked -- -D warnings && PYTHONPATH=bridge python3 -m unittest discover -s bridge/tests -v && npm run build && cargo check -p three-d-bee-desktop --locked && npm audit --audit-level=low && git diff --check",
+        "rustTests": 28,
+        "pythonTests": 21,
+        "vulnerabilities": 0,
+        "frontendBuild": "PASS",
+        "rustCheck": "PASS",
+        "format": "PASS",
+        "clippy": "PASS"
+      }
+    }
+  },
+  "environment": {
+    "platform": "Ubuntu Linux",
+    "node": "v24.14.1",
+    "npm": "11.11.0",
+    "python": "3.12.3",
+    "cargo": "1.96.1",
+    "rustc": "1.96.1",
+    "playwright": "1.62.0",
+    "vercelCli": "54.14.0",
+    "githubCli": "2.92.0"
+  },
+  "capabilities": {
+    "imagehossComfyUi": {
+      "status": "NOT CLAIMED",
+      "reason": "No ComfyUI listener is reachable at 127.0.0.1:8188 and no ImageHoss runtime configuration is present."
+    },
+    "videobossProvider": {
+      "status": "NOT CLAIMED",
+      "reason": "No supported server-side video provider credential is present."
+    },
+    "meshmallowBlender": {
+      "status": "NOT CLAIMED",
+      "reason": "No Blender executable is installed or discoverable on this machine."
+    },
+    "localGummyBox": {
+      "status": "PASS",
+      "mode": "browser-local IndexedDB and OPFS"
+    }
+  },
+  "deployment": {
+    "project": "gummy-os",
+    "projectId": "prj_iN4lDNquY0Y2xf297UvDZCVGWmsY",
+    "productionUrl": "https://gummy-os-six.vercel.app",
+    "deploymentId": "dpl_2vHQChhogRqYeBndN2HFEsJj49oV",
+    "deploymentUrl": "https://gummy-re97al5i9-mygummy.vercel.app",
+    "status": "READY",
+    "commit": "c1279e5f45d51e64febf4c29a701bbd5b21e62f1",
+    "note": "This is the pre-implementation production baseline and will be replaced only after final acceptance."
+  },
+  "openPullRequests": [
+    {
+      "repository": "bohselecta/3d-bee",
+      "number": 4,
+      "url": "https://github.com/bohselecta/3d-bee/pull/4",
+      "head": "5385880075dae340552b29c3466f3b78e8faa0d9",
+      "classification": "deferred",
+      "reason": "Physical-realization and manufacturing handoff is explicitly deferred by the finish kit and remains untouched."
+    }
+  ],
+  "releaseInvariants": [
+    "Human authority remains above Actor and Agent.",
+    "Actor and Agent remain distinct.",
+    "Mold is a permissioned operating contract.",
+    "Opening or configuring a specialist never executes.",
+    "Make Production is the sole Production execution transition.",
+    "Human acceptance is final and role-specific.",
+    "Local Gummy Box works without an account.",
+    "Night Gummy and Day Gummy are the only canonical expressions.",
+    "The exact five-color source palette remains unchanged.",
+    "Specialist repositories remain separate.",
+    "Specialist-native and Gummy OS Receipts remain distinct and linked.",
+    "Production-specific choices do not silently become Actor memory.",
+    "Public Meshmallow naming preserves all historical 3D Bee identifiers and evidence.",
+    "Simulated and genuine results are never conflated."
+  ],
+  "knownLimitations": [
+    "VideoBoss starts with one high-severity dependency advisory that must be repaired before release.",
+    "Live ImageHoss execution cannot be reproved on this machine without the supported ComfyUI runtime.",
+    "Live VideoBoss rendering cannot be proved without a supported provider credential.",
+    "Live Meshmallow artifact output cannot be proved without supported Blender.",
+    "Managed Box, Drive, production GitHub connector, Gummy Rooms live runtime, broad social, enterprise, federation, and marketplace remain outside the local-first release target."
+  ]
+}
