@@ -1,0 +1,77 @@
+{
+  "schema": "gummy.utility-tile-source-manifest/v0",
+  "status": "founder-supplied",
+  "suppliedAt": "2026-07-27",
+  "sourceArchive": "gummy-utility-tiles-founder-source-2026-07-27.zip",
+  "sourceArchiveUrl": "https://drive.google.com/file/d/10JJn88oYrK_3WzD5tuNpnec2riv-9-WE/view?usp=drivesdk",
+  "sourceDirectory": "design/source/gummy-utility-tiles-legacy",
+  "assets": [
+    {
+      "id": "gummy.utility.attach",
+      "sourceFile": "cliptogummy-tile.png",
+      "width": 306,
+      "height": 306,
+      "sha256": "f9ffadebdb81951141628c289d4a1a4ee7fc77557f2f0f0ab3a51399c07bb5e0",
+      "defaultLabel": "Attach Gummy"
+    },
+    {
+      "id": "gummy.utility.agent",
+      "sourceFile": "gummybot-tile.png",
+      "width": 306,
+      "height": 306,
+      "sha256": "94976c05d310742d8aafcd05640675cc861eca98f8ef157d3efae3ef1814198f",
+      "defaultLabel": "Agent Runtime"
+    },
+    {
+      "id": "gummy.utility.bowl",
+      "sourceFile": "gummybowl-tile.png",
+      "width": 306,
+      "height": 306,
+      "sha256": "a87e6af9749c17b839d62f49f199ee9a3ab9f6459dc1f8cfb39ae1587e681c1f",
+      "defaultLabel": "Bowl"
+    },
+    {
+      "id": "gummy.utility.deliver",
+      "sourceFile": "gummyexport-tile.png",
+      "width": 306,
+      "height": 306,
+      "sha256": "58b8c6164405fc0a8ce48e09113d40bd6b3996a34bb8f04cde3e2433c7119dc5",
+      "defaultLabel": "Deliver"
+    },
+    {
+      "id": "gummy.utility.setup",
+      "sourceFile": "gummylayout-tile.png",
+      "width": 306,
+      "height": 306,
+      "sha256": "3e393dfff3ceb072606dc5659a2a09af991a89137a6295561cd0cd1293c3a4ea",
+      "defaultLabel": "Production Setup"
+    },
+    {
+      "id": "gummy.utility.vision",
+      "sourceFile": "gummyvision-tile.png",
+      "width": 306,
+      "height": 306,
+      "sha256": "2fbf61e196a263f05655eb2045af9e0b6841ff27688bbeab42cf0f44cfe9c0b4",
+      "defaultLabel": "Inspect"
+    },
+    {
+      "id": "gummy.utility.progress",
+      "sourceFile": "loading-wheel.png",
+      "width": 699,
+      "height": 785,
+      "sha256": "f59615d2757845a10c217f047f78f2ee95fdc010445f19aa0ac16ab16a27f558",
+      "defaultLabel": "Gummy Working"
+    }
+  ],
+  "excluded": [
+    {
+      "sourceFile": "screenshot-placeholder.png",
+      "reason": "Exact duplicate of gummylayout-tile.png",
+      "sha256": "3e393dfff3ceb072606dc5659a2a09af991a89137a6295561cd0cd1293c3a4ea"
+    },
+    {
+      "sourceFile": "__MACOSX/*",
+      "reason": "AppleDouble metadata; not product assets"
+    }
+  ]
+}
