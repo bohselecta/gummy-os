@@ -26,11 +26,22 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
     }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/[...path].mjs" },
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/[...path].mjs" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
