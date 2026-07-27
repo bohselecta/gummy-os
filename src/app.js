@@ -8,7 +8,12 @@ import { WorkOrderWorkflow } from './core/workflow.js';
 import { CAPABILITIES, SOURCE_TEXT, createReceipt, ensureFullProductRecords, personalRecords } from './core/records.js';
 import { createId, sha256 } from './core/hash.js';
 import { migrateLegacy } from './core/migration.js';
+import { ProductionRuntimeRepository } from './core/production-repository.js';
+import { actorSurfaceWindowId } from './core/production-runtime.js';
 import { applicationLaunchState, loadProductCatalog } from './core/product-registry.js';
+import { createProductionApp } from './apps/production.js';
+import { createActorSurface } from './apps/actor-surface.js';
+import { createMasterControlApp } from './apps/master-control.js';
 import { WindowManager } from './window-manager.js';
 import { gummyAssets } from './brand/gummy-assets.js';
 
@@ -17,6 +22,7 @@ const announcer = document.querySelector('#announcer');
 const validator = new RecordValidator();
 const repository = new RecordRepository({ validator: (record, store, repo) => validator.validate(record, store, repo) });
 const byteStore = new ByteStore();
+const productionRepository = new ProductionRuntimeRepository({ repository, byteStore });
 const policy = new PolicyEngine(repository, byteStore);
 const localBox = new LocalBoxAdapter(repository, byteStore);
 const githubBox = new GitHubBoxAdapter();
@@ -27,11 +33,23 @@ let panelOpen = false;
 let panelTab = 'conversation';
 let selectedApp = 'guide';
 let selectedWorkOrderId = 'work-order:project-brief';
+let productionState = { productionRuntime: null };
+const productionStore = {
+  getState: () => productionState,
+  setState(updater) {
+    productionState = typeof updater === 'function' ? updater(productionState) : updater;
+    void productionRepository.persist(productionState.productionRuntime).catch(error => {
+      announce(`Production persistence blocked: ${error.message}`);
+    });
+    return productionState;
+  }
+};
 
 const surfaces = [
   ['glopper', '✦', 'Glopper'],
   ['gummies', '▤', 'My Gummies'],
   ['browser', '◉', 'Browser'],
+  ['productions', '◇', 'Productions'],
   ['actors', '◎', 'Actors / Bowls'],
   ['work-orders', '⇢', 'Work Orders'],
   ['receipts', '✓', 'Receipts'],
@@ -100,6 +118,7 @@ async function seedPersonalGummy({ name, address, mode }) {
     action: 'initialize-local-gummy-box', resources: ['box:hayden'], outcome: 'completed', reversible: true,
     detail: 'Created the authoritative Local Gummy Box and personal authority records. Identity remains local and unverified.'
   });
+  productionState = { productionRuntime: await productionRepository.initialize() };
 }
 
 function onboarding() {
@@ -257,7 +276,20 @@ async function renderShell() {
   if (savedWindows.length) {
     for (const saved of savedWindows) {
       const id = saved.id.slice('window:'.length);
-      if (id === 'guide' || surfaces.some(([surfaceId]) => surfaceId === id)) await openSurface(id);
+      if (id === 'guide' || surfaces.some(([surfaceId]) => surfaceId === id)) {
+        await openSurface(id);
+      } else if (id.startsWith('production-window:')) {
+        await openProduction(id.slice('production-window:'.length));
+      } else if (id.startsWith('production-master-control:')) {
+        await openProductionMasterControl(id.slice('production-master-control:'.length));
+      } else if (id.startsWith('actor-surface:')) {
+        const actor = productionState.productionRuntime.actors
+          .find(item => id.startsWith(`actor-surface:${item.id}:`));
+        if (actor) {
+          const suffix = id.slice(`actor-surface:${actor.id}:`.length, -5);
+          await openActorSurface(actor.id, suffix === 'standalone' ? null : suffix);
+        }
+      }
     }
   } else {
     await openSurface('guide');
@@ -301,6 +333,7 @@ async function openSurface(id) {
     guide: ['Welcome to your Gummy', 'orientation'],
     gummies: ['My Gummies', 'objects and quarantine'],
     browser: ['Gummy Browser', 'isolated navigation'],
+    productions: ['Productions', 'Actor-first durable undertakings'],
     actors: ['Actors & Bowls', 'composition proof'],
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
@@ -328,11 +361,101 @@ async function buildSurface(id) {
   if (id === 'guide') return guideSurface();
   if (id === 'gummies') return gummiesSurface();
   if (id === 'browser') return browserSurface();
+  if (id === 'productions') return productionSurface();
   if (id === 'actors') return actorsSurface();
   if (id === 'work-orders') return workOrdersSurface();
   if (id === 'receipts') return receiptsSurface();
   if (id === 'control') return controlSurface();
   return applicationsSurface();
+}
+
+function productionSurface(productionId = null) {
+  return createProductionApp({
+    store: productionStore,
+    productionId,
+    openActorSurface,
+    openMasterControl: openProductionMasterControl,
+    openProduction,
+    toast: (title, detail) => announce(`${title}. ${detail}`)
+  }).node;
+}
+
+async function openProduction(productionId) {
+  const production = productionState.productionRuntime.productions.find(item => item.id === productionId);
+  const id = `production-window:${productionId}`;
+  const content = productionSurface(productionId);
+  const existing = windowManager.windows.get(id);
+  if (existing) {
+    existing.querySelector('.window-body').replaceChildren(content);
+    existing.hidden = false;
+    windowManager.focus(existing);
+    return;
+  }
+  await windowManager.open({
+    id,
+    title: production?.title || 'Production',
+    subtitle: `${productionId} · Actor-first Production`,
+    content
+  });
+}
+
+async function openActorSurface(actorId, productionId = null) {
+  const actor = productionState.productionRuntime.actors.find(item => item.id === actorId);
+  const id = actorSurfaceWindowId(actorId, productionId);
+  const content = createActorSurface({
+    store: productionStore,
+    actorId,
+    productionId,
+    toast: (title, detail) => announce(`${title}. ${detail}`),
+    refreshWindow: () => refreshProductionSurfaces(productionId)
+  }).node;
+  const existing = windowManager.windows.get(id);
+  if (existing) {
+    existing.querySelector('.window-body').replaceChildren(content);
+    existing.hidden = false;
+    windowManager.focus(existing);
+    return;
+  }
+  await windowManager.open({
+    id,
+    title: actor?.name || actorId,
+    subtitle: productionId ? `Actor App Surface · ${productionId}` : 'Standalone Actor App Surface',
+    content
+  });
+}
+
+async function refreshProductionSurfaces(productionId = null) {
+  const overview = windowManager?.windows.get('productions');
+  if (overview) overview.querySelector('.window-body').replaceChildren(productionSurface());
+  if (productionId) {
+    const scoped = windowManager?.windows.get(`production-window:${productionId}`);
+    if (scoped) scoped.querySelector('.window-body').replaceChildren(productionSurface(productionId));
+  }
+  await renderBar();
+}
+
+async function openProductionMasterControl(productionId) {
+  const id = `production-master-control:${productionId}`;
+  const content = createMasterControlApp({
+    store: productionStore,
+    productionId,
+    openActorSurface,
+    openProduction,
+    toast: (title, detail) => announce(`${title}. ${detail}`)
+  }).node;
+  const existing = windowManager.windows.get(id);
+  if (existing) {
+    existing.querySelector('.window-body').replaceChildren(content);
+    existing.hidden = false;
+    windowManager.focus(existing);
+    return;
+  }
+  await windowManager.open({
+    id,
+    title: 'Master Control',
+    subtitle: `${productionId} · Production scope`,
+    content
+  });
 }
 
 function guideSurface() {
@@ -559,9 +682,11 @@ async function actorsSurface() {
     h('p', { class: 'eyebrow', text: 'Persistent identities, explicit composition' }),
     h('h2', { text: 'Actors & Bowls' }),
     h('p', { class: 'lede', text: 'People & Spaces is a first-class Gummy OS pillar. Actor Homes, stable @addresses, follows, memberships, sharing, Links, Grabs, and collaborative Rooms remain staged—not removed.' }),
-    h('div', { class: 'card-grid' }, actors.map(actor => h('article', { class: 'card' }, [
-      h('h3', { text: actor.name }), h('p', { text: `${actor.id} · ${actor.address}` }),
-      h('span', { class: 'status', text: `${actor.kind} · ${actor.status}` })
+    h('div', { class: 'card-grid' }, actors.map(actor => h('article', { class: 'card', dataset: { actorId: actor.id } }, [
+      h('h3', { text: actor.name }),
+      h('p', { text: `${actor.id} · ${actor.address}` }),
+      h('span', { class: 'status', text: `${actor.kind} · ${actor.status}` }),
+      h('button', { class: 'button', onclick: () => openActorSurface(actor.id) }, 'Open standalone Actor view')
     ]))),
     h('div', { class: 'button-row' }, [
       h('button', { class: 'button primary', onclick: composeBowl, disabled: bowls.some(bowl => bowl.id === 'bowl:composition-proof') }, 'Compose temporary private Bowl')
@@ -1140,10 +1265,16 @@ async function bootstrap() {
     document.querySelector('#boot')?.remove();
     const onboardingState = await repository.get('meta', 'onboarding');
     if (!onboardingState?.completed) appRoot.append(onboarding());
-    else await renderShell();
+    else {
+      productionState = { productionRuntime: await productionRepository.initialize() };
+      await renderShell();
+    }
     registerSW({ immediate: true });
     window.addEventListener('online', () => void resumeApprovedOutbox());
     window.addEventListener('offline', () => announce('Offline. Provider execution is unavailable; approvals will be revalidated before resuming.'));
+    window.addEventListener('gummy:open-actor-surface', event => {
+      void openActorSurface(event.detail.actorId, event.detail.productionId || null);
+    });
   } catch (error) {
     document.querySelector('#boot')?.remove();
     appRoot.append(h('main', { class: 'onboarding' }, h('div', { class: 'onboarding-card' }, [

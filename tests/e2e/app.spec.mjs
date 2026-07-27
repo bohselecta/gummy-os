@@ -160,7 +160,8 @@ test('approved Work Order produces separate result, Return, links, lease release
     }
     return result;
   });
-  expect(durable.gummies).toHaveLength(2);
+  expect(durable.gummies.filter(item => !item.extensions?.productionRuntime)).toHaveLength(2);
+  expect(durable.gummies.filter(item => item.extensions?.productionRuntime)).toHaveLength(2);
   expect(durable.returns.at(-1).result).toBe('completed');
   expect(durable.links.map(link => link.type)).toEqual(expect.arrayContaining(['derived-from', 'created-by']));
   expect(durable.taskLeases.at(-1).status).toBe('completed');

@@ -4,10 +4,13 @@ import { defaultState } from '../src/core/state.js';
 import { makeBowl, makeDrop, makeReceipt, safeExternalUrl } from '../src/core/protocol.js';
 import { CapabilityBroker } from '../src/core/capability-broker.js';
 
-test('default state includes personal, graph, and enterprise surfaces', () => {
-  assert.equal(defaultState.snack.id, 'snack:hayden');
-  assert.ok(defaultState.graph.snacks.length >= 2);
-  assert.ok(defaultState.enterprise.appPacks.length >= 1);
+test('localStorage state is limited to lightweight UI preferences', () => {
+  assert.deepEqual(Object.keys(defaultState).sort(), [
+    'deploymentMode',
+    'selectedReceiptFilter',
+    'selectedSurface'
+  ]);
+  assert.equal(defaultState.selectedSurface, 'guide');
 });
 
 test('graph objects receive stable type prefixes', () => {

@@ -7,6 +7,8 @@ const required = [
   'src/app.js',
   'src/styles.css',
   'src/core/state.js',
+  'src/core/production-runtime.js',
+  'src/core/production-repository.js',
   'src/core/capability-broker.js',
   'src/core/product-registry.js',
   'src/integrations/app-handoff.js',
@@ -14,6 +16,11 @@ const required = [
   'src/integrations/gummy-rooms.js',
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
+  'src/apps/production.js',
+  'src/apps/actor-surface.js',
+  'src/apps/master-control.js',
+  'src/brand/gummy-utility-tiles.js',
+  'src/production.css',
   'docs/BRAND_SYSTEM.md',
   'docs/BRAND_ASSET_CATALOG.md',
   'docs/GLOPPER_NAMING.md',
@@ -32,6 +39,16 @@ const required = [
   'docs/FULL_PRODUCT_PRESERVATION_DIRECTIVE.md',
   'docs/FULL_PRODUCT_GAP_AUDIT.md',
   'docs/MANAGED_GUMMY_BOX_LANE.md',
+  'docs/GUMMY_UTILITY_TILE_SYSTEM.md',
+  'docs/PRODUCTION_ACTOR_RUNTIME.md',
+  'docs/ACTOR_FIRST_PRODUCTION_MODEL.md',
+  'plans/active/2026-07-27-production-runtime-reconciliation-and-utility-tiles.md',
+  'design/source/gummy-utility-tiles-legacy/manifest.json',
+  'design/source/gummy-utility-tiles-legacy/SOURCE_ARCHIVE.md',
+  'public/brand/gummy/utility-tiles/manifest.json',
+  'scripts/generate-utility-tiles.mjs',
+  'scripts/check-utility-tiles.mjs',
+  'evidence/consolidation-feature-source-map.json',
   'public/registry/product-map.json',
   'public/registry/first-party-applications.json',
   'examples/glopper-web.agent.json',
@@ -75,7 +92,16 @@ const schemas = [
   'schemas/organization.schema.json',
   'schemas/policy-pack.schema.json',
   'schemas/snack.schema.json',
-  'schemas/graph-object.schema.json'
+  'schemas/graph-object.schema.json',
+  'schemas/actor-app-descriptor.schema.json',
+  'schemas/production.schema.json',
+  'schemas/production-participant.schema.json',
+  'schemas/production-actor-configuration.schema.json',
+  'schemas/actor-plan.schema.json',
+  'schemas/context-envelope.schema.json',
+  'schemas/production-run.schema.json',
+  'schemas/actor-update-proposal.schema.json',
+  'schemas/drag-intent.schema.json'
 ];
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
@@ -213,6 +239,32 @@ for (const requirement of [
   'No color picker, downloadable theme, per-window accent selection, mascot recoloring, or third-party Gummy OS skin is permitted.'
 ]) {
   if (!product.includes(requirement)) throw new Error(`product spec is missing brand requirement: ${requirement}`);
+}
+
+const productionDoctrine = await readFile('docs/PRODUCTION_ACTOR_RUNTIME.md', 'utf8');
+for (const requirement of [
+  'Make Production',
+  'ProductionActorConfiguration',
+  'Context Envelope',
+  'DragIntent',
+  'Drag/drop never grants ambient authority or starts execution.'
+]) {
+  if (!productionDoctrine.includes(requirement)) throw new Error(`Production runtime doctrine is missing: ${requirement}`);
+}
+
+const utilityDoctrine = await readFile('docs/GUMMY_UTILITY_TILE_SYSTEM.md', 'utf8');
+for (const requirement of [
+  'gummy.utility.attach',
+  'gummy.utility.agent',
+  'gummy.utility.bowl',
+  'gummy.utility.deliver',
+  'gummy.utility.setup',
+  'gummy.utility.vision',
+  'gummy.utility.progress',
+  'The tiles are presentation assets only.',
+  'No new CSS hue token is introduced from a tile color.'
+]) {
+  if (!utilityDoctrine.includes(requirement)) throw new Error(`utility tile doctrine is missing: ${requirement}`);
 }
 
 const agent = JSON.parse(await readFile('examples/glopper-web.agent.json', 'utf8'));

@@ -13,7 +13,16 @@ const schemaFiles = Object.freeze({
   'gummy.task-lease/v0': 'task-lease',
   'gummy.capability-grant/v0': 'capability-grant',
   'gummy.work-return/v0': 'work-return',
-  'gummy.action-receipt/v0': 'action-receipt'
+  'gummy.action-receipt/v0': 'action-receipt',
+  'gummy.production/v0': 'production',
+  'gummy.production-participant/v0': 'production-participant',
+  'gummy.production-actor-configuration/v0': 'production-actor-configuration',
+  'gummy.actor-app-descriptor/v0': 'actor-app-descriptor',
+  'gummy.actor-plan/v0': 'actor-plan',
+  'gummy.context-envelope/v0': 'context-envelope',
+  'gummy.production-run/v0': 'production-run',
+  'gummy.actor-update-proposal/v0': 'actor-update-proposal',
+  'gummy.drag-intent/v0': 'drag-intent'
 });
 
 function validateNode(schema, value, path = '$') {

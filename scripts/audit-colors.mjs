@@ -2,7 +2,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
 const approved = new Set(['#4b187a', '#7c2fd0', '#f2b544', '#fff1c7', '#100817']);
-const roots = ['index.html', 'src/app.js', 'src/window-manager.js', 'src/core/records.js', 'src/styles'];
+const roots = ['index.html', 'src'];
 const offenders = [];
 
 async function visit(path) {

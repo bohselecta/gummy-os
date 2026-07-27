@@ -1,11 +1,14 @@
 import { openDB } from 'idb';
 
 export const DATABASE_NAME = 'gummy-os';
-export const DATABASE_VERSION = 1;
+export const DATABASE_VERSION = 2;
 export const STORES = Object.freeze([
   'meta', 'humans', 'actors', 'agents', 'molds', 'masterControls', 'gummies',
   'bowls', 'links', 'grabs', 'boxes', 'workOrders', 'taskLeases', 'leaseClaims',
-  'grants', 'returns', 'receipts', 'workspaces', 'profiles', 'outbox'
+  'grants', 'returns', 'receipts', 'workspaces', 'profiles', 'outbox',
+  'actorAppDescriptors', 'productions', 'productionParticipants',
+  'productionConfigurations', 'actorPlans', 'contextEnvelopes',
+  'productionRuns', 'actorUpdateProposals', 'dragIntents'
 ]);
 
 /**
