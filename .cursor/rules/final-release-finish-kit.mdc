@@ -1,0 +1,96 @@
+---
+description: Execute the complete Gummy OS founder-ready release program without reopening architecture or stopping after proposals
+alwaysApply: true
+---
+
+# Final Release Finish Kit
+
+Before planning, editing, testing, or reviewing Gummy OS or its first-party creative specialist integrations, read:
+
+1. `docs/finish-kit/README.md`
+2. `docs/finish-kit/MASTER_RELEASE_ROADMAP.md`
+3. `docs/finish-kit/PRODUCT_READINESS_AND_UX.md`
+4. `docs/finish-kit/SPECIALIST_INTEGRATION_BLUEPRINT.md`
+5. `docs/finish-kit/INFRASTRUCTURE_AND_GUMMY_BOX.md`
+6. `docs/finish-kit/ACCEPTANCE_AND_RELEASE_MATRIX.md`
+7. `docs/finish-kit/RISKS_STOP_RULES_AND_DEFERRED_SCOPE.md`
+8. `docs/finish-kit/release-program.json`
+9. `plans/active/2026-07-27-master-finish-up-execution.md`
+
+Use `docs/finish-kit/CODEX_ONE_TURN_EXECUTION_PROMPT.md` for the complete autonomous execution brief.
+
+## Current mission
+
+Gummy OS is in release completion, not renewed architecture.
+
+```text
+preserve accepted product
+→ finish first-run and copy
+→ prove the golden Production path
+→ integrate ImageHoss
+→ integrate VideoBoss
+→ integrate Meshmallow
+→ finish Local Gummy Box recovery
+→ harden and polish
+→ pass final acceptance
+→ push final PRs and release
+```
+
+Do not stop after a contract proposal, vertical-slice recommendation, gap audit, or intermediate founder review. Reconcile the contract, implement the bounded phase, test it, commit it, and continue.
+
+## Locked execution distinction
+
+```text
+Open/configure specialist
+→ deterministic structure, validation, discovery, preview, save
+→ no creative Job, provider spend, or Blender execution
+
+Make Production
+→ freeze revision
+→ Context Envelope + Work Order + Mold + Lease + Grant
+→ actual eligible Agent/runtime
+→ native Job/evidence
+→ result + compare/review + Human acceptance
+→ handoff + Return + linked Receipts
+```
+
+## Product preservation
+
+- Do not turn Gummy OS into a generic chatbot, project manager, storage client, or prompt launcher.
+- Preserve Canvas, Bar, Gummy, Glopper, Local Box, Actors, Agents, Molds, Master Control, Productions, Gummies, Bowls, Links, Grabs, Work Orders, Leases, Grants, Returns, and Receipts.
+- Preserve Night Gummy, Day Gummy, the five locked brand anchors, and production brand Assets.
+- Preserve Gummy as orientation/continuity and Glopper as action/execution.
+- Preserve specialist repositories, native product relationships, native Jobs/packages/Assets, and native Receipts.
+- Preserve `bohselecta/3d-bee`, `app:3d-bee`, `actor:3d-bee`, and historical protocols while using **Meshmallow** publicly.
+- Preserve Local Gummy Box usefulness without an external account.
+
+## Truth and authority
+
+- Human authority remains above Actor and Agent.
+- Actor and Agent never collapse.
+- A Work Order is a proposal, not authority.
+- No execution without active Human approval, Actor, Agent/runtime, Mold, Task Lease, Capability Grant, and compatible capability state.
+- No provider secret enters browser code, logs, backups, fixtures, or Receipts.
+- No source or accepted Asset is overwritten.
+- Simulated and real results are visibly and structurally distinct.
+- Missing external capability produces a truthful unavailable state and does not stop unaffected release work.
+- Specialist and Gummy OS Receipts remain separate and linked.
+- Production-specific settings do not become Actor memory without an approved ActorUpdateProposal.
+
+## Builder workflow
+
+- Resolve exact current heads before editing.
+- Use one final release branch per touched repository.
+- Use phase checkpoint commits, not many competing PRs.
+- Run baseline tests before source changes.
+- Add automated acceptance with every visible/behavioral feature.
+- Do not ask Hayden to perform routine regression testing.
+- Do not skip or weaken tests to obtain green status.
+- Record exact evidence, limitations, migrations, rollback, heads, deployments, and external blockers.
+- Merge only under the required-gate policy in the finish kit.
+
+## Scope control
+
+Broad Social, Gummy Rooms live service, enterprise, federation, billing, marketplace, broad native OS control, all-provider expansion, manufacturing, finished-game generation, and final Underground wallpaper art are deferred unless required to preserve a current seam.
+
+Finish the personal release first.
