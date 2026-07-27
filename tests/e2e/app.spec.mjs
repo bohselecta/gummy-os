@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 async function onboard(page, mode = 'night') {
   await page.goto('/');
   await page.getByTestId(`mode-${mode}`).click();
-  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
   await page.getByRole('button', { name: 'Continue without connecting' }).click();
@@ -36,7 +36,7 @@ test('production Gummy identity is intact, responsive, addressable, and separate
   await expect(bootMark).toHaveAttribute('src', '/brand/gummy/web/gummy-app-icon-monogram.webp');
   await expect(page.getByAltText('Gummy OS')).toBeVisible();
   await page.getByTestId('mode-night').click();
-  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
   await page.getByRole('button', { name: 'Continue without connecting' }).click();
@@ -110,9 +110,9 @@ test('onboarding, Night/Day continuity, Canvas windows, Bar keyboard, and access
 test('simple doorway preserves the full product map and truthful first-party launches', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await onboard(page, 'night');
-  await expect(page.getByRole('button', { name: /Add a project/ })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Talk to Gummy/ })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Open an existing project/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Start a blank Production/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Open the Night Gummy Launch sample/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Learn how Gummy OS works/ })).toBeVisible();
   await expect(page.getByRole('tab', { name: /Actors/ })).toBeVisible();
   await page.getByRole('tab', { name: /Applications/ }).click();
 
@@ -161,7 +161,7 @@ test('approved Work Order produces separate result, Return, links, lease release
     return result;
   });
   expect(durable.gummies.filter(item => !item.extensions?.productionRuntime)).toHaveLength(2);
-  expect(durable.gummies.filter(item => item.extensions?.productionRuntime)).toHaveLength(2);
+  expect(durable.gummies.filter(item => item.extensions?.productionRuntime)).toHaveLength(4);
   expect(durable.returns.at(-1).result).toBe('completed');
   expect(durable.links.map(link => link.type)).toEqual(expect.arrayContaining(['derived-from', 'created-by']));
   expect(durable.taskLeases.at(-1).status).toBe('completed');

@@ -1,5 +1,6 @@
 import { button, clear, el, sectionHeading } from '../core/dom.js';
 import { utilityTile } from '../brand/gummy-utility-tiles.js';
+import { stateCopy } from '../core/product-copy.js';
 import {
   addActorToProduction,
   addRanchDayRoster,
@@ -47,15 +48,45 @@ export function createProductionApp({
     root.append(el('section', { class: 'production-empty' }, [
       tileImage('gummy.utility.setup', 192, 'utility-tile utility-hero'),
       el('span', { class: 'eyebrow', text: 'ACTOR-FIRST PRODUCTION' }),
-      el('h1', { text: 'Start with the undertaking, then bring in the Actors.' }),
-      el('p', { text: 'A Production is durable and editable. Nothing executes until a Human approves Make Production.' }),
-      button('Start private Ranch Day Production', 'primary-button large-action', () => {
-        const result = createProduction(store.getState().productionRuntime);
-        setRuntime(result.runtime);
-        productionId = result.production.id;
-        toast('Ranch Day created', 'The Production exists with @Hayden as owner. No service work executed.');
-        render();
-      })
+      el('h1', { text: 'Start a Production' }),
+      el('p', { text: 'A Production keeps the people, specialists, sources, decisions, Runs, results, and evidence for one undertaking together.' }),
+      el('p', { class: 'boundary-note', text: 'Configure freely. Nothing runs until you review and choose Make Production.' }),
+      el('div', { class: 'production-first-actions' }, [
+        button('Start a blank Production', 'primary-button large-action', () => {
+          const result = createProduction(store.getState().productionRuntime, {
+            title: 'Untitled Production',
+            description: 'A private Production ready for your direction, sources, and specialist choices.',
+            sourceGummyIds: []
+          });
+          setRuntime(result.runtime);
+          productionId = result.production.id;
+          toast('Blank Production ready', 'Only the private workspace was created. No specialist work ran.');
+          render();
+        }),
+        button('Open the Night Gummy Launch sample', 'secondary-button large-action', () => {
+          const result = createProduction(store.getState().productionRuntime, {
+            id: 'production:night-gummy-launch',
+            title: 'Night Gummy Launch',
+            description: 'Create brand-owned launch image, motion, and editable scene concepts without private likenesses or external credentials.',
+            sourceGummyIds: ['gummy:night-gummy-launch-brief', 'gummy:night-gummy-launch-brand-kit']
+          });
+          setRuntime(result.runtime);
+          productionId = result.production.id;
+          toast('Night Gummy Launch opened', 'The safe sample is ready to configure. No image, video, or scene work ran.');
+          render();
+        })
+      ]),
+      el('section', { class: 'fixture-disclosure', 'aria-label': 'Compatibility test fixtures' }, [
+        el('strong', { text: 'Compatibility test fixture' }),
+        el('p', { text: 'Ranch Day remains available only for historical deterministic receipts and migration tests.' }),
+        button('Start private Ranch Day Production', 'ghost-button', () => {
+          const result = createProduction(store.getState().productionRuntime);
+          setRuntime(result.runtime);
+          productionId = result.production.id;
+          toast('Ranch Day fixture created', 'This deterministic compatibility fixture did not execute any service work.');
+          render();
+        })
+      ])
     ]));
   }
 
@@ -78,6 +109,10 @@ export function createProductionApp({
       fact('Visibility', production.visibility),
       fact('Revision', production.revision),
       fact('Authority', production.authoritativeLocation)
+    ]));
+    root.append(el('div', { class: 'boundary-callout configuration-boundary' }, [
+      el('strong', { text: 'Configure freely. Nothing runs yet.' }),
+      el('p', { text: 'Opening specialists, assigning sources, and saving settings only prepares this Production. Make Production is the only step that starts authorized work.' })
     ]));
 
     const tabs = el('nav', { class: 'production-tabs', 'aria-label': 'Production sections' });
@@ -126,7 +161,7 @@ export function createProductionApp({
         el('span', { class: 'setup-number', text: String(step.order) }),
         el('span', {}, [
           el('strong', { text: actor.name }),
-          el('small', { text: `${step.readiness}${step.optional ? ' · optional' : ''}` })
+          el('small', { text: `${step.readiness}${step.optional ? ' · optional' : ' · required'} · open to configure; no execution` })
         ])
       ]));
     }
@@ -467,7 +502,10 @@ export function createProductionApp({
     const blocked = preview.blockers.length > 0;
     return el('section', { class: 'modal-card run-preview', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Master Control Run preview' }, [
       el('span', { class: 'eyebrow', text: 'MASTER CONTROL · RUN PREVIEW' }),
-      el('h2', { text: blocked ? 'Make Production is blocked' : 'Ready for Human approval' }),
+      el('h2', { text: blocked ? 'Make Production is blocked' : stateCopy('ready').title }),
+      el('p', { class: 'boundary-note', text: blocked
+        ? `${stateCopy('blocked').title}. ${stateCopy('blocked').detail}`
+        : stateCopy('ready').detail }),
       tileImage(blocked ? 'gummy.utility.setup' : 'gummy.utility.progress', 96, 'utility-tile intent-tile'),
       el('div', { class: 'intent-grid' }, [
         fact('Frozen Production', `${production.id}@${preview.productionRevision}`),

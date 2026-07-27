@@ -4,13 +4,13 @@ import AxeBuilder from '@axe-core/playwright';
 async function onboard(page, mode = 'night') {
   await page.goto('/');
   await page.getByTestId(`mode-${mode}`).click();
-  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
   await page.getByRole('button', { name: 'Continue without connecting' }).click();
   await page.getByTestId('enter-canvas').click();
   await page.getByRole('tab', { name: /Productions/ }).click();
-  await expect(page.getByRole('heading', { name: /Start with the undertaking/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Start a Production' })).toBeVisible();
 }
 
 async function durableProductionState(page) {
@@ -127,7 +127,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
 
   await productionWindow.getByRole('button', { name: 'Make Production' }).click();
   const runPreview = productionWindow.getByRole('dialog', { name: 'Master Control Run preview' });
-  await expect(runPreview).toContainText('Ready for Human approval');
+  await expect(runPreview).toContainText('Ready to review');
   await expect(runPreview).toContainText('Human → Master Control');
   await expect(runPreview.locator('[data-utility-id="gummy.utility.progress"]')).toBeVisible();
   await runPreview.getByRole('button', { name: 'Approve & Make Production' }).click();

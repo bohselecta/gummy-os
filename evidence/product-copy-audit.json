@@ -1,0 +1,44 @@
+{
+  "schema": "gummy.product-copy-audit/v1",
+  "createdAt": "2026-07-27T00:00:00.000Z",
+  "status": "pass",
+  "welcome": {
+    "headline": "Your creative computer, with you in control.",
+    "executionBoundary": "Nothing runs until you choose Make Production.",
+    "accountRequired": false
+  },
+  "primaryPaths": [
+    "Start a blank Production",
+    "Open the Night Gummy Launch sample"
+  ],
+  "progressiveDisclosure": {
+    "plainLanguageFirst": true,
+    "operationalTermsInContext": true,
+    "protocolDetailInspectable": true,
+    "technicalAuthorityCollapsedDuringFirstRun": true
+  },
+  "stateCopy": [
+    "ready",
+    "unavailable",
+    "blocked",
+    "denied",
+    "failed",
+    "cancelled",
+    "recovery",
+    "awaitingAcceptance",
+    "accepted"
+  ],
+  "checks": {
+    "publicMeshmallowName": "pass",
+    "fixtureOnlyDoorwayRemoved": "pass",
+    "realGenerationClaimsTruthful": "pass",
+    "executionBoundaryUnambiguous": "pass",
+    "gummyGlopperSeparated": "pass",
+    "nextActionsPresent": "pass"
+  },
+  "automatedBy": [
+    "npm run copy:audit",
+    "tests/product-copy.test.mjs",
+    "tests/e2e/onboarding.spec.mjs"
+  ]
+}

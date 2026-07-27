@@ -261,6 +261,36 @@ export function createInitialProductionRuntime() {
     gummies: [
       {
         schema: 'gummy.gummy/v0',
+        id: 'gummy:night-gummy-launch-brief',
+        name: 'Night Gummy Launch brief.md',
+        kind: 'source',
+        mediaType: 'text/markdown',
+        content: '# Night Gummy Launch\nCreate a 16:9 Gummy OS launch image, a short motion plan, and a simple stylized chamber using only repository-owned brand assets.\n',
+        revision: '1',
+        hash: 'sha256:f2f29d98e0813d803558a673f5d1761b2ce407e11aa8d7f50d36ae6a755b9f90',
+        ownerActorId: 'actor:hayden',
+        creatorActorId: 'actor:hayden',
+        authoritativeLocation: 'browser:local-origin',
+        status: 'source',
+        linkIds: []
+      },
+      {
+        schema: 'gummy.gummy/v0',
+        id: 'gummy:night-gummy-launch-brand-kit',
+        name: 'Approved Gummy brand kit',
+        kind: 'reference',
+        mediaType: 'application/vnd.gummy.reference+json',
+        content: '{"asset":"gummy-brand-kit","rights":"repository-owned","audience":"public-launch","privateLikeness":false}',
+        revision: '1',
+        hash: 'sha256:7bbd0e8097e99959e69d711936fffcc5573259e9ab66f0ca70b5e808d121c9a2',
+        ownerActorId: 'actor:hayden',
+        creatorActorId: 'actor:hayden',
+        authoritativeLocation: 'browser:local-origin',
+        status: 'source',
+        linkIds: []
+      },
+      {
+        schema: 'gummy.gummy/v0',
         id: 'gummy:ranch-day-source-brief',
         name: 'Ranch Day source brief.md',
         kind: 'source',
@@ -322,11 +352,15 @@ export function createProduction(runtime, {
   title = 'Ranch Day',
   description = 'Private Ranch Day family video Production',
   ownerActorId = 'actor:hayden',
-  visibility = 'private'
+  visibility = 'private',
+  id: requestedId = null,
+  sourceGummyIds = ['gummy:ranch-day-source-brief', 'gummy:hoyt-likeness-approved']
 } = {}) {
   const next = clone(runtime);
   const stamp = now();
-  const id = title === 'Ranch Day' && !next.productions.some(item => item.id === 'production:ranch-day')
+  const id = requestedId && !next.productions.some(item => item.id === requestedId)
+    ? requestedId
+    : title === 'Ranch Day' && !next.productions.some(item => item.id === 'production:ranch-day')
     ? 'production:ranch-day'
     : uid('production');
   const production = {
@@ -342,7 +376,7 @@ export function createProduction(runtime, {
     bowlIds: [],
     actorPlanIds: [],
     runIds: [],
-    gummyIds: ['gummy:ranch-day-source-brief', 'gummy:hoyt-likeness-approved'],
+    gummyIds: clone(sourceGummyIds),
     deliverableIds: [],
     authoritativeLocation: 'browser:local-origin',
     revision: '1',

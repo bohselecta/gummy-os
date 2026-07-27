@@ -145,13 +145,14 @@ function onboarding() {
     card.append(identity, meter, h('p', { class: 'eyebrow', text: `Personal Gummy · ${step + 1} / 5` }));
     if (step === 0) {
       card.append(
-        h('h1', { text: 'Choose how Gummy feels' }),
-        h('p', { class: 'lede', text: 'This is the only visual mode choice. Missing or invalid preferences safely return to Night Gummy.' }),
+        h('h1', { text: 'Your creative computer, with you in control.' }),
+        h('p', { class: 'lede', text: 'Start locally. Bring an idea, file, or project. Configure what you want. Nothing runs until you choose Make Production.' }),
+        h('p', { text: 'Choose Night or Day Gummy. Start locally without an account; connect more only when you choose.' }),
         h('div', { class: 'choice-grid' }, ['night', 'day'].map(mode => h('button', {
           class: 'choice', 'aria-pressed': String(choices.mode === mode), dataset: { testid: `mode-${mode}` },
           onclick: () => { choices.mode = mode; void applyMode(mode, false); render(); }
         }, [h('strong', { text: mode === 'night' ? 'Night Gummy' : 'Day Gummy' }), h('span', { text: mode === 'night' ? 'Deep purple space, cream type.' : 'Cream space, inky type.' })]))),
-        nextButton('Continue', () => step += 1, () => Boolean(choices.mode))
+        nextButton('Enter Gummy OS', () => step += 1, () => Boolean(choices.mode))
       );
     } else if (step === 1) {
       const name = h('input', { id: 'human-name', value: choices.name, autocomplete: 'name' });
@@ -167,9 +168,9 @@ function onboarding() {
       );
     } else if (step === 2) {
       card.append(
-        h('h1', { text: 'Create your Local Gummy Box' }),
-        h('p', { class: 'lede', text: 'The Box keeps Work Orders, Returns, Receipts, and artifacts. Gummy bytes use origin-private storage on this device.' }),
-        h('div', { class: 'card' }, [h('h3', { text: 'Local Gummy Box' }), h('p', { text: 'Authoritative · private · browser origin storage' }), h('span', { class: 'status', text: 'Ready to initialize' })]),
+        h('h1', { text: 'Your Local Gummy Box is ready.' }),
+        h('p', { class: 'lede', text: 'It keeps your Productions, Gummies, Returns, and Receipts in this browser. You can export a backup or connect another location later.' }),
+        h('div', { class: 'card' }, [h('h3', { text: 'Local Gummy Box' }), h('p', { text: 'Private on this device · no external account required' }), h('span', { class: 'status', text: 'Ready' })]),
         nextButton('Create Local Gummy Box', () => step += 1)
       );
     } else if (step === 3) {
@@ -183,7 +184,10 @@ function onboarding() {
       );
     } else {
       card.append(
-        h('h1', { text: 'Review your personal authority' }),
+        h('h1', { text: 'Configure freely. Nothing runs yet.' }),
+        h('p', { class: 'lede', text: 'Add specialists, assign references, choose routes, and preview the package. Make Production is the only step that starts authorized work.' }),
+        h('details', {}, [
+          h('summary', { text: 'Review technical authority details' }),
         facts([
           ['Human', `${choices.name} · local, non-verified`],
           ['Actor', `actor:hayden · ${choices.address}`],
@@ -193,6 +197,7 @@ function onboarding() {
           ['Master Control', 'master-control:hayden'],
           ['Authoritative location', 'Local Gummy Box'],
           ['Native authority', 'false']
+        ])
         ]),
         h('button', {
           class: 'button primary', dataset: { testid: 'enter-canvas' },
@@ -210,7 +215,7 @@ function onboarding() {
               card.append(h('p', { class: 'notice', text: error instanceof ByteStoreError ? `Persistence blocked: ${error.message}` : error.message }));
             }
           }
-        }, 'Enter Gummy Canvas')
+        }, 'Got it — open my Canvas')
       );
     }
   };
@@ -462,21 +467,22 @@ function guideSurface() {
   return h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Gummy guide · orientation and continuity' }),
     h('section', { class: 'doorway', 'aria-label': 'Start in Gummy OS' }, [
-      h('h1', { text: 'What would you like to do?' }),
-      h('p', { class: 'lede', text: 'Start simply. The full Canvas, Applications, People & Spaces, Glopper, Activity, and Access & Control remain available in the Gummy Bar.' }),
+      h('h1', { text: 'Your creative computer, with you in control.' }),
+      h('p', { class: 'lede', text: 'Start locally. Configure what you want. Nothing runs until you choose Make Production.' }),
       h('div', { class: 'doorway-actions' }, [
-        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('gummies') }, [
-          h('strong', { text: 'Add a project' }),
-          h('span', { text: 'Bring files and work into your Local Gummy Box.' })
+        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('productions') }, [
+          h('strong', { text: 'Start a blank Production' }),
+          h('span', { text: 'Create a private workspace. No specialist work starts.' })
         ]),
-        h('button', { class: 'choice doorway-choice', onclick: () => document.querySelector('#gummy-conversation')?.focus() }, [
-          h('strong', { text: 'Talk to Gummy' }),
-          h('span', { text: 'Ask for orientation without granting execution authority.' })
-        ]),
-        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('gummies') }, [
-          h('strong', { text: 'Open an existing project' }),
-          h('span', { text: 'Continue from durable Gummies without replacing the source.' })
+        h('button', { class: 'choice doorway-choice', onclick: () => openSurface('productions') }, [
+          h('strong', { text: 'Open the Night Gummy Launch sample' }),
+          h('span', { text: 'Use safe brand-owned sources and deterministic demonstration routes.' })
         ])
+      ]),
+      h('div', { class: 'button-row secondary-doorway-actions' }, [
+        h('button', { class: 'button', onclick: () => openSurface('gummies') }, 'Import a project or backup'),
+        h('button', { class: 'button', onclick: () => openSurface('productions') }, 'Open an existing Production'),
+        h('button', { class: 'button', onclick: () => document.querySelector('#gummy-conversation')?.focus() }, 'Learn how Gummy OS works')
       ])
     ]),
     h('section', {

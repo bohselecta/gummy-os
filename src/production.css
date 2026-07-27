@@ -97,6 +97,17 @@
   padding: 14px 18px;
 }
 
+.production-first-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fixture-disclosure {
+  margin-top: 22px;
+  color: var(--muted);
+}
+
 .production-header {
   display: flex;
   justify-content: space-between;
