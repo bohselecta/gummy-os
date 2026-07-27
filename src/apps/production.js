@@ -2,11 +2,14 @@ import { button, clear, el, sectionHeading } from '../core/dom.js';
 import { utilityTile } from '../brand/gummy-utility-tiles.js';
 import { stateCopy } from '../core/product-copy.js';
 import {
+  acceptProductionResult,
   addActorToProduction,
+  addNightGummyLaunchRoster,
   addRanchDayRoster,
   applyDragIntent,
   compileActorPlan,
   createDragIntent,
+  createDeltaRevision,
   createProduction,
   getSetupGuidance,
   makeProduction,
@@ -68,6 +71,7 @@ export function createProductionApp({
             id: 'production:night-gummy-launch',
             title: 'Night Gummy Launch',
             description: 'Create brand-owned launch image, motion, and editable scene concepts without private likenesses or external credentials.',
+            audience: 'public-launch',
             sourceGummyIds: ['gummy:night-gummy-launch-brief', 'gummy:night-gummy-launch-brand-kit']
           });
           setRuntime(result.runtime);
@@ -114,6 +118,12 @@ export function createProductionApp({
       el('strong', { text: 'Configure freely. Nothing runs yet.' }),
       el('p', { text: 'Opening specialists, assigning sources, and saving settings only prepares this Production. Make Production is the only step that starts authorized work.' })
     ]));
+    if (production.id === 'production:night-gummy-launch') {
+      root.append(el('div', { class: 'demonstration-lane', role: 'status' }, [
+        el('strong', { text: 'Deterministic demonstration lane' }),
+        el('span', { text: 'Available without credentials. It creates structured studies and evidence, not real generated image, video, or Blender output. Connected routes are disclosed separately.' })
+      ]));
+    }
 
     const tabs = el('nav', { class: 'production-tabs', 'aria-label': 'Production sections' });
     for (const [id, label] of [
@@ -170,11 +180,14 @@ export function createProductionApp({
 
   function renderCanvas(runtime, production, main) {
     const participants = runtime.participants.filter(item => item.productionId === production.id && item.status !== 'removed');
+    const sample = production.id === 'production:night-gummy-launch';
     main.append(sectionHeading('Participant roster', 'Actors participate; Agent executors remain separately identified.', [
-      button('Add Ranch Day roster', 'primary-button', () => {
-        const next = addRanchDayRoster(store.getState().productionRuntime, production.id, 'mention');
+      button(sample ? 'Add launch specialists' : 'Add Ranch Day roster', 'primary-button', () => {
+        const next = sample
+          ? addNightGummyLaunchRoster(store.getState().productionRuntime, production.id, 'sample')
+          : addRanchDayRoster(store.getState().productionRuntime, production.id, 'mention');
         setRuntime(next);
-        toast('Roster proposed by @mention', 'Participants were added for configuration. No Agent executed.');
+        toast(sample ? 'Launch specialists added' : 'Roster proposed by @mention', 'Participants were added for configuration. No Agent executed.');
         render();
       })
     ]));
@@ -364,10 +377,20 @@ export function createProductionApp({
           setDragProxy(event, gummy.status === 'result' ? 'gummy.utility.deliver' : 'gummy.utility.attach', gummy.name);
         }
       }, [
-        el('span', { class: 'eyebrow', text: gummy.status }),
+        el('span', { class: 'eyebrow', text: gummy.acceptance ? `accepted · ${gummy.acceptance.role}` : gummy.status }),
         el('strong', { text: gummy.name }),
         el('small', { text: `${gummy.mediaType} · revision ${gummy.revision}` }),
         el('code', { text: gummy.hash }),
+        gummy.status === 'result' ? button(`Accept as ${acceptanceRole(gummy)}`, 'primary-button', () => {
+          const accepted = acceptProductionResult(store.getState().productionRuntime, {
+            productionId: production.id,
+            resultGummyId: gummy.id,
+            role: acceptanceRole(gummy)
+          });
+          setRuntime(accepted.runtime);
+          toast('Result accepted', `${gummy.name} now fills the ${acceptanceRole(gummy)} role. Other outputs and sources remain unchanged.`);
+          render();
+        }) : null,
         button('Propose as VideoBoss input', 'secondary-button', () => proposeIntent({
           sourceKind: 'gummy',
           sourceId: gummy.id,
@@ -446,7 +469,17 @@ export function createProductionApp({
         el('div', { class: 'run-hashes' }, [
           el('code', { text: run.manifestHash }),
           el('small', { text: `Sources frozen: ${run.sourceGummyRevisions.map(item => `${item.id}@${item.revision}`).join(', ')}` })
-        ])
+        ]),
+        button('Keep everything except one direction', 'secondary-button', () => {
+          const revised = createDeltaRevision(store.getState().productionRuntime, production.id, {
+            except: 'the next direction you edit',
+            note: `Based on ${run.id}`
+          });
+          setRuntime(revised.runtime);
+          toast('Delta revision ready', `${revised.delta.instruction} Accepted role locks were carried forward. No work executed.`);
+          selectedTab = 'canvas';
+          render();
+        })
       ]));
     }
   }
@@ -574,6 +607,16 @@ function setupTileForActor(actorId) {
     'actor:project-composer': 'gummy.utility.setup',
     'actor:gummy-storage': 'gummy.utility.deliver'
   }[actorId] || 'gummy.utility.setup';
+}
+
+function acceptanceRole(gummy) {
+  return {
+    'actor:imagehoss': 'launch-image',
+    'actor:3d-bee': 'editable-scene-concept',
+    'actor:videoboss': 'motion-shot-plan',
+    'actor:project-composer': 'final-production-package',
+    'actor:gummy-storage': 'evidence-preservation-manifest'
+  }[gummy.creatorActorId] || 'production-result';
 }
 
 function setDragProxy(event, utilityId, label) {
