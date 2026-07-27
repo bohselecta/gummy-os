@@ -1,0 +1,60 @@
+{
+  "schema": "gummy.release-hardening-evidence/v1",
+  "phase": 8,
+  "status": "PASS",
+  "productPolish": {
+    "aboutCapabilitiesLimitsSurface": "implemented",
+    "buildCommitVisible": true,
+    "truthfulUnavailableSpecialists": true,
+    "responsiveViewports": [
+      "desktop",
+      "laptop",
+      "tablet",
+      "phone"
+    ],
+    "nightDay": "tested",
+    "reducedMotion": "tested"
+  },
+  "accessibility": {
+    "criticalViolations": 0,
+    "seriousViolations": 0,
+    "axeVersion": "4.12.1",
+    "coverage": [
+      "onboarding progress semantics",
+      "Gummy Bar roving keyboard focus",
+      "Night and Day",
+      "desktop, laptop, tablet, and phone",
+      "About / Limits"
+    ]
+  },
+  "security": {
+    "sourceFilesScanned": 222,
+    "browserJavascriptBytes": 212778,
+    "browserCssBytes": 25989,
+    "sourceMaps": 0,
+    "serverOnlyMarkersInBrowserBundle": 0,
+    "securityHeaders": "tested",
+    "externalIframeSandbox": "tested",
+    "externalBlankLinksNoOpener": "tested",
+    "dependencyAudit": "PASS"
+  },
+  "reliability": {
+    "offlineCachedShell": "PASS",
+    "offlineSessionFallback": "external capabilities disabled",
+    "terminalBootState": "PASS",
+    "noIndefiniteBusyState": "PASS",
+    "cancellationRecoveryTimeoutDuplicateAndStaleLeaseCoverage": "PASS in deterministic suite"
+  },
+  "performance": {
+    "status": "PASS",
+    "evidence": "evidence/performance-budget.json",
+    "measurementKind": "Playwright Chromium Performance API lab sample",
+    "chromeDevToolsTrace": "NOT CLAIMED — Chrome DevTools MCP unavailable",
+    "fieldCoreWebVitals": "NOT CLAIMED"
+  },
+  "commands": [
+    "node scripts/release-hardening.mjs",
+    "npx playwright test tests/e2e/hardening.spec.mjs",
+    "npm audit"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "gummy.performance-budget/v1",
+  "measuredAt": "2026-07-27T00:00:00.000Z",
+  "environment": {
+    "kind": "local-production-build",
+    "browser": "Playwright Chromium",
+    "viewportCoverage": [
+      "1440x900",
+      "1024x768",
+      "768x1024",
+      "320x568",
+      "320x720"
+    ],
+    "limitations": [
+      "Chrome DevTools MCP was unavailable, so these are repeatable Performance API lab measurements rather than a DevTools trace.",
+      "These measurements are not field Core Web Vitals and do not claim real-user performance.",
+      "There is no remote image-proxy route in this release; the bounded repository-owned image asset path was measured instead."
+    ]
+  },
+  "budgets": {
+    "ttfbMs": 800,
+    "fcpMs": 1800,
+    "lcpMs": 2500,
+    "cls": 0.1,
+    "longTaskTotalMs": 200,
+    "initialResourceCount": 30,
+    "firstRunMs": 5000,
+    "indexedDbHydrationMs": 500,
+    "eightWindowCyclesMs": 3000,
+    "heapGrowthBytes": 33554432,
+    "domNodeGrowth": 100,
+    "productionOpenMs": 1500,
+    "productionReopenMs": 2500,
+    "receiptHistoryRenderMs": 1500,
+    "repositoryAssetLoadMs": 1000,
+    "phoneInteractionMs": 1000,
+    "cachedOfflineShellMs": 2500
+  },
+  "latestPassingSample": {
+    "ttfbMs": 1.5,
+    "domContentLoadedMs": 47.5,
+    "loadMs": 47.5,
+    "fcpMs": 64,
+    "lcpMs": 100,
+    "cls": 0,
+    "longTaskTotalMs": 0,
+    "longTaskCount": 0,
+    "resourceCount": 6,
+    "transferBytes": 328958,
+    "firstRunMs": 426,
+    "indexedDbHydrationMs": 3.9,
+    "hydratedRecords": 45,
+    "eightWindowCyclesMs": 799,
+    "heapGrowthBytes": 0,
+    "domNodeGrowth": 0,
+    "productionOpenMs": 81,
+    "productionReopenMs": 160,
+    "receiptHistoryRenderMs": 178,
+    "receiptCount": 253,
+    "repositoryAssetLoadMs": 2.9,
+    "repositoryAssetBytes": 66910,
+    "phoneInteractionMs": 134,
+    "cachedOfflineShellMs": 137
+  },
+  "status": "PASS",
+  "automatedBy": "tests/e2e/hardening.spec.mjs"
+}

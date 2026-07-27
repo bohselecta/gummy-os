@@ -64,7 +64,8 @@ const surfaces = [
   ['work-orders', '⇢', 'Work Orders'],
   ['receipts', '✓', 'Receipts'],
   ['control', '⌁', 'Master Control'],
-  ['applications', '⌘', 'Applications']
+  ['applications', '⌘', 'Applications'],
+  ['about', 'ⓘ', 'About / Limits']
 ];
 
 function h(tag, props = {}, children = []) {
@@ -95,9 +96,21 @@ function announce(message) {
 }
 
 async function initializeSession() {
-  const response = await fetch('/api/v1/session');
-  session = await response.json();
-  sessionStorage.setItem('gummy-csrf', session.csrf);
+  try {
+    const response = await fetch('/api/v1/session');
+    if (!response.ok) throw new Error(`Session endpoint returned ${response.status}`);
+    session = await response.json();
+    if (session.csrf) sessionStorage.setItem('gummy-csrf', session.csrf);
+  } catch {
+    session = {
+      openaiConfigured: false,
+      githubConfigured: false,
+      testMode: false,
+      offline: true,
+      csrf: ''
+    };
+    sessionStorage.removeItem('gummy-csrf');
+  }
 }
 
 async function applyMode(mode, persist = true) {
@@ -150,7 +163,15 @@ function onboarding() {
         decoding: 'async'
       })
     ]);
-    const meter = h('div', { class: 'step-meter', 'aria-label': `Step ${step + 1} of 5` });
+    const meter = h('div', {
+      class: 'step-meter',
+      role: 'progressbar',
+      'aria-label': 'Onboarding progress',
+      'aria-valuemin': '1',
+      'aria-valuemax': '5',
+      'aria-valuenow': String(step + 1),
+      'aria-valuetext': `Step ${step + 1} of 5`
+    });
     for (let index = 0; index < 5; index += 1) meter.append(h('span', { class: index <= step ? 'active' : '' }));
     card.append(identity, meter, h('p', { class: 'eyebrow', text: `Personal Gummy · ${step + 1} / 5` }));
     if (step === 0) {
@@ -359,10 +380,11 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
   if (!bar) return;
   const pending = (await repository.all('workOrders')).filter(order => order.status === 'awaiting-approval').length;
   const receipts = (await repository.all('receipts')).length;
+  const hasSelectedTab = surfaces.some(([id]) => id === selectedApp);
   bar.replaceChildren();
   surfaces.forEach(([id, icon, label], index) => {
     const button = h('button', {
-      class: 'bar-candy', role: 'tab', 'aria-selected': String(selectedApp === id), tabindex: selectedApp === id ? '0' : '-1',
+      class: 'bar-candy', role: 'tab', 'aria-selected': String(selectedApp === id), tabindex: selectedApp === id || (!hasSelectedTab && index === 0) ? '0' : '-1',
       dataset: { app: id }, onclick: () => id === 'glopper' ? togglePanel() : openSurface(id)
     }, [h('span', { class: 'icon', 'aria-hidden': 'true', text: icon }), h('span', { class: 'label', text: label })]);
     if (id === 'work-orders' && pending) button.append(h('span', { class: 'badge', 'aria-label': `${pending} awaiting approval`, text: String(pending) }));
@@ -397,7 +419,8 @@ async function openSurface(id) {
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
     control: ['Master Control', 'authority and revocation'],
-    applications: ['Applications', 'full Gummy OS product map']
+    applications: ['Applications', 'full Gummy OS product map'],
+    about: ['About Gummy', 'capabilities, limits, privacy, and build']
   };
   const content = await buildSurface(id);
   const existing = windowManager.windows.get(id);
@@ -425,6 +448,7 @@ async function buildSurface(id) {
   if (id === 'work-orders') return workOrdersSurface();
   if (id === 'receipts') return receiptsSurface();
   if (id === 'control') return controlSurface();
+  if (id === 'about') return aboutSurface();
   return applicationsSurface();
 }
 
@@ -1365,6 +1389,59 @@ async function applicationsSurface() {
       h('p', { class: 'notice', text: 'Protected applications are not silently hidden. Launch remains blocked until the registry can be validated.' })
     ]));
   }
+  return root;
+}
+
+function aboutSurface() {
+  const commit = typeof __GUMMY_BUILD_COMMIT__ === 'string' ? __GUMMY_BUILD_COMMIT__ : 'unknown';
+  const root = h('div', { dataset: { testid: 'about-capabilities-limits' } }, [
+    h('p', { class: 'eyebrow', text: 'Release identity and honest boundaries' }),
+    h('h2', { text: 'Gummy OS 0.1' }),
+    h('p', { class: 'lede', text: 'A governed personal creative computer. Configure freely; only Make Production starts authorized work.' }),
+    h('div', { class: 'card-grid' }, [
+      h('article', { class: 'card' }, [
+        h('h3', { text: 'Available now' }),
+        h('ul', {}, [
+          h('li', { text: 'Local-first Gummy Box with complete backup, inspect-first restore, and scoped reset.' }),
+          h('li', { text: 'Durable Productions, Actor Plans, Work Orders, Leases, Grants, Returns, Receipts, and accepted-role evidence.' }),
+          h('li', { text: 'Deterministic ImageHoss, VideoBoss, and Meshmallow Production adapters with explicit simulation disclosure.' }),
+          h('li', { text: 'Optional repository-scoped GitHub mirror when the server capability is configured and a Human chooses it.' })
+        ])
+      ]),
+      h('article', { class: 'card' }, [
+        h('h3', { text: 'Current limits' }),
+        h('ul', {}, [
+          h('li', { text: 'Live ImageHoss output is not claimed without its authenticated bridge and supported ComfyUI runtime.' }),
+          h('li', { text: 'Live VideoBoss output is not claimed without a trusted server render broker and provider credential.' }),
+          h('li', { text: 'Live Meshmallow .blend, preview, and export are not claimed without supported Blender 4.5 LTS and a project-scoped proof.' }),
+          h('li', { text: 'No arbitrary shell, Python, filesystem browsing, manufacturing, safety, compliance, or finished-game authority is granted.' })
+        ])
+      ]),
+      h('article', { class: 'card' }, [
+        h('h3', { text: 'Privacy and authority' }),
+        h('p', { text: 'Local Gummy Box is authoritative by default. Provider credentials stay server-side. Context Envelopes exclude complete Actor memory, provider credentials, and ambient filesystem access.' }),
+        h('p', { text: 'Connections remain mirrors unless a Human reviews and approves an authority migration. Revocation blocks future work and preserves historical evidence.' })
+      ]),
+      h('article', { class: 'card' }, [
+        h('h3', { text: 'Build and recovery' }),
+        h('p', { text: `Commit ${commit}` }),
+        h('p', { text: `Mode ${document.documentElement.dataset.gummyMode} · Local Box · web runtime` }),
+        h('p', { text: 'If durable state is interrupted, Gummy reports repaired, quarantined, or recovery-required records without silently claiming success.' })
+      ])
+    ]),
+    h('details', {}, [
+      h('summary', { text: 'Technical capability status' }),
+      facts([
+        ['Build commit', commit],
+        ['ImageHoss live', 'NOT CLAIMED · authenticated local bridge unavailable'],
+        ['VideoBoss live', 'NOT CLAIMED · trusted provider broker unconfigured'],
+        ['Meshmallow live', 'NOT CLAIMED · Blender 4.5 LTS unavailable'],
+        ['Deterministic specialist lanes', 'PASS · simulation disclosed'],
+        ['Native ambient authority', 'none'],
+        ['Backup encryption', 'not encrypted or signed · protect exported file as private data']
+      ])
+    ])
+  ]);
   return root;
 }
 
