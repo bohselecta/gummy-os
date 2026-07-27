@@ -1,3 +1,7 @@
+import { migrateImageHossConfiguration } from '../integrations/imagehoss.js';
+import { migrateVideoBossConfiguration } from '../integrations/videoboss.js';
+import { migrateMeshmallowConfiguration } from '../integrations/meshmallow.js';
+
 export const PRODUCTION_SCHEMA = 'gummy.production/v0';
 export const PRODUCTION_RUN_SCHEMA = 'gummy.production-run/v0';
 export const PRODUCTION_STATE_VERSION = 2;
@@ -47,6 +51,13 @@ const serviceDefinitions = [
     outputs: ['gummy/reference-set'],
     setupDependencies: ['actor:hayden'],
     agentId: 'agent:reference-imagehoss-browser',
+    liveAgent: {
+      id: 'agent:imagehoss-local',
+      name: 'ImageHoss local production runtime',
+      providerClass: 'imagehoss',
+      runtimeClass: 'linux-native',
+      locality: 'local'
+    },
     moldId: 'mold:imagehoss:production-reference',
     settings: { direction: 'Gummy OS at night; confident, warm, tactile', deliverable: '16:9 launch image', locks: 'five-color brand palette; clear interface-safe space', references: 'repository-owned Gummy brand kit', exploration: 'two composition studies', exclusions: 'private likeness; third-party marks; unapproved colors', route: 'deterministic-demonstration', acceptance: 'brand legibility, safe space, exact palette' }
   },
@@ -60,6 +71,13 @@ const serviceDefinitions = [
     outputs: ['gummy/scene-manifest'],
     setupDependencies: ['actor:imagehoss'],
     agentId: 'agent:reference-3d-bee-browser',
+    liveAgent: {
+      id: 'agent:meshmallow-local',
+      name: 'Meshmallow authenticated Blender supervisor',
+      providerClass: 'blender-supervisor',
+      runtimeClass: 'linux-native',
+      locality: 'local'
+    },
     moldId: 'mold:3d-bee:production-scene',
     settings: { worldIntent: 'stylized underground Gummy launch chamber', targetUse: 'editable environment concept', scale: 'meters; Z-up source with declared engine conversion', references: 'accepted ImageHoss launch keyframe with explicit rights', locks: 'five-color palette; Gummy silhouette language', exploration: 'layout and lighting only', exclusions: 'arbitrary Python, shell, path escape, manufacturing or finished-game claims', operations: 'create-scene, add-approved-primitives, assign-approved-materials, checkpoint, export', route: 'deterministic-demonstration; supervised Blender only when discovered', outputs: 'blend-source, glb-package, engine-handoff', acceptance: 'contained editable scene with validated manifest' },
     optional: true
@@ -74,6 +92,13 @@ const serviceDefinitions = [
     outputs: ['gummy/video-manifest'],
     setupDependencies: ['actor:imagehoss', 'actor:3d-bee'],
     agentId: 'agent:reference-videoboss-browser',
+    liveAgent: {
+      id: 'agent:videoboss-fal',
+      name: 'VideoBoss fal.ai server broker',
+      providerClass: 'fal',
+      runtimeClass: 'server',
+      locality: 'cloud'
+    },
     moldId: 'mold:videoboss:private-family-video',
     settings: { purpose: 'Gummy OS launch motion plan', audience: 'public launch', durationSeconds: 8, aspectRatio: '16:9', continuityLocks: 'accepted launch image, exact palette, readable safe space', references: 'accepted ImageHoss launch keyframe with protected and movable regions', sequence: 'reveal, settle, logo-safe hold', route: 'deterministic-demonstration', variationBudget: 2, exclusions: 'private likeness, unapproved marks, credential exposure', acceptance: 'continuity, motion clarity, camera restraint, downstream usefulness' }
   },
@@ -104,6 +129,59 @@ const serviceDefinitions = [
     settings: { sourceRetention: 'preserve', resultRetentionDays: 365, receiptRetentionDays: 2555, location: 'local-origin' }
   }
 ];
+
+const specialistRouteDefinitions = Object.freeze({
+  'actor:imagehoss': Object.freeze({
+    adapter: 'imagehoss',
+    liveAgentId: 'agent:imagehoss-local',
+    locality: 'local',
+    routeId: 'comfyui'
+  }),
+  'actor:videoboss': Object.freeze({
+    adapter: 'videoboss',
+    liveAgentId: 'agent:videoboss-fal',
+    locality: 'cloud',
+    routeId: 'broker'
+  }),
+  'actor:3d-bee': Object.freeze({
+    adapter: 'meshmallow',
+    liveAgentId: 'agent:meshmallow-local',
+    locality: 'local',
+    routeId: 'supervisor'
+  })
+});
+
+export function resolveProductionExecutionRoute(configuration) {
+  const specialist = specialistRouteDefinitions[configuration?.actorId];
+  const selected = configuration?.settings?.executionRoute;
+  if (!specialist || selected?.lane !== 'live') {
+    return Object.freeze({
+      lane: 'deterministic',
+      adapter: 'gummy-reference',
+      agentId: serviceDefinitions.find(item => item.id === configuration?.actorId)?.agentId,
+      locality: 'web',
+      costCeilingUsd: 0
+    });
+  }
+  if (selected.adapter !== specialist.adapter) {
+    return Object.freeze({
+      lane: 'invalid',
+      adapter: selected.adapter,
+      blocker: `specialist-route-mismatch:${configuration.actorId}`
+    });
+  }
+  return Object.freeze({
+    lane: 'live',
+    adapter: specialist.adapter,
+    agentId: specialist.liveAgentId,
+    locality: specialist.locality,
+    routeId: specialist.routeId,
+    model: selected.model,
+    endpoint: selected.endpoint,
+    costCeilingUsd: Number(selected.costCeilingUsd || 0),
+    settings: clone(selected.settings || {})
+  });
+}
 
 const personalDefinitions = [
   {
@@ -137,7 +215,9 @@ function makeActor(definition) {
     status: 'active',
     humanAuthorityIds: ['human:hayden'],
     moldIds: definition.moldId ? [definition.moldId] : [],
-    agentIds: definition.agentId ? [definition.agentId] : definition.agentIds || [],
+    agentIds: definition.agentId
+      ? [definition.agentId, definition.liveAgent?.id].filter(Boolean)
+      : definition.agentIds || [],
     publishedCapabilities: definition.capabilities || [definition.capability],
     acceptedInputTypes: definition.inputs || [],
     outputTypes: definition.outputs || [],
@@ -177,6 +257,31 @@ function makeAgent(definition) {
   };
 }
 
+function makeLiveAgent(definition) {
+  const stamp = '2026-07-27T12:00:00.000Z';
+  return {
+    schema: 'gummy.agent/v0',
+    id: definition.liveAgent.id,
+    name: definition.liveAgent.name,
+    version: '1.0.0',
+    providerClass: definition.liveAgent.providerClass,
+    runtimeClass: definition.liveAgent.runtimeClass,
+    locality: definition.liveAgent.locality,
+    status: 'available',
+    actorIds: [definition.id],
+    moldIds: [definition.moldId],
+    capabilityCeiling: [definition.capability],
+    memoryBoundary: { privateLocal: false, portableProfileAllowed: false, currentTaskContextOnly: true },
+    disclosure: {
+      operator: definition.liveAgent.name,
+      autonomy: 'service',
+      providerDisclosure: 'Authenticated live specialist route; capability is revalidated before every submission.'
+    },
+    createdAt: stamp,
+    updatedAt: stamp
+  };
+}
+
 function makeMold(definition) {
   const stamp = '2026-07-26T12:00:00.000Z';
   return {
@@ -186,7 +291,7 @@ function makeMold(definition) {
     name: `${definition.name} Production Mold`,
     status: 'active',
     allowedHumanIds: ['human:hayden'],
-    allowedAgentIds: [definition.agentId],
+    allowedAgentIds: [definition.agentId, definition.liveAgent?.id].filter(Boolean),
     role: definition.role,
     permissions: {
       capabilities: [definition.capability],
@@ -195,7 +300,11 @@ function makeMold(definition) {
       publishScopes: [],
       requiresHumanApproval: true
     },
-    runtimePolicy: { allowedLocalities: ['web'], allowedRuntimeClasses: ['browser'], networkPolicy: 'none' },
+    runtimePolicy: {
+      allowedLocalities: ['web', definition.liveAgent?.locality].filter(Boolean),
+      allowedRuntimeClasses: ['browser', definition.liveAgent?.runtimeClass].filter(Boolean),
+      networkPolicy: definition.liveAgent ? 'named-specialist-boundary-only' : 'none'
+    },
     issuedBy: 'human:hayden',
     issuedAt: stamp,
     updatedAt: stamp
@@ -217,9 +326,9 @@ function makeDescriptor(definition) {
     outputTypes: definition.outputs,
     setupDependencyActorIds: definition.setupDependencies,
     executionDependencyActorIds: definition.setupDependencies,
-    supportedAgentFamilies: [definition.agentId],
-    localityOptions: ['web'],
-    nativeBridgeCapabilities: [],
+    supportedAgentFamilies: [definition.agentId, definition.liveAgent?.id].filter(Boolean),
+    localityOptions: ['web', definition.liveAgent?.locality].filter(Boolean),
+    nativeBridgeCapabilities: definition.liveAgent ? [definition.capability] : [],
     optional: Boolean(definition.optional),
     status: 'active',
     defaultSettings: clone(definition.settings)
@@ -228,11 +337,12 @@ function makeDescriptor(definition) {
 
 export function createInitialProductionRuntime() {
   const actors = [...personalDefinitions.map(makeActor), ...serviceDefinitions.map(makeActor)];
+  const liveAgents = serviceDefinitions.filter(item => item.liveAgent).map(makeLiveAgent);
   return {
     schema: 'gummy.production-runtime/v0',
     version: PRODUCTION_STATE_VERSION,
     actors,
-    agents: serviceDefinitions.map(makeAgent),
+    agents: [...serviceDefinitions.map(makeAgent), ...liveAgents],
     molds: serviceDefinitions.map(makeMold),
     actorAppDescriptors: serviceDefinitions.map(makeDescriptor),
     actorDefaults: {},
@@ -525,6 +635,24 @@ export async function saveProductionActorConfiguration(runtime, productionId, ac
   if (patch.localityPolicy) config.localityPolicy = { ...config.localityPolicy, ...patch.localityPolicy };
   if (patch.privacyPolicy) config.privacyPolicy = { ...config.privacyPolicy, ...patch.privacyPolicy };
   if (patch.retentionPolicy) config.retentionPolicy = { ...config.retentionPolicy, ...patch.retentionPolicy };
+  const executionRoute = resolveProductionExecutionRoute(config);
+  if (executionRoute.lane === 'live') {
+    participant.assignedAgentId = executionRoute.agentId;
+    config.localityPolicy = {
+      selected: executionRoute.locality,
+      options: [...new Set([...(config.localityPolicy?.options || []), executionRoute.locality])],
+      native: executionRoute.locality === 'local' ? 'paired-specialist-required' : 'not-applicable'
+    };
+    config.costCeiling = { currency: 'USD', amount: executionRoute.costCeilingUsd };
+    config.outputContract = { ...config.outputContract, deterministicReference: false, specialistAdapter: executionRoute.adapter };
+  } else {
+    const definition = serviceDefinitions.find(item => item.id === actorId);
+    participant.assignedAgentId = definition?.agentId;
+    config.localityPolicy = { selected: 'web', options: ['web'], native: 'unavailable' };
+    config.costCeiling = { currency: 'USD', amount: 0 };
+    config.outputContract = { ...config.outputContract, deterministicReference: true };
+    delete config.outputContract.specialistAdapter;
+  }
   const validation = validateProductionActorConfiguration(next, config);
   config.validation = validation;
   config.readiness = validation.valid ? 'ready' : validation.readiness;
@@ -552,6 +680,8 @@ export async function saveProductionActorConfiguration(runtime, productionId, ac
 
 export function validateProductionActorConfiguration(runtime, config) {
   const blockers = [];
+  const executionRoute = resolveProductionExecutionRoute(config);
+  if (executionRoute.lane === 'invalid') blockers.push(executionRoute.blocker);
   if (!config.settings || Object.keys(config.settings).length === 0) blockers.push('settings-empty');
   if (!config.moldId || !runtime.molds.some(item => item.id === config.moldId && item.status === 'active')) blockers.push('active-mold-required');
   if (config.actorId === 'actor:videoboss') {
@@ -567,7 +697,9 @@ export function validateProductionActorConfiguration(runtime, config) {
       if (config.settings.audience !== 'private-family') blockers.push('public-or-commercial-audience-blocked');
     }
   }
-  if (config.localityPolicy?.selected !== 'web') blockers.push('native-bridge-unavailable');
+  if (executionRoute.lane === 'deterministic' && config.localityPolicy?.selected !== 'web') blockers.push('deterministic-route-requires-web-locality');
+  if (executionRoute.lane === 'live' && config.localityPolicy?.selected !== executionRoute.locality) blockers.push('live-route-locality-mismatch');
+  if (executionRoute.lane === 'live' && !runtime.agents.some(item => item.id === executionRoute.agentId)) blockers.push('live-specialist-agent-required');
   return {
     valid: blockers.length === 0,
     blockers,
@@ -615,6 +747,8 @@ export function compileActorPlan(runtime, productionId) {
   const addNode = (actorId, nodeType, role, optional = false) => {
     if (!has(actorId)) return;
     const participant = participants.find(item => item.actorId === actorId);
+    const configuration = next.configurations.find(item => item.productionId === productionId && item.actorId === actorId);
+    const route = nodeType === 'execution' ? resolveProductionExecutionRoute(configuration) : null;
     nodes.push({
       schema: 'gummy.actor-plan-node/v0',
       id: `plan-node:${productionId.slice(11)}:${actorId.slice(6)}`,
@@ -624,10 +758,12 @@ export function compileActorPlan(runtime, productionId) {
       optional,
       agentId: nodeType === 'execution' ? participant.assignedAgentId : undefined,
       moldId: participant.moldId,
-      configurationId: next.configurations.find(item => item.productionId === productionId && item.actorId === actorId)?.id,
+      configurationId: configuration?.id,
       expectedOutputs: next.actorAppDescriptors.find(item => item.actorId === actorId)?.outputTypes || [],
-      locality: nodeType === 'execution' ? 'web' : 'none',
-      cost: 0
+      executionRoute: nodeType === 'execution' ? route.lane : 'none',
+      specialistAdapter: nodeType === 'execution' ? route.adapter : undefined,
+      locality: nodeType === 'execution' ? route.locality : 'none',
+      cost: nodeType === 'execution' ? route.costCeilingUsd : 0
     });
   };
   addNode('actor:hayden', 'context', 'creative owner and approver');
@@ -880,20 +1016,33 @@ export function previewProductionRun(runtime, productionId) {
   const production = working.productions.find(item => item.id === productionId);
   if (!production) return { runtime, approved: false, blockers: ['production-not-found'] };
   const blockers = [];
+  const frozenConfigurations = working.configurations.filter(item => item.productionId === productionId);
   const requiredActorIds = ['actor:hayden', 'actor:imagehoss', 'actor:videoboss', 'actor:project-composer', 'actor:gummy-storage'];
   for (const actorId of requiredActorIds) {
     if (!working.participants.some(item => item.productionId === productionId && item.actorId === actorId && item.status !== 'removed')) {
       blockers.push(`missing-required-actor:${actorId}`);
     }
   }
-  for (const config of working.configurations.filter(item => item.productionId === productionId)) {
+  for (const config of frozenConfigurations) {
     const descriptor = working.actorAppDescriptors.find(item => item.actorId === config.actorId);
     if (!descriptor?.optional && config.readiness !== 'ready') blockers.push(`configuration-not-ready:${config.actorId}`);
+  }
+  const executionRoutes = frozenConfigurations.map(config => ({
+    actorId: config.actorId,
+    ...resolveProductionExecutionRoute(config)
+  }));
+  for (const route of executionRoutes) {
+    if (route.lane === 'invalid') blockers.push(route.blocker);
   }
   const relationship = working.relationships.find(item => item.id === 'link:hoyt-videoboss-private-family');
   if (working.participants.some(item => item.productionId === productionId && item.actorId === 'actor:hoyt') && relationship?.status !== 'active') {
     blockers.push('relationship-revoked:actor:hoyt:actor:videoboss');
   }
+  const unresolvedRecovery = working.productionRuns.find(item => (
+    item.productionId === productionId
+    && item.nodeStatuses?.some(node => node.status === 'recovery-required')
+  ));
+  if (unresolvedRecovery) blockers.push(`production-run-recovery-required:${unresolvedRecovery.id}`);
   const preview = {
     schema: 'gummy.production-run-preview/v0',
     productionId,
@@ -908,8 +1057,12 @@ export function previewProductionRun(runtime, productionId) {
       approvalState: item.approvalState
     })),
     sourceGummies: production.gummyIds.map(id => working.gummies.find(item => item.id === id)).filter(Boolean).map(item => ({ id: item.id, revision: item.revision, hash: item.hash })),
-    locality: ['web'],
-    totalCostCeiling: { currency: 'USD', amount: 0 },
+    executionRoutes,
+    locality: [...new Set(executionRoutes.map(item => item.locality).filter(Boolean))],
+    totalCostCeiling: {
+      currency: 'USD',
+      amount: executionRoutes.reduce((sum, item) => sum + Number(item.costCeilingUsd || 0), 0)
+    },
     retention: 'Production-specific; selected by GummyStorage',
     publication: 'private-only',
     blockers,
@@ -918,7 +1071,10 @@ export function previewProductionRun(runtime, productionId) {
   return { runtime: working, preview, approved: blockers.length === 0, blockers };
 }
 
-export async function makeProduction(runtime, productionId, { approvedBy = null } = {}) {
+export async function makeProduction(runtime, productionId, {
+  approvedBy = null,
+  specialistAdapters = null
+} = {}) {
   const inspection = previewProductionRun(runtime, productionId);
   let next = clone(inspection.runtime);
   const production = next.productions.find(item => item.id === productionId);
@@ -959,8 +1115,14 @@ export async function makeProduction(runtime, productionId, { approvedBy = null 
     configurationRevisionIds: configurationSnapshots.map(item => `${item.id}@${item.revision}`),
     sourceGummyRevisions: sourceGummies,
     approval: { approvedBy, approvedAt: now() },
-    policy: { audience: production.audience || 'private', locality: 'web', retention: 'Production-specific', costCeiling: 0 },
+    policy: {
+      audience: production.audience || 'private',
+      locality: clone(inspection.preview.locality),
+      retention: 'Production-specific',
+      costCeiling: inspection.preview.totalCostCeiling.amount
+    },
     status: 'running',
+    nodeStatuses: [],
     workOrderIds: [],
     taskLeaseIds: [],
     grantIds: [],
@@ -987,32 +1149,49 @@ export async function makeProduction(runtime, productionId, { approvedBy = null 
   for (const node of executionNodes) {
     const config = configurationSnapshots.find(item => item.actorId === node.actorId);
     if (node.optional && config?.readiness !== 'ready') continue;
-    const outcome = await executeReferenceNode(next, production, run, node, config);
+    const outcome = await executeProductionNode(next, production, run, node, config, specialistAdapters);
     next = outcome.runtime;
   }
   const storedRun = next.productionRuns.find(item => item.id === runId);
   const editableProduction = next.productions.find(item => item.id === productionId);
-  storedRun.status = 'completed';
+  const requiredProblems = storedRun.nodeStatuses.filter(item => (
+    item.required && ['blocked', 'failed', 'recovery-required', 'cancelled'].includes(item.status)
+  ));
+  const optionalProblems = storedRun.nodeStatuses.filter(item => (
+    !item.required && ['blocked', 'failed', 'recovery-required', 'cancelled'].includes(item.status)
+  ));
+  storedRun.status = requiredProblems.some(item => item.status === 'failed')
+    ? 'failed'
+    : requiredProblems.length
+    ? 'blocked'
+    : optionalProblems.length
+    ? 'partially-completed'
+    : 'completed';
   storedRun.finishedAt = now();
-  editableProduction.status = 'review';
+  editableProduction.status = storedRun.status === 'completed' || storedRun.status === 'partially-completed'
+    ? 'review'
+    : 'blocked';
   editableProduction.revision = String(Number(editableProduction.revision) + 1);
   editableProduction.updatedAt = now();
   next.receipts.push(makeRuntimeReceipt({
-    action: 'production-run.completed',
+    action: `production-run.${storedRun.status}`,
     productionId,
     actorId: editableProduction.ownerActorId,
     runId,
-    outcome: 'completed',
-    summary: `Completed governed deterministic reference Run ${runId}. Executors are structured browser reference adapters, not production media services.`,
+    outcome: storedRun.status === 'completed' ? 'completed' : 'failed',
+    summary: storedRun.status === 'completed'
+      ? `Completed governed Run ${runId}. Every node retained its selected deterministic or authenticated live route evidence.`
+      : `Run ${runId} ended ${storedRun.status}; no blocked, failed, or recovery-required node was reported as completed.`,
     resources: [...storedRun.resultGummyIds, storedRun.manifestHash]
   }));
   return { runtime: next, run: clone(storedRun), results: storedRun.resultGummyIds.map(id => next.gummies.find(item => item.id === id)) };
 }
 
-async function executeReferenceNode(runtime, production, runSnapshot, node, config) {
+async function executeProductionNode(runtime, production, runSnapshot, node, config, specialistAdapters) {
   const next = clone(runtime);
   const run = next.productionRuns.find(item => item.id === runSnapshot.id);
   const currentProduction = next.productions.find(item => item.id === production.id);
+  const executionRoute = resolveProductionExecutionRoute(config);
   const relationship = next.relationships.find(item => item.id === 'link:hoyt-videoboss-private-family');
   const representedContextApproved = node.actorId === 'actor:videoboss'
     && next.participants.some(item => item.productionId === currentProduction.id && item.actorId === 'actor:hoyt' && item.status !== 'removed')
@@ -1072,10 +1251,22 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
       gummyIds: envelope.sourceGummyRefs,
       allowedWriteTargets: ['production-results'],
       forbiddenActions: envelope.forbiddenActions,
-      maxCost: 0
+      maxCost: Number(config.costCeiling?.amount || 0)
     },
-    execution: { requiredLocality: 'web', privacy: currentProduction.visibility === 'private' ? 'private-local' : 'approved-public-assets', preferredInference: 'no-model', requiresNative: false, offlineAllowed: true },
-    acceptance: { checks: ['deterministic-manifest-created', 'source-hashes-unchanged'], expectedReturn: { schema: 'gummy.work-return/v0' }, humanAcceptanceRequired: false },
+    execution: {
+      requiredLocality: executionRoute.locality,
+      privacy: currentProduction.visibility === 'private' ? 'private-local' : 'approved-public-assets',
+      preferredInference: executionRoute.lane === 'live' ? executionRoute.adapter : 'no-model',
+      requiresNative: executionRoute.locality === 'local',
+      offlineAllowed: executionRoute.lane === 'deterministic'
+    },
+    acceptance: {
+      checks: executionRoute.lane === 'live'
+        ? ['specialist-native-evidence', 'source-hashes-unchanged', 'human-role-acceptance-required']
+        : ['deterministic-manifest-created', 'source-hashes-unchanged'],
+      expectedReturn: { schema: 'gummy.work-return/v0' },
+      humanAcceptanceRequired: executionRoute.lane === 'live'
+    },
     approval: { required: true, risk: 'medium', approvedBy: 'human:hayden', approvedAt: run.approval.approvedAt },
     status: 'running',
     createdAt: now(),
@@ -1113,13 +1304,13 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
     risk: 'medium',
     reason: node.role,
     scope: { contextEnvelopeId: envelope.id, outputs: config.outputContract.types },
-    locality: 'web',
+    locality: executionRoute.locality,
     approval: 'human',
     issuedAt: now(),
     expiresAt: workOrder.expiresAt,
     revoked: false
   };
-  const adapterResult = await invokeCapabilityAdapter({
+  const authority = {
     agent: next.agents.find(item => item.id === node.agentId),
     mold: next.molds.find(item => item.id === node.moldId),
     lease,
@@ -1128,14 +1319,40 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
     configuration: config,
     production: currentProduction,
     run
-  });
+  };
+  const adapterResult = executionRoute.lane === 'live'
+    ? await invokeSpecialistProductionAdapter({
+        ...authority,
+        executionRoute,
+        specialistAdapters,
+        approvedBy: run.approval.approvedBy
+      })
+    : await invokeCapabilityAdapter(authority);
+
+  if (!adapterResult.ok) {
+    return recordBlockedProductionNode({
+      runtime: next,
+      production: currentProduction,
+      run,
+      node,
+      workOrder,
+      lease,
+      grant,
+      envelope,
+      adapterResult
+    });
+  }
 
   const resultGummy = {
     schema: 'gummy.gummy/v0',
     id: `gummy:${run.id.slice(15)}:${node.actorId.slice(6)}:result`,
-    name: `${next.actors.find(item => item.id === node.actorId).name} deterministic result`,
+    name: executionRoute.lane === 'live'
+      ? `${next.actors.find(item => item.id === node.actorId).name} live specialist result`
+      : `${next.actors.find(item => item.id === node.actorId).name} deterministic result`,
     kind: node.actorId === 'actor:project-composer' ? 'deliverable' : 'result',
-    mediaType: 'application/vnd.gummy.reference-result+json',
+    mediaType: executionRoute.lane === 'live'
+      ? 'application/vnd.gummy.specialist-result+json'
+      : 'application/vnd.gummy.reference-result+json',
     content: stableStringify(adapterResult.output),
     revision: '1',
     ownerActorId: currentProduction.ownerActorId,
@@ -1175,10 +1392,16 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
     summary: adapterResult.disclosure,
     sourceState: run.sourceGummyRevisions,
     gummyIds: [resultGummy.id],
-    checks: [
-      { name: 'deterministic-manifest-created', status: 'passed' },
-      { name: 'source-hashes-unchanged', status: 'passed' }
-    ],
+    checks: executionRoute.lane === 'live'
+      ? [
+          { name: 'specialist-native-evidence', outcome: 'pass' },
+          { name: 'source-hashes-unchanged', outcome: 'pass' },
+          { name: 'human-role-acceptance-required', outcome: 'not-run' }
+        ]
+      : [
+          { name: 'deterministic-manifest-created', outcome: 'pass' },
+          { name: 'source-hashes-unchanged', outcome: 'pass' }
+        ],
     receiptIds: [],
     createdAt: now()
   };
@@ -1194,7 +1417,12 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
     runId: run.id,
     outcome: 'completed',
     summary: adapterResult.disclosure,
-    resources: [resultGummy.id, resultGummy.hash]
+    resources: [resultGummy.id, resultGummy.hash],
+    runtimeClass: executionRoute.lane === 'live'
+      ? next.agents.find(item => item.id === node.agentId)?.runtimeClass
+      : 'browser',
+    locality: executionRoute.locality,
+    cost: { currency: 'USD', amount: Number(config.costCeiling?.amount || 0) }
   });
   returned.receiptIds.push(receipt.id);
   workOrder.status = 'returned';
@@ -1215,9 +1443,363 @@ async function executeReferenceNode(runtime, production, runSnapshot, node, conf
   storedRun.returnIds.push(returned.id);
   storedRun.receiptIds.push(receipt.id);
   storedRun.resultGummyIds.push(resultGummy.id);
+  storedRun.nodeStatuses.push({
+    nodeId: node.id,
+    actorId: node.actorId,
+    route: executionRoute.lane,
+    adapter: executionRoute.adapter,
+    status: 'completed',
+    required: !node.optional,
+    nativeJobIds: clone(adapterResult.nativeJobIds || []),
+    specialistReceiptIds: clone(adapterResult.specialistReceiptIds || []),
+    ...(adapterResult.specialistJobId ? { specialistJobId: adapterResult.specialistJobId } : {}),
+    ...(adapterResult.specialistJob ? { specialistJob: clone(adapterResult.specialistJob) } : {})
+  });
   if (!currentProduction.gummyIds.includes(resultGummy.id)) currentProduction.gummyIds.push(resultGummy.id);
   if (resultGummy.kind === 'deliverable' && !currentProduction.deliverableIds.includes(resultGummy.id)) currentProduction.deliverableIds.push(resultGummy.id);
   return { runtime: next, resultGummy, returned, receipt };
+}
+
+function resolveRegisteredSpecialistAdapter(registry, actorId) {
+  if (!registry) return null;
+  if (typeof registry.resolve === 'function') return registry.resolve(actorId);
+  if (registry instanceof Map) return registry.get(actorId) || null;
+  return registry[actorId] || null;
+}
+
+function prepareSpecialistConfiguration(configuration, executionRoute) {
+  if (executionRoute.adapter === 'imagehoss') {
+    const migrated = migrateImageHossConfiguration(configuration, configuration.productionId);
+    migrated.route = {
+      ...migrated.route,
+      id: 'comfyui',
+      workflowId: executionRoute.settings.workflowId || 'approved:imagehoss-safe-v1',
+      model: executionRoute.model || executionRoute.settings.model,
+      width: Number(executionRoute.settings.width || 1024),
+      height: Number(executionRoute.settings.height || 576),
+      locality: 'desktop',
+      privacy: 'paired-local-companion',
+      costCeilingUsd: executionRoute.costCeilingUsd
+    };
+    return migrated;
+  }
+  if (executionRoute.adapter === 'videoboss') {
+    const migrated = migrateVideoBossConfiguration(configuration, configuration.productionId);
+    migrated.durationSeconds = Number(executionRoute.settings.durationSeconds || 5);
+    migrated.imageHossAssets = clone(executionRoute.settings.imageHossAssets || []);
+    migrated.route = {
+      ...migrated.route,
+      id: 'broker',
+      provider: 'fal',
+      model: executionRoute.model || 'fal-ai/wan/v2.7/image-to-video',
+      costCeilingUsd: executionRoute.costCeilingUsd,
+      timeoutMs: Number(executionRoute.settings.timeoutMs || 15 * 60 * 1000),
+      locality: 'server',
+      resolution: executionRoute.settings.resolution || '720p',
+      audioInput: false,
+      promptExpansion: false,
+      safetyChecker: true,
+      seedPolicy: 'frozen-shot-package'
+    };
+    const firstShot = migrated.sequence?.shots?.[0];
+    if (firstShot) {
+      migrated.sequence.shots = [{
+        ...firstShot,
+        title: 'Approved five-second Wan 2.7 smoke',
+        durationSeconds: migrated.durationSeconds
+      }];
+    }
+    migrated.variationBudget = { takesPerShot: 1, maxTotalTakes: 1 };
+    return migrated;
+  }
+  if (executionRoute.adapter === 'meshmallow') {
+    const migrated = migrateMeshmallowConfiguration(configuration, configuration.productionId);
+    migrated.route = {
+      ...migrated.route,
+      id: 'supervisor',
+      locality: 'desktop',
+      blenderTarget: '4.5 LTS',
+      timeoutMs: Number(executionRoute.settings.timeoutMs || 120000)
+    };
+    return migrated;
+  }
+  throw new Error(`Unsupported specialist adapter ${executionRoute.adapter}`);
+}
+
+function validateApprovedLiveRoute(executionRoute) {
+  if (executionRoute.adapter !== 'videoboss') return [];
+  const blockers = [];
+  if ((executionRoute.model || 'fal-ai/wan/v2.7/image-to-video') !== 'fal-ai/wan/v2.7/image-to-video') blockers.push('unapproved-video-model');
+  if ((executionRoute.settings.resolution || '720p') !== '720p') blockers.push('unapproved-video-resolution');
+  if (Number(executionRoute.settings.durationSeconds || 5) !== 5) blockers.push('unapproved-video-duration');
+  if (executionRoute.settings.audioInput === true) blockers.push('video-audio-input-not-approved');
+  if (executionRoute.settings.promptExpansion === true) blockers.push('video-prompt-expansion-not-approved');
+  if (executionRoute.settings.safetyChecker === false) blockers.push('video-safety-checker-required');
+  if (executionRoute.costCeilingUsd <= 0 || executionRoute.costCeilingUsd > 2) blockers.push('video-live-smoke-cost-ceiling-exceeds-approval');
+  return blockers;
+}
+
+function validateAcceptedVideoSource(configuration) {
+  const assets = configuration?.imageHossAssets || [];
+  if (assets.length !== 1) return ['accepted-imagehoss-first-frame-required'];
+  const asset = assets[0];
+  const blockers = [];
+  if (asset.productionId !== configuration.productionId) blockers.push('imagehoss-source-production-mismatch');
+  if (!['first-frame', 'video-first-frame'].includes(asset.role)) blockers.push('imagehoss-first-frame-role-required');
+  if (!asset.acceptance?.acceptedBy || !asset.acceptance?.acceptedAt) blockers.push('imagehoss-human-acceptance-required');
+  if (!asset.rights?.rightsCleared || !asset.rights?.permittedUses?.includes('this Production video')) blockers.push('imagehoss-video-rights-required');
+  if (!/^[a-f0-9]{64}$/.test(asset.sha256 || '')) blockers.push('imagehoss-source-hash-required');
+  return blockers;
+}
+
+function specialistCapabilityReady(adapterName, discovery) {
+  if (adapterName === 'imagehoss') {
+    return discovery?.authenticated === true && discovery?.comfyui?.ready === true;
+  }
+  if (adapterName === 'videoboss') {
+    return discovery?.provider?.authenticated === true && discovery?.provider?.ready === true;
+  }
+  if (adapterName === 'meshmallow') {
+    return discovery?.blender?.ready === true;
+  }
+  return false;
+}
+
+function specialistArtifacts(adapterName, inspection) {
+  if (adapterName === 'imagehoss') return inspection?.candidates || [];
+  if (adapterName === 'videoboss') return inspection?.takes || [];
+  if (adapterName === 'meshmallow') return inspection?.artifacts || [];
+  return [];
+}
+
+async function invokeSpecialistProductionAdapter({
+  agent,
+  mold,
+  lease,
+  grant,
+  envelope,
+  configuration,
+  run,
+  executionRoute,
+  specialistAdapters,
+  approvedBy
+}) {
+  const blockers = validateApprovedLiveRoute(executionRoute);
+  if (!agent || agent.id !== executionRoute.agentId) blockers.push('selected-live-agent-required');
+  if (!mold || mold.status !== 'active' || !mold.allowedAgentIds?.includes(agent?.id)) blockers.push('live-agent-outside-active-mold');
+  if (!lease || lease.status !== 'active' || lease.agentId !== agent?.id) blockers.push('active-live-task-lease-required');
+  if (!grant || grant.revoked || grant.agentId !== agent?.id) blockers.push('active-live-capability-grant-required');
+  if (!envelope || envelope.agentId !== agent?.id) blockers.push('live-context-envelope-required');
+  const adapter = resolveRegisteredSpecialistAdapter(specialistAdapters, configuration.actorId);
+  if (!adapter) blockers.push('capability-unavailable:no-specialist-transport');
+  if (blockers.length) {
+    return {
+      ok: false,
+      status: 'blocked',
+      outcome: 'capability-unavailable',
+      blockers,
+      disclosure: `Live ${executionRoute.adapter} route blocked before submission: ${blockers.join(', ')}.`
+    };
+  }
+
+  const nativeConfiguration = prepareSpecialistConfiguration(configuration, executionRoute);
+  if (executionRoute.adapter === 'videoboss') {
+    const sourceBlockers = validateAcceptedVideoSource(nativeConfiguration);
+    if (sourceBlockers.length) {
+      return {
+        ok: false,
+        status: 'blocked',
+        outcome: 'artistic-acceptance-required',
+        blockers: sourceBlockers,
+        disclosure: `Live VideoBoss route blocked before submission: ${sourceBlockers.join(', ')}.`
+      };
+    }
+  }
+  const validation = await adapter.validateConfiguration(nativeConfiguration);
+  if (!validation.valid) {
+    return {
+      ok: false,
+      status: 'blocked',
+      outcome: 'configuration-invalid',
+      blockers: validation.blockers,
+      disclosure: `Live ${executionRoute.adapter} configuration blocked before submission: ${validation.blockers.join(', ')}.`
+    };
+  }
+  const compiled = await adapter.compilePackage(nativeConfiguration);
+  const discovery = await adapter.discover({
+    productionId: configuration.productionId,
+    packageDigest: compiled.digest
+  });
+  if (!specialistCapabilityReady(executionRoute.adapter, discovery)) {
+    return {
+      ok: false,
+      status: 'blocked',
+      outcome: 'capability-unavailable',
+      blockers: [`capability-unavailable:${executionRoute.adapter}`],
+      discovery,
+      disclosure: `Live ${executionRoute.adapter} capability is unavailable. No native Job was created and no simulated result was substituted.`
+    };
+  }
+
+  const idempotencyKey = `${run.id}:${envelope.actorPlanNodeId}:${compiled.digest}`;
+  const job = await adapter.execute({
+    package: compiled,
+    idempotencyKey,
+    authorization: {
+      action: 'make-production',
+      approvedBy,
+      packageDigest: compiled.digest,
+      planDigest: compiled.planDigest,
+      productionRunId: run.id,
+      agentId: agent.id,
+      moldId: mold.id,
+      taskLeaseId: lease.id,
+      grantId: grant.id,
+      contextEnvelopeId: envelope.id
+    }
+  });
+  if (job.status !== 'succeeded') {
+    return {
+      ok: false,
+      status: job.status === 'recovery-required' ? 'recovery-required' : job.status === 'cancelled' ? 'cancelled' : 'failed',
+      outcome: job.status,
+      blockers: [job.failure?.code || `${executionRoute.adapter}-job-${job.status}`],
+      specialistJobId: job.id,
+      specialistJob: clone(job),
+      nativeJobIds: [job.nativeJobId, ...(job.nativeJobIds || [])].filter(Boolean),
+      disclosure: job.failure?.message || `Live ${executionRoute.adapter} Job ended ${job.status}.`
+    };
+  }
+  if (job.simulation === true) {
+    return {
+      ok: false,
+      status: 'failed',
+      outcome: 'simulation-rejected',
+      blockers: ['live-route-returned-simulation'],
+      disclosure: `Live ${executionRoute.adapter} route returned simulated evidence and was rejected.`
+    };
+  }
+  const inspection = adapter.inspectResult(job.id);
+  const artifacts = specialistArtifacts(executionRoute.adapter, inspection);
+  if (!artifacts.length || artifacts.some(item => item.simulation === true)) {
+    return {
+      ok: false,
+      status: 'failed',
+      outcome: 'native-output-missing',
+      blockers: ['genuine-specialist-artifact-required'],
+      disclosure: `Live ${executionRoute.adapter} Job did not return genuine specialist artifacts.`
+    };
+  }
+  const specialistReceiptIds = (inspection.specialistReceipts || []).map(item => item.id);
+  return {
+    ok: true,
+    outcome: 'completed',
+    output: {
+      schema: 'gummy.specialist-execution-output/v1',
+      adapter: executionRoute.adapter,
+      productionRunId: run.id,
+      package: { id: compiled.id, digest: compiled.digest },
+      job: clone(inspection.job),
+      artifacts: clone(artifacts),
+      specialistReceipts: clone(inspection.specialistReceipts || []),
+      gummyEvidence: clone(inspection.gummyEvidence || []),
+      humanAcceptance: 'required'
+    },
+    nativeJobIds: [job.nativeJobId, ...(job.nativeJobIds || [])].filter(Boolean),
+    specialistReceiptIds,
+    specialistJobId: job.id,
+    specialistJob: clone(job),
+    disclosure: `${agent.id} completed an authenticated live ${executionRoute.adapter} Job. Results await Human role acceptance.`
+  };
+}
+
+function recordBlockedProductionNode({
+  runtime,
+  production,
+  run,
+  node,
+  workOrder,
+  lease,
+  grant,
+  envelope,
+  adapterResult
+}) {
+  const next = runtime;
+  const status = adapterResult.status || 'blocked';
+  workOrder.status = status === 'cancelled' ? 'cancelled' : 'failed';
+  lease.status = status === 'recovery-required' ? 'active' : 'released';
+  if (lease.status === 'released') lease.releasedAt = now();
+  const returned = {
+    schema: 'gummy.work-return/v0',
+    id: `return:${run.id.slice(15)}:${node.actorId.slice(6)}`,
+    boxId: 'box:hayden',
+    productionId: production.id,
+    productionRunId: run.id,
+    workOrderId: workOrder.id,
+    taskLeaseId: lease.id,
+    humanAuthorityId: 'human:hayden',
+    actorId: node.actorId,
+    agentId: node.agentId,
+    moldId: node.moldId,
+    result: status === 'cancelled' ? 'cancelled' : status === 'failed' ? 'failed' : status === 'recovery-required' ? 'partial' : 'blocked',
+    summary: adapterResult.disclosure,
+    sourceState: run.sourceGummyRevisions,
+    gummyIds: [],
+    checks: [{
+      name: adapterResult.outcome || status,
+      outcome: 'blocked',
+      detail: (adapterResult.blockers || []).join(', ')
+    }],
+    receiptIds: [],
+    extensions: {
+      nodeStatus: status,
+      capabilityStatus: adapterResult.outcome,
+      nativeJobIds: clone(adapterResult.nativeJobIds || [])
+    },
+    createdAt: now()
+  };
+  const receipt = makeRuntimeReceipt({
+    action: `production-run.node-${status}`,
+    productionId: production.id,
+    actorId: node.actorId,
+    agentId: node.agentId,
+    moldId: node.moldId,
+    taskLeaseId: lease.id,
+    grantIds: [grant.id],
+    contextEnvelopeId: envelope.id,
+    runId: run.id,
+    outcome: status === 'cancelled' ? 'cancelled' : 'failed',
+    summary: adapterResult.disclosure,
+    resources: clone(adapterResult.nativeJobIds || []),
+    runtimeClass: runtime.agents.find(item => item.id === node.agentId)?.runtimeClass,
+    locality: grant.locality,
+    cost: { currency: 'USD', amount: 0 }
+  });
+  returned.receiptIds.push(receipt.id);
+  next.workOrders.push(workOrder);
+  next.taskLeases.push(lease);
+  next.grants.push(grant);
+  next.returns.push(returned);
+  next.receipts.push(receipt);
+  const storedRun = next.productionRuns.find(item => item.id === run.id);
+  storedRun.workOrderIds.push(workOrder.id);
+  storedRun.taskLeaseIds.push(lease.id);
+  storedRun.grantIds.push(grant.id);
+  storedRun.contextEnvelopeIds.push(envelope.id);
+  storedRun.returnIds.push(returned.id);
+  storedRun.receiptIds.push(receipt.id);
+  storedRun.nodeStatuses.push({
+    nodeId: node.id,
+    actorId: node.actorId,
+    route: 'live',
+    status,
+    required: !node.optional,
+    blockers: clone(adapterResult.blockers || []),
+    nativeJobIds: clone(adapterResult.nativeJobIds || []),
+    ...(adapterResult.specialistJobId ? { specialistJobId: adapterResult.specialistJobId } : {}),
+    ...(adapterResult.specialistJob ? { specialistJob: clone(adapterResult.specialistJob) } : {})
+  });
+  return { runtime: next, returned, receipt };
 }
 
 export async function invokeCapabilityAdapter({ agent, mold, lease, grant, envelope, configuration, production, run, bridge = null }) {
@@ -1426,7 +2008,10 @@ export function makeRuntimeReceipt({
   runId,
   outcome,
   summary,
-  resources = []
+  resources = [],
+  runtimeClass = agentId ? 'browser' : 'web',
+  locality = 'web',
+  cost = { currency: 'USD', amount: 0 }
 }) {
   return {
     schema: 'gummy.action-receipt/v0',
@@ -1446,12 +2031,12 @@ export function makeRuntimeReceipt({
     productionId,
     productionRunId: runId,
     contextEnvelopeId,
-    runtimeClass: agentId ? 'browser' : 'web',
-    locality: 'web',
+    runtimeClass,
+    locality,
     resources,
     outcome,
     summary,
-    cost: { currency: 'USD', amount: 0 },
+    cost,
     createdAt: now()
   };
 }

@@ -24,6 +24,7 @@ import { applicationLaunchState, loadProductCatalog } from './core/product-regis
 import { createProductionApp } from './apps/production.js';
 import { createActorSurface } from './apps/actor-surface.js';
 import { createMasterControlApp } from './apps/master-control.js';
+import { createBrowserSpecialistRegistry } from './integrations/specialist-runtime.js';
 import { WindowManager } from './window-manager.js';
 import { gummyAssets } from './brand/gummy-assets.js';
 
@@ -37,6 +38,7 @@ const policy = new PolicyEngine(repository, byteStore);
 const localBox = new LocalBoxAdapter(repository, byteStore);
 const githubBox = new GitHubBoxAdapter();
 const workflow = new WorkOrderWorkflow({ repository, byteStore, policy, box: localBox });
+const specialistAdapters = createBrowserSpecialistRegistry();
 let windowManager;
 let session = { openaiConfigured: false, githubConfigured: false, testMode: false };
 let panelOpen = false;
@@ -459,7 +461,8 @@ function productionSurface(productionId = null) {
     openActorSurface,
     openMasterControl: openProductionMasterControl,
     openProduction,
-    toast: (title, detail) => announce(`${title}. ${detail}`)
+    toast: (title, detail) => announce(`${title}. ${detail}`),
+    specialistAdapters
   }).node;
 }
 

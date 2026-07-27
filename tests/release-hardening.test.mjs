@@ -3,11 +3,14 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { securityHeaders } from '../server/api.mjs';
 
-test('production security headers deny embedding, ambient device access, and cross-origin script/connect', () => {
+test('production security headers deny embedding and ambient access with one exact loopback specialist connect boundary', () => {
   const headers = securityHeaders();
   assert.match(headers['content-security-policy'], /default-src 'self'/);
   assert.match(headers['content-security-policy'], /script-src 'self'/);
   assert.match(headers['content-security-policy'], /connect-src 'self'/);
+  assert.match(headers['content-security-policy'], /http:\/\/127\.0\.0\.1:5214/);
+  assert.match(headers['content-security-policy'], /http:\/\/localhost:5214/);
+  assert.doesNotMatch(headers['content-security-policy'], /connect-src[^;]*\*/);
   assert.match(headers['content-security-policy'], /frame-ancestors 'none'/);
   assert.match(headers['content-security-policy'], /object-src 'none'/);
   assert.equal(headers['x-frame-options'], 'DENY');

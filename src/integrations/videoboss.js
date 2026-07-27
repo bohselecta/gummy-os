@@ -7,7 +7,7 @@ import {
 
 export const VIDEOBOSS_CONTRACT = Object.freeze({
   repository: 'bohselecta/videoboss',
-  head: '1b5c83f9765ca93efb3b37f4c0d89b47e5489143',
+  head: 'e67db769219e5a764821f7bac74638f3791dca98',
   configurationSchema: 'gummy.videoboss-production-configuration/v1',
   sequenceSchema: 'videoboss.sequence-package/v1',
   shotSchema: 'videoboss.shot-packet/v1',
@@ -75,15 +75,21 @@ export function migrateVideoBossConfiguration(input, productionId = input.produc
       id: asset.id,
       sha256: asset.sha256 || asset.hash?.value || '',
       role: asset.role || 'reference',
+      productionId: asset.productionId || productionId,
+      sourcePath: asset.sourcePath || asset.bytes?.path || null,
+      mimeType: asset.mimeType || asset.bytes?.mimeType || null,
       protectedRegions: clone(asset.protectedRegions || []),
       movableRegions: clone(asset.movableRegions || []),
-      rights: clone(asset.rights || { audience: 'private', permittedUses: ['this Production only'] })
+      rights: clone(asset.rights || { audience: 'private', permittedUses: ['this Production only'] }),
+      acceptance: clone(asset.acceptance || null),
+      specialistReceiptIds: clone(asset.specialistReceiptIds || []),
+      gummyReceiptIds: clone(asset.gummyReceiptIds || [])
     })),
     sequence: { title: settings.title || project.name || 'VideoBoss sequence', shots },
     route: {
       id: input?.route?.id || (settings.route === 'provider' ? 'broker' : 'simulator'),
       provider: input?.route?.provider || 'fal',
-      model: input?.route?.model || 'configured-server-model',
+      model: input?.route?.model || 'fal-ai/wan/v2.7/image-to-video',
       costCeilingUsd: Number(input?.route?.costCeilingUsd ?? 0),
       timeoutMs: Number(input?.route?.timeoutMs || 120000),
       locality: input?.route?.id === 'broker' ? 'server' : 'browser'
@@ -158,7 +164,7 @@ export async function compileVideoBossPackage(configuration) {
   }));
   const estimatedCostUsd = configuration.route.id === 'simulator'
     ? 0
-    : Number((configuration.durationSeconds * configuration.variationBudget.takesPerShot * 0.25).toFixed(2));
+    : Number((configuration.durationSeconds * configuration.variationBudget.takesPerShot * 0.1).toFixed(2));
   if (estimatedCostUsd > configuration.route.costCeilingUsd) {
     throw new Error(`VideoBoss cost ceiling exceeded: ${estimatedCostUsd} > ${configuration.route.costCeilingUsd}`);
   }

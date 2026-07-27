@@ -19,6 +19,7 @@ import {
   previewProductionRun,
   promoteSettingToActorDefault,
   recordTerminalNodeEvidence,
+  resolveProductionExecutionRoute,
   revokeActorRelationship,
   saveProductionActorConfiguration,
   sha256,
@@ -35,6 +36,71 @@ async function readyRanchDay({ includeOptional3d = true } = {}) {
   }
   runtime = compileActorPlan(runtime, created.production.id).runtime;
   return { runtime, productionId: created.production.id };
+}
+
+async function withLiveImageHoss(runtime, productionId) {
+  const configured = await saveProductionActorConfiguration(runtime, productionId, 'actor:imagehoss', {
+    settings: {
+      executionRoute: {
+        lane: 'live',
+        adapter: 'imagehoss',
+        costCeilingUsd: 0,
+        settings: {
+          workflowId: 'approved:imagehoss-safe-v1',
+          model: 'v1-5-pruned-emaonly-fp16.safetensors',
+          width: 1024,
+          height: 576,
+        },
+      },
+    },
+  });
+  return compileActorPlan(configured.runtime, productionId).runtime;
+}
+
+function successfulImageHossAdapter() {
+  const job = {
+    id: 'imagehoss-job:production:ranch-day:live',
+    status: 'succeeded',
+    simulation: false,
+    nativeJobId: 'comfy_job_live_12345678',
+  };
+  const candidate = {
+    id: 'candidate:imagehoss:live',
+    productionId: 'production:ranch-day',
+    simulation: false,
+    sha256: 'a'.repeat(64),
+    original: { uri: '/assets/comfy_job_live_12345678/original', sha256: 'a'.repeat(64) },
+    proxy: { uri: '/assets/comfy_job_live_12345678/proxy', sha256: 'b'.repeat(64) },
+  };
+  return {
+    discover: async () => ({
+      authenticated: true,
+      comfyui: { ready: true, authenticated: true },
+    }),
+    validateConfiguration: () => ({ valid: true, blockers: [], warnings: [] }),
+    compilePackage: async configuration => ({
+      id: `prompt-package:${configuration.productionId}:r1`,
+      productionId: configuration.productionId,
+      digest: 'c'.repeat(64),
+    }),
+    execute: async () => structuredClone(job),
+    recover: async () => structuredClone(job),
+    cancel: async () => ({ ...job, status: 'cancelled' }),
+    inspectResult: () => ({
+      job: structuredClone(job),
+      candidates: [structuredClone(candidate)],
+      specialistReceipts: [{
+        id: 'imagehoss-receipt:live:1',
+        schema: 'imagehoss.production-receipt/v1',
+      }],
+      gummyEvidence: [{
+        receipt: {
+          id: 'receipt:imagehoss:live:1',
+          linkedSpecialistReceiptIds: ['imagehoss-receipt:live:1'],
+        },
+      }],
+    }),
+  };
 }
 
 test('creates a canonical durable Production without executing work', () => {
@@ -249,6 +315,149 @@ test('Master Control preview blocks unresolved configuration and missing Human a
   const denied = await makeProduction(runtime, created.production.id, {});
   assert.equal(denied.denied, true);
   assert.ok(denied.runtime.receipts.some(item => item.outcome === 'denied'));
+});
+
+test('freezes deterministic versus exact live specialist routes without starting Jobs during preview', async () => {
+  const ready = await readyRanchDay();
+  const live = await withLiveImageHoss(ready.runtime, ready.productionId);
+  const imageConfiguration = live.configurations.find(item => (
+    item.productionId === ready.productionId && item.actorId === 'actor:imagehoss'
+  ));
+  const route = resolveProductionExecutionRoute(imageConfiguration);
+  assert.deepEqual(
+    { lane: route.lane, adapter: route.adapter, agentId: route.agentId, locality: route.locality },
+    { lane: 'live', adapter: 'imagehoss', agentId: 'agent:imagehoss-local', locality: 'local' },
+  );
+  const before = {
+    runs: live.productionRuns.length,
+    jobs: live.workOrders.length,
+    returns: live.returns.length,
+  };
+  const preview = previewProductionRun(live, ready.productionId);
+  assert.equal(preview.approved, true);
+  assert.equal(preview.preview.executionRoutes.find(item => item.actorId === 'actor:imagehoss').lane, 'live');
+  assert.deepEqual({
+    runs: preview.runtime.productionRuns.length,
+    jobs: preview.runtime.workOrders.length,
+    returns: preview.runtime.returns.length,
+  }, before);
+});
+
+test('fails a selected live route closed when its specialist transport is absent and preserves mixed node truth', async () => {
+  const ready = await readyRanchDay();
+  const live = await withLiveImageHoss(ready.runtime, ready.productionId);
+  const result = await makeProduction(live, ready.productionId, {
+    approvedBy: 'human:hayden',
+    specialistAdapters: null,
+  });
+  const imageNode = result.run.nodeStatuses.find(item => item.actorId === 'actor:imagehoss');
+  assert.equal(result.run.status, 'blocked');
+  assert.equal(imageNode.route, 'live');
+  assert.equal(imageNode.status, 'blocked');
+  assert.ok(imageNode.blockers.includes('capability-unavailable:no-specialist-transport'));
+  assert.equal(result.results.some(item => item.creatorActorId === 'actor:imagehoss'), false);
+  assert.ok(result.run.nodeStatuses.some(item => item.route === 'deterministic' && item.status === 'completed'));
+  assert.ok(result.runtime.returns.some(item => (
+    item.actorId === 'actor:imagehoss' && item.result === 'blocked' && item.receiptIds.length === 1
+  )));
+});
+
+test('dispatches an authenticated live specialist adapter and links distinct specialist and Gummy evidence', async () => {
+  const ready = await readyRanchDay();
+  const live = await withLiveImageHoss(ready.runtime, ready.productionId);
+  const result = await makeProduction(live, ready.productionId, {
+    approvedBy: 'human:hayden',
+    specialistAdapters: new Map([['actor:imagehoss', successfulImageHossAdapter()]]),
+  });
+  const imageNode = result.run.nodeStatuses.find(item => item.actorId === 'actor:imagehoss');
+  const imageResult = result.results.find(item => item.creatorActorId === 'actor:imagehoss');
+  assert.equal(result.run.status, 'completed');
+  assert.equal(imageNode.status, 'completed');
+  assert.deepEqual(imageNode.nativeJobIds, ['comfy_job_live_12345678']);
+  assert.deepEqual(imageNode.specialistReceiptIds, ['imagehoss-receipt:live:1']);
+  assert.equal(imageResult.mediaType, 'application/vnd.gummy.specialist-result+json');
+  const output = JSON.parse(imageResult.content);
+  assert.equal(output.job.simulation, false);
+  assert.equal(output.humanAcceptance, 'required');
+  assert.notEqual(
+    output.specialistReceipts[0].id,
+    output.gummyEvidence[0].receipt.id,
+  );
+  assert.deepEqual(
+    output.gummyEvidence[0].receipt.linkedSpecialistReceiptIds,
+    [output.specialistReceipts[0].id],
+  );
+});
+
+test('preserves an ambiguous native request ID and blocks future submission until inspect-first recovery', async () => {
+  const ready = await readyRanchDay();
+  const live = await withLiveImageHoss(ready.runtime, ready.productionId);
+  const adapter = successfulImageHossAdapter();
+  adapter.execute = async () => ({
+    id: 'imagehoss-job:production:ranch-day:ambiguous',
+    status: 'recovery-required',
+    simulation: false,
+    nativeJobId: 'comfy_job_ambiguous_12345678',
+    failure: {
+      code: 'AMBIGUOUS_COMFY_STATE',
+      message: 'Inspect the existing native Job before retrying.',
+      retryable: false,
+    },
+  });
+  const result = await makeProduction(live, ready.productionId, {
+    approvedBy: 'human:hayden',
+    specialistAdapters: new Map([['actor:imagehoss', adapter]]),
+  });
+  const imageNode = result.run.nodeStatuses.find(item => item.actorId === 'actor:imagehoss');
+  assert.equal(imageNode.status, 'recovery-required');
+  assert.deepEqual(imageNode.nativeJobIds, ['comfy_job_ambiguous_12345678']);
+  const preview = previewProductionRun(result.runtime, ready.productionId);
+  assert.ok(preview.blockers.includes(`production-run-recovery-required:${result.run.id}`));
+});
+
+test('blocks paid VideoBoss before discovery or submission until an accepted same-Production ImageHoss source exists', async () => {
+  const ready = await readyRanchDay();
+  const configured = await saveProductionActorConfiguration(ready.runtime, ready.productionId, 'actor:videoboss', {
+    settings: {
+      executionRoute: {
+        lane: 'live',
+        adapter: 'videoboss',
+        model: 'fal-ai/wan/v2.7/image-to-video',
+        costCeilingUsd: 2,
+        settings: {
+          resolution: '720p',
+          durationSeconds: 5,
+          audioInput: false,
+          promptExpansion: false,
+          safetyChecker: true,
+          imageHossAssets: [],
+        },
+      },
+    },
+  });
+  const runtime = compileActorPlan(configured.runtime, ready.productionId).runtime;
+  let adapterCalls = 0;
+  const neverCalled = async () => {
+    adapterCalls += 1;
+    throw new Error('paid adapter boundary must not be called');
+  };
+  const result = await makeProduction(runtime, ready.productionId, {
+    approvedBy: 'human:hayden',
+    specialistAdapters: new Map([['actor:videoboss', {
+      discover: neverCalled,
+      validateConfiguration: neverCalled,
+      compilePackage: neverCalled,
+      execute: neverCalled,
+      recover: neverCalled,
+      cancel: neverCalled,
+      inspectResult: neverCalled,
+    }]]),
+  });
+  const videoNode = result.run.nodeStatuses.find(item => item.actorId === 'actor:videoboss');
+  assert.equal(adapterCalls, 0);
+  assert.equal(videoNode.status, 'blocked');
+  assert.ok(videoNode.blockers.includes('accepted-imagehoss-first-frame-required'));
+  assert.equal(result.results.some(item => item.creatorActorId === 'actor:videoboss'), false);
 });
 
 test('Make Production creates an immutable frozen Run plus Work Orders, Leases, Grants, Returns, and Receipts', async () => {

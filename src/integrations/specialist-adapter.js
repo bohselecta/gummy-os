@@ -38,6 +38,27 @@ export class SpecialistJobStore {
   }
 }
 
+export class SpecialistAdapterRegistry {
+  constructor(entries = []) {
+    this.adapters = new Map();
+    for (const [actorId, adapter] of entries) this.register(actorId, adapter);
+  }
+
+  register(actorId, adapter) {
+    if (!actorId?.startsWith('actor:')) throw new Error('Specialist Actor ID required');
+    this.adapters.set(actorId, assertSpecialistAdapter(adapter));
+    return this;
+  }
+
+  resolve(actorId) {
+    return this.adapters.get(actorId) || null;
+  }
+
+  has(actorId) {
+    return this.adapters.has(actorId);
+  }
+}
+
 export function assertMakeProductionAuthorization(authorization, packageDigest) {
   if (authorization?.action !== 'make-production' || !authorization.approvedBy) {
     throw new Error('Make Production authorization required');
