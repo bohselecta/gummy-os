@@ -45,6 +45,13 @@ These are product/interface names. Candy icons do not create a `candy` protocol 
 | `gummy.agent/v0` | Executable intelligence/process. |
 | `gummy.mold/v0` | Permissioned embodiment and operating contract. |
 | `gummy.master-control/v0` | Human-controlled assignment, placement, sync, approval, revocation. |
+| `gummy.production/v0` | Durable top-level undertaking containing participant Actors, plans, Gummies, Runs, and deliverables. |
+| `gummy.production-participant/v0` | One Actor's role, readiness, relationships, Mold, and Agent assignment inside one Production. |
+| `gummy.production-actor-configuration/v0` | Versioned settings for one Actor isolated to one Production. |
+| `gummy.actor-app-descriptor/v0` | Versioned window surface and capability/setup contract for one Actor. |
+| `gummy.actor-plan/v0` | Editable typed graph of context, setup, execution, review, approval, storage, and publication. |
+| `gummy.context-envelope/v0` | Minimum approved node-specific execution context slice. |
+| `gummy.production-run/v0` | Immutable governed execution attempt created by Make Production. |
 | `gummy.box/v0` | User-owned provider-neutral handoff space. |
 | `gummy.work-order/v0` | Proposed bounded task written into a Gummy Box. |
 | `gummy.task-lease/v0` | Exclusive or explicitly shared task ownership. |

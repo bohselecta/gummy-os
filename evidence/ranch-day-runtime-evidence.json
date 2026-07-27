@@ -1,0 +1,1631 @@
+{
+  "schema": "gummy.acceptance-evidence/v0",
+  "generatedAt": "2026-07-27T01:41:49.743Z",
+  "referenceProduction": {
+    "schema": "gummy.production/v0",
+    "id": "production:ranch-day",
+    "title": "Ranch Day",
+    "description": "Private Ranch Day family video Production",
+    "creatorHumanId": "human:hayden",
+    "ownerActorId": "actor:hayden",
+    "status": "review",
+    "visibility": "private",
+    "participantIds": [
+      "participant:ranch-day:hayden",
+      "participant:ranch-day:hoyt",
+      "participant:ranch-day:imagehoss",
+      "participant:ranch-day:3d-bee",
+      "participant:ranch-day:videoboss",
+      "participant:ranch-day:project-composer",
+      "participant:ranch-day:gummy-storage"
+    ],
+    "bowlIds": [],
+    "actorPlanIds": [
+      "actor-plan:ranch-day"
+    ],
+    "runIds": [
+      "production-run:ranch-day:1"
+    ],
+    "gummyIds": [
+      "gummy:ranch-day-source-brief",
+      "gummy:hoyt-likeness-approved",
+      "gummy:ranch-day:1:imagehoss:result",
+      "gummy:ranch-day:1:3d-bee:result",
+      "gummy:ranch-day:1:videoboss:result",
+      "gummy:ranch-day:1:project-composer:result",
+      "gummy:ranch-day:1:gummy-storage:result"
+    ],
+    "deliverableIds": [
+      "gummy:ranch-day:1:project-composer:result"
+    ],
+    "authoritativeLocation": "browser:local-origin",
+    "revision": "9",
+    "createdAt": "2026-07-27T01:41:49.707Z",
+    "updatedAt": "2026-07-27T01:41:49.741Z",
+    "activeActorPlanId": "actor-plan:ranch-day"
+  },
+  "serviceActors": [
+    {
+      "schema": "gummy.actor/v0",
+      "id": "actor:imagehoss",
+      "address": "@ImageHoss",
+      "kind": "service",
+      "name": "ImageHoss",
+      "status": "active",
+      "humanAuthorityIds": [
+        "human:hayden"
+      ],
+      "moldIds": [
+        "mold:imagehoss:production-reference"
+      ],
+      "agentIds": [
+        "agent:reference-imagehoss-browser"
+      ],
+      "publishedCapabilities": [
+        "capability:imagehoss.reference-preparation/v0"
+      ],
+      "acceptedInputTypes": [
+        "image/*",
+        "gummy/reference",
+        "text/brief"
+      ],
+      "outputTypes": [
+        "gummy/reference-set"
+      ],
+      "locality": "web",
+      "privacy": "production-sliced",
+      "retention": "run-only",
+      "contribution": "none-without-explicit-approval",
+      "cost": {
+        "model": "deterministic-reference",
+        "estimate": 0
+      },
+      "deployment": {
+        "mode": "web-only",
+        "authoritativeLocation": "browser:local-origin"
+      },
+      "createdAt": "2026-07-26T12:00:00.000Z",
+      "updatedAt": "2026-07-26T12:00:00.000Z"
+    },
+    {
+      "schema": "gummy.actor/v0",
+      "id": "actor:3d-bee",
+      "address": "@3D-Bee",
+      "kind": "service",
+      "name": "3D-Bee",
+      "status": "active",
+      "humanAuthorityIds": [
+        "human:hayden"
+      ],
+      "moldIds": [
+        "mold:3d-bee:production-scene"
+      ],
+      "agentIds": [
+        "agent:reference-3d-bee-browser"
+      ],
+      "publishedCapabilities": [
+        "capability:3d-bee.scene-preparation/v0"
+      ],
+      "acceptedInputTypes": [
+        "gummy/reference-set",
+        "text/scene-brief"
+      ],
+      "outputTypes": [
+        "gummy/scene-manifest"
+      ],
+      "locality": "web",
+      "privacy": "production-sliced",
+      "retention": "run-only",
+      "contribution": "none-without-explicit-approval",
+      "cost": {
+        "model": "deterministic-reference",
+        "estimate": 0
+      },
+      "deployment": {
+        "mode": "web-only",
+        "authoritativeLocation": "browser:local-origin"
+      },
+      "createdAt": "2026-07-26T12:00:00.000Z",
+      "updatedAt": "2026-07-26T12:00:00.000Z"
+    },
+    {
+      "schema": "gummy.actor/v0",
+      "id": "actor:videoboss",
+      "address": "@VideoBoss",
+      "kind": "service",
+      "name": "VideoBoss",
+      "status": "active",
+      "humanAuthorityIds": [
+        "human:hayden"
+      ],
+      "moldIds": [
+        "mold:videoboss:private-family-video"
+      ],
+      "agentIds": [
+        "agent:reference-videoboss-browser"
+      ],
+      "publishedCapabilities": [
+        "capability:videoboss.video-generation/v0"
+      ],
+      "acceptedInputTypes": [
+        "gummy/reference-set",
+        "gummy/scene-manifest",
+        "gummy/approved-likeness"
+      ],
+      "outputTypes": [
+        "gummy/video-manifest"
+      ],
+      "locality": "web",
+      "privacy": "production-sliced",
+      "retention": "run-only",
+      "contribution": "none-without-explicit-approval",
+      "cost": {
+        "model": "deterministic-reference",
+        "estimate": 0
+      },
+      "deployment": {
+        "mode": "web-only",
+        "authoritativeLocation": "browser:local-origin"
+      },
+      "createdAt": "2026-07-26T12:00:00.000Z",
+      "updatedAt": "2026-07-26T12:00:00.000Z"
+    },
+    {
+      "schema": "gummy.actor/v0",
+      "id": "actor:project-composer",
+      "address": "@ProjectComposer",
+      "kind": "service",
+      "name": "ProjectComposer",
+      "status": "active",
+      "humanAuthorityIds": [
+        "human:hayden"
+      ],
+      "moldIds": [
+        "mold:project-composer:private-assembly"
+      ],
+      "agentIds": [
+        "agent:reference-project-composer-browser"
+      ],
+      "publishedCapabilities": [
+        "capability:project-composer.assembly/v0"
+      ],
+      "acceptedInputTypes": [
+        "gummy/video-manifest",
+        "gummy/scene-manifest",
+        "audio/*"
+      ],
+      "outputTypes": [
+        "gummy/project-manifest",
+        "gummy/final-deliverable"
+      ],
+      "locality": "web",
+      "privacy": "production-sliced",
+      "retention": "run-only",
+      "contribution": "none-without-explicit-approval",
+      "cost": {
+        "model": "deterministic-reference",
+        "estimate": 0
+      },
+      "deployment": {
+        "mode": "web-only",
+        "authoritativeLocation": "browser:local-origin"
+      },
+      "createdAt": "2026-07-26T12:00:00.000Z",
+      "updatedAt": "2026-07-26T12:00:00.000Z"
+    },
+    {
+      "schema": "gummy.actor/v0",
+      "id": "actor:gummy-storage",
+      "address": "@GummyStorage",
+      "kind": "service",
+      "name": "GummyStorage",
+      "status": "active",
+      "humanAuthorityIds": [
+        "human:hayden"
+      ],
+      "moldIds": [
+        "mold:gummy-storage:local-preservation"
+      ],
+      "agentIds": [
+        "agent:reference-gummy-storage-browser"
+      ],
+      "publishedCapabilities": [
+        "capability:gummy-storage.preserve/v0"
+      ],
+      "acceptedInputTypes": [
+        "gummy/source",
+        "gummy/result",
+        "gummy/action-receipt"
+      ],
+      "outputTypes": [
+        "gummy/storage-manifest"
+      ],
+      "locality": "web",
+      "privacy": "production-sliced",
+      "retention": "configured-per-production",
+      "contribution": "none-without-explicit-approval",
+      "cost": {
+        "model": "deterministic-reference",
+        "estimate": 0
+      },
+      "deployment": {
+        "mode": "web-only",
+        "authoritativeLocation": "browser:local-origin"
+      },
+      "createdAt": "2026-07-26T12:00:00.000Z",
+      "updatedAt": "2026-07-26T12:00:00.000Z"
+    }
+  ],
+  "actorPlan": {
+    "schema": "gummy.actor-plan/v0",
+    "id": "actor-plan:ranch-day",
+    "productionId": "production:ranch-day",
+    "title": "Ranch Day Actor Plan",
+    "revision": "1",
+    "nodes": [
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:hayden",
+        "actorId": "actor:hayden",
+        "nodeType": "context",
+        "role": "creative owner and approver",
+        "optional": false,
+        "expectedOutputs": [],
+        "locality": "none",
+        "cost": 0
+      },
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:hoyt",
+        "actorId": "actor:hoyt",
+        "nodeType": "context",
+        "role": "represented participant and optional reviewer",
+        "optional": true,
+        "expectedOutputs": [],
+        "locality": "none",
+        "cost": 0
+      },
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:imagehoss",
+        "actorId": "actor:imagehoss",
+        "nodeType": "execution",
+        "role": "approved reference preparation",
+        "optional": false,
+        "agentId": "agent:reference-imagehoss-browser",
+        "moldId": "mold:imagehoss:production-reference",
+        "configurationId": "production-config:ranch-day:imagehoss",
+        "expectedOutputs": [
+          "gummy/reference-set"
+        ],
+        "locality": "web",
+        "cost": 0
+      },
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:3d-bee",
+        "actorId": "actor:3d-bee",
+        "nodeType": "execution",
+        "role": "optional scene preparation",
+        "optional": true,
+        "agentId": "agent:reference-3d-bee-browser",
+        "moldId": "mold:3d-bee:production-scene",
+        "configurationId": "production-config:ranch-day:3d-bee",
+        "expectedOutputs": [
+          "gummy/scene-manifest"
+        ],
+        "locality": "web",
+        "cost": 0
+      },
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:videoboss",
+        "actorId": "actor:videoboss",
+        "nodeType": "execution",
+        "role": "private video reference generation",
+        "optional": false,
+        "agentId": "agent:reference-videoboss-browser",
+        "moldId": "mold:videoboss:private-family-video",
+        "configurationId": "production-config:ranch-day:videoboss",
+        "expectedOutputs": [
+          "gummy/video-manifest"
+        ],
+        "locality": "web",
+        "cost": 0
+      },
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:project-composer",
+        "actorId": "actor:project-composer",
+        "nodeType": "execution",
+        "role": "assembly and finalization",
+        "optional": false,
+        "agentId": "agent:reference-project-composer-browser",
+        "moldId": "mold:project-composer:private-assembly",
+        "configurationId": "production-config:ranch-day:project-composer",
+        "expectedOutputs": [
+          "gummy/project-manifest",
+          "gummy/final-deliverable"
+        ],
+        "locality": "web",
+        "cost": 0
+      },
+      {
+        "schema": "gummy.actor-plan-node/v0",
+        "id": "plan-node:ranch-day:gummy-storage",
+        "actorId": "actor:gummy-storage",
+        "nodeType": "execution",
+        "role": "preservation and evidence storage",
+        "optional": false,
+        "agentId": "agent:reference-gummy-storage-browser",
+        "moldId": "mold:gummy-storage:local-preservation",
+        "configurationId": "production-config:ranch-day:gummy-storage",
+        "expectedOutputs": [
+          "gummy/storage-manifest"
+        ],
+        "locality": "web",
+        "cost": 0
+      }
+    ],
+    "edges": [
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:hayden:imagehoss:context",
+        "fromNodeId": "plan-node:ranch-day:hayden",
+        "toNodeId": "plan-node:ranch-day:imagehoss",
+        "edgeType": "context",
+        "dataClasses": [
+          "creative-brief",
+          "approved-ranch-references"
+        ],
+        "optional": false,
+        "approvalRequired": false
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:hoyt:videoboss:context",
+        "fromNodeId": "plan-node:ranch-day:hoyt",
+        "toNodeId": "plan-node:ranch-day:videoboss",
+        "edgeType": "context",
+        "dataClasses": [
+          "approved-likeness",
+          "approved-beagle-references",
+          "private-family-video"
+        ],
+        "optional": true,
+        "approvalRequired": true
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:imagehoss:3d-bee:setup",
+        "fromNodeId": "plan-node:ranch-day:imagehoss",
+        "toNodeId": "plan-node:ranch-day:3d-bee",
+        "edgeType": "setup",
+        "dataClasses": [
+          "approved-reference-set"
+        ],
+        "optional": true,
+        "approvalRequired": false
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:imagehoss:videoboss:input",
+        "fromNodeId": "plan-node:ranch-day:imagehoss",
+        "toNodeId": "plan-node:ranch-day:videoboss",
+        "edgeType": "input",
+        "dataClasses": [
+          "approved-reference-set"
+        ],
+        "optional": false,
+        "approvalRequired": false
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:3d-bee:videoboss:input",
+        "fromNodeId": "plan-node:ranch-day:3d-bee",
+        "toNodeId": "plan-node:ranch-day:videoboss",
+        "edgeType": "input",
+        "dataClasses": [
+          "scene-manifest"
+        ],
+        "optional": true,
+        "approvalRequired": false
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:videoboss:project-composer:execution",
+        "fromNodeId": "plan-node:ranch-day:videoboss",
+        "toNodeId": "plan-node:ranch-day:project-composer",
+        "edgeType": "execution",
+        "dataClasses": [
+          "video-manifest"
+        ],
+        "optional": false,
+        "approvalRequired": false
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:hoyt:project-composer:review",
+        "fromNodeId": "plan-node:ranch-day:hoyt",
+        "toNodeId": "plan-node:ranch-day:project-composer",
+        "edgeType": "review",
+        "dataClasses": [
+          "private-final-preview"
+        ],
+        "optional": true,
+        "approvalRequired": true
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:hayden:project-composer:approval",
+        "fromNodeId": "plan-node:ranch-day:hayden",
+        "toNodeId": "plan-node:ranch-day:project-composer",
+        "edgeType": "approval",
+        "dataClasses": [
+          "final-deliverable"
+        ],
+        "optional": false,
+        "approvalRequired": true
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:project-composer:gummy-storage:storage",
+        "fromNodeId": "plan-node:ranch-day:project-composer",
+        "toNodeId": "plan-node:ranch-day:gummy-storage",
+        "edgeType": "storage",
+        "dataClasses": [
+          "project-manifest",
+          "final-deliverable",
+          "receipts"
+        ],
+        "optional": false,
+        "approvalRequired": false
+      },
+      {
+        "schema": "gummy.actor-plan-edge/v0",
+        "id": "plan-edge:ranch-day:hayden:gummy-storage:publication",
+        "fromNodeId": "plan-node:ranch-day:hayden",
+        "toNodeId": "plan-node:ranch-day:gummy-storage",
+        "edgeType": "publication",
+        "dataClasses": [
+          "private-only"
+        ],
+        "optional": false,
+        "approvalRequired": true
+      }
+    ],
+    "status": "editable",
+    "createdAt": "2026-07-27T01:41:49.727Z",
+    "updatedAt": "2026-07-27T01:41:49.727Z"
+  },
+  "productionRun": {
+    "schema": "gummy.production-run/v0",
+    "id": "production-run:ranch-day:1",
+    "productionId": "production:ranch-day",
+    "productionRevision": "8",
+    "actorPlanId": "actor-plan:ranch-day",
+    "actorPlanRevision": "1",
+    "frozenPlan": {
+      "schema": "gummy.actor-plan/v0",
+      "id": "actor-plan:ranch-day",
+      "productionId": "production:ranch-day",
+      "title": "Ranch Day Actor Plan",
+      "revision": "1",
+      "nodes": [
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:hayden",
+          "actorId": "actor:hayden",
+          "nodeType": "context",
+          "role": "creative owner and approver",
+          "optional": false,
+          "expectedOutputs": [],
+          "locality": "none",
+          "cost": 0
+        },
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:hoyt",
+          "actorId": "actor:hoyt",
+          "nodeType": "context",
+          "role": "represented participant and optional reviewer",
+          "optional": true,
+          "expectedOutputs": [],
+          "locality": "none",
+          "cost": 0
+        },
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:imagehoss",
+          "actorId": "actor:imagehoss",
+          "nodeType": "execution",
+          "role": "approved reference preparation",
+          "optional": false,
+          "agentId": "agent:reference-imagehoss-browser",
+          "moldId": "mold:imagehoss:production-reference",
+          "configurationId": "production-config:ranch-day:imagehoss",
+          "expectedOutputs": [
+            "gummy/reference-set"
+          ],
+          "locality": "web",
+          "cost": 0
+        },
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:3d-bee",
+          "actorId": "actor:3d-bee",
+          "nodeType": "execution",
+          "role": "optional scene preparation",
+          "optional": true,
+          "agentId": "agent:reference-3d-bee-browser",
+          "moldId": "mold:3d-bee:production-scene",
+          "configurationId": "production-config:ranch-day:3d-bee",
+          "expectedOutputs": [
+            "gummy/scene-manifest"
+          ],
+          "locality": "web",
+          "cost": 0
+        },
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:videoboss",
+          "actorId": "actor:videoboss",
+          "nodeType": "execution",
+          "role": "private video reference generation",
+          "optional": false,
+          "agentId": "agent:reference-videoboss-browser",
+          "moldId": "mold:videoboss:private-family-video",
+          "configurationId": "production-config:ranch-day:videoboss",
+          "expectedOutputs": [
+            "gummy/video-manifest"
+          ],
+          "locality": "web",
+          "cost": 0
+        },
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:project-composer",
+          "actorId": "actor:project-composer",
+          "nodeType": "execution",
+          "role": "assembly and finalization",
+          "optional": false,
+          "agentId": "agent:reference-project-composer-browser",
+          "moldId": "mold:project-composer:private-assembly",
+          "configurationId": "production-config:ranch-day:project-composer",
+          "expectedOutputs": [
+            "gummy/project-manifest",
+            "gummy/final-deliverable"
+          ],
+          "locality": "web",
+          "cost": 0
+        },
+        {
+          "schema": "gummy.actor-plan-node/v0",
+          "id": "plan-node:ranch-day:gummy-storage",
+          "actorId": "actor:gummy-storage",
+          "nodeType": "execution",
+          "role": "preservation and evidence storage",
+          "optional": false,
+          "agentId": "agent:reference-gummy-storage-browser",
+          "moldId": "mold:gummy-storage:local-preservation",
+          "configurationId": "production-config:ranch-day:gummy-storage",
+          "expectedOutputs": [
+            "gummy/storage-manifest"
+          ],
+          "locality": "web",
+          "cost": 0
+        }
+      ],
+      "edges": [
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:hayden:imagehoss:context",
+          "fromNodeId": "plan-node:ranch-day:hayden",
+          "toNodeId": "plan-node:ranch-day:imagehoss",
+          "edgeType": "context",
+          "dataClasses": [
+            "creative-brief",
+            "approved-ranch-references"
+          ],
+          "optional": false,
+          "approvalRequired": false
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:hoyt:videoboss:context",
+          "fromNodeId": "plan-node:ranch-day:hoyt",
+          "toNodeId": "plan-node:ranch-day:videoboss",
+          "edgeType": "context",
+          "dataClasses": [
+            "approved-likeness",
+            "approved-beagle-references",
+            "private-family-video"
+          ],
+          "optional": true,
+          "approvalRequired": true
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:imagehoss:3d-bee:setup",
+          "fromNodeId": "plan-node:ranch-day:imagehoss",
+          "toNodeId": "plan-node:ranch-day:3d-bee",
+          "edgeType": "setup",
+          "dataClasses": [
+            "approved-reference-set"
+          ],
+          "optional": true,
+          "approvalRequired": false
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:imagehoss:videoboss:input",
+          "fromNodeId": "plan-node:ranch-day:imagehoss",
+          "toNodeId": "plan-node:ranch-day:videoboss",
+          "edgeType": "input",
+          "dataClasses": [
+            "approved-reference-set"
+          ],
+          "optional": false,
+          "approvalRequired": false
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:3d-bee:videoboss:input",
+          "fromNodeId": "plan-node:ranch-day:3d-bee",
+          "toNodeId": "plan-node:ranch-day:videoboss",
+          "edgeType": "input",
+          "dataClasses": [
+            "scene-manifest"
+          ],
+          "optional": true,
+          "approvalRequired": false
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:videoboss:project-composer:execution",
+          "fromNodeId": "plan-node:ranch-day:videoboss",
+          "toNodeId": "plan-node:ranch-day:project-composer",
+          "edgeType": "execution",
+          "dataClasses": [
+            "video-manifest"
+          ],
+          "optional": false,
+          "approvalRequired": false
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:hoyt:project-composer:review",
+          "fromNodeId": "plan-node:ranch-day:hoyt",
+          "toNodeId": "plan-node:ranch-day:project-composer",
+          "edgeType": "review",
+          "dataClasses": [
+            "private-final-preview"
+          ],
+          "optional": true,
+          "approvalRequired": true
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:hayden:project-composer:approval",
+          "fromNodeId": "plan-node:ranch-day:hayden",
+          "toNodeId": "plan-node:ranch-day:project-composer",
+          "edgeType": "approval",
+          "dataClasses": [
+            "final-deliverable"
+          ],
+          "optional": false,
+          "approvalRequired": true
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:project-composer:gummy-storage:storage",
+          "fromNodeId": "plan-node:ranch-day:project-composer",
+          "toNodeId": "plan-node:ranch-day:gummy-storage",
+          "edgeType": "storage",
+          "dataClasses": [
+            "project-manifest",
+            "final-deliverable",
+            "receipts"
+          ],
+          "optional": false,
+          "approvalRequired": false
+        },
+        {
+          "schema": "gummy.actor-plan-edge/v0",
+          "id": "plan-edge:ranch-day:hayden:gummy-storage:publication",
+          "fromNodeId": "plan-node:ranch-day:hayden",
+          "toNodeId": "plan-node:ranch-day:gummy-storage",
+          "edgeType": "publication",
+          "dataClasses": [
+            "private-only"
+          ],
+          "optional": false,
+          "approvalRequired": true
+        }
+      ],
+      "status": "editable",
+      "createdAt": "2026-07-27T01:41:49.727Z",
+      "updatedAt": "2026-07-27T01:41:49.727Z"
+    },
+    "frozenParticipants": [
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:hayden",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:hayden",
+        "roles": [
+          "owner",
+          "creative-context",
+          "approver"
+        ],
+        "source": "creator",
+        "relationshipLinkIds": [],
+        "approvalState": "approved",
+        "status": "ready"
+      },
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:hoyt",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:hoyt",
+        "roles": [
+          "represented-subject",
+          "context-contributor",
+          "optional-reviewer"
+        ],
+        "source": "mention",
+        "relationshipLinkIds": [
+          "link:hoyt-videoboss-private-family"
+        ],
+        "approvalState": "approved",
+        "status": "ready"
+      },
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:imagehoss",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:imagehoss",
+        "roles": [
+          "reference-preparation",
+          "executor"
+        ],
+        "source": "mention",
+        "moldId": "mold:imagehoss:production-reference",
+        "relationshipLinkIds": [],
+        "assignedAgentId": "agent:reference-imagehoss-browser",
+        "approvalState": "approved",
+        "status": "ready"
+      },
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:3d-bee",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:3d-bee",
+        "roles": [
+          "scene-preparation",
+          "executor",
+          "optional"
+        ],
+        "source": "mention",
+        "moldId": "mold:3d-bee:production-scene",
+        "relationshipLinkIds": [],
+        "assignedAgentId": "agent:reference-3d-bee-browser",
+        "approvalState": "approved",
+        "status": "ready"
+      },
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:videoboss",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:videoboss",
+        "roles": [
+          "video-generation",
+          "executor"
+        ],
+        "source": "mention",
+        "moldId": "mold:videoboss:private-family-video",
+        "relationshipLinkIds": [],
+        "assignedAgentId": "agent:reference-videoboss-browser",
+        "approvalState": "approved",
+        "status": "ready"
+      },
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:project-composer",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:project-composer",
+        "roles": [
+          "project-assembly",
+          "executor"
+        ],
+        "source": "mention",
+        "moldId": "mold:project-composer:private-assembly",
+        "relationshipLinkIds": [],
+        "assignedAgentId": "agent:reference-project-composer-browser",
+        "approvalState": "approved",
+        "status": "ready"
+      },
+      {
+        "schema": "gummy.production-participant/v0",
+        "id": "participant:ranch-day:gummy-storage",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:gummy-storage",
+        "roles": [
+          "storage",
+          "executor"
+        ],
+        "source": "mention",
+        "moldId": "mold:gummy-storage:local-preservation",
+        "relationshipLinkIds": [],
+        "assignedAgentId": "agent:reference-gummy-storage-browser",
+        "approvalState": "approved",
+        "status": "ready"
+      }
+    ],
+    "frozenConfigurations": [
+      {
+        "schema": "gummy.production-actor-configuration/v0",
+        "id": "production-config:ranch-day:imagehoss",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:imagehoss",
+        "surfaceId": "main",
+        "capabilityId": "capability:imagehoss.reference-preparation/v0",
+        "capabilityVersion": "v0",
+        "role": "reference-preparation",
+        "moldId": "mold:imagehoss:production-reference",
+        "relationshipLinkIds": [],
+        "inputGummyIds": [],
+        "settingsSchemaRef": "gummy://schemas/configuration/imagehoss/v0",
+        "settings": {
+          "referenceMode": "approved-only",
+          "crop": "cinematic",
+          "identityPreservation": true
+        },
+        "upstreamActorIds": [
+          "actor:hayden"
+        ],
+        "downstreamActorIds": [],
+        "outputContract": {
+          "types": [
+            "gummy/reference-set"
+          ],
+          "deterministicReference": true
+        },
+        "localityPolicy": {
+          "selected": "web",
+          "options": [
+            "web"
+          ],
+          "native": "unavailable"
+        },
+        "privacyPolicy": {
+          "audience": "private",
+          "contextSlicing": "required"
+        },
+        "retentionPolicy": {
+          "mode": "run-only"
+        },
+        "contributionPolicy": {
+          "mode": "none"
+        },
+        "costCeiling": {
+          "currency": "USD",
+          "amount": 0
+        },
+        "validation": {
+          "valid": true,
+          "blockers": [],
+          "readiness": "invalid"
+        },
+        "readiness": "ready",
+        "revision": "1",
+        "hash": "sha256:b94e80e8f0013034a26aa18bf48be435964203aca025d6ce1a55e897ea81bd52",
+        "updatedBy": "human:hayden",
+        "updatedAt": "2026-07-27T01:41:49.719Z"
+      },
+      {
+        "schema": "gummy.production-actor-configuration/v0",
+        "id": "production-config:ranch-day:3d-bee",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:3d-bee",
+        "surfaceId": "main",
+        "capabilityId": "capability:3d-bee.scene-preparation/v0",
+        "capabilityVersion": "v0",
+        "role": "scene-preparation",
+        "moldId": "mold:3d-bee:production-scene",
+        "relationshipLinkIds": [],
+        "inputGummyIds": [],
+        "settingsSchemaRef": "gummy://schemas/configuration/3d-bee/v0",
+        "settings": {
+          "environment": "ranch",
+          "assetDetail": "reference",
+          "includeMule": true
+        },
+        "upstreamActorIds": [
+          "actor:imagehoss"
+        ],
+        "downstreamActorIds": [],
+        "outputContract": {
+          "types": [
+            "gummy/scene-manifest"
+          ],
+          "deterministicReference": true
+        },
+        "localityPolicy": {
+          "selected": "web",
+          "options": [
+            "web"
+          ],
+          "native": "unavailable"
+        },
+        "privacyPolicy": {
+          "audience": "private",
+          "contextSlicing": "required"
+        },
+        "retentionPolicy": {
+          "mode": "run-only"
+        },
+        "contributionPolicy": {
+          "mode": "none"
+        },
+        "costCeiling": {
+          "currency": "USD",
+          "amount": 0
+        },
+        "validation": {
+          "valid": true,
+          "blockers": [],
+          "readiness": "invalid"
+        },
+        "readiness": "ready",
+        "revision": "1",
+        "hash": "sha256:b2d5a25bf2aa9f0825ae9535941491dd009b33ec1acb0dae781be7589fb94832",
+        "updatedBy": "human:hayden",
+        "updatedAt": "2026-07-27T01:41:49.723Z"
+      },
+      {
+        "schema": "gummy.production-actor-configuration/v0",
+        "id": "production-config:ranch-day:videoboss",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:videoboss",
+        "surfaceId": "main",
+        "capabilityId": "capability:videoboss.video-generation/v0",
+        "capabilityVersion": "v0",
+        "role": "video-generation",
+        "moldId": "mold:videoboss:private-family-video",
+        "relationshipLinkIds": [
+          "link:hoyt-videoboss-private-family"
+        ],
+        "inputGummyIds": [],
+        "settingsSchemaRef": "gummy://schemas/configuration/videoboss/v0",
+        "settings": {
+          "durationSeconds": 30,
+          "aspectRatio": "16:9",
+          "audience": "private-family",
+          "voiceCloning": false
+        },
+        "upstreamActorIds": [
+          "actor:imagehoss",
+          "actor:3d-bee"
+        ],
+        "downstreamActorIds": [],
+        "outputContract": {
+          "types": [
+            "gummy/video-manifest"
+          ],
+          "deterministicReference": true
+        },
+        "localityPolicy": {
+          "selected": "web",
+          "options": [
+            "web"
+          ],
+          "native": "unavailable"
+        },
+        "privacyPolicy": {
+          "audience": "private",
+          "contextSlicing": "required"
+        },
+        "retentionPolicy": {
+          "mode": "run-only"
+        },
+        "contributionPolicy": {
+          "mode": "none"
+        },
+        "costCeiling": {
+          "currency": "USD",
+          "amount": 0
+        },
+        "validation": {
+          "valid": true,
+          "blockers": [],
+          "readiness": "invalid"
+        },
+        "readiness": "ready",
+        "revision": "1",
+        "hash": "sha256:988e08ab2cb2149975c0b5a2b0ba261921cf1ed90d307fd84c7ddc0d6eed91ea",
+        "updatedBy": "human:hayden",
+        "updatedAt": "2026-07-27T01:41:49.724Z"
+      },
+      {
+        "schema": "gummy.production-actor-configuration/v0",
+        "id": "production-config:ranch-day:project-composer",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:project-composer",
+        "surfaceId": "main",
+        "capabilityId": "capability:project-composer.assembly/v0",
+        "capabilityVersion": "v0",
+        "role": "project-assembly",
+        "moldId": "mold:project-composer:private-assembly",
+        "relationshipLinkIds": [],
+        "inputGummyIds": [],
+        "settingsSchemaRef": "gummy://schemas/configuration/project-composer/v0",
+        "settings": {
+          "title": "Ranch Day",
+          "soundtrack": "instrumental-placeholder",
+          "outputFormat": "reference-manifest"
+        },
+        "upstreamActorIds": [
+          "actor:videoboss"
+        ],
+        "downstreamActorIds": [],
+        "outputContract": {
+          "types": [
+            "gummy/project-manifest",
+            "gummy/final-deliverable"
+          ],
+          "deterministicReference": true
+        },
+        "localityPolicy": {
+          "selected": "web",
+          "options": [
+            "web"
+          ],
+          "native": "unavailable"
+        },
+        "privacyPolicy": {
+          "audience": "private",
+          "contextSlicing": "required"
+        },
+        "retentionPolicy": {
+          "mode": "run-only"
+        },
+        "contributionPolicy": {
+          "mode": "none"
+        },
+        "costCeiling": {
+          "currency": "USD",
+          "amount": 0
+        },
+        "validation": {
+          "valid": true,
+          "blockers": [],
+          "readiness": "invalid"
+        },
+        "readiness": "ready",
+        "revision": "1",
+        "hash": "sha256:7470dff5f43781f5a59889228d90542b7d973fac9a6c7459ac7476b0ec554e08",
+        "updatedBy": "human:hayden",
+        "updatedAt": "2026-07-27T01:41:49.725Z"
+      },
+      {
+        "schema": "gummy.production-actor-configuration/v0",
+        "id": "production-config:ranch-day:gummy-storage",
+        "productionId": "production:ranch-day",
+        "actorId": "actor:gummy-storage",
+        "surfaceId": "main",
+        "capabilityId": "capability:gummy-storage.preserve/v0",
+        "capabilityVersion": "v0",
+        "role": "preservation",
+        "moldId": "mold:gummy-storage:local-preservation",
+        "relationshipLinkIds": [],
+        "inputGummyIds": [],
+        "settingsSchemaRef": "gummy://schemas/configuration/gummy-storage/v0",
+        "settings": {
+          "sourceRetention": "preserve",
+          "resultRetentionDays": 365,
+          "receiptRetentionDays": 2555,
+          "location": "local-origin"
+        },
+        "upstreamActorIds": [
+          "actor:project-composer"
+        ],
+        "downstreamActorIds": [],
+        "outputContract": {
+          "types": [
+            "gummy/storage-manifest"
+          ],
+          "deterministicReference": true
+        },
+        "localityPolicy": {
+          "selected": "web",
+          "options": [
+            "web"
+          ],
+          "native": "unavailable"
+        },
+        "privacyPolicy": {
+          "audience": "private",
+          "contextSlicing": "required"
+        },
+        "retentionPolicy": {
+          "mode": "run-only"
+        },
+        "contributionPolicy": {
+          "mode": "none"
+        },
+        "costCeiling": {
+          "currency": "USD",
+          "amount": 0
+        },
+        "validation": {
+          "valid": true,
+          "blockers": [],
+          "readiness": "invalid"
+        },
+        "readiness": "ready",
+        "revision": "1",
+        "hash": "sha256:2e0c12a67f2bb07dec61c4728290df0d14f61a964dbdfa887ff7a7ee56f2d60c",
+        "updatedBy": "human:hayden",
+        "updatedAt": "2026-07-27T01:41:49.726Z"
+      }
+    ],
+    "configurationRevisionIds": [
+      "production-config:ranch-day:imagehoss@1",
+      "production-config:ranch-day:3d-bee@1",
+      "production-config:ranch-day:videoboss@1",
+      "production-config:ranch-day:project-composer@1",
+      "production-config:ranch-day:gummy-storage@1"
+    ],
+    "sourceGummyRevisions": [
+      {
+        "id": "gummy:ranch-day-source-brief",
+        "revision": "1",
+        "hash": "sha256:d3885600ea886f751a6949b764edc715ea4b3a05f4daa1478fa3091e38054b5e"
+      },
+      {
+        "id": "gummy:hoyt-likeness-approved",
+        "revision": "1",
+        "hash": "sha256:a99f996c5d5215f92ef748d2bb76686108f22d7345460ce089cf823dbfc92ae3"
+      }
+    ],
+    "approval": {
+      "approvedBy": "human:hayden",
+      "approvedAt": "2026-07-27T01:41:49.730Z"
+    },
+    "policy": {
+      "audience": "private-family",
+      "locality": "web",
+      "retention": "Production-specific",
+      "costCeiling": 0
+    },
+    "status": "completed",
+    "workOrderIds": [
+      "work-order:ranch-day:1:imagehoss",
+      "work-order:ranch-day:1:3d-bee",
+      "work-order:ranch-day:1:videoboss",
+      "work-order:ranch-day:1:project-composer",
+      "work-order:ranch-day:1:gummy-storage"
+    ],
+    "taskLeaseIds": [
+      "lease:ranch-day:1:imagehoss",
+      "lease:ranch-day:1:3d-bee",
+      "lease:ranch-day:1:videoboss",
+      "lease:ranch-day:1:project-composer",
+      "lease:ranch-day:1:gummy-storage"
+    ],
+    "grantIds": [
+      "grant:ranch-day:1:imagehoss",
+      "grant:ranch-day:1:3d-bee",
+      "grant:ranch-day:1:videoboss",
+      "grant:ranch-day:1:project-composer",
+      "grant:ranch-day:1:gummy-storage"
+    ],
+    "contextEnvelopeIds": [
+      "context-envelope:ranch-day:1:imagehoss",
+      "context-envelope:ranch-day:1:3d-bee",
+      "context-envelope:ranch-day:1:videoboss",
+      "context-envelope:ranch-day:1:project-composer",
+      "context-envelope:ranch-day:1:gummy-storage"
+    ],
+    "returnIds": [
+      "return:ranch-day:1:imagehoss",
+      "return:ranch-day:1:3d-bee",
+      "return:ranch-day:1:videoboss",
+      "return:ranch-day:1:project-composer",
+      "return:ranch-day:1:gummy-storage"
+    ],
+    "receiptIds": [
+      "receipt:bb9bb51b-2615-4043-8514-30246dafffa7",
+      "receipt:6325ea1d-e3e0-4b90-b11c-fff1cfa1f563",
+      "receipt:65c4eb47-8aa6-4838-86cb-5f0755fe39fa",
+      "receipt:05ffa9ed-485e-410c-9c51-e0a3875edc88",
+      "receipt:3c74a63e-1785-4895-91e6-91e7db58a02d"
+    ],
+    "resultGummyIds": [
+      "gummy:ranch-day:1:imagehoss:result",
+      "gummy:ranch-day:1:3d-bee:result",
+      "gummy:ranch-day:1:videoboss:result",
+      "gummy:ranch-day:1:project-composer:result",
+      "gummy:ranch-day:1:gummy-storage:result"
+    ],
+    "createdAt": "2026-07-27T01:41:49.730Z",
+    "startedAt": "2026-07-27T01:41:49.730Z",
+    "manifestHash": "sha256:4983fcbc1778263b998c7c546bd81f87adf6b4094367f3b0526524995909a59a",
+    "finishedAt": "2026-07-27T01:41:49.741Z"
+  },
+  "examples": {
+    "contextEnvelope": {
+      "schema": "gummy.context-envelope/v0",
+      "id": "context-envelope:ranch-day:1:videoboss",
+      "productionRunId": "production-run:ranch-day:1",
+      "actorPlanNodeId": "plan-node:ranch-day:videoboss",
+      "targetActorId": "actor:videoboss",
+      "agentId": "agent:reference-videoboss-browser",
+      "taskInstruction": "private video reference generation",
+      "selectedProductionContext": {
+        "productionId": "production:ranch-day",
+        "title": "Ranch Day",
+        "audience": "private-family"
+      },
+      "contextRefs": [
+        "gummy:hoyt-likeness-approved",
+        "gummy:beagle-references-approved",
+        "gummy:family-video-private"
+      ],
+      "sourceGummyRefs": [
+        "gummy:ranch-day-source-brief",
+        "gummy:hoyt-likeness-approved"
+      ],
+      "moldIds": [
+        "mold:videoboss:private-family-video"
+      ],
+      "relationshipLinkIds": [
+        "link:hoyt-videoboss-private-family"
+      ],
+      "allowedCapabilities": [
+        "capability:videoboss.video-generation/v0"
+      ],
+      "forbiddenActions": [
+        "public-release",
+        "commercial-use",
+        "voice-cloning",
+        "unknown-service-actor",
+        "unrelated-private-memory"
+      ],
+      "outputContract": {
+        "types": [
+          "gummy/video-manifest"
+        ],
+        "deterministicReference": true
+      },
+      "policy": {
+        "privacy": {
+          "audience": "private",
+          "contextSlicing": "required"
+        },
+        "retention": {
+          "mode": "run-only"
+        },
+        "locality": "web",
+        "contribution": {
+          "mode": "none"
+        },
+        "audience": "private-family"
+      },
+      "excludes": [
+        "complete-actor-memory",
+        "unrelated-private-memory",
+        "provider-credentials",
+        "ambient-filesystem"
+      ],
+      "createdAt": "2026-07-27T01:41:49.735Z",
+      "hash": "sha256:42d8fb829ad65fa476605aba610a982e94eb189c279b670818642f65311da961"
+    },
+    "workOrder": {
+      "schema": "gummy.work-order/v0",
+      "id": "work-order:ranch-day:1:videoboss",
+      "boxId": "box:hayden",
+      "issuer": {
+        "type": "human",
+        "id": "human:hayden",
+        "displayName": "Hayden"
+      },
+      "target": {
+        "humanAuthorityId": "human:hayden",
+        "actorId": "actor:videoboss",
+        "preferredAgentId": "agent:reference-videoboss-browser",
+        "moldId": "mold:videoboss:private-family-video",
+        "masterControlId": "master-control:hayden"
+      },
+      "goal": "private video reference generation",
+      "contextEnvelopeId": "context-envelope:ranch-day:1:videoboss",
+      "scope": {
+        "requestedCapabilities": [
+          "capability:videoboss.video-generation/v0"
+        ],
+        "gummyIds": [
+          "gummy:ranch-day-source-brief",
+          "gummy:hoyt-likeness-approved"
+        ],
+        "allowedWriteTargets": [
+          "production-results"
+        ],
+        "forbiddenActions": [
+          "public-release",
+          "commercial-use",
+          "voice-cloning",
+          "unknown-service-actor",
+          "unrelated-private-memory"
+        ],
+        "maxCost": 0
+      },
+      "execution": {
+        "requiredLocality": "web",
+        "privacy": "private-local",
+        "preferredInference": "no-model",
+        "requiresNative": false,
+        "offlineAllowed": true
+      },
+      "acceptance": {
+        "checks": [
+          "deterministic-manifest-created",
+          "source-hashes-unchanged"
+        ],
+        "expectedReturn": {
+          "schema": "gummy.work-return/v0"
+        },
+        "humanAcceptanceRequired": false
+      },
+      "approval": {
+        "required": true,
+        "risk": "medium",
+        "approvedBy": "human:hayden",
+        "approvedAt": "2026-07-27T01:41:49.730Z"
+      },
+      "status": "returned",
+      "createdAt": "2026-07-27T01:41:49.736Z",
+      "expiresAt": "2026-07-27T01:56:49.736Z"
+    },
+    "taskLease": {
+      "schema": "gummy.task-lease/v0",
+      "id": "lease:ranch-day:1:videoboss",
+      "humanAuthorityId": "human:hayden",
+      "actorId": "actor:videoboss",
+      "agentId": "agent:reference-videoboss-browser",
+      "moldId": "mold:videoboss:private-family-video",
+      "masterControlId": "master-control:hayden",
+      "taskId": "work-order:ranch-day:1:videoboss",
+      "scope": {
+        "productionRunId": "production-run:ranch-day:1",
+        "actorPlanNodeId": "plan-node:ranch-day:videoboss",
+        "authoritativeLocation": "browser:local-origin"
+      },
+      "mode": "exclusive",
+      "status": "completed",
+      "issuedAt": "2026-07-27T01:41:49.736Z",
+      "expiresAt": "2026-07-27T01:56:49.736Z",
+      "releasedAt": "2026-07-27T01:41:49.736Z"
+    },
+    "grant": {
+      "schema": "gummy.capability-grant/v0",
+      "id": "grant:ranch-day:1:videoboss",
+      "humanAuthorityId": "human:hayden",
+      "actorId": "actor:videoboss",
+      "operatorType": "agent",
+      "operatorId": "agent:reference-videoboss-browser",
+      "agentId": "agent:reference-videoboss-browser",
+      "moldId": "mold:videoboss:private-family-video",
+      "masterControlId": "master-control:hayden",
+      "taskLeaseId": "lease:ranch-day:1:videoboss",
+      "action": "capability:videoboss.video-generation/v0",
+      "resource": "production-run:ranch-day:1",
+      "resourceKind": "other",
+      "risk": "medium",
+      "reason": "private video reference generation",
+      "scope": {
+        "contextEnvelopeId": "context-envelope:ranch-day:1:videoboss",
+        "outputs": [
+          "gummy/video-manifest"
+        ]
+      },
+      "locality": "web",
+      "approval": "human",
+      "issuedAt": "2026-07-27T01:41:49.736Z",
+      "expiresAt": "2026-07-27T01:56:49.736Z",
+      "revoked": false
+    },
+    "return": {
+      "schema": "gummy.work-return/v0",
+      "id": "return:ranch-day:1:videoboss",
+      "boxId": "box:hayden",
+      "workOrderId": "work-order:ranch-day:1:videoboss",
+      "taskLeaseId": "lease:ranch-day:1:videoboss",
+      "humanAuthorityId": "human:hayden",
+      "actorId": "actor:videoboss",
+      "agentId": "agent:reference-videoboss-browser",
+      "moldId": "mold:videoboss:private-family-video",
+      "result": "completed",
+      "summary": "agent:reference-videoboss-browser created a deterministic structured reference result in the browser. It is not a production videoboss implementation.",
+      "sourceState": [
+        {
+          "id": "gummy:ranch-day-source-brief",
+          "revision": "1",
+          "hash": "sha256:d3885600ea886f751a6949b764edc715ea4b3a05f4daa1478fa3091e38054b5e"
+        },
+        {
+          "id": "gummy:hoyt-likeness-approved",
+          "revision": "1",
+          "hash": "sha256:a99f996c5d5215f92ef748d2bb76686108f22d7345460ce089cf823dbfc92ae3"
+        }
+      ],
+      "gummyIds": [
+        "gummy:ranch-day:1:videoboss:result"
+      ],
+      "checks": [
+        {
+          "name": "deterministic-manifest-created",
+          "status": "passed"
+        },
+        {
+          "name": "source-hashes-unchanged",
+          "status": "passed"
+        }
+      ],
+      "receiptIds": [
+        "receipt:65c4eb47-8aa6-4838-86cb-5f0755fe39fa"
+      ],
+      "createdAt": "2026-07-27T01:41:49.736Z"
+    },
+    "receipt": {
+      "schema": "gummy.action-receipt/v0",
+      "id": "receipt:65c4eb47-8aa6-4838-86cb-5f0755fe39fa",
+      "action": "production-run.node-completed",
+      "requestId": "production-run:ranch-day:1",
+      "humanAuthorityId": "human:hayden",
+      "actorId": "actor:videoboss",
+      "operatorType": "agent",
+      "operatorId": "agent:reference-videoboss-browser",
+      "agentId": "agent:reference-videoboss-browser",
+      "moldId": "mold:videoboss:private-family-video",
+      "masterControlId": "master-control:hayden",
+      "taskLeaseId": "lease:ranch-day:1:videoboss",
+      "grantIds": [
+        "grant:ranch-day:1:videoboss"
+      ],
+      "productionId": "production:ranch-day",
+      "productionRunId": "production-run:ranch-day:1",
+      "contextEnvelopeId": "context-envelope:ranch-day:1:videoboss",
+      "runtimeClass": "browser",
+      "locality": "web",
+      "resources": [
+        "gummy:ranch-day:1:videoboss:result",
+        "sha256:a0a65cbde53a67157c2e258ef4338c5db5f5f46c4db7ac5811dfd0cefc9fae6a"
+      ],
+      "outcome": "completed",
+      "summary": "agent:reference-videoboss-browser created a deterministic structured reference result in the browser. It is not a production videoboss implementation.",
+      "cost": {
+        "currency": "USD",
+        "amount": 0
+      },
+      "createdAt": "2026-07-27T01:41:49.736Z"
+    }
+  },
+  "hashes": {
+    "sources": [
+      {
+        "id": "gummy:ranch-day-source-brief",
+        "declared": "sha256:d3885600ea886f751a6949b764edc715ea4b3a05f4daa1478fa3091e38054b5e",
+        "recomputed": "sha256:d3885600ea886f751a6949b764edc715ea4b3a05f4daa1478fa3091e38054b5e",
+        "byteIdentical": true
+      },
+      {
+        "id": "gummy:hoyt-likeness-approved",
+        "declared": "sha256:a99f996c5d5215f92ef748d2bb76686108f22d7345460ce089cf823dbfc92ae3",
+        "recomputed": "sha256:a99f996c5d5215f92ef748d2bb76686108f22d7345460ce089cf823dbfc92ae3",
+        "byteIdentical": true
+      }
+    ],
+    "results": [
+      {
+        "id": "gummy:ranch-day:1:imagehoss:result",
+        "hash": "sha256:03152a84e35b700856a787bc5ca0cc7b3a72d760ef5b8a39eaf0d032c55c2b0c",
+        "operatingAgentId": "agent:reference-imagehoss-browser"
+      },
+      {
+        "id": "gummy:ranch-day:1:3d-bee:result",
+        "hash": "sha256:c696ba1d4491cdb33ecf9446a35a5540d8a4af2904d1f405dfacfe546f43c49c",
+        "operatingAgentId": "agent:reference-3d-bee-browser"
+      },
+      {
+        "id": "gummy:ranch-day:1:videoboss:result",
+        "hash": "sha256:a0a65cbde53a67157c2e258ef4338c5db5f5f46c4db7ac5811dfd0cefc9fae6a",
+        "operatingAgentId": "agent:reference-videoboss-browser"
+      },
+      {
+        "id": "gummy:ranch-day:1:project-composer:result",
+        "hash": "sha256:df4b46c056453b0314bc66f97c76182d2ca32a2728d15c1e95d737a2553c6ad2",
+        "operatingAgentId": "agent:reference-project-composer-browser"
+      },
+      {
+        "id": "gummy:ranch-day:1:gummy-storage:result",
+        "hash": "sha256:a1db2cc572887abd644a1a883f0d78f569032dac7635627a928323473068b13f",
+        "operatingAgentId": "agent:reference-gummy-storage-browser"
+      }
+    ],
+    "runManifest": "sha256:4983fcbc1778263b998c7c546bd81f87adf6b4094367f3b0526524995909a59a"
+  },
+  "revocation": {
+    "relationship": {
+      "schema": "gummy.link/v0",
+      "id": "link:hoyt-videoboss-private-family",
+      "source": {
+        "kind": "actor",
+        "id": "actor:hoyt"
+      },
+      "target": {
+        "kind": "actor",
+        "id": "actor:videoboss"
+      },
+      "relation": "approved-context-for",
+      "moldId": "mold:videoboss:private-family-video",
+      "allowedContextRefs": [
+        "gummy:hoyt-likeness-approved",
+        "gummy:beagle-references-approved",
+        "gummy:family-video-private"
+      ],
+      "allowedPurposes": [
+        "private-family-video"
+      ],
+      "allowedCollaboratorActorIds": [
+        "actor:hayden"
+      ],
+      "blockedCapabilities": [
+        "public-release",
+        "commercial-use",
+        "voice-cloning",
+        "unknown-service-actor",
+        "unrelated-private-memory"
+      ],
+      "retention": "run-only",
+      "status": "revoked",
+      "revision": "2",
+      "createdAt": "2026-07-26T12:00:00.000Z",
+      "revokedAt": "2026-07-27T01:41:49.743Z",
+      "revokedBy": "human:hayden",
+      "revocationReason": "Human revoked future use"
+    },
+    "historicalCounts": {
+      "runs": 1,
+      "returns": 5,
+      "receipts": 20
+    },
+    "countsAfterRevocation": {
+      "runs": 1,
+      "returns": 5,
+      "receipts": 21
+    },
+    "futureRunBlockers": [
+      "relationship-revoked:actor:hoyt:actor:videoboss"
+    ]
+  },
+  "nativeBoundary": {
+    "ok": false,
+    "outcome": "denied",
+    "blockers": [
+      "active-mold-required",
+      "active-task-lease-required",
+      "active-bounded-grant-required",
+      "context-envelope-required",
+      "explicit-native-bridge-required"
+    ],
+    "output": null,
+    "disclosure": "Capability invocation denied: active-mold-required, active-task-lease-required, active-bounded-grant-required, context-envelope-required, explicit-native-bridge-required."
+  },
+  "truthfulLimitations": [
+    "All service execution uses deterministic structured browser reference adapters.",
+    "No external ImageHoss, 3D-Bee, VideoBoss, ProjectComposer, or GummyStorage provider was invoked.",
+    "Authoritative persistence is local to the browser origin; cross-device synchronization is not implemented.",
+    "Native execution remains unavailable and deny-by-default."
+  ]
+}

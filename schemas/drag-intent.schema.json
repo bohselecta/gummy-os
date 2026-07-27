@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/drag-intent.schema.json",
+  "title": "Gummy OS Typed Drag Intent",
+  "type": "object",
+  "required": ["schema", "id", "source", "target", "proposedRelation", "dataClasses", "approvalRequired", "inputMode", "status", "grantsAuthority", "startsExecution", "frozenRunMutation", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.drag-intent/v0" },
+    "id": { "type": "string", "pattern": "^drag-intent:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "source": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["actor", "gummy", "production", "configuration", "plan-node"] },
+        "id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["actor", "gummy", "production", "configuration", "plan", "plan-node"] },
+        "id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "proposedRelation": { "type": "string" },
+    "dataClasses": { "type": "array", "items": { "type": "string" } },
+    "moldId": { "type": ["string", "null"] },
+    "approvalRequired": { "type": "boolean" },
+    "inputMode": { "enum": ["pointer", "keyboard", "touch"] },
+    "status": { "enum": ["preview", "accepted", "denied", "cancelled"] },
+    "grantsAuthority": { "const": false },
+    "startsExecution": { "const": false },
+    "frozenRunMutation": { "const": false },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": true
+}

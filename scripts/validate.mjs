@@ -6,6 +6,11 @@ const required = [
   'src/styles.css',
   'src/core/state.js',
   'src/core/capability-broker.js',
+  'src/core/production-runtime.js',
+  'src/apps/production.js',
+  'src/apps/actor-surface.js',
+  'src/apps/master-control.js',
+  'src/production.css',
   'src/apps/snack-graph.js',
   'src/apps/enterprise.js',
   'docs/BRAND_SYSTEM.md',
@@ -56,6 +61,15 @@ const schemas = [
   'schemas/action-receipt.schema.json',
   'schemas/organization.schema.json',
   'schemas/policy-pack.schema.json',
+  'schemas/production.schema.json',
+  'schemas/production-participant.schema.json',
+  'schemas/production-actor-configuration.schema.json',
+  'schemas/actor-app-descriptor.schema.json',
+  'schemas/actor-plan.schema.json',
+  'schemas/context-envelope.schema.json',
+  'schemas/production-run.schema.json',
+  'schemas/actor-update-proposal.schema.json',
+  'schemas/drag-intent.schema.json',
   'schemas/snack.schema.json',
   'schemas/graph-object.schema.json'
 ];
@@ -63,6 +77,46 @@ const schemas = [
 for (const schema of schemas) {
   const parsed = JSON.parse(await readFile(schema, 'utf8'));
   if (!parsed.$id || !parsed.title) throw new Error(`${schema} is missing $id or title`);
+}
+
+for (const command of [
+  'test:unit',
+  'test:integration',
+  'test:e2e',
+  'test:a11y',
+  'test:visual',
+  'test:acceptance',
+  'verify'
+]) {
+  if (!pkg.scripts?.[command]) throw new Error(`package.json is missing automated command: ${command}`);
+}
+
+const productionRuntime = await readFile('src/core/production-runtime.js', 'utf8');
+for (const invariant of [
+  "gummy.production/v0",
+  "gummy.production-run/v0",
+  "gummy.context-envelope/v0",
+  "actor:imagehoss",
+  "actor:3d-bee",
+  "actor:videoboss",
+  "actor:project-composer",
+  "actor:gummy-storage",
+  "Make Production was blocked",
+  "explicit-native-bridge-required",
+  "complete-actor-memory"
+]) {
+  if (!productionRuntime.includes(invariant)) throw new Error(`Production runtime is missing: ${invariant}`);
+}
+
+const productionStyles = await readFile('src/production.css', 'utf8');
+for (const token of [
+  '--gummy-deep-indigo: #4B187A;',
+  '--gummy-violet: #7C2FD0;',
+  '--gummy-honey-gold: #F2B544;',
+  '--gummy-warm-cream: #FFF1C7;',
+  '--gummy-aubergine-black: #100817;'
+]) {
+  if (!productionStyles.includes(token)) throw new Error(`Production styles are missing locked token: ${token}`);
 }
 
 const naming = await readFile('docs/GLOPPER_NAMING.md', 'utf8');

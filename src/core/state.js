@@ -1,4 +1,7 @@
-const STORAGE_KEY = 'gummy-os:v0.1';
+import { createInitialProductionRuntime, PRODUCTION_STATE_VERSION } from './production-runtime.js';
+
+export const STORAGE_KEY = 'gummy-os:v0.2';
+export const LEGACY_STORAGE_KEY = 'gummy-os:v0.1';
 
 export const defaultState = {
   snack: {
@@ -7,8 +10,8 @@ export const defaultState = {
     handle: '@hayden',
     flavor: 'electric citrus',
     shape: 'squircle',
-    colors: { primary: '#7c5cff', secondary: '#ff7cc8', accent: '#75f0c8' },
-    companion: 'Gummy',
+    colors: { primary: '#7C2FD0', secondary: '#4B187A', accent: '#F2B544' },
+    companion: 'Glopper',
     visibility: 'private'
   },
   files: [
@@ -54,6 +57,8 @@ export const defaultState = {
     ]
   },
   receipts: [],
+  stateVersion: PRODUCTION_STATE_VERSION,
+  productionRuntime: createInitialProductionRuntime(),
   selectedFileId: null,
   settings: { modelProvider: 'demo', deploymentMode: 'personal' }
 };
@@ -62,18 +67,30 @@ function deepClone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+export function migrateState(input) {
+  const parsed = input && typeof input === 'object' ? deepClone(input) : {};
+  const runtime = parsed.productionRuntime?.version === PRODUCTION_STATE_VERSION
+    ? parsed.productionRuntime
+    : createInitialProductionRuntime();
+  return {
+    ...deepClone(defaultState),
+    ...parsed,
+    stateVersion: PRODUCTION_STATE_VERSION,
+    productionRuntime: runtime,
+    snack: { ...deepClone(defaultState.snack), ...parsed.snack },
+    graph: { ...deepClone(defaultState.graph), ...parsed.graph },
+    enterprise: { ...deepClone(defaultState.enterprise), ...parsed.enterprise },
+    receipts: Array.isArray(parsed.receipts) ? parsed.receipts : []
+  };
+}
+
 export function loadState() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
   if (!raw) return deepClone(defaultState);
   try {
-    const parsed = JSON.parse(raw);
-    return {
-      ...deepClone(defaultState),
-      ...parsed,
-      snack: { ...deepClone(defaultState.snack), ...parsed.snack },
-      graph: { ...deepClone(defaultState.graph), ...parsed.graph },
-      enterprise: { ...deepClone(defaultState.enterprise), ...parsed.enterprise }
-    };
+    const migrated = migrateState(JSON.parse(raw));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+    return migrated;
   } catch {
     return deepClone(defaultState);
   }

@@ -226,24 +226,19 @@ The promise is **explicit boundaries and smaller blast radius**, verified progre
 ## Current priority
 
 ```text
-open a personal Actor in Gummy OS
-→ choose Night or Day Gummy
-→ use Gummy Canvas and Gummy Bar
-→ initialize Local Gummy Box
-→ open Glopper Panel and Inbox
-→ validate a frontier-authored Work Order
-→ Human approves
-→ agent:glopper-web claims Task Lease
-→ transform source without altering it
-→ receive result Gummy
-→ write Return + artifact + Receipt to Box
-→ revoke Agent/Mold and prove blocked
-→ quarantine and burn/reset harmless test workspace
-→ close and return later
-→ Actor, expression, Box, Work Order, Return, and state remain
+start a private Production
+→ add or @mention personal and service Actors
+→ configure each service Actor in a Production-scoped Actor App Surface
+→ inspect the editable Actor Plan and Master Control preview
+→ Human selects Make Production
+→ freeze Production, plan, configuration, and source revisions
+→ deterministic browser reference Agents claim Leases and bounded Grants
+→ create result Gummies, Returns, and Receipts without changing sources
+→ close, reload, and recover the same understandable state
+→ revoke @Hoyt × @VideoBoss and prove future Runs are blocked
 ```
 
-After the standalone browser system works, evaluate the existing native distribution and connect `agent:glopper-native` through one deny-by-default Bridge.
+The current service executors are honestly disclosed deterministic browser reference adapters. Real ImageHoss, 3D-Bee, VideoBoss, ProjectComposer, and GummyStorage implementations attach later through the same capability-adapter boundary. Native execution remains unavailable without a deny-by-default Bridge.
 
 ## What works now
 
@@ -253,9 +248,16 @@ After the standalone browser system works, evaluate the existing native distribu
 - Provider-neutral demo chat and scoped capability requests.
 - Legacy social and enterprise proof surfaces.
 - Persistent shell state through `localStorage`.
+- Canonical `gummy.production/v0` and immutable `gummy.production-run/v0` records.
+- Production participants, isolated Production Actor Configurations, Actor App Descriptors, Actor Plan graphs, and node-specific Context Envelopes.
+- First-class Production, Actor App Surface, and Master Control windows.
+- Stable service Actors for ImageHoss, 3D-Bee, VideoBoss, ProjectComposer, and GummyStorage with separate reference Agent identities.
+- Typed drag/drop proposals with pointer, keyboard, and touch alternatives.
+- Governed deterministic Ranch Day execution with Work Orders, Task Leases, Grants, result Gummies, Returns, Receipts, source hashes, and revocation.
+- Automated unit, schema, migration, persistence, Chromium E2E, axe accessibility, visual-regression, Firefox, and WebKit coverage.
 - Protocol schemas, deterministic tests, build, and validation.
 
-The scaffold does **not** yet ship production Night/Day tokens, final mascot assets, the final Gummy Bar, Glopper Panel, durable OPFS bytes, Gummy Box adapters, Glopper Inbox, real Glopper Agent route, hardened quarantine, native Bridge, production `@addresses`, encrypted sync, tamper-evident Receipts, or verified enterprise security.
+The runtime does **not** yet ship final mascot assets, durable OPFS bytes, a real external service-provider route, native Bridge, production `@address` resolution, encrypted cross-device sync, tamper-evident Receipts, or verified enterprise security. Browser-origin storage is the current authoritative state boundary.
 
 ## Product map
 

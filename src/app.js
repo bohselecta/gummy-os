@@ -11,6 +11,10 @@ import { createEnterpriseApp } from './apps/enterprise.js';
 import { createReceiptsApp } from './apps/receipts.js';
 import { createAboutApp } from './apps/about.js';
 import { createLauncherApp } from './apps/launcher.js';
+import { createProductionApp } from './apps/production.js';
+import { createActorSurface } from './apps/actor-surface.js';
+import { createMasterControlApp } from './apps/master-control.js';
+import { actorSurfaceWindowId, upsertWindowState } from './core/production-runtime.js';
 
 const store = createStore();
 const broker = new CapabilityBroker();
@@ -29,10 +33,12 @@ const appDefinitions = {
   receipts: { id: 'receipts', title: 'Receipts', icon: '✓', description: 'Evidence of actions, authority, resources, and outcomes.', factory: createReceiptsApp },
   snack: { id: 'snack', title: 'Snack Bar', icon: '◆', description: 'Shape, color, flavor, companion, and portable identity.', factory: createSnackApp },
   about: { id: 'about', title: 'About Gummy', icon: 'G', description: 'Product thesis, architecture planes, and protocol direction.', factory: createAboutApp },
+  productions: { id: 'productions', title: 'Productions', icon: '▶', description: 'Durable Actor-first undertakings, plans, Runs, Gummies, and evidence.', factory: createProductionApp },
+  masterControl: { id: 'masterControl', title: 'Master Control', icon: '⌁', description: 'Authority, assignment, data flow, cost, revocation, and evidence.', factory: createMasterControlApp },
   launcher: { id: 'launcher', title: 'Applications', icon: '⌘', description: 'Launch every Gummy application.', factory: context => createLauncherApp({ ...context, apps: appDefinitions }) }
 };
 
-const context = { store, broker, apps: appDefinitions, openApp, addReceipt, toast };
+const context = { store, broker, apps: appDefinitions, openApp, openProduction, openActorSurface, openMasterControl, addReceipt, toast };
 
 function addReceipt(receipt) {
   store.setState(current => ({ ...current, receipts: [...current.receipts, receipt].slice(-300) }));
@@ -48,7 +54,88 @@ function openApp(id) {
   const definition = appDefinitions[id];
   if (!definition) return;
   const instance = definition.factory(context);
-  windowManager.open({ id, title: definition.title, subtitle: id === 'enterprise' ? 'governed workspace' : 'mygum.my', content: instance.node, noPadding: instance.noPadding });
+  openWindow({
+    id,
+    kind: 'app',
+    appId: id,
+    title: definition.title,
+    subtitle: id === 'enterprise' ? 'governed workspace' : 'mygum.my',
+    content: instance.node,
+    noPadding: instance.noPadding
+  });
+}
+
+function openProduction(productionId) {
+  const runtime = store.getState().productionRuntime;
+  const production = runtime.productions.find(item => item.id === productionId);
+  const id = `production-window:${productionId}`;
+  const instance = createProductionApp({ ...context, productionId });
+  openWindow({
+    id,
+    kind: 'production',
+    productionId,
+    title: production?.title || 'Production',
+    subtitle: `${productionId} · durable undertaking`,
+    content: instance.node
+  });
+}
+
+function openActorSurface(actorId, productionId = null) {
+  const runtime = store.getState().productionRuntime;
+  const actor = runtime.actors.find(item => item.id === actorId);
+  const production = runtime.productions.find(item => item.id === productionId);
+  const id = actorSurfaceWindowId(actorId, productionId);
+  const instance = createActorSurface({ ...context, actorId, productionId });
+  openWindow({
+    id,
+    kind: 'actor-surface',
+    actorId,
+    productionId,
+    title: `${actor?.name || actorId} Actor App Surface`,
+    subtitle: production ? `Production: ${production.title}` : 'Standalone Actor scope',
+    content: instance.node
+  });
+}
+
+function openMasterControl(productionId = null) {
+  const runtime = store.getState().productionRuntime;
+  const production = runtime.productions.find(item => item.id === productionId);
+  const id = `master-control:${productionId || 'global'}`;
+  const instance = createMasterControlApp({ ...context, productionId });
+  openWindow({
+    id,
+    kind: 'master-control',
+    productionId,
+    title: 'Master Control',
+    subtitle: production ? `Production: ${production.title}` : 'Global scope',
+    content: instance.node
+  });
+}
+
+function openWindow({ id, kind, appId, actorId, productionId, title, subtitle, content, noPadding = false }) {
+  const saved = store.getState().productionRuntime.windowState.find(item => item.id === id);
+  windowManager.open({
+    id,
+    title,
+    subtitle,
+    content,
+    noPadding,
+    position: saved,
+    onStateChange: windowState => {
+      store.setState(current => ({
+        ...current,
+        productionRuntime: upsertWindowState(current.productionRuntime, {
+          ...saved,
+          ...windowState,
+          id,
+          kind,
+          appId,
+          actorId,
+          productionId
+        })
+      }));
+    }
+  });
 }
 
 function renderChrome(state) {
@@ -61,7 +148,7 @@ function renderChrome(state) {
 }
 
 function renderLaunchers() {
-  const desktopApps = ['browser', 'files', 'graph', 'enterprise', 'receipts', 'snack'];
+  const desktopApps = ['productions', 'masterControl', 'browser', 'files', 'receipts'];
   const desktopIcons = document.querySelector('#desktop-icons');
   const dock = document.querySelector('#dock');
   desktopIcons.replaceChildren();
@@ -104,6 +191,10 @@ document.addEventListener('click', event => {
   if (target) openApp(target.dataset.app);
 });
 
+window.addEventListener('gummy:open-actor-surface', event => {
+  openActorSurface(event.detail.actorId, event.detail.productionId || null);
+});
+
 document.querySelector('#fullscreen-button').addEventListener('click', async () => {
   if (!document.fullscreenElement) await document.documentElement.requestFullscreen().catch(() => {});
   else await document.exitFullscreen().catch(() => {});
@@ -116,5 +207,19 @@ installDelegationTarget();
 
 setTimeout(() => {
   boot.style.opacity = '0';
-  setTimeout(() => { boot.remove(); desktop.hidden = false; openApp('browser'); }, 320);
+  setTimeout(() => {
+    boot.remove();
+    desktop.hidden = false;
+    const savedWindows = store.getState().productionRuntime.windowState.filter(item => item.status !== 'closed');
+    if (!savedWindows.length) {
+      openApp('productions');
+      return;
+    }
+    for (const saved of savedWindows) {
+      if (saved.kind === 'actor-surface') openActorSurface(saved.actorId, saved.productionId || null);
+      else if (saved.kind === 'production') openProduction(saved.productionId);
+      else if (saved.kind === 'master-control') openMasterControl(saved.productionId || null);
+      else if (saved.kind === 'app' && saved.appId) openApp(saved.appId);
+    }
+  }, 320);
 }, 600);

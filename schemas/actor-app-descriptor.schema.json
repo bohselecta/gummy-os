@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/actor-app-descriptor.schema.json",
+  "title": "Gummy OS Actor App Descriptor",
+  "type": "object",
+  "required": ["schema", "id", "actorId", "surfaceId", "version", "displayName", "capabilityIds", "supportedRoles", "acceptedInputTypes", "outputTypes", "supportedAgentFamilies", "status"],
+  "properties": {
+    "schema": { "const": "gummy.actor-app-descriptor/v0" },
+    "id": { "type": "string", "pattern": "^actor-app:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "surfaceId": { "type": "string" },
+    "version": { "type": "string" },
+    "displayName": { "type": "string" },
+    "capabilityIds": { "type": "array", "items": { "type": "string", "pattern": "^capability:" }, "minItems": 1, "uniqueItems": true },
+    "supportedRoles": { "type": "array", "items": { "type": "string" } },
+    "setupSchemaRef": { "type": "string" },
+    "acceptedInputTypes": { "type": "array", "items": { "type": "string" } },
+    "outputTypes": { "type": "array", "items": { "type": "string" } },
+    "setupDependencyActorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" } },
+    "executionDependencyActorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" } },
+    "supportedAgentFamilies": { "type": "array", "items": { "type": "string", "pattern": "^agent:" } },
+    "localityOptions": { "type": "array", "items": { "type": "string" } },
+    "nativeBridgeCapabilities": { "type": "array", "items": { "type": "string" } },
+    "optional": { "type": "boolean" },
+    "status": { "enum": ["active", "deprecated", "unavailable"] }
+  },
+  "additionalProperties": true
+}

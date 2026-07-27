@@ -8,20 +8,23 @@ export class WindowManager {
     this.offset = 0;
   }
 
-  open({ id, title, subtitle = '', content, noPadding = false }) {
+  open({ id, title, subtitle = '', content, noPadding = false, position = null, onStateChange = null }) {
     const existing = this.windows.get(id);
     if (existing) {
       existing.hidden = false;
+      const body = existing.querySelector('.window-body');
+      if (body && content) body.replaceChildren(content);
       this.focus(existing);
+      onStateChange?.({ id, status: 'open', left: existing.style.left, top: existing.style.top });
       return existing;
     }
 
-    const windowNode = el('section', { class: 'gummy-window', 'aria-label': title });
+    const windowNode = el('section', { class: 'gummy-window', 'aria-label': title, dataset: { windowId: id } });
     const left = Math.max(120, Math.min(window.innerWidth - 760, 220 + (this.offset % 5) * 28));
     const top = Math.max(0, 12 + (this.offset % 5) * 20);
     this.offset += 1;
-    windowNode.style.left = `${left}px`;
-    windowNode.style.top = `${top}px`;
+    windowNode.style.left = position?.left || `${left}px`;
+    windowNode.style.top = position?.top || `${top}px`;
 
     const close = el('button', { class: 'window-control close', 'aria-label': 'Close' });
     const minimize = el('button', { class: 'window-control minimize', 'aria-label': 'Minimize' });
@@ -37,11 +40,25 @@ export class WindowManager {
     this.windows.set(id, windowNode);
     this.focus(windowNode);
 
-    close.addEventListener('click', () => { windowNode.remove(); this.windows.delete(id); });
-    minimize.addEventListener('click', () => { windowNode.hidden = true; });
-    maximize.addEventListener('click', () => { windowNode.classList.toggle('is-maximized'); this.focus(windowNode); });
+    close.addEventListener('click', () => {
+      windowNode.remove();
+      this.windows.delete(id);
+      onStateChange?.({ id, status: 'closed', left: windowNode.style.left, top: windowNode.style.top });
+    });
+    minimize.addEventListener('click', () => {
+      windowNode.hidden = true;
+      onStateChange?.({ id, status: 'minimized', left: windowNode.style.left, top: windowNode.style.top });
+    });
+    maximize.addEventListener('click', () => {
+      windowNode.classList.toggle('is-maximized');
+      this.focus(windowNode);
+      onStateChange?.({ id, status: 'open', maximized: windowNode.classList.contains('is-maximized'), left: windowNode.style.left, top: windowNode.style.top });
+    });
     windowNode.addEventListener('pointerdown', () => this.focus(windowNode));
-    this.makeDraggable(windowNode, bar);
+    this.makeDraggable(windowNode, bar, onStateChange);
+    if (position?.maximized) windowNode.classList.add('is-maximized');
+    if (position?.status === 'minimized') windowNode.hidden = true;
+    onStateChange?.({ id, status: position?.status || 'open', left: windowNode.style.left, top: windowNode.style.top, maximized: Boolean(position?.maximized) });
     return windowNode;
   }
 
@@ -49,7 +66,7 @@ export class WindowManager {
     node.style.zIndex = String(++this.z);
   }
 
-  makeDraggable(node, handle) {
+  makeDraggable(node, handle, onStateChange) {
     let drag = null;
     handle.addEventListener('pointerdown', event => {
       if (node.classList.contains('is-maximized') || event.target.closest('.window-controls')) return;
@@ -64,7 +81,10 @@ export class WindowManager {
       node.style.left = `${Math.max(0, Math.min(maxX, event.clientX - drag.x))}px`;
       node.style.top = `${Math.max(0, Math.min(maxY, event.clientY - drag.y))}px`;
     });
-    const stop = () => { drag = null; };
+    const stop = () => {
+      if (drag) onStateChange?.({ id: node.dataset.windowId, status: 'open', left: node.style.left, top: node.style.top, maximized: false });
+      drag = null;
+    };
     handle.addEventListener('pointerup', stop);
     handle.addEventListener('pointercancel', stop);
   }
