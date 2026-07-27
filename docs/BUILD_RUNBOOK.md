@@ -1,236 +1,358 @@
-# Gummy OS Build Runbook
+# Gummy OS Final Release Build Runbook
 
-## Orientation
+## Purpose
 
-Read in this order:
+This runbook executes the founder-ready release program. It replaces the proof-stage gate sequence as the active build procedure while preserving all accepted evidence and product boundaries.
 
-1. `README.md`
-2. `docs/BRAND_SYSTEM.md`
-3. `docs/BRAND_ASSET_CATALOG.md`
-4. `docs/GLOPPER_NAMING.md`
-5. `docs/ACTOR_AGENT_MASTER_CONTROL.md`
-6. `docs/PLATFORM_PLAYGROUND_SECURITY.md`
-7. `docs/GUMMY_BOX_WORK_ORDERS.md`
-8. `docs/AUTOMATED_ACCEPTANCE.md`
-9. `docs/VOCABULARY.md`
-10. `docs/PRODUCT_SPEC.md`
-11. `docs/ARCHITECTURE.md`
-12. `docs/PROTOCOL.md`
-13. `docs/SECURITY_MODEL.md`
-14. `docs/SOCIAL_LAYER.md`
-15. `docs/ROADMAP.md`
-16. `plans/active/2026-07-25-personal-gummy-cursor-work-order.md`
-17. `plans/active/2026-07-25-gummy-box-cursor-addendum.md`
-18. `plans/active/2026-07-25-brand-system-cursor-addendum.md`
-19. `plans/active/2026-07-25-production-brand-assets-cursor-addendum.md`
-20. `plans/active/2026-07-25-automated-acceptance-cursor-addendum.md`
-21. `AGENTS.md`
+Detailed requirements live in `docs/finish-kit/`.
 
-The active repository is `bohselecta/gummy-os`.
+## Read first
 
-Do not inspect the existing native AI Linux distribution until the standalone browser proof is accepted.
+1. `docs/finish-kit/README.md`
+2. `docs/finish-kit/MASTER_RELEASE_ROADMAP.md`
+3. `docs/finish-kit/PRODUCT_READINESS_AND_UX.md`
+4. `docs/finish-kit/SPECIALIST_INTEGRATION_BLUEPRINT.md`
+5. `docs/finish-kit/INFRASTRUCTURE_AND_GUMMY_BOX.md`
+6. `docs/finish-kit/ACCEPTANCE_AND_RELEASE_MATRIX.md`
+7. `docs/finish-kit/RISKS_STOP_RULES_AND_DEFERRED_SCOPE.md`
+8. `docs/finish-kit/release-program.json`
+9. `plans/active/2026-07-27-master-finish-up-execution.md`
+10. `AGENTS.md`
 
-## Baseline
+Use `docs/finish-kit/CODEX_ONE_TURN_EXECUTION_PROMPT.md` to launch the complete Codex execution.
 
-```bash
-npm run verify
-npm run dev
+## Canonical repositories
+
+```text
+bohselecta/gummy-os
+bohselecta/imagehoss
+bohselecta/videoboss
+bohselecta/3d-bee
 ```
 
-Open `http://localhost:4173` and confirm:
+Resolve exact default-branch heads before work. Do not assume the baseline recorded in the kit is still the tip. Inspect and preserve any newer canonical work.
 
-1. Gummy OS boots.
-2. Current desktop/dock/windows work before migration.
-3. Native `gummy://` routes work.
-4. Files drag to the current companion surface.
-5. Medium-risk actions ask for confirmation.
-6. Demo chat is labeled non-networked.
-7. Receipts appear.
-8. State survives refresh.
+## Workspace preparation
 
-Record starting SHA, localStorage keys, current labels, literal colors, and failures.
+For each repository:
 
-## Active gates
+1. verify remote and default branch;
+2. fetch all branches and PR refs needed for reconciliation;
+3. inspect `git status`, recent commits, open PRs, and untracked files;
+4. do not reset, stash, or discard changes of uncertain ownership;
+5. run the current baseline verification before editing;
+6. record versions for Node, npm, browser, Rust, Python, Blender, ComfyUI, and relevant provider/runtime tools;
+7. create or reuse one branch:
 
-### Gate 1 — Locked source and semantic tokens
+```text
+codex/final-release-2026-07-27
+```
 
-- create one source-token module with the five exact brand values;
-- create semantic tokens for Canvas, surfaces, text, location, energy, action, focus, border, and shadow;
-- remove scattered production color literals where practical;
-- derived branded colors use only opacity/mixes between the five anchors.
+8. commit `evidence/final-release-baseline.json` in Gummy OS before implementation changes.
 
-### Gate 2 — Night Gummy and Day Gummy
+## Branch and commit policy
 
-- implement exactly two canonical expressions;
-- persist selection;
-- optional device-follow resolves only to Night or Day;
-- invalid values fail safely;
-- no accent picker, theme marketplace, or per-window hue customization;
-- prove both modes are recognizably one product.
+Use one final branch per touched repository and checkpoint commits:
 
-### Gate 3 — Gummy Canvas and Gummy Bar
+```text
+phase 0: freeze final release baseline
+phase 1: close product readiness gaps
+phase 2: finish onboarding and product copy
+phase 3: prove golden Production path
+phase 4: integrate ImageHoss runtime
+phase 5: integrate VideoBoss runtime
+phase 6: integrate Meshmallow runtime
+phase 7: finish Gummy Box recovery
+phase 8: harden release candidate
+phase 9: produce final acceptance release
+```
 
-- name the working surface Gummy Canvas;
-- replace dock presentation with candy-store Gummy Bar;
-- candy icons may represent apps, Actors, Gummies, Bowls, Work Orders, tasks, notifications, controls, and Glopper;
-- purple establishes location/grouping;
-- gold establishes selection/action/attention;
-- candy remains presentation, not protocol;
-- prove keyboard, touch, responsive, reduced-motion, and accessibility behavior.
+Not every repository receives every checkpoint. Do not create many tiny PRs or competing release branches.
 
-### Gate 4 — Gummy and Glopper emphasis
+## Phase loop
 
-- Gummy guide surfaces are purple-dominant with gold accents;
-- Glopper surfaces are gold-dominant with purple accents;
-- each is identified by name/avatar/accessibility label, not color alone;
-- actual Agent executor remains explicit;
-- no mascot recoloring.
+For every phase:
 
-### Gate 5 — Glopper Panel
+```text
+inspect exact state
+→ run applicable baseline tests
+→ implement complete bounded phase
+→ add/update automated tests
+→ run phase gate
+→ capture evidence and limitations
+→ commit checkpoint
+→ continue automatically
+```
 
-- Glopper is a special candy in the Gummy Bar;
-- collapsed status/invocation state;
-- expandable conversation/control Panel;
-- selected Canvas context;
-- Human/Actor/Agent/Mold/Master Control state;
-- Glopper Inbox, Task Lease, approvals, results, Returns, and Receipts;
-- availability never becomes automatic authority.
+A phase gate is a commit/rollback boundary, not a mandatory founder conversation.
 
-### Gate 6 — Correct typed model
+## Gummy OS commands
 
-Human, Actor, Agent, Mold, Master Control, Gummy Box, Work Order, Task Lease, Return, Gummy, Bowl, Link, Grab, Grant, Receipt, and quarantine are distinct.
-
-The first executor is `agent:glopper-web`.
-
-### Gate 7 — Deterministic migration
-
-Legacy Snack/Drop/Fork/Z/Zeke/companion/dock/theme state migrates without loss, duplication, type collapse, or unsupported palette values.
-
-### Gate 8 — Durable local WebOS and Local Gummy Box
-
-IndexedDB metadata, OPFS bytes, stable IDs/hashes, Actor-owned projects, import/export, Local Gummy Box, quota handling, return continuity, and quarantine.
-
-### Gate 9 — Glopper Inbox and Work Orders
-
-- validate Work Orders as untrusted data;
-- show issuer, target, scope, privacy, locality, risk, expiry, and acceptance checks;
-- support approve/revise/reject/hold;
-- claim exclusive Task Lease;
-- reject conflicting claims;
-- preserve Local-only operation.
-
-### Gate 10 — Real Glopper Agent route
-
-One provider-neutral route, no browser secrets, bounded capabilities, explicit locality/cost, truthful error/denial, complete Return and Receipt evidence.
-
-### Gate 11 — Real source-to-result journey
-
-Work Order/source Gummy → Human approval → `agent:glopper-web` + Mold + Task Lease + Grant → result Gummy → Return + Receipt → revocation → durable return.
-
-### Gate 12 — Quarantine and burn proof
-
-Harmless test content remains non-native, promotion is deny-by-default, bounded approved movement is receipted, disposable state burns while accepted evidence remains.
-
-### Gate 13 — One external Gummy Box adapter
-
-After Local Box works, complete exactly one scoped external adapter: private GitHub or Google Drive. Do not require whole-account access or block standalone acceptance on both providers.
-
-### Gate 14 — Adaptation foundation
-
-Private local memory, approved portable profile, and current task context remain separate. Human approval is required to promote learned preferences.
-
-### Gate 15 — Composition proof
-
-Two local test Actors create a temporary shared Canvas or Bowl from selected Gummies without merging private state or inheriting authority.
-
-### Gate 16 — Native preflight, last
-
-After Gates 1–15 pass, locate and inspect the existing distro, evaluate the existing Glopper process-director app as native lineage, and design one deny-by-default `agent:glopper-native` bridge. No broad native implementation without a new work order.
-
-## Brand verification matrix
-
-Return evidence for:
-
-- Night Gummy Canvas and Bar;
-- Day Gummy Canvas and Bar;
-- Gummy purple-dominant guide surface;
-- Glopper gold-dominant action surface;
-- theme selector;
-- exact source tokens;
-- unsupported-theme rejection;
-- keyboard focus;
-- awaiting-approval state;
-- quarantined/blocked state without new brand hue;
-- phone-width layout;
-- reduced-motion behavior;
-- placeholder/final asset inventory.
-
-## Verification
+Current required deterministic baseline:
 
 ```bash
+npm ci
 npm run brand:generate
+npm run utility:generate
 npm run check
-npm test
 npm run test:unit
 npm run test:integration
+npm run build
+npm run test:e2e
 npm run test:a11y
 npm run test:visual
 npm run test:acceptance
+npm run verify
+npm audit --audit-level=moderate
+```
+
+Use `npm run test:live` only when its required provider/configuration environment is intentionally available. Live tests never replace deterministic gates.
+
+Run the exact production build locally and against the canonical preview/deployment. Verify the actual HTML, brand assets, API capability state, build identifier, and critical journeys—not only the deployment status badge.
+
+## ImageHoss commands
+
+Current baseline:
+
+```bash
+npm ci
+npm test
 npm run build
+npm run check
+npm run fixture
+npm audit --audit-level=low
+```
+
+The final implementation should expose stable equivalents for contract, integration, browser, live, and aggregate verification:
+
+```bash
+npm run test:contract
+npm run test:integration
+npm run test:e2e
+npm run test:live
 npm run verify
 ```
 
-Add:
+For a genuine local smoke, record exact ImageHoss bridge, ComfyUI, device, checkpoint/model, Prompt Package, Job, Asset hashes, Receipt, restart recovery, and `simulation: false` evidence.
 
-- production master hash, derivative dimension, favicon/PWA, and placeholder-removal checks;
-- source/semantic brand-token tests;
-- Night/Day persistence and fallback tests;
-- unsupported-theme rejection;
-- Gummy/Glopper emphasis tests;
-- literal-color audit;
-- end-to-end Gummy Canvas/Bar/Glopper journey;
-- Gummy Box and Work Order tests;
-- naming and migration test;
-- revocation test;
-- quarantine/promotion/burn test;
-- Task Lease conflict test;
-- accessibility checks;
-- composition test;
-- native integration test only after Gate 16 begins.
+When the runtime is absent, run deterministic adapter and unavailable-state tests, record live execution as NOT CLAIMED, and continue.
 
-## Git workflow
+## VideoBoss commands
 
-1. inspect exact `main`;
-2. run baseline verification;
-3. create one bounded branch;
-4. implement the active work order and addenda;
-5. run applicable verification;
-6. record screenshots, token maps, hashes, Grants, Returns, Receipts, and boundaries;
-7. commit and push;
-8. open one PR with proven/unproven claims;
-9. do not self-accept;
-10. merge only after founder acceptance or explicit authorization.
+Current baseline:
 
-Do not ask Hayden to perform ordinary branch, PR, merge, or cleanup work when connected tools can do it.
+```bash
+npm ci
+npm test
+npm run build
+npm audit --audit-level=low
+```
 
-## Stop rules
+The final implementation should add stable check/unit/integration/browser/live/verify scripts.
 
-Stop and return an exact blocker when:
+The deterministic simulator remains part of the test/demo system and must always identify itself as simulated.
 
-- credentials cannot stay outside browser JavaScript;
-- storage cannot preserve bytes/metadata reliably;
-- migration would discard or ambiguously merge state;
-- Actor and Agent would collapse;
-- source Gummy would be overwritten;
-- a candy icon, mascot, or Work Order would become authority;
-- a new branded hue appears necessary instead of icon/language/shape;
-- accessible contrast cannot be achieved within the locked palette without restructuring the component;
-- final mascot/wordmark assets are required but unavailable;
-- Day and Night begin behaving like separate products;
-- purple stops communicating place or gold stops communicating action;
-- quarantine cannot remain separated from native execution;
-- a child Actor/Agent would inherit authority;
-- a Receipt cannot name Human, Actor, Agent, Mold, Master Control, Task Lease, route, source, result, and outcome;
-- security claims exceed evidence;
-- native-distro work begins before the standalone proof passes;
-- broad platform, provider, or theme scope starts before the accepted exit.
+A real provider smoke runs only through the trusted server-side broker and records provider/model, Shot Packet, idempotency key, cost ceiling/actual cost, provider Job ID, result hash, review, Human acceptance, and linked Receipts.
+
+When no provider credential exists, finish the broker contract, mock tests, UI, and live-smoke command; record real rendering as NOT CLAIMED and continue.
+
+## Meshmallow / 3D Bee commands
+
+Current deterministic baseline:
+
+```bash
+cargo test --workspace --locked
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+PYTHONPATH=bridge python3 -m unittest discover -s bridge/tests -v
+cd apps/desktop && npm ci && npm run build
+cargo check -p three-d-bee-desktop --locked
+npm audit --audit-level=low
+git diff --check
+```
+
+Also run repository schema/example validation and any current audit commands.
+
+The final implementation should add one documented aggregate verification command.
+
+For a genuine Blender smoke, record the public Meshmallow identity and legacy IDs, companion/supervisor version, Blender version, frozen Scene Plan/digest, approval/session/Lease/Grant, exact named operations, checkpoint, `.blend` and export hashes, manifest validation, and linked Receipts.
+
+When supported Blender is absent, run deterministic mock and fail-closed discovery tests; record live artifact output as NOT CLAIMED and continue.
+
+## Cross-repository contract procedure
+
+1. add backward-compatible specialist-native types and migrations;
+2. commit exact specialist protocol fixtures;
+3. record specialist branch/head/version;
+4. implement Gummy OS wrapper/adapter against that exact contract;
+5. run old and new specialist fixtures;
+6. run cross-repository roundtrip fixtures;
+7. update Gummy OS application registry only after compatibility passes;
+8. retain rollback to the prior deterministic/reference route.
+
+Do not integrate against an imagined or uncommitted specialist contract.
+
+## Configuration/no-execution gate
+
+Before any specialist execution work, automate:
+
+```text
+open specialist
+→ edit fields
+→ assign references
+→ discover capability
+→ compile preview
+→ save Production configuration
+→ assert zero creative native Jobs
+→ assert zero provider submissions
+→ assert zero Blender operations
+→ assert zero creative credit spend
+```
+
+Failure is a hard release failure.
+
+## Make Production gate
+
+Automate:
+
+```text
+review frozen revision
+→ create immutable Run
+→ create Context Envelopes and Work Orders
+→ require Human, Actor, actual Agent/runtime, Mold, Lease, Grant, capability state
+→ execute one owned Job per eligible node
+→ normalize terminal state
+→ import results without source overwrite
+→ compare/review
+→ Human accepts role-specific output
+→ handoff
+→ Return and linked Receipts
+→ close/reopen continuity
+```
+
+## Golden Production gate
+
+The neutral built-in sample is **Night Gummy Launch**.
+
+It must run without private likenesses, external accounts, or provider credentials through deterministic routes. Connected real routes may replace or augment eligible nodes only with explicit truth and evidence.
+
+The sample must demonstrate:
+
+- direction, locks, reference roles, exploration, exclusions;
+- deterministic package preview;
+- route/cost/locality/privacy/rights;
+- Make Production authority;
+- results and limitations;
+- Human comparison and acceptance;
+- downstream handoffs;
+- linked native/platform Receipts;
+- restart continuity.
+
+Keep Ranch Day as a regression fixture where useful, not the only product doorway.
+
+## Local Gummy Box gate
+
+Automate:
+
+```text
+clean first run
+→ automatic Local Box
+→ write records and bytes
+→ close/reopen
+→ export versioned inspectable backup
+→ clean browser context
+→ inspect and import backup
+→ verify identical IDs, revisions, hashes, relationships, Returns, and Receipts
+→ continue using restored Production
+```
+
+Normal setup never asks for GitHub App, PEM, installation, repository, bucket, or deployment configuration.
+
+## Evidence
+
+Create or update:
+
+```text
+evidence/final-release-baseline.json
+evidence/product-readiness-audit.json
+evidence/product-copy-audit.json
+evidence/final-acceptance-summary.json
+evidence/final-release-manifest.json
+evidence/performance-budget.json
+evidence/rollback-plan.md
+evidence/screenshots/
+evidence/receipts/
+evidence/cross-repo-fixtures/
+```
+
+Retain large videos/traces/binaries in CI or the producing specialist repository when appropriate. Link exact artifact, commit, browser/runtime, viewport, fixture, and hash from the manifest.
+
+## External blocker behavior
+
+A missing optional external capability stops only that live lane.
+
+For the affected lane:
+
+1. finish code and deterministic tests;
+2. finish capability discovery and truthful unavailable UI;
+3. finish recovery/cancellation contracts;
+4. add one-command live smoke;
+5. record exact BLOCKED or NOT CLAIMED state;
+6. continue every unaffected phase.
+
+Do not stop the complete turn because a provider key, ComfyUI, Blender, managed Box, Drive, GitHub connector, or Gummy Rooms is absent.
+
+## Hard stops
+
+Stop the unsafe mutation when:
+
+- data may be lost or ambiguously migrated;
+- a source or accepted Asset would be overwritten;
+- Actor/Agent or Human authority boundaries collapse;
+- configuration executes;
+- Work Order self-authorizes;
+- secrets enter browser-visible material;
+- local bridge becomes arbitrary execution;
+- cost, rights, locality, or retention cannot be enforced;
+- ambiguous provider calls may duplicate;
+- simulation and genuine output cannot be distinguished;
+- specialist-native evidence would be destroyed;
+- historical 3D Bee identity would be rewritten;
+- tests are being skipped or loosened merely for green status;
+- a release claim exceeds executable evidence.
+
+Continue unaffected work and return exact evidence.
+
+## PR and merge procedure
+
+1. push final specialist branches;
+2. open one ready PR per specialist;
+3. include exact tests, evidence, migrations, rollback, limitations, and Gummy OS dependency contract;
+4. merge additive/backward-compatible specialist prerequisites only after applicable gates pass and old fixtures remain compatible;
+5. reconcile Gummy OS onto exact resulting specialist heads;
+6. run the complete production-like acceptance matrix;
+7. open one final ready Gummy OS PR;
+8. merge only when every required final gate is PASS;
+9. when a required gate remains BLOCKED/FAIL, leave the complete PR open and return the exact blocker rather than discarding work.
+
+Do not make Hayden perform ordinary branch, PR, merge, cleanup, or routine testing tasks that connected tools and automation can perform.
+
+## Final Return
+
+Return one release report containing:
+
+- repository/branch/head/PR/merge status for all four repositories;
+- phase-by-phase completion;
+- test commands and totals;
+- production-like deployment URL and commit;
+- deterministic golden Production evidence;
+- live specialist status using PASS, BLOCKED, NOT CLAIMED, or FAIL;
+- Local Box backup/restore proof;
+- accessibility, visual, security, reliability, and performance status;
+- migration and rollback anchors;
+- exact limitations and external blockers;
+- final release level.
+
+Do not return another plan or a manual regression checklist.
+
+> **The computer tests the computer. Hayden builds the world.**
