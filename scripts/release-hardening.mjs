@@ -1,4 +1,3 @@
-import { execFileSync } from 'node:child_process';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
@@ -9,9 +8,23 @@ const secretPatterns = [
   ['aws-access-key', /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/]
 ];
 const sourceExtensions = new Set(['.js', '.mjs', '.json', '.md', '.html', '.css', '.yml', '.yaml']);
-const files = execFileSync('rg', ['--files'], { encoding: 'utf8' })
-  .split('\n')
-  .filter(Boolean)
+const ignoredDirectories = new Set(['.git', '.vercel', 'artifacts', 'build', 'coverage', 'node_modules']);
+
+async function listSourceFiles(directory = '.') {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const paths = [];
+  for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
+    const path = directory === '.' ? entry.name : join(directory, entry.name);
+    if (entry.isDirectory()) {
+      if (!ignoredDirectories.has(entry.name)) paths.push(...await listSourceFiles(path));
+    } else if (entry.isFile()) {
+      paths.push(path);
+    }
+  }
+  return paths;
+}
+
+const files = (await listSourceFiles())
   .filter(path => sourceExtensions.has(extname(path)))
   .filter(path => path !== 'scripts/release-hardening.mjs')
   .filter(path => !path.startsWith('artifacts/'));

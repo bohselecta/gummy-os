@@ -32,3 +32,9 @@ test('external preview remains sandboxed and every new-tab link is opener-safe',
     assert.match(match[0], /rel: '(?:noopener noreferrer|noreferrer)'/);
   }
 });
+
+test('release scanner is portable and has no runner-level ripgrep dependency', async () => {
+  const source = await readFile(new URL('../scripts/release-hardening.mjs', import.meta.url), 'utf8');
+  assert.match(source, /async function listSourceFiles/);
+  assert.doesNotMatch(source, /execFileSync\(['"]rg['"]/);
+});

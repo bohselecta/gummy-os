@@ -58,7 +58,7 @@
       "command": "npm run verify",
       "environment": "production build plus Playwright Chromium",
       "tests": {
-        "node": 89,
+        "node": 90,
         "browser": 23
       },
       "status": "PASS"
