@@ -11,10 +11,40 @@ permissions:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out exact revision
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - run: npm run verify
+          node-version: 24
+          cache: npm
+
+      - name: Install pinned dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers and host libraries
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Run deterministic release gate
+        run: npm run verify
+
+      - name: Generate canonical Ranch Day evidence
+        if: always()
+        run: npm run evidence
+
+      - name: Retain test and runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: actor-production-evidence-${{ github.sha }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            evidence/
+            test-results/
+            tests/e2e/visual.spec.mjs-snapshots/
+            build/
