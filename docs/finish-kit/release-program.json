@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "gummy.final-release-program/v1",
+  "id": "release-program:gummy-os:founder-ready-personal-v1",
+  "title": "Gummy OS Founder-Ready Personal Release",
+  "status": "authorized-for-full-implementation",
+  "authorizedAt": "2026-07-27",
+  "authorizedBy": "Hayden Lindley",
+  "canonicalRepository": "bohselecta/gummy-os",
+  "baseline": {
+    "gummy-os": "c46e5f4a0719b06a7dcdfd815bb8f3d5a89daa62",
+    "imagehoss": "1c54a527ec290d6da4886a80474aad40c3433fff",
+    "videoboss": "cea920cb254194fa9350bb1a04ebc2e88030ca49",
+    "3d-bee": "4b56cf01824f0db27b86800e547b3fefc168c407"
+  },
+  "execution": {
+    "mode": "one-sustained-codex-turn",
+    "intermediateFounderStops": false,
+    "phaseCheckpointCommits": true,
+    "oneFinalBranchPerRepository": true,
+    "oneFinalPullRequestPerRepository": true,
+    "finalBranchName": "codex/final-release-2026-07-27",
+    "mergeFinalGummyOsOnlyWhenRequiredGatesPass": true,
+    "manualRegressionAssignedToFounder": false
+  },
+  "controllingFiles": [
+    "docs/finish-kit/README.md",
+    "docs/finish-kit/MASTER_RELEASE_ROADMAP.md",
+    "docs/finish-kit/PRODUCT_READINESS_AND_UX.md",
+    "docs/finish-kit/SPECIALIST_INTEGRATION_BLUEPRINT.md",
+    "docs/finish-kit/INFRASTRUCTURE_AND_GUMMY_BOX.md",
+    "docs/finish-kit/ACCEPTANCE_AND_RELEASE_MATRIX.md",
+    "docs/finish-kit/RISKS_STOP_RULES_AND_DEFERRED_SCOPE.md",
+    "docs/finish-kit/CODEX_ONE_TURN_EXECUTION_PROMPT.md"
+  ],
+  "repositories": [
+    {
+      "name": "gummy-os",
+      "fullName": "bohselecta/gummy-os",
+      "role": "canonical-platform-and-final-integration",
+      "requiredOutcome": "founder-ready local-first personal Gummy OS release candidate",
+      "mergeOrder": 4
+    },
+    {
+      "name": "imagehoss",
+      "fullName": "bohselecta/imagehoss",
+      "role": "image-direction-generation-comparison-acceptance-and-handoff-specialist",
+      "requiredOutcome": "production-scoped adapter with deterministic package and real bounded local route when available",
+      "mergeOrder": 1
+    },
+    {
+      "name": "videoboss",
+      "fullName": "bohselecta/videoboss",
+      "role": "moving-image-planning-routing-render-review-and-delivery-specialist",
+      "requiredOutcome": "production-scoped sequence-shot-take adapter with trusted provider broker seam",
+      "mergeOrder": 2
+    },
+    {
+      "name": "3d-bee",
+      "fullName": "bohselecta/3d-bee",
+      "publicName": "Meshmallow",
+      "role": "world-intent-scene-planning-bounded-blender-and-engine-handoff-specialist",
+      "requiredOutcome": "public-name migration plus production-scoped authenticated Blender adapter",
+      "preservedLegacyIdentities": [
+        "bohselecta/3d-bee",
+        "app:3d-bee",
+        "actor:3d-bee",
+        "3d-bee.*"
+      ],
+      "mergeOrder": 3
+    }
+  ],
+  "invariants": [
+    "Human authority remains above Actor and Agent",
+    "Actor and Agent remain distinct",
+    "Mold is a permissioned operating contract",
+    "Work Order is a proposal and never self-authorizes",
+    "Task Lease owns one task scope",
+    "Capability Grant supplies bounded authority",
+    "Opening or configuring a specialist never executes",
+    "Make Production is the sole Production execution transition",
+    "Human acceptance is final and role-specific",
+    "Source and accepted Assets remain immutable",
+    "Specialist-native and Gummy OS Receipts remain distinct and linked",
+    "Production-specific choices do not silently become Actor memory",
+    "Local Gummy Box works without an external account",
+    "Night Gummy and Day Gummy are the only canonical expressions",
+    "The five locked brand hue anchors do not change",
+    "Specialist repositories remain separate",
+    "Simulated and genuine results are never conflated"
+  ],
+  "phases": [
+    {
+      "id": 0,
+      "name": "freeze-release-baseline",
+      "dependsOn": [],
+      "outputs": [
+        "evidence/final-release-baseline.json",
+        "classified open PRs",
+        "clean baseline test results"
+      ],
+      "exit": "exact repository reality is recorded and no competing release lane is ambiguous"
+    },
+    {
+      "id": 1,
+      "name": "product-readiness-audit-and-surgical-cleanup",
+      "dependsOn": [0],
+      "outputs": [
+        "evidence/product-readiness-audit.json",
+        "truthful current application and specialist states",
+        "fixed release blockers"
+      ],
+      "exit": "no known product-understanding or protected-pillar blocker remains"
+    },
+    {
+      "id": 2,
+      "name": "first-run-copy-and-setup",
+      "dependsOn": [1],
+      "outputs": [
+        "five-second comprehension",
+        "automatic Local Gummy Box",
+        "blank and sample Production entry",
+        "complete state copy and progressive disclosure"
+      ],
+      "exit": "clean first-run browser acceptance passes and persists"
+    },
+    {
+      "id": 3,
+      "name": "canonical-golden-production-path",
+      "dependsOn": [2],
+      "outputs": [
+        "Night Gummy Launch sample",
+        "configuration-no-execution proof",
+        "immutable Run and authority records",
+        "deterministic results, Human acceptance, handoffs, and linked Receipts"
+      ],
+      "exit": "complete local deterministic Production journey passes after restart"
+    },
+    {
+      "id": 4,
+      "name": "real-imagehoss-integration",
+      "dependsOn": [3],
+      "outputs": [
+        "versioned ImageHoss Production configuration",
+        "deterministic Prompt Package",
+        "discover-validate-compile-execute-recover-cancel-inspect adapter",
+        "original/proxy Assets, compare, accept, hoss, VideoBoss handoff, linked Receipts"
+      ],
+      "liveEvidencePolicy": "PASS when supported ComfyUI smoke proves genuine output; otherwise NOT CLAIMED with complete unavailable state",
+      "exit": "all preflight acceptance requirements are automated"
+    },
+    {
+      "id": 5,
+      "name": "real-videoboss-integration",
+      "dependsOn": [4],
+      "outputs": [
+        "versioned sequence, shot packet, take, and acceptance records",
+        "Production-scoped VideoBoss surface",
+        "trusted server-side provider broker seam",
+        "review, Human acceptance, delivery, and linked Receipts"
+      ],
+      "liveEvidencePolicy": "PASS when a real provider smoke succeeds; otherwise NOT CLAIMED with complete broker contract and unavailable state",
+      "exit": "plan-route-render-or-simulate-review-accept-deliver loop is integrated"
+    },
+    {
+      "id": 6,
+      "name": "real-meshmallow-integration",
+      "dependsOn": [5],
+      "outputs": [
+        "public Meshmallow name with legacy 3D Bee compatibility",
+        "versioned world intent, scene package, plan, checkpoint, and engine handoff",
+        "Production-scoped authenticated Blender adapter",
+        "bounded operations, validation, acceptance, and linked Receipts"
+      ],
+      "liveEvidencePolicy": "PASS when supported Blender produces genuine validated artifacts; otherwise NOT CLAIMED with complete mock and fail-closed discovery",
+      "exit": "Gummy OS can configure and truthfully operate or gate Meshmallow"
+    },
+    {
+      "id": 7,
+      "name": "gummy-box-backup-recovery-and-optional-connections",
+      "dependsOn": [6],
+      "outputs": [
+        "automatic durable Local Box",
+        "inspect-first versioned backup export and import",
+        "clean-context restore",
+        "recovery and scoped reset",
+        "optional connector-safe UX"
+      ],
+      "exit": "local start, close/reopen, backup, restore, and disconnect journeys pass"
+    },
+    {
+      "id": 8,
+      "name": "release-hardening-and-polish",
+      "dependsOn": [7],
+      "outputs": [
+        "complete states and final copy",
+        "accessibility and viewport coverage",
+        "security and reliability regression",
+        "performance budget and rollback plan"
+      ],
+      "exit": "full acceptance matrix passes or exact optional live routes are NOT CLAIMED"
+    },
+    {
+      "id": 9,
+      "name": "release-candidate-prs-deployment-and-return",
+      "dependsOn": [8],
+      "outputs": [
+        "one final PR per touched repository",
+        "exact dependency and merge order",
+        "production-like deployment",
+        "evidence/final-acceptance-summary.json",
+        "evidence/final-release-manifest.json",
+        "one final release Return"
+      ],
+      "exit": "all required gates PASS and Gummy OS final PR is merged, or fully implemented PR remains open with exact blocker"
+    }
+  ],
+  "requiredReleaseGates": [
+    "exact-source",
+    "clean-checkout",
+    "product-preservation",
+    "configuration-does-not-execute",
+    "make-production-boundary",
+    "authority-intersection",
+    "source-immutability",
+    "persistence-and-recovery",
+    "truthful-capability-states",
+    "cancellation-and-no-duplicate-retry",
+    "human-acceptance",
+    "linked-receipts",
+    "local-first-new-user",
+    "backup-and-clean-restore",
+    "accessibility",
+    "responsive-polish",
+    "security-boundaries",
+    "visible-known-limitations",
+    "rollback"
+  ],
+  "evidence": [
+    "evidence/final-release-baseline.json",
+    "evidence/product-readiness-audit.json",
+    "evidence/product-copy-audit.json",
+    "evidence/final-acceptance-summary.json",
+    "evidence/final-release-manifest.json",
+    "evidence/performance-budget.json",
+    "evidence/rollback-plan.md"
+  ],
+  "supersedes": [
+    "stop after ImageHoss contract proposal",
+    "stop after one vertical-slice recommendation",
+    "founder review required between every implementation phase",
+    "gap-audit-only completion",
+    "Ranch Day as the only visible Production doorway",
+    "narrow reference-preparation as final ImageHoss product definition"
+  ],
+  "doesNotSupersede": [
+    "Human authority",
+    "rights and privacy",
+    "brand locks",
+    "source immutability",
+    "security boundaries",
+    "specialist identity",
+    "Make Production execution distinction",
+    "Human acceptance",
+    "automated acceptance",
+    "truthful limitations"
+  ],
+  "deferred": [
+    "broad Social Layer runtime",
+    "Gummy Rooms live service",
+    "Enterprise Habitat",
+    "federation",
+    "billing and marketplace",
+    "broad native OS control",
+    "all provider expansion",
+    "full nonlinear video editor",
+    "finished-game generation",
+    "physical engineering and manufacturing",
+    "final Underground wallpaper art",
+    "standalone native/mobile Glopper completion"
+  ]
+}
