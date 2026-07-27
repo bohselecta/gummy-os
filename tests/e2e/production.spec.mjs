@@ -102,7 +102,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
 
   for (const [actorId, actorName] of [
     ['imagehoss', 'ImageHoss'],
-    ['3d-bee', '3D-Bee'],
+    ['3d-bee', 'Meshmallow'],
     ['videoboss', 'VideoBoss'],
     ['project-composer', 'ProjectComposer'],
     ['gummy-storage', 'GummyStorage']

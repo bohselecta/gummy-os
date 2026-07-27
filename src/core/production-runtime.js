@@ -36,7 +36,7 @@ const serviceDefinitions = [
     id: 'actor:imagehoss',
     address: '@ImageHoss',
     name: 'ImageHoss',
-    role: 'reference-preparation',
+    role: 'image-direction, generation, comparison, acceptance, and handoff',
     capability: 'capability:imagehoss.reference-preparation/v0',
     inputs: ['image/*', 'gummy/reference', 'text/brief'],
     outputs: ['gummy/reference-set'],
@@ -47,9 +47,9 @@ const serviceDefinitions = [
   },
   {
     id: 'actor:3d-bee',
-    address: '@3D-Bee',
-    name: '3D-Bee',
-    role: 'scene-preparation',
+    address: '@Meshmallow',
+    name: 'Meshmallow',
+    role: 'editable world, scene, checkpoint, and engine-package production',
     capability: 'capability:3d-bee.scene-preparation/v0',
     inputs: ['gummy/reference-set', 'text/scene-brief'],
     outputs: ['gummy/scene-manifest'],
@@ -63,7 +63,7 @@ const serviceDefinitions = [
     id: 'actor:videoboss',
     address: '@VideoBoss',
     name: 'VideoBoss',
-    role: 'video-generation',
+    role: 'video planning, routing, rendering, review, continuity, and delivery',
     capability: 'capability:videoboss.video-generation/v0',
     inputs: ['gummy/reference-set', 'gummy/scene-manifest', 'gummy/approved-likeness'],
     outputs: ['gummy/video-manifest'],
@@ -309,9 +309,9 @@ export function productionRole(actorId) {
   const roles = {
     'actor:hayden': ['owner', 'creative-context', 'approver'],
     'actor:hoyt': ['represented-subject', 'context-contributor', 'optional-reviewer'],
-    'actor:imagehoss': ['reference-preparation', 'executor'],
-    'actor:3d-bee': ['scene-preparation', 'executor', 'optional'],
-    'actor:videoboss': ['video-generation', 'executor'],
+    'actor:imagehoss': ['image-direction', 'generation', 'comparison', 'acceptance', 'handoff', 'executor'],
+    'actor:3d-bee': ['world-intent', 'scene-planning', 'checkpointing', 'engine-handoff', 'executor', 'optional'],
+    'actor:videoboss': ['planning', 'model-routing', 'rendering', 'review', 'continuity', 'delivery', 'executor'],
     'actor:project-composer': ['project-assembly', 'executor'],
     'actor:gummy-storage': ['storage', 'executor']
   };

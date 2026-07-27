@@ -151,7 +151,7 @@ export function createProductionApp({
       const query = mention.value.trim().toLowerCase();
       const actor = runtime.actors.find(item => item.address.toLowerCase() === query || item.name.toLowerCase() === query.replace(/^@/, ''));
       if (!actor) {
-        toast('Actor not found', 'Try @ImageHoss, @3D-Bee, @VideoBoss, @ProjectComposer, or @GummyStorage.');
+        toast('Actor not found', 'Try @ImageHoss, @Meshmallow, @VideoBoss, @ProjectComposer, or @GummyStorage.');
         return;
       }
       const result = addActorToProduction(store.getState().productionRuntime, production.id, actor.id, query.startsWith('@') ? 'mention' : 'search');

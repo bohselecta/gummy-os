@@ -118,12 +118,12 @@ test('simple doorway preserves the full product map and truthful first-party lau
 
   const applications = page.getByTestId('first-party-applications');
   await expect(applications.locator('[data-application-id]')).toHaveCount(4);
-  for (const name of ['VideoBoss', 'ImageHoss', '3D Bee', 'Gummy Rooms']) {
+  for (const name of ['VideoBoss', 'ImageHoss', 'Meshmallow', 'Gummy Rooms']) {
     await expect(applications.getByRole('heading', { name })).toBeVisible();
   }
   await expect(applications.getByRole('link', { name: 'Open VideoBoss' })).toHaveAttribute('target', '_blank');
   await expect(applications.getByText(/authenticated local ImageHoss bridge/)).toBeVisible();
-  await expect(applications.getByText(/Pair the authenticated 3D Bee supervisor/)).toBeVisible();
+  await expect(applications.getByText(/pair the authenticated Meshmallow supervisor/i)).toBeVisible();
   await expect(applications.getByText(/No authenticated Gummy Rooms service/)).toBeVisible();
   await expect(page.locator('[data-pillar-id]')).toHaveCount(8);
   await expect(page.getByText('Simplify the doorway. Do not flatten the house.')).toBeVisible();
