@@ -1,6 +1,6 @@
 # ImageHoss Production Prompt Contract — Founder Answer
 
-**Status:** Founder product definition complete; waiting for Codex repository reconciliation and contract review  
+**Status:** Founder product definition complete; reconciled, implemented, live-proven, and Human accepted
 **Date:** 2026-07-27  
 **Canonical implementation repositories:** `bohselecta/gummy-os`, `bohselecta/imagehoss`  
 **Related product contract:** `docs/CREATIVE_SPECIALIST_PRODUCTION_CONTRACTS.md`
@@ -528,21 +528,27 @@ It never uses bureaucratic policy language when a plain production explanation w
 
 ---
 
-## 14. Codex reconciliation required next
+## 14. Reconciliation and implementation outcome
 
-This founder answer completes the product-definition dependency. It does not authorize broad implementation without repository reconciliation.
+The repository reconciliation, provider-neutral Prompt Package, Production
+configuration contract, paired runtime boundary, deterministic preview, Make
+Production execution path, automated acceptance, and explicit limitations are
+implemented.
 
-Codex must now return, before the first real adapter implementation:
+The original `capability:imagehoss.reference-preparation/v0` proof remains
+historical evidence. The finished relationship is additive and preserves
+ImageHoss-native Jobs, Assets, `.hoss`, comparison, Human acceptance,
+VideoBoss handoff, and specialist Receipts rather than renaming the narrow
+proof.
 
-- exact `bohselecta/gummy-os` and `bohselecta/imagehoss` ancestry and current heads;
-- mapping from this contract to existing ImageHoss Direction, VisualIntentGraph, reference-role, Asset, `.hoss`, Job, Receipt, and VideoBoss handoff types;
-- a proposed versioned provider-neutral Prompt Package;
-- a proposed Production-scoped ImageHoss configuration contract;
-- exact separation between deterministic configuration preview and Make Production execution;
-- adapter interface and authenticated runtime boundary;
-- files to change in each repository;
-- one vertical implementation slice;
-- automated acceptance evidence;
-- explicit non-goals and limitations.
+Accepted implementation anchors:
 
-The existing `capability:imagehoss.reference-preparation/v0` proof remains useful evidence infrastructure. It must be expanded into the complete ImageHoss relationship rather than renamed and mistaken for the finished product.
+- Gummy OS activation: `4369d7181868cfd173f88698816b9190f9c0ad11`;
+- ImageHoss: `340f819b20c5b6d7ea988459c9380759941c757f`;
+- accepted Image Asset:
+  `2f53ecd6891137462908154427bf0bf8eaaf2b37bfe193309ff2050819c0956a`;
+- accepted `.hoss`:
+  `c31c39ab8ec0dadb0bd0b12d9b57dbdca636450990971f2076f3e7e4e8e78b97`.
+
+See `docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md` for exact runtime,
+cross-specialist, acceptance, and limitation evidence.

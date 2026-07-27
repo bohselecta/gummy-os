@@ -1,6 +1,6 @@
 # Creative Specialist Production Contracts
 
-**Status:** Founder product definition complete; implementation and schema reconciliation remain active Codex work  
+**Status:** Founder product definition complete; implemented and live-proven in the founder-ready release
 **Date:** 2026-07-27  
 **Canonical platform repository:** `bohselecta/gummy-os`  
 **Specialist repositories:** `bohselecta/imagehoss`, `bohselecta/videoboss`, `bohselecta/3d-bee`
@@ -995,88 +995,39 @@ Authority is typed by role and scope. One accepted artifact never silently super
 
 ---
 
-# Part VI — Remaining Codex work
+# Part VI — Implementation closure
 
-## 1. Preserve the existing order
+The finish-up kit superseded the earlier proposal-and-review stops in this
+doctrine. The accepted sequence was implemented without collapsing the three
+specialist products:
 
-The accepted sequence remains:
+1. ImageHoss gained the Production-scoped compiler, bounded paired adapter,
+   native evidence, accepted Asset, `.hoss`, and VideoBoss handoff;
+2. VideoBoss gained the trusted provider boundary, Cost Shield, recovery,
+   accepted take, delivery, and native/platform evidence;
+3. Meshmallow gained its public alias, preserved 3D Bee lineage, bounded
+   authenticated Blender execution, editable source, validation, and engine
+   handoff;
+4. Gummy OS retained configuration-no-execution and made **Make Production**
+   the only Production-wide execution transition.
 
-1. reconcile the completed ImageHoss founder contract with both repositories;
-2. propose the first real ImageHoss adapter contract and one vertical slice;
-3. review and accept that contract before broad implementation;
-4. use the proven ImageHoss pattern to propose, not blindly duplicate, the VideoBoss adapter;
-5. propose the Meshmallow naming/identity compatibility migration;
-6. reconcile the Meshmallow contract with the current 3D Bee scene-plan and authenticated Blender supervisor types;
-7. implement later slices only after their contract reviews are accepted.
-
-## 2. ImageHoss next return
-
-Codex must return:
-
-- exact repository heads and ancestry;
-- existing-type mapping;
-- proposed versioned Prompt Package;
-- deterministic configuration-preview boundary;
-- Make Production execution boundary;
-- adapter interface;
-- files to change;
-- one vertical slice;
-- automated acceptance;
-- explicit limitations and non-goals.
-
-## 3. VideoBoss next return
-
-After the ImageHoss adapter contract is accepted, Codex must return:
-
-- mapping to current production board, planner, router, Cost Shield, reviewer, memory, render-adapter, and handoff types;
-- proposed provider-neutral sequence/shot/take package;
-- real-provider adapter boundary without credentials in the client;
-- per-shot Job and Production Run relationship;
-- cost and cancellation semantics;
-- ImageHoss and Meshmallow handoff mappings;
-- one vertical real-render slice and acceptance evidence.
-
-## 4. Meshmallow next return
-
-Codex must return:
-
-- public-name migration proposal from 3D Bee to Meshmallow;
-- compatibility handling for repository, app ID, protocol IDs, routes, stored records, and historical Receipts;
-- mapping to current World Seed, Scene Plan, capability, operation, checkpoint, export, and supervisor contracts;
-- proposed provider-neutral scene package;
-- exact Make Production boundary for Blender operations;
-- one vertical scene-build slice and validation evidence;
-- explicit non-goals, especially game-ready, rig-ready, collision-ready, and manufacturing claims.
-
-## 5. No runtime or visual-canon shortcut in this doctrine pass
-
-This product-definition pass does not:
-
-- attach a real adapter;
-- call a model;
-- rename the 3D repository destructively;
-- rewrite historical evidence;
-- merge specialist repositories into Gummy OS;
-- declare the exact Underground cave, crystal, or wallpaper appearance to be canonical.
-
-## 6. Wallpaper lane after this architecture pass
-
-The next founder-facing visual lane remains Gummy OS wallpapers and the surrounding Underground visual world.
-
-That lane should use the contracts above as a real Production exercise:
+Exact accepted specialist heads:
 
 ```text
-ImageHoss
-→ create and accept wallpaper/keyframe Assets
-
-VideoBoss
-→ create optional motion-wallpaper / launch-loop derivatives
-
-Meshmallow
-→ create optional editable spatial source for repeatable cameras and future environments
+ImageHoss             340f819b20c5b6d7ea988459c9380759941c757f
+VideoBoss             e67db769219e5a764821f7bac74638f3791dca98
+Meshmallow / 3D Bee   0c911f7552739f2e0bdefaf863a78a53f04a04c0
 ```
 
-Wallpaper art may become authoritative for named Production and brand roles only after explicit visual acceptance. It must not be treated as locked canon merely because it appears in an adapter example.
+The Night Gummy Launch exercise produced Human-accepted image, video, and
+scene Assets with retained native and Gummy OS evidence. See
+`docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md`.
+
+The following remain deliberately outside this release: destructive 3D Bee
+identity migration, arbitrary ComfyUI/Blender execution, broad provider
+expansion, automatic Actor-memory promotion, and an unreviewed universal
+Underground visual canon. Future art may become authoritative only through
+explicit role-specific Human acceptance.
 
 ---
 

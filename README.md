@@ -10,16 +10,24 @@ The canonical personal address is **mygum.my**.
 
 ## Current status
 
-Gummy OS has completed its foundation and architecture phase. It is now in the final founder-ready release-completion program.
+Gummy OS has completed the founder-ready personal release and Ubuntu Phase 10
+live activation. The deterministic local-first product, bounded specialist
+adapters, Local Gummy Box recovery, full acceptance suite, and public web
+surface are shipped.
 
-The controlling finish-up kit is:
+Open the current production release:
+
+- **Gummy OS:** [https://gummy-os-six.vercel.app](https://gummy-os-six.vercel.app)
+- **Release evidence:** [`docs/release/FINAL_RELEASE.md`](docs/release/FINAL_RELEASE.md)
+- **Ubuntu live activation:** [`docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md`](docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md)
+
+The controlling finish-up kit remains the reproducible build and acceptance
+contract:
 
 - [`docs/finish-kit/README.md`](docs/finish-kit/README.md)
 - [`docs/finish-kit/MASTER_RELEASE_ROADMAP.md`](docs/finish-kit/MASTER_RELEASE_ROADMAP.md)
 - [`docs/finish-kit/CODEX_ONE_TURN_EXECUTION_PROMPT.md`](docs/finish-kit/CODEX_ONE_TURN_EXECUTION_PROMPT.md)
 - [`plans/active/2026-07-27-master-finish-up-execution.md`](plans/active/2026-07-27-master-finish-up-execution.md)
-
-The remaining work is productization, specialist integration, recovery, polish, and release evidence—not a new product architecture.
 
 ```text
 preserve the accepted product
@@ -31,8 +39,22 @@ preserve the accepted product
 → finish Local Gummy Box recovery
 → harden and polish
 → pass final acceptance
-→ ship one coherent release
+→ ship one coherent release ✓
 ```
+
+Long-horizon Social, Gummy Rooms, enterprise, federation, managed cross-device
+Box, marketplace, and broad native-control lanes remain deliberately deferred.
+They are protected product scope, not unfinished requirements for this personal
+release.
+
+## Public technology position
+
+The public Actor–Agent technology position and authorship statement live in
+[`bohselecta/mygummy/TECHNOLOGY_POSITION.md`](https://github.com/bohselecta/mygummy/blob/main/TECHNOLOGY_POSITION.md).
+Public provenance is anchored by commits
+[`b544485`](https://github.com/bohselecta/mygummy/commit/b544485e14d3f708651f24a8c78dab5e7760f03c)
+and
+[`855172b`](https://github.com/bohselecta/mygummy/commit/855172b66e3e854491d7284905e8cd33616be339).
 
 ## What works now
 
@@ -59,11 +81,11 @@ The current specialist repositories prove:
 - **Meshmallow** (`bohselecta/3d-bee`) — World Seed, exact-plan approval, typed operations, and a genuine Blender 4.5 LTS `.blend`/preview/`.glb` supervisor proof;
 - **Gummy Rooms** — protected product identity and integration contracts, with no authenticated live room runtime currently connected.
 
-The finish-up program connects these proven systems without flattening them.
+The completed release connects these proven systems without flattening them.
 
-## Release target
+## Release journey
 
-A clean user should be able to:
+A clean user can:
 
 ```text
 open Gummy OS
