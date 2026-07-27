@@ -52,14 +52,16 @@ test('Night Gummy Launch runs, compares, accepts, revises, and restarts with com
     await production.locator('.actor-card').filter({ hasText: `@${actorName}` })
       .getByRole('button', { name: 'Open Actor surface' }).click();
     const actor = page.locator(`[data-window-id="actor-surface:actor:${actorId}:production:night-gummy-launch:main"]`);
-    if (actorId === 'imagehoss' || actorId === 'videoboss') {
+    if (actorId === 'imagehoss' || actorId === 'videoboss' || actorId === '3d-bee') {
       for (const section of ['Direction', 'Deliverable', 'Locks', 'References / Assets', 'Exploration', 'Exclusions', 'Route and capability', 'Acceptance', 'Compiled preview']) {
         await expect(actor.getByRole('heading', { name: section })).toBeVisible();
       }
       await expect(actor.getByText('This readable package is compiled without starting a Job or calling a provider.')).toBeVisible();
       const schema = actorId === 'imagehoss'
         ? 'gummy.imagehoss-production-configuration/v1'
-        : 'gummy.videoboss-production-configuration/v1';
+        : actorId === 'videoboss'
+          ? 'gummy.videoboss-production-configuration/v1'
+          : 'gummy.meshmallow-production-configuration/v1';
       await expect(actor.getByText(schema)).not.toBeVisible();
       await actor.getByText('View technical package').click();
       await expect(actor.getByText(schema)).toBeVisible();

@@ -1,0 +1,17 @@
+{
+  "schema": "gummy.meshmallow-production-configuration/v1",
+  "specialistRepository": "bohselecta/3d-bee",
+  "specialistHead": "f53d9210c6bb25fcba422de8b3ec341e33c3c04e",
+  "publicName": "Meshmallow",
+  "legacyIdentity": {
+    "applicationId": "app:3d-bee",
+    "actorId": "actor:3d-bee",
+    "scenePlan": "three-d-bee.scene-plan/1",
+    "historyRewritten": false
+  },
+  "productionId": "production:night-gummy-launch",
+  "execution": {
+    "deterministicSimulation": "passed",
+    "liveBlenderArtifacts": "not-claimed"
+  }
+}

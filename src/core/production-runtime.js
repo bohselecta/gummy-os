@@ -61,7 +61,7 @@ const serviceDefinitions = [
     setupDependencies: ['actor:imagehoss'],
     agentId: 'agent:reference-3d-bee-browser',
     moldId: 'mold:3d-bee:production-scene',
-    settings: { worldIntent: 'stylized underground Gummy launch chamber', targetUse: 'editable environment concept', scale: 'meters; Z-up source with declared engine conversion', locks: 'five-color palette; Gummy silhouette language', exploration: 'layout and lighting only', operations: 'create-scene, add-approved-primitives, assign-approved-materials, checkpoint, export', outputs: 'blend-source, glb-package, engine-handoff', acceptance: 'contained editable scene with validated manifest' },
+    settings: { worldIntent: 'stylized underground Gummy launch chamber', targetUse: 'editable environment concept', scale: 'meters; Z-up source with declared engine conversion', references: 'accepted ImageHoss launch keyframe with explicit rights', locks: 'five-color palette; Gummy silhouette language', exploration: 'layout and lighting only', exclusions: 'arbitrary Python, shell, path escape, manufacturing or finished-game claims', operations: 'create-scene, add-approved-primitives, assign-approved-materials, checkpoint, export', route: 'deterministic-demonstration; supervised Blender only when discovered', outputs: 'blend-source, glb-package, engine-handoff', acceptance: 'contained editable scene with validated manifest' },
     optional: true
   },
   {
