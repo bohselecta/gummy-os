@@ -2,7 +2,8 @@
   "schema": "gummy.utility-tile-source-manifest/v0",
   "status": "founder-supplied",
   "suppliedAt": "2026-07-27",
-  "sourceArchive": "assets-to-consider.zip",
+  "sourceArchive": "gummy-utility-tiles-founder-source-2026-07-27.zip",
+  "sourceArchiveUrl": "https://drive.google.com/file/d/10JJn88oYrK_3WzD5tuNpnec2riv-9-WE/view?usp=drivesdk",
   "sourceDirectory": "design/source/gummy-utility-tiles-legacy",
   "assets": [
     {
