@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/actor-presence.schema.json",
+  "title": "Gummy Actor Presence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "actorId", "state", "operator", "visibility", "contactModes", "contextRefs", "startedAt", "updatedAt", "expiresAt", "disclosure"],
+  "properties": {
+    "schema": { "const": "gummy.actor-presence/v1" },
+    "id": { "type": "string", "pattern": "^actor-presence:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "state": { "enum": ["human-live", "human-available", "human-away", "ai-represented", "static", "busy", "offline", "dormant", "revoked"] },
+    "operator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "operatorId"],
+      "properties": {
+        "type": { "enum": ["human", "agent", "none"] },
+        "operatorId": { "type": ["string", "null"] },
+        "moldId": { "type": ["string", "null"], "pattern": "^mold:" },
+        "grantId": { "type": ["string", "null"], "pattern": "^grant:" },
+        "sponsorHumanId": { "type": ["string", "null"], "pattern": "^human:" }
+      }
+    },
+    "visibility": { "enum": ["private", "invite", "bowl", "organization", "public"] },
+    "allowedPurposes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "excludedActions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "contactModes": { "type": "array", "items": { "enum": ["text", "voice", "video", "screen", "message", "invitation", "production-request"] }, "uniqueItems": true },
+    "mediaCapabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "contextRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bowlId": { "type": ["string", "null"], "pattern": "^bowl:" },
+        "sessionId": { "type": ["string", "null"], "pattern": "^session:" },
+        "socialInstanceId": { "type": ["string", "null"], "pattern": "^social-instance:" },
+        "productionId": { "type": ["string", "null"], "pattern": "^production:" },
+        "placeId": { "type": ["string", "null"], "pattern": "^app:" }
+      }
+    },
+    "stale": { "type": "boolean" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": ["string", "null"], "format": "date-time" },
+    "lastVerifiedAt": { "type": ["string", "null"], "format": "date-time" },
+    "disclosure": { "type": "string", "minLength": 1 },
+    "receiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true }
+  }
+}
