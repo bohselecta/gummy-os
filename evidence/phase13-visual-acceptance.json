@@ -3,8 +3,8 @@
   "issue": 27,
   "baselineCommit": "00115aae2dcec1908a9f355b61c85e7b21468c8a",
   "world": "The Lantern Chamber",
-  "status": "pending-founder-visual-acceptance",
-  "mergeAllowed": false,
+  "status": "founder-accepted",
+  "mergeAllowed": true,
   "rubric": {
     "scale": "0-100",
     "previewThreshold": 80,
@@ -26,7 +26,7 @@
       "applicationUsability": 92,
       "technicalDelivery": 96,
       "average": 94.2,
-      "decision": "selected-for-preview"
+      "decision": "accepted"
     },
     "dayLanternChamber": {
       "brandLegibility": 92,
@@ -36,7 +36,7 @@
       "applicationUsability": 91,
       "technicalDelivery": 96,
       "average": 93.5,
-      "decision": "selected-for-preview",
+      "decision": "accepted",
       "note": "Identity-preserving lighting edit of the Night master; camera and architecture are unchanged."
     }
   },
@@ -77,7 +77,7 @@
         "technicalDelivery": 94
       },
       "average": 92.5,
-      "decision": "selected-for-preview",
+      "decision": "accepted",
       "reason": "Best balance of pointed ears, three-lobed tuft, large eyes, tiny fangs, paws, compact silhouette, and matte soft dimensionality."
     }
   },
@@ -123,7 +123,12 @@
   "founderDecision": {
     "required": true,
     "prompt": "Accept or reject the Lantern Chamber environment and candidate C Glopper identity for merge.",
-    "decision": null,
-    "decidedAt": null
+    "decision": "accepted",
+    "statement": "Strong accept! Nice work.",
+    "scope": [
+      "Lantern Chamber Night and Day environment",
+      "Glopper candidate C identity"
+    ],
+    "decidedAt": "2026-07-28T06:29:18Z"
   }
 }

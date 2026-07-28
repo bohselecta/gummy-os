@@ -5,7 +5,10 @@ Issue: `#27`
 Baseline: `00115aae2dcec1908a9f355b61c85e7b21468c8a`
 
 Branch: `codex/phase13-gummy-realm-graphics`
+
 Canonical place: The Lantern Chamber in the Gummy Realm
+
+Founder visual decision: accepted on 2026-07-28
 
 ## Result
 
@@ -35,11 +38,11 @@ Built-in image generation returned 1672×941 environment sources and character s
 
 ## Glopper decision
 
-Candidate C is selected for the review preview.
+Candidate C is the founder-accepted Glopper identity.
 
 - Candidate A was rejected because the cheek and ear treatment reads too feline and the tall proportions weaken the compact guide silhouette.
 - Candidate B was rejected because the round head/body treatment reads too close to a generic gummy bear and is less expressive at small UI sizes.
-- Candidate C best preserves the pointed ears, three-lobed tuft, large eyes, tiny fangs, paws, compact silhouette, and matte soft dimensionality. It remains pending the single founder visual accept/reject gate.
+- Candidate C best preserves the pointed ears, three-lobed tuft, large eyes, tiny fangs, paws, compact silhouette, and matte soft dimensionality. The founder accepted it together with the Night and Day Lantern Chamber environment on 2026-07-28.
 
 The candidate sheet is `design/source/gummy-realm/lantern-chamber/contact-sheets/phase13-glopper-candidates.png`.
 
@@ -65,4 +68,4 @@ Automated coverage verifies the shared two-state world contract, local-only runt
 - Generator: `scripts/generate-realm-assets.mjs`
 - Automated asset gate: `scripts/check-realm-assets.mjs`
 
-The implementation may be reviewed and previewed, but it must not merge until the founder gives one explicit accept/reject decision on the Realm environment and selected Glopper identity.
+On 2026-07-28, the founder gave an explicit strong accept for the Night and Day Lantern Chamber environment and candidate C Glopper identity. The visual acceptance gate is closed. Merge remains a separate repository action and was not performed by this checkpoint.
