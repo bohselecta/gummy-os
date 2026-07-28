@@ -16,7 +16,7 @@ import {
 test('Hoyt is preserved as an archived project reference, not the current Human', () => {
   const clarified = clarifyPrivateReferenceContext(createInitialProductionRuntime());
   const hoyt = clarified.runtime.actors.find(actor => actor.id === 'actor:hoyt');
-  assert.equal(hoyt.name, 'Hoyt — Ranch Day reference');
+  assert.equal(hoyt.name, 'Hoyt — saved participant reference');
   assert.equal(hoyt.kind, 'project-role');
   assert.equal(hoyt.status, 'archived');
   assert.deepEqual(hoyt.humanAuthorityIds, []);
@@ -43,7 +43,7 @@ test('Ranch Day and its sources remain preserved but clearly labeled private ref
 
   const ranchBrief = clarified.runtime.gummies.find(gummy => gummy.id === 'gummy:ranch-day-source-brief');
   const hoytReference = clarified.runtime.gummies.find(gummy => gummy.id === 'gummy:hoyt-likeness-approved');
-  assert.equal(ranchBrief.name, 'Saved reference · Ranch Day brief.md');
+  assert.equal(ranchBrief.name, 'Saved reference · Ranch Day source brief.md');
   assert.equal(hoytReference.name, 'Saved private reference · Hoyt (Ranch Day)');
   assert.equal(isReferenceGummy(ranchBrief), true);
   assert.equal(isReferenceGummy(hoytReference), true);
