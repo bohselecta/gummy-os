@@ -24,7 +24,7 @@ test('Ranch Day source history is visibly labeled as a saved private reference',
   await onboard(page);
   await page.getByRole('tab', { name: 'My Gummies' }).click();
 
-  await expect(page.getByText('Saved reference · Ranch Day brief.md', { exact: true })).toBeVisible();
+  await expect(page.getByText('Saved reference · Ranch Day source brief.md', { exact: true })).toBeVisible();
   await expect(page.getByText('Saved private reference · Hoyt (Ranch Day)', { exact: true })).toBeVisible();
   await expect(page.getByText('Ranch Day source brief.md', { exact: true })).toHaveCount(0);
   await expect(page.getByText('Approved Hoyt likeness references', { exact: true })).toHaveCount(0);
