@@ -1,0 +1,15 @@
+/*
+ * Saved private reference participants remain in IndexedDB and inside their
+ * explicit Production, but they must not resemble the current Human's default
+ * Actor account in the general local-identity grid.
+ */
+.card[data-actor-id="actor:hoyt"] {
+  display: none;
+}
+
+.reference-context-callout {
+  border: 1px solid color-mix(in srgb, var(--gummy-honey-gold) 55%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--gummy-honey-gold) 10%, transparent);
+}
