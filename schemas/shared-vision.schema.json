@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/shared-vision.schema.json",
+  "title": "Gummy Shared Vision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "revision", "status", "ownerActorId", "participantActorIds", "origin", "intent", "goal", "privacy", "acknowledgements", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.shared-vision/v1" },
+    "id": { "type": "string", "pattern": "^shared-vision:" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["observed", "proposed", "acknowledged", "estimating", "ready-to-form", "formed", "paused", "rejected", "expired"] },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "participantActorIds": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^actor:" }, "uniqueItems": true },
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceType", "sourceId", "recordRefs", "explicitExclusions"],
+      "properties": {
+        "sourceType": { "enum": ["session", "social-instance", "bowl", "conversation", "manual"] },
+        "sourceId": { "type": "string", "minLength": 1 },
+        "recordRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "revision", "hash"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "revision": { "type": ["integer", "string"] },
+              "hash": { "type": "string", "minLength": 16 }
+            }
+          }
+        },
+        "explicitExclusions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "intent": { "type": "string", "minLength": 1 },
+    "goal": { "type": "string", "minLength": 1 },
+    "possibleOutputs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "unresolvedQuestions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "volunteeredContributions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "category", "description", "status"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "category": { "enum": ["compute", "financial", "creative", "asset", "labor", "expertise", "rights", "infrastructure", "distribution", "other"] },
+          "description": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["offered", "acknowledged", "withdrawn"] }
+        }
+      }
+    },
+    "privacy": { "enum": ["private", "invite", "bowl", "organization", "public"] },
+    "audienceActorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" }, "uniqueItems": true },
+    "acknowledgements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "revision", "decision", "decidedAt"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "decision": { "enum": ["acknowledge", "decline", "needs-change"] },
+          "decidedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "proposedProductionId": { "type": ["string", "null"], "pattern": "^production:" },
+    "formationReadiness": { "enum": ["not-assessed", "needs-acknowledgement", "needs-scope", "needs-estimate", "needs-agreement", "ready"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}
