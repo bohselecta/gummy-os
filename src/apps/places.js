@@ -28,21 +28,23 @@ export async function createPlacesDirectory(options) {
 
   // Phase 14 evidence remains addressable as the original six-Place subset,
   // while Phase 15 adds Rooms inside the seven-Place activation wrapper.
+  const parent = activeGrid.parentNode;
+  const phase15 = document.createElement('div');
+  phase15.dataset.testid = 'phase15-places';
+  phase15.className = 'phase15-place-directory';
+  parent.replaceChild(phase15, activeGrid);
+
   activeGrid.removeAttribute('data-testid');
   const roomsCard = activeGrid.querySelector('[data-place-id="app:gummy-rooms"]');
   roomsCard?.remove();
   activeGrid.dataset.testid = 'phase14-places';
-
-  const phase15 = document.createElement('div');
-  phase15.dataset.testid = 'phase15-places';
-  phase15.className = 'phase15-place-directory';
   phase15.append(activeGrid);
+
   if (roomsCard) {
     const roomsGrid = document.createElement('div');
     roomsGrid.className = 'card-grid place-grid phase15-added-places';
     roomsGrid.append(roomsCard);
     phase15.append(roomsGrid);
   }
-  activeGrid.replaceWith(phase15);
   return directory;
 }
