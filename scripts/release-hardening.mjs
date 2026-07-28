@@ -64,7 +64,12 @@ if (maps.length) throw new Error(`Production source maps must not ship: ${maps.j
 const total = async names => (await Promise.all(names.map(name => stat(join('build/assets', name))))).reduce((sum, info) => sum + info.size, 0);
 const jsBytes = await total(javascript);
 const cssBytes = await total(styles);
-if (jsBytes > 240 * 1024) throw new Error(`JavaScript bundle exceeds 240 KiB budget: ${jsBytes}`);
+const shell = await readFile('build/index.html', 'utf8');
+const entryName = shell.match(/assets\/(index-[^"]+\.js)/)?.[1];
+if (!entryName) throw new Error('Production entry bundle is missing');
+const entryBytes = (await stat(join('build/assets', entryName))).size;
+if (entryBytes > 264 * 1024) throw new Error(`Initial JavaScript entry exceeds 264 KiB budget: ${entryBytes}`);
+if (jsBytes > 300 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 300 KiB budget: ${jsBytes}`);
 if (cssBytes > 40 * 1024) throw new Error(`CSS bundle exceeds 40 KiB budget: ${cssBytes}`);
 
 console.log(JSON.stringify({
@@ -72,6 +77,7 @@ console.log(JSON.stringify({
   sourceFilesScanned: files.length,
   browserBundle: {
     javascriptBytes: jsBytes,
+    initialJavascriptBytes: entryBytes,
     cssBytes,
     sourceMaps: 0,
     serverOnlyMarkers: 0

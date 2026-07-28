@@ -28,6 +28,12 @@ import { createProductionApp } from './apps/production.js';
 import { createActorSurface } from './apps/actor-surface.js';
 import { createMasterControlApp } from './apps/master-control.js';
 import { createBrowserSpecialistRegistry } from './integrations/specialist-runtime.js';
+import {
+  ensureLivingActorRecords,
+  recordCohortEvent,
+  resolvePresence,
+  setActorPresence
+} from './core/living-actor.js';
 import { WindowManager } from './window-manager.js';
 import { gummyAssets } from './brand/gummy-assets.js';
 
@@ -43,7 +49,13 @@ const githubBox = new GitHubBoxAdapter();
 const workflow = new WorkOrderWorkflow({ repository, byteStore, policy, box: localBox });
 const specialistAdapters = createBrowserSpecialistRegistry();
 let windowManager;
-let session = { openaiConfigured: false, githubConfigured: false, testMode: false };
+let session = {
+  openaiConfigured: false,
+  githubConfigured: false,
+  feedbackConfigured: false,
+  signalingConfigured: false,
+  testMode: false
+};
 let panelOpen = false;
 let panelTab = 'conversation';
 let selectedApp = 'guide';
@@ -150,6 +162,10 @@ async function seedPersonalGummy({ name, address, mode }) {
   await repository.putValidated('gummies', records.gummy);
   await repository.putValidated('workOrders', records.workOrder);
   for (const profile of records.profiles) await repository.put('profiles', profile, { validate: false });
+  await ensureLivingActorRecords(repository, {
+    providerConfigured: session.openaiConfigured,
+    testMode: session.testMode
+  });
   await repository.put('meta', { id: 'onboarding', completed: true, completedAt: new Date().toISOString() }, { validate: false });
   await createReceipt(repository, {
     action: 'initialize-local-gummy-box', resources: ['box:hayden'], outcome: 'completed', reversible: true,
@@ -333,6 +349,8 @@ function onboarding() {
         button.textContent = 'Creating your private starting place…';
         try {
           await seedPersonalGummy(choices);
+          await recordCohortEvent(repository, 'onboarding-completed', { surface: 'onboarding' });
+          await recordCohortEvent(repository, 'production-choice', { choice: kind });
           const production = kind === 'none' ? null : await startProduction(kind, { open: false });
           root.remove();
           await renderShell();
@@ -432,6 +450,25 @@ async function renderShell() {
       h('span', { text: 'Human ' }), h('strong', { text: human.name }), h('span', { text: '· Actor ' }), h('strong', { text: actor.address }), h('span', { text: '· Authority ' }), h('strong', { text: 'Local Gummy Box' })
     ]),
     h('div', { class: 'top-actions' }, [
+      h('button', {
+        class: 'button window-cycle-button',
+        onclick: () => {
+          const focused = windowManager?.cycleFocus();
+          announce(focused ? `Focused ${focused.getAttribute('aria-label')}.` : 'No open windows.');
+        },
+        'aria-label': 'Cycle open Gummy windows'
+      }, [h('span', { text: '▣' }), h('span', { class: 'label', text: ' Windows' })]),
+      h('button', {
+        class: 'button current-production-button',
+        onclick: () => {
+          const current = [...(productionState.productionRuntime?.productions || [])]
+            .reverse()
+            .find(item => !['completed', 'cancelled'].includes(item.status));
+          if (current) void openProduction(current.id);
+          else void openSurface('productions');
+        },
+        'aria-label': 'Return to current Production'
+      }, [h('span', { text: '◇' }), h('span', { class: 'label', text: ' Current' })]),
       h('button', { class: 'button', onclick: toggleMode, 'aria-label': 'Switch Night or Day Gummy' }, [h('span', { text: '◐' }), h('span', { class: 'label', text: ' Mode' })]),
       h('button', { class: 'button', onclick: () => togglePanel(), 'aria-label': 'Open Glopper Panel' }, [h('span', { text: '✦' }), h('span', { class: 'label', text: ' Glopper' })])
     ])
@@ -464,6 +501,8 @@ async function renderShell() {
           const suffix = id.slice(`actor-surface:${actor.id}:`.length, -5);
           await openActorSurface(actor.id, suffix === 'standalone' ? null : suffix);
         }
+      } else if (id.startsWith('private-chat:')) {
+        await openPrivateChatWindow(id.slice('private-chat:'.length));
       }
     }
   } else {
@@ -532,6 +571,40 @@ async function refreshSurface(id) {
   if (windowManager?.windows.has(id)) await openSurface(id);
   await renderBar();
   if (panelOpen) await renderPanel();
+}
+
+async function openPrivateChatWindow(participantActorId = 'actor:glopper') {
+  const actor = await repository.get('actors', participantActorId);
+  if (!actor) {
+    announce(`Private chat blocked: Actor not found (${participantActorId}).`);
+    return;
+  }
+  const id = `private-chat:${participantActorId}`;
+  const existing = windowManager.windows.get(id);
+  if (existing) {
+    existing.hidden = false;
+    windowManager.focus(existing);
+    return;
+  }
+  const { createPrivateChatApp } = await import('./apps/private-chat.js');
+  const app = await createPrivateChatApp({
+    repository,
+    session,
+    participantActorId,
+    announce,
+    onDeleted: async () => {
+      await windowManager.control(id, 'close');
+      await refreshSurface('actors');
+    }
+  });
+  await windowManager.open({
+    id,
+    title: `Private chat · ${actor.name}`,
+    subtitle: participantActorId === 'actor:glopper'
+      ? 'Actor surface · governed Agent replies'
+      : 'Actor surface · Human-operated messages',
+    content: app.node
+  });
 }
 
 async function buildSurface(id) {
@@ -843,24 +916,34 @@ async function actorsSurface() {
   const activeProduction = [...runtime.productions].reverse().find(item => !['completed', 'cancelled'].includes(item.status))
     || runtime.productions.at(-1);
   const glopperConfigured = session.openaiConfigured || session.testMode;
+  const presenceRecords = Object.fromEntries((await repository.all('actorPresence')).map(item => [item.actorId, resolvePresence(item)]));
   const presence = copy.cards.map(item => {
     const glopper = item.id === 'agent:glopper-web';
+    const actorId = glopper ? 'actor:glopper' : item.id;
+    const livePresence = presenceRecords[actorId];
     const config = activeProduction && runtime.configurations.find(entry => (
-      entry.productionId === activeProduction.id && entry.actorId === item.id
+      entry.productionId === activeProduction.id && entry.actorId === actorId
     ));
     return {
       ...item,
+      id: actorId,
+      identity: glopper
+        ? 'actor:glopper · service Actor surface · agent:glopper-web disclosed only when approved'
+        : item.identity,
       tone: item.tone || 'limited',
       capability: glopper && glopperConfigured ? item.configured : item.capability,
+      state: livePresence
+        ? `${livePresence.state.replaceAll('-', ' ')}${livePresence.stale ? ' · expired' : ''}`
+        : item.state,
       current: activeProduction
         ? glopper ? `Following ${activeProduction.title}` : `${activeProduction.title} · ${config?.readiness?.replaceAll('-', ' ') || 'not assigned'}`
         : 'Waiting for your first Production',
-      action: glopper ? 'Open Glopper' : activeProduction ? `Open in ${activeProduction.title}` : 'Open with the sample',
+      action: glopper ? 'Open private chat' : activeProduction ? `Open in ${activeProduction.title}` : 'Open with the sample',
       interact: glopper
-        ? () => { panelTab = 'conversation'; void togglePanel(true); }
+        ? () => openPrivateChatWindow('actor:glopper')
         : () => activeProduction
-          ? openActorSurface(item.id, activeProduction.id)
-          : void startProduction('sample').then(production => openActorSurface(item.id, production.id))
+          ? openActorSurface(actorId, activeProduction.id)
+          : void startProduction('sample').then(production => openActorSurface(actorId, production.id))
     };
   });
   const root = h('div', {}, [
@@ -886,7 +969,7 @@ async function actorsSurface() {
       h('p', { class: 'boundary-note compact', text: item.truth }),
       h('div', { class: 'button-row' }, [
         h('button', { class: 'button primary', onclick: item.interact }, item.action),
-        item.id !== 'agent:glopper-web'
+        item.id !== 'actor:glopper'
           ? h('button', { class: 'button', onclick: () => openActorSurface(item.id) }, 'Open standalone Actor view')
           : null
       ])
@@ -896,8 +979,30 @@ async function actorsSurface() {
     h('div', { class: 'card-grid' }, localActors.map(actor => h('article', { class: 'card', dataset: { actorId: actor.id } }, [
       h('h3', { text: actor.name }),
       h('p', { text: actor.address }),
-      h('span', { class: 'status', text: `${actor.kind} Actor · local` }),
-      h('button', { class: 'button', onclick: () => openActorSurface(actor.id) }, 'Open Actor')
+      h('span', { class: 'status', text: `${actor.kind} Actor · ${presenceRecords[actor.id]?.state?.replaceAll('-', ' ') || 'offline'}` }),
+      h('div', { class: 'button-row' }, [
+        h('button', { class: 'button', onclick: () => openActorSurface(actor.id) }, 'Open Actor'),
+        actor.id !== 'actor:glopper'
+          ? h('button', { class: 'button', onclick: () => openPrivateChatWindow(actor.id) }, 'Private chat')
+          : null
+      ]),
+      actor.id === 'actor:hayden' ? h('div', { class: 'presence-controls' }, [
+        h('small', { text: 'Personal presence is Human-controlled on this browser.' }),
+        h('div', { class: 'button-row' }, [
+          ...['available-for-chat', 'away', 'offline'].map(state => h('button', {
+            class: 'button',
+            onclick: async () => {
+              await setActorPresence(repository, {
+                actorId: actor.id,
+                state,
+                source: 'human-controlled',
+                detail: `Published by the Human from this browser.`
+              });
+              await refreshSurface('actors');
+            }
+          }, state.replaceAll('-', ' ')))
+        ])
+      ]) : null
     ]))),
     h('div', { class: 'button-row' }, [
       h('button', { class: 'button primary', onclick: composeBowl, disabled: bowls.some(bowl => bowl.id === 'bowl:composition-proof') }, 'Compose temporary private Bowl')
@@ -1519,17 +1624,25 @@ async function applicationsSurface() {
   return root;
 }
 
-function aboutSurface() {
+async function aboutSurface() {
   const commit = typeof __GUMMY_BUILD_COMMIT__ === 'string' ? __GUMMY_BUILD_COMMIT__ : 'unknown';
+  const environment = typeof __GUMMY_BUILD_ENVIRONMENT__ === 'string' ? __GUMMY_BUILD_ENVIRONMENT__ : 'unknown';
   const root = h('div', { dataset: { testid: 'about-capabilities-limits' } }, [
     h('p', { class: 'eyebrow', text: 'Release identity and honest boundaries' }),
     h('h2', { text: 'Gummy OS 0.1' }),
+    h('p', {
+      class: 'test-build-identity',
+      dataset: { testid: 'test-build-identity' },
+      text: `Test build · ${environment} · ${commit}`
+    }),
     h('p', { class: 'lede', text: 'A governed personal creative computer. Configure freely; only Make Production starts authorized work.' }),
     h('div', { class: 'card-grid' }, [
       h('article', { class: 'card' }, [
         h('h3', { text: 'Available now' }),
         h('ul', {}, [
           h('li', { text: 'Local-first Gummy Box with complete backup, inspect-first restore, and scoped reset.' }),
+          h('li', { text: 'Persistent private Actor chat with transcript Gummies, export/deletion controls, explicit provider governance, and Receipts.' }),
+          h('li', { text: 'Human-controlled and expiring service presence, plus explicit local audio/video/screen previews without remote-live claims.' }),
           h('li', { text: 'Durable Productions, Actor Plans, Work Orders, Leases, Grants, Returns, Receipts, and accepted-role evidence.' }),
           h('li', { text: 'Deterministic ImageHoss, VideoBoss, and Meshmallow Production adapters with explicit simulation disclosure.' }),
           h('li', { text: 'Optional repository-scoped GitHub mirror when the server capability is configured and a Human chooses it.' })
@@ -1560,6 +1673,9 @@ function aboutSurface() {
       h('summary', { text: 'Technical capability status' }),
       facts([
         ['Build commit', commit],
+        ['Build environment', environment],
+        ['Tester feedback destination', session.feedbackConfigured || session.testMode ? 'configured private route' : 'not configured · local-only remains available'],
+        ['Remote media signaling', session.signalingConfigured ? 'configured seam · no room implied' : 'unavailable · local previews only'],
         ['ImageHoss live', 'NOT CLAIMED · authenticated local bridge unavailable'],
         ['VideoBoss live', 'NOT CLAIMED · trusted provider broker unconfigured'],
         ['Meshmallow live', 'NOT CLAIMED · Blender 4.5 LTS unavailable'],
@@ -1569,6 +1685,14 @@ function aboutSurface() {
       ])
     ])
   ]);
+  const { createTesterOperations } = await import('./apps/tester-operations.js');
+  root.append(await createTesterOperations({
+    repository,
+    session,
+    commit,
+    environment,
+    announce
+  }));
   return root;
 }
 
@@ -1627,6 +1751,13 @@ async function panelContent() {
       ]) : null,
       h('div', { class: 'glopper-action-menu', 'aria-label': 'Glopper actions' }, [
         h('h3', { text: 'What would you like to do?' }),
+        h('button', {
+          class: 'button primary',
+          onclick: () => {
+            void togglePanel(false);
+            void openPrivateChatWindow('actor:glopper');
+          }
+        }, 'Start or continue a private chat'),
         pending.length ? h('button', {
           class: 'button',
           onclick: () => { panelTab = 'inbox'; void renderPanel(); }
@@ -1645,7 +1776,7 @@ async function panelContent() {
           ? copy.configured
           : copy.unconfigured }),
         h('p', { class: 'meta', text: configured
-          ? `Execution route: ${session.testMode ? 'hermetic test provider' : 'OpenAI'} · cloud · approval required`
+          ? `Chat route: ${session.testMode ? 'hermetic test provider' : 'OpenAI'} · cloud · one-turn approval required. Make Production remains separate.`
           : 'Execution route: unavailable · no provider cost can be incurred' })
       ])
     ]);
@@ -1701,6 +1832,11 @@ async function bootstrap() {
     await repository.open();
     await migrateLegacy(repository);
     await ensureFullProductRecords(repository);
+    await ensureLivingActorRecords(repository, {
+      providerConfigured: session.openaiConfigured,
+      testMode: session.testMode
+    });
+    await recordCohortEvent(repository, 'session-started', { surface: 'canvas' });
     const recovery = await recoverLocalBox(repository);
     const mode = await repository.get('meta', 'preference:mode');
     await applyMode(mode?.value, false);
@@ -1713,7 +1849,16 @@ async function bootstrap() {
       if (recovery.status !== 'clean') announce(`Local Box recovery: ${recovery.status}. ${[...recovery.recovered, ...recovery.unresolved].join(', ')}`);
     }
     if ('serviceWorker' in navigator) {
-      void navigator.serviceWorker.register('/sw.js').catch(error => {
+      void navigator.serviceWorker.register('/sw.js').then(registration => {
+        registration.addEventListener('updatefound', () => {
+          const worker = registration.installing;
+          worker?.addEventListener('statechange', () => {
+            if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+              announce('A new Gummy build is ready. Reload when you are ready; your local records remain durable.');
+            }
+          });
+        });
+      }).catch(error => {
         announce(`Offline cache unavailable: ${error.message}`);
       });
     }
@@ -1721,6 +1866,11 @@ async function bootstrap() {
     window.addEventListener('offline', () => announce('Offline. Provider execution is unavailable; approvals will be revalidated before resuming.'));
     window.addEventListener('gummy:open-actor-surface', event => {
       void openActorSurface(event.detail.actorId, event.detail.productionId || null);
+    });
+    repository.channel?.addEventListener('message', event => {
+      if (event.data?.store === 'actorPresence' && windowManager?.windows.has('actors')) {
+        void refreshSurface('actors');
+      }
     });
   } catch (error) {
     document.querySelector('#boot')?.remove();

@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto';
+import { replyToPrivateChat } from './chat.mjs';
 import { transformExecution } from './execution.mjs';
+import { submitTesterFeedback } from './feedback.mjs';
 import { disconnectBox, installUrl, listRepositories, connectBox, syncBox } from './github.mjs';
 import { newSession, sessionCookie, sessionFrom } from './session.mjs';
 
@@ -10,7 +12,7 @@ export function securityHeaders({ development = false } = {}) {
     'content-security-policy': `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:5214 http://localhost:5214${development ? ' ws:' : ''}; frame-src https:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://github.com`,
     'x-content-type-options': 'nosniff',
     'referrer-policy': 'no-referrer',
-    'permissions-policy': 'camera=(), geolocation=(), microphone=()',
+    'permissions-policy': 'camera=(self), display-capture=(self), geolocation=(), microphone=(self)',
     'cross-origin-opener-policy': 'same-origin',
     'x-frame-options': 'DENY'
   };
@@ -64,7 +66,20 @@ export function createApiHandler() {
       const url = new URL(request.url, `http://${request.headers.host}`);
       if (request.method === 'GET' && url.pathname === '/api/v1/session') {
         const session = sessionFrom(request) || newSession();
-        return send(response, 200, { csrf: session.csrf, githubConfigured: Boolean(process.env.GITHUB_APP_ID), openaiConfigured: Boolean(process.env.OPENAI_API_KEY), testMode: process.env.GUMMY_TEST_MODE === '1' }, { 'set-cookie': sessionCookie(session) });
+        return send(response, 200, {
+          csrf: session.csrf,
+          githubConfigured: Boolean(process.env.GITHUB_APP_ID),
+          openaiConfigured: Boolean(process.env.OPENAI_API_KEY),
+          feedbackConfigured: Boolean(
+            process.env.GUMMY_FEEDBACK_REPOSITORY
+            && (
+              process.env.GUMMY_FEEDBACK_GITHUB_TOKEN
+              || (process.env.GITHUB_APP_ID && process.env.GITHUB_APP_PRIVATE_KEY)
+            )
+          ),
+          signalingConfigured: Boolean(process.env.GUMMY_SIGNALING_URL),
+          testMode: process.env.GUMMY_TEST_MODE === '1'
+        }, { 'set-cookie': sessionCookie(session) });
       }
       let session = sessionFrom(request);
       if (!session) return send(response, 401, { status: 'blocked', message: 'Session required.' });
@@ -83,6 +98,27 @@ export function createApiHandler() {
           tokenUsage: result.body.usage,
           cost: result.body.cost
         }));
+        return send(response, result.code, result.body);
+      }
+      if (request.method === 'POST' && url.pathname === '/api/v1/chat/reply') {
+        event = 'private_chat';
+        const result = await replyToPrivateChat(await body(request, 512 * 1024), { sessionId: session.id });
+        status = result.code;
+        console.log(JSON.stringify({
+          traceId,
+          event: 'private_chat_result',
+          status: result.body.status,
+          durationMs: Math.round(performance.now() - started),
+          model: result.body.model,
+          tokenUsage: result.body.usage,
+          cost: result.body.cost
+        }));
+        return send(response, result.code, result.body);
+      }
+      if (request.method === 'POST' && url.pathname === '/api/v1/tester-feedback') {
+        event = 'tester_feedback';
+        const result = await submitTesterFeedback(await body(request, 32 * 1024));
+        status = result.code;
         return send(response, result.code, result.body);
       }
       if (request.method === 'GET' && url.pathname === '/api/v1/github/install') {

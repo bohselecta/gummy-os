@@ -54,13 +54,13 @@ test('trusted test user can enter the sample, understand Actors, and use Glopper
   const presence = page.getByTestId('actor-presence-grid');
   await expect(presence.locator('[data-presence-id]')).toHaveCount(4);
   await expect(presence.getByRole('heading', { name: 'Glopper' })).toBeVisible();
-  await expect(presence.getByText('Ready to guide')).toBeVisible();
+  await expect(presence.getByText('available for chat')).toBeVisible();
   await expect(presence.getByText('Demonstration available')).toBeVisible();
   await expect(presence.getByText(/Real rendering needs a connected server-side provider route/)).toBeVisible();
   await expect(presence.getByText(/supported Blender runtime/)).toBeVisible();
   await page.screenshot({ path: evidencePath('phase11-actor-presence-night.png'), fullPage: true });
 
-  await presence.getByRole('button', { name: 'Open Glopper' }).click();
+  await page.locator('.gummy-bar').getByRole('tab', { name: /Glopper/ }).click();
   const glopper = page.getByRole('complementary', { name: 'Glopper Panel' });
   await expect(glopper.getByText(/You have 1 Production, 1 pending decision/)).toBeVisible();
   await expect(glopper.getByRole('button', { name: /Continue Night Gummy Launch/ })).toBeVisible();

@@ -16,7 +16,7 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "no-referrer" },
-        { "key": "Permissions-Policy", "value": "camera=(), geolocation=(), microphone=()" },
+        { "key": "Permissions-Policy", "value": "camera=(self), display-capture=(self), geolocation=(), microphone=(self)" },
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
       ]
@@ -38,6 +38,14 @@
       "headers": [
         { "key": "Cache-Control", "value": "no-store" }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "mygum.my" }],
+      "destination": "https://www.mygum.my/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
