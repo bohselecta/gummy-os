@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/contribution-ledger.schema.json",
+  "title": "Gummy Contribution Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "productionId", "agreementId", "revision", "entries", "appendOnly", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.contribution-ledger/v1" },
+    "id": { "type": "string", "pattern": "^contribution-ledger:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "agreementId": { "type": "string", "pattern": "^production-agreement:" },
+    "agreementRevision": { "type": "integer", "minimum": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "appendOnly": { "const": true },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "contributorActorId", "category", "description", "status", "creditEffect", "ownershipEffect", "compensationEffect", "evidenceRefs", "createdAt"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^contribution:" },
+          "contributorActorId": { "type": "string", "pattern": "^actor:" },
+          "category": { "enum": ["compute", "financial", "creative-direction", "writing", "design", "technical", "labor", "asset", "expertise", "rights", "infrastructure", "distribution", "audience", "other"] },
+          "description": { "type": "string", "minLength": 1 },
+          "quantity": { "type": ["number", "null"], "minimum": 0 },
+          "unit": { "type": ["string", "null"] },
+          "declaredValue": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "currency": { "const": "USD" },
+              "amount": { "type": "number", "minimum": 0 },
+              "valuationMode": { "enum": ["self-declared", "agreed", "provider-evidence", "not-valued"] }
+            }
+          },
+          "status": { "enum": ["proposed", "accepted", "disputed", "withdrawn", "superseded", "rejected"] },
+          "creditEffect": {
+            "type": "object",
+            "required": ["mode"],
+            "properties": {
+              "mode": { "enum": ["none", "public-credit", "private-credit", "custom"] },
+              "label": { "type": ["string", "null"] }
+            },
+            "additionalProperties": true
+          },
+          "ownershipEffect": {
+            "type": "object",
+            "required": ["automatic", "mode"],
+            "properties": {
+              "automatic": { "const": false },
+              "mode": { "enum": ["none", "agreement-defined", "license-only", "custom"] },
+              "termsRef": { "type": ["string", "null"] }
+            },
+            "additionalProperties": true
+          },
+          "compensationEffect": {
+            "type": "object",
+            "required": ["mode"],
+            "properties": {
+              "mode": { "enum": ["none", "reimbursement", "fixed-payment", "revenue-share", "agreement-defined", "custom"] },
+              "termsRef": { "type": ["string", "null"] }
+            },
+            "additionalProperties": true
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "id"],
+              "properties": {
+                "kind": { "enum": ["gummy", "work-order", "return", "receipt", "payment-event", "session-record", "external"] },
+                "id": { "type": "string", "minLength": 1 },
+                "revision": { "type": ["integer", "string", "null"] },
+                "hash": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "acknowledgements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["actorId", "decision", "decidedAt"],
+              "properties": {
+                "actorId": { "type": "string", "pattern": "^actor:" },
+                "decision": { "enum": ["acknowledge", "dispute", "reject"] },
+                "decidedAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          },
+          "supersedesEntryId": { "type": ["string", "null"], "pattern": "^contribution:" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
