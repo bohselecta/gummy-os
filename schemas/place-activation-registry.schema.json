@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/place-activation-registry.schema.json",
+  "title": "Gummy Place Activation Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "baseRegistry", "places", "generatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.place-activation-registry/v1" },
+    "id": { "const": "place-activation-registry:gummy-os:phase15" },
+    "baseRegistry": { "const": "place-registry:gummy-os:first-party" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "places": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["placeId", "coreAvailability", "coreCapabilities", "capabilityStates", "releaseTruth"],
+        "properties": {
+          "placeId": { "type": "string", "pattern": "^app:" },
+          "coreAvailability": { "enum": ["available", "needs-setup", "blocked"] },
+          "coreCapabilities": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "capabilityStates": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "availability", "startsExecution", "releaseTruth"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1 },
+                "availability": {
+                  "enum": ["available", "local-runtime-required", "remote-service-required", "mobile-companion-required", "approval-required", "blocked"]
+                },
+                "startsExecution": { "type": "boolean" },
+                "releaseTruth": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "releaseTruth": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
