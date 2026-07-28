@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/place-operation-receipt.schema.json",
+  "title": "Gummy Place Operation Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "schema",
+    "placeId",
+    "ownerActorId",
+    "contextType",
+    "contextId",
+    "operation",
+    "recordRefs",
+    "priorRevisions",
+    "resultRevisions",
+    "executedLocally",
+    "externalExecution",
+    "limitations",
+    "createdAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^place-operation:" },
+    "schema": { "const": "gummy.place-operation-receipt/v1" },
+    "placeId": { "type": "string", "pattern": "^app:" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "contextType": { "enum": ["personal", "production", "session"] },
+    "contextId": { "type": "string", "minLength": 1 },
+    "operation": { "type": "string", "minLength": 1 },
+    "recordRefs": { "$ref": "#/$defs/recordRefs" },
+    "priorRevisions": { "$ref": "#/$defs/revisions" },
+    "resultRevisions": { "$ref": "#/$defs/revisions" },
+    "executedLocally": { "const": true },
+    "externalExecution": { "const": false },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "recordRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["recordType", "recordId"],
+        "properties": {
+          "recordType": { "type": "string", "minLength": 1 },
+          "recordId": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "revisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["recordType", "recordId", "revision"],
+        "properties": {
+          "recordType": { "type": "string", "minLength": 1 },
+          "recordId": { "type": "string", "minLength": 1 },
+          "revision": { "type": "integer", "minimum": 1 }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { createInitialProductionRuntime, PRODUCTION_STATE_VERSION } from './production-runtime.js';
+import { clarifyPrivateReferenceContext } from './reference-context.js';
 
 export const PRODUCTION_RUNTIME_INDEX_ID = 'production-runtime:index';
 export const LEGACY_PRODUCTION_STORAGE_KEY = 'gummy-os:v0.2';
@@ -72,11 +73,18 @@ export class ProductionRuntimeRepository {
     const migrated = this.readLegacyRuntime();
     if (migrated) runtime = migrated;
     runtime = mergeExistingPersonalActor(runtime, await this.repository.get('actors', 'actor:hayden'));
+    const clarified = clarifyPrivateReferenceContext(runtime);
+    runtime = clarified.runtime;
     await this.persist(runtime, {
       migration: migrated ? {
         source: LEGACY_PRODUCTION_STORAGE_KEY,
         importedAsMigrationInput: true,
         localStorageAuthoritative: false
+      } : null,
+      referenceContextMigration: clarified.changed ? {
+        classification: 'private-reference',
+        historicalRecordsPreserved: true,
+        defaultIdentityAmbiguityRemoved: true
       } : null
     });
     return runtime;
@@ -109,7 +117,18 @@ export class ProductionRuntimeRepository {
       runtime[collection] = records.filter(Boolean);
     }
     runtime.gummies = await Promise.all(runtime.gummies.map(record => this.hydrateGummy(record)));
-    return runtime;
+    const clarified = clarifyPrivateReferenceContext(runtime);
+    if (clarified.changed) {
+      await this.persist(clarified.runtime, {
+        referenceContextMigration: {
+          classification: 'private-reference',
+          historicalRecordsPreserved: true,
+          defaultIdentityAmbiguityRemoved: true
+        }
+      });
+      await this.flush();
+    }
+    return clarified.runtime;
   }
 
   persist(runtime, options = {}) {
@@ -148,6 +167,7 @@ export class ProductionRuntimeRepository {
       windowState: clone(runtime.windowState || []),
       migrationLog: clone(runtime.migrationLog || []),
       migration: options.migration || previous?.migration || null,
+      referenceContextMigration: options.referenceContextMigration || previous?.referenceContextMigration || null,
       updatedAt: new Date().toISOString()
     };
 

@@ -25,25 +25,19 @@ test.afterEach(async ({ page }) => {
   expect(page.runtimeErrors).toEqual([]);
 });
 
-test('Places doorway has six current identities, four journey previews, and no default Place pins', async ({ page }) => {
+test('Phase 14 Place identities and pinning model remain preserved after activation', async ({ page }) => {
   await onboard(page);
   await expect(page.locator('.gummy-bar [data-place-id]')).toHaveCount(0);
   await page.getByRole('tab', { name: 'Places' }).click();
-  const grid = page.getByTestId('phase14-places');
-  await expect(grid.locator('[data-place-id]')).toHaveCount(6);
-  for (const name of ['Gummy Channels', 'Wardrobe', 'House', 'Worlds', 'Table', 'Radio']) {
+  const grid = page.getByTestId('phase15-places');
+  await expect(grid.locator('[data-place-id]')).toHaveCount(7);
+  for (const name of ['Gummy Channels', 'Wardrobe', 'House', 'Worlds', 'Table', 'Radio', 'Rooms']) {
     await expect(grid.getByRole('heading', { name, exact: true })).toBeVisible();
   }
-  const journeys = page.getByTestId('cross-place-journeys');
-  await expect(journeys.locator('[data-journey]')).toHaveCount(4);
-  for (const button of await journeys.getByRole('button', { name: 'Prepare preview' }).all()) {
-    await button.click();
-  }
-  await expect(journeys.getByText(/state preview/)).toHaveCount(4);
   await expect(page.getByText(/VidFam|Dressing Suite|Homewright|VideoWorlds|Easy Food|TalkPrint/i)).toHaveCount(0);
 });
 
-test('Human pinning persists and opens a context-specific Place window without deleting it on close', async ({ page }) => {
+test('Human pinning persists and Place windows remain context-specific', async ({ page }) => {
   await onboard(page);
   await page.getByRole('tab', { name: 'Places' }).click();
   const wardrobeCard = page.locator('[data-place-id="app:gummy-wardrobe"]').first();
@@ -60,48 +54,24 @@ test('Human pinning persists and opens a context-specific Place window without d
   await expect(page.locator('.gummy-bar').getByRole('tab', { name: 'Wardrobe' })).toBeVisible();
 });
 
-test('all six Place surfaces expose their doctrine and never fake unavailable execution', async ({ page }) => {
+test('advanced Place capabilities remain separately blocked without staging the core', async ({ page }) => {
   await onboard(page);
   await page.getByRole('tab', { name: 'Places' }).click();
-
-  await page.getByRole('button', { name: 'Open Gummy Channels' }).click();
-  const channels = page.getByRole('region', { name: 'Gummy Channels window' });
-  await channels.getByRole('button', { name: 'Preview guide placement' }).click();
-  await expect(channels.getByRole('status')).toContainText('published: false');
-
-  await page.getByRole('tab', { name: 'Places' }).click();
+  for (const name of ['Gummy Channels', 'Wardrobe', 'House', 'Worlds', 'Table', 'Radio', 'Rooms']) {
+    const card = page.locator('.place-card').filter({ has: page.getByRole('heading', { name, exact: true }) });
+    await expect(card.getByText('Available', { exact: true })).toBeVisible();
+  }
   await page.getByRole('button', { name: 'Open Wardrobe' }).click();
-  const wardrobe = page.getByRole('region', { name: 'Wardrobe window' });
-  await wardrobe.getByRole('button', { name: 'Make one outfit' }).click();
-  await expect(wardrobe.getByRole('status')).toContainText('preference unchanged');
-  await expect(wardrobe).toContainText('There is no checkout.');
-
-  await page.getByRole('tab', { name: 'Places' }).click();
-  await page.getByRole('button', { name: 'Open House' }).click();
-  const house = page.getByRole('region', { name: 'House window' });
-  await house.getByRole('button', { name: 'Open Intent Gate' }).click();
-  await expect(house.getByRole('status')).toContainText('no external execution');
-
+  await expect(page.getByRole('region', { name: 'Wardrobe window' }).getByRole('button', { name: 'Camera capture needs companion' })).toBeDisabled();
   await page.getByRole('tab', { name: 'Places' }).click();
   await page.getByRole('button', { name: 'Open Worlds' }).click();
-  const worlds = page.getByRole('region', { name: 'Worlds window' });
-  await worlds.getByRole('button', { name: 'Validate and estimate' }).click();
-  await expect(worlds.getByRole('status')).toContainText('executing: false');
-  await expect(worlds.getByRole('list', { name: 'The nine Worlds tools' }).getByRole('listitem')).toHaveCount(9);
-  await expect(worlds.getByRole('button', { name: 'Meshmallow runtime required' })).toBeDisabled();
-
+  await expect(page.getByRole('region', { name: 'Worlds window' }).getByRole('button', { name: 'Build needs Meshmallow' })).toBeDisabled();
   await page.getByRole('tab', { name: 'Places' }).click();
   await page.getByRole('button', { name: 'Open Table' }).click();
-  const table = page.getByRole('region', { name: 'Table window' });
-  await table.getByRole('button', { name: 'Preview gathering' }).click();
-  await expect(table.getByRole('status')).toContainText('address remains withheld');
-
+  await expect(page.getByRole('region', { name: 'Table window' }).getByRole('button', { name: 'Exact address requires verified service' })).toBeDisabled();
   await page.getByRole('tab', { name: 'Places' }).click();
   await page.getByRole('button', { name: 'Open Radio' }).click();
-  const radio = page.getByRole('region', { name: 'Radio window' });
-  await radio.getByRole('button', { name: 'Approve script and prepare demo' }).click();
-  await expect(radio.getByRole('status')).toContainText('final audio: false');
-  await expect(radio.getByRole('status')).toContainText('published: false');
+  await expect(page.getByRole('region', { name: 'Radio window' }).getByRole('button', { name: 'Final voice service not connected' })).toBeDisabled();
 });
 
 test('Places remains accessible on phone with reduced motion', async ({ page }) => {
@@ -109,7 +79,7 @@ test('Places remains accessible on phone with reduced motion', async ({ page }) 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await onboard(page);
   await page.getByRole('tab', { name: 'Places' }).click();
-  await expect(page.getByTestId('phase14-places').locator('[data-place-id]')).toHaveCount(6);
+  await expect(page.getByTestId('phase15-places').locator('[data-place-id]')).toHaveCount(7);
   const results = await new AxeBuilder({ page }).exclude('iframe').analyze();
   expect(results.violations).toEqual([]);
 });

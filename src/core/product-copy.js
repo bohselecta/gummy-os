@@ -37,6 +37,11 @@ export const PRODUCT_STATE_COPY = Object.freeze({
   })
 });
 
+export const PLACE_DIRECTORY_COPY = Object.freeze({
+  pinning: 'Only Places you pin appear in the Gummy Bar.',
+  activation: 'A Place is available when its useful local core works; advanced phone, provider, service, address, voice, and native 3D capabilities remain separately disclosed.'
+});
+
 export function stateCopy(state) {
   return PRODUCT_STATE_COPY[state] || PRODUCT_STATE_COPY.failed;
 }

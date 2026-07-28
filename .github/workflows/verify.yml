@@ -20,12 +20,18 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm run verify
+      - name: Run complete verification and retain log
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          set -o pipefail
+          npm run verify 2>&1 | tee artifacts/verify.log
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: standalone-founder-review
           path: |
+            artifacts/verify.log
             artifacts/playwright-report
             artifacts/test-results
             artifacts/evidence

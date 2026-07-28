@@ -31,7 +31,7 @@
     "featureFlag"
   ],
   "properties": {
-    "schema": { "const": "gummy.place-descriptor/v1" },
+    "schema": { "enum": ["gummy.place-descriptor/v1", "gummy.place-descriptor/v2"] },
     "id": { "type": "string", "pattern": "^app:[a-z0-9-]+$" },
     "name": { "type": "string", "minLength": 1 },
     "shortLabel": { "type": "string", "minLength": 1 },
@@ -134,6 +134,94 @@
       ]
     },
     "releaseTruth": { "type": "string", "minLength": 1 },
-    "featureFlag": { "type": "boolean" }
-  }
+    "featureFlag": { "type": "boolean" },
+    "coreAvailability": { "enum": ["available", "needs-setup", "blocked"] },
+    "coreCapabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "capabilityStates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "availability", "locality", "requires", "startsExecution", "costModel", "releaseTruth"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "availability": {
+            "enum": [
+              "available",
+              "local-runtime-required",
+              "remote-service-required",
+              "mobile-companion-required",
+              "approval-required",
+              "blocked"
+            ]
+          },
+          "locality": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "enum": ["browser", "local", "mobile", "remote"] },
+            "uniqueItems": true
+          },
+          "requires": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "startsExecution": { "type": "boolean" },
+          "costModel": { "type": "string", "minLength": 1 },
+          "releaseTruth": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "connectionRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "route", "status"],
+        "properties": {
+          "kind": { "enum": ["web", "pwa", "android", "ios", "desktop", "local-bridge", "remote-service"] },
+          "route": { "type": ["string", "null"] },
+          "status": { "enum": ["available", "needs-setup", "unavailable"] },
+          "allowlistedOrigin": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "lastVerifiedAt": { "type": ["string", "null"], "format": "date-time" },
+    "migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fromSchema", "legacyIds", "completedAt"],
+      "properties": {
+        "fromSchema": { "type": "string", "minLength": 1 },
+        "legacyIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "completedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "schema": { "const": "gummy.place-descriptor/v2" } } },
+      "then": {
+        "required": [
+          "coreAvailability",
+          "coreCapabilities",
+          "capabilityStates",
+          "connectionRoutes",
+          "lastVerifiedAt",
+          "migration"
+        ]
+      }
+    }
+  ]
 }

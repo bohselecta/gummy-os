@@ -69,8 +69,11 @@ const entryName = shell.match(/assets\/(index-[^"]+\.js)/)?.[1];
 if (!entryName) throw new Error('Production entry bundle is missing');
 const entryBytes = (await stat(join('build/assets', entryName))).size;
 if (entryBytes > 264 * 1024) throw new Error(`Initial JavaScript entry exceeds 264 KiB budget: ${entryBytes}`);
-if (jsBytes > 300 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 300 KiB budget: ${jsBytes}`);
-if (cssBytes > 40 * 1024) throw new Error(`CSS bundle exceeds 40 KiB budget: ${cssBytes}`);
+// Phase 15 adds seven durable, lazy-loaded Place cores. The first-paint ceiling remains unchanged;
+// only the total lazy feature budget expands from 300 KiB to 380 KiB.
+if (jsBytes > 380 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 380 KiB budget: ${jsBytes}`);
+// One extra KiB is reserved for identity/privacy clarity such as hiding project-only reference participants from the default account grid.
+if (cssBytes > 41 * 1024) throw new Error(`CSS bundle exceeds 41 KiB budget: ${cssBytes}`);
 
 console.log(JSON.stringify({
   status: 'pass',

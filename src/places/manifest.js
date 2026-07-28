@@ -28,7 +28,7 @@ export const PHASE14_PLACES = Object.freeze([
     name: 'Worlds',
     address: '@worlds',
     icon: '◌',
-    doctrine: 'A high-level World Plan directs bounded Meshmallow tools.',
+    doctrine: 'Structured World Plans make places; Meshmallow only builds approved plans.',
     context: { type: 'production', id: 'production:night-gummy-launch' }
   },
   {
@@ -46,5 +46,15 @@ export const PHASE14_PLACES = Object.freeze([
     icon: '◖',
     doctrine: 'Exact sources, revisioned scripts, separate voice and publish consent.',
     context: { type: 'production', id: 'production:night-gummy-launch' }
+  },
+  {
+    id: 'app:gummy-rooms',
+    name: 'Rooms',
+    address: '@gummy-rooms',
+    icon: '▣',
+    doctrine: 'Private local collaboration with fair turns and explicit shared objects.',
+    context: { type: 'session', id: 'session:local-room' }
   }
 ]);
+
+export const ACTIVE_GUMMY_PLACES = PHASE14_PLACES;
