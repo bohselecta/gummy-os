@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import Ajv2020 from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
 import { availableCapabilities, placeCoreState } from '../src/core/place-activation.js';
+import { PLACE_ACTIVATION_OVERLAYS } from '../src/places/activation-manifest.js';
 
 function descriptor(overrides = {}) {
   return {
@@ -68,4 +72,27 @@ test('v1 Places retain their prior whole-Place behavior during migration', () =>
     capabilityScopes: ['production.plan'],
     releaseTruth: 'Planning is available.'
   }).available, true);
+});
+
+test('public activation registry validates and matches the runtime capability overlay', async () => {
+  const [registry, schema] = await Promise.all([
+    readFile(new URL('../public/registry/gummy-place-activation.json', import.meta.url), 'utf8').then(JSON.parse),
+    readFile(new URL('../schemas/place-activation-registry.schema.json', import.meta.url), 'utf8').then(JSON.parse)
+  ]);
+  const ajv = new Ajv2020({ allErrors: true, strict: false });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(registry), true, ajv.errorsText(validate.errors));
+  assert.equal(registry.places.length, 7);
+
+  for (const publicPlace of registry.places) {
+    const runtime = PLACE_ACTIVATION_OVERLAYS[publicPlace.placeId];
+    assert.ok(runtime, `${publicPlace.placeId} missing from runtime activation overlay`);
+    assert.equal(publicPlace.coreAvailability, runtime.coreAvailability);
+    assert.deepEqual(publicPlace.coreCapabilities, runtime.coreCapabilities);
+    assert.deepEqual(
+      publicPlace.capabilityStates.map(({ id, availability, startsExecution }) => ({ id, availability, startsExecution })),
+      runtime.capabilityStates.map(({ id, availability, startsExecution }) => ({ id, availability, startsExecution }))
+    );
+  }
 });
