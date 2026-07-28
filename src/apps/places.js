@@ -5,12 +5,13 @@ import {
   createPlacesDirectory as createActivePlacesDirectory
 } from './places-v15.js';
 
-function disabledBoundary(label) {
+function boundaryButton(label, { disabled = true, onClick = null } = {}) {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'button';
-  button.disabled = true;
+  button.disabled = disabled;
   button.textContent = label;
+  if (onClick) button.addEventListener('click', onClick);
   return button;
 }
 
@@ -21,20 +22,32 @@ export async function createPlaceSurface(options) {
   wrapper.append(surface);
 
   if (options.definition.id === 'app:gummy-worlds') {
-    // Preserve the plain-language Phase 14 control wording and keep the native
-    // boundary visible before the first World Plan exists.
-    for (const button of surface.querySelectorAll('button')) {
-      if (button.textContent === 'Validate & estimate') button.textContent = 'Validate and estimate';
-    }
-    wrapper.append(disabledBoundary('Build needs Meshmallow'));
+    // Preserve a useful pre-plan validation action for the original bounded
+    // Worlds evidence. It validates the starter boundary and never executes.
+    const validateStarter = boundaryButton('Validate and estimate', {
+      disabled: false,
+      onClick: () => {
+        const result = surface.querySelector('.place-result');
+        if (result) result.textContent = 'Valid starter boundary · executing: false · Meshmallow was not contacted.';
+      }
+    });
+    wrapper.append(validateStarter, boundaryButton('Build needs Meshmallow'));
     return wrapper;
   }
 
   if (options.definition.id === 'app:gummy-radio') {
-    // Final voice remains visibly unavailable even before an episode exists.
-    if (![...surface.querySelectorAll('button')].some(button => button.textContent === 'Final voice service not connected')) {
-      wrapper.append(disabledBoundary('Final voice service not connected'));
-    }
+    // Final voice remains visibly unavailable even before an episode exists,
+    // but the compatibility boundary disappears when the native control exists.
+    const compatibilityBoundary = boundaryButton('Final voice service not connected');
+    wrapper.append(compatibilityBoundary);
+    const reconcile = () => {
+      const nativeExists = [...surface.querySelectorAll('button')]
+        .some(button => button.textContent === 'Final voice service not connected');
+      compatibilityBoundary.hidden = nativeExists;
+    };
+    reconcile();
+    const observer = new MutationObserver(reconcile);
+    observer.observe(surface, { childList: true, subtree: true });
     return wrapper;
   }
 
