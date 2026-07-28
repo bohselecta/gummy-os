@@ -61,8 +61,10 @@ test('House Intent Gate and Worlds local planning create durable non-executing s
   const house = await openPlace(page, 'House');
   await house.getByLabel('Name').fill('Front room');
   await house.getByRole('button', { name: 'Save room' }).click();
+  await expect(house.locator('[data-record-type="room"]')).toHaveCount(1);
   await house.getByLabel('Observation').fill('The listening corner needs warmer task light.');
   await house.getByRole('button', { name: 'Save observation' }).click();
+  await expect(house.locator('[data-record-type="observation"]')).toHaveCount(1);
   await house.getByLabel('Intent', { exact: true }).fill('Create a calm listening corner.');
   await house.getByRole('button', { name: 'Preview scoped intent' }).click();
   await expect(house.locator('[data-record-type="intent-preview"]')).toHaveCount(1);
