@@ -114,8 +114,13 @@ test('simple doorway preserves the full product map and truthful first-party lau
   await expect(page.getByRole('button', { name: /Open the Night Gummy Launch sample/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Learn how Gummy OS works/ })).toBeVisible();
   await expect(page.getByRole('tab', { name: /Actors/ })).toBeVisible();
-  await page.getByRole('tab', { name: /Applications/ }).click();
+  await page.getByRole('tab', { name: /Places/ }).click();
 
+  const places = page.getByTestId('phase14-places');
+  await expect(places.locator('[data-place-id]')).toHaveCount(6);
+  for (const name of ['Gummy Channels', 'Wardrobe', 'House', 'Worlds', 'Table', 'Radio']) {
+    await expect(places.getByRole('heading', { name })).toBeVisible();
+  }
   const applications = page.getByTestId('first-party-applications');
   await expect(applications.locator('[data-application-id]')).toHaveCount(4);
   for (const name of ['VideoBoss', 'ImageHoss', 'Meshmallow', 'Gummy Rooms']) {

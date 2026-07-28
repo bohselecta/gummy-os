@@ -1,0 +1,49 @@
+{
+  "schema": "gummy.phase14-source-resolution/v1",
+  "issue": "https://github.com/bohselecta/gummy-os/issues/28",
+  "authorizationCommentId": 5100875881,
+  "baseCommit": "cb550d6520068784554ab1a8a025a713f3b1a4a8",
+  "resolvedAt": "2026-07-28T00:00:00-05:00",
+  "sources": [
+    {
+      "placeId": "app:gummy-channels",
+      "repository": "bohselecta/vidfamtv",
+      "revision": "0c1adc991697a85f613b693502c929130a893231",
+      "supportingSpec": "/home/pr4nz/Downloads/VIDFAM-TV-ANDROID-MASTER-SPEC.md",
+      "supportingSpecSha256": "2f504dd704e20b27008b922c783efe27f02b54c2a22c3d04030241e0f9f7438d"
+    },
+    {
+      "placeId": "app:gummy-wardrobe",
+      "repository": null,
+      "revision": "phase-14",
+      "resolution": "Focused scaffold authorized after no relevant source was found in the workspace, accepted archives, connected Drive, or owner repository inventory."
+    },
+    {
+      "placeId": "app:gummy-house",
+      "repository": "bohselecta/homewright",
+      "revision": "7b7dcb0698ebad40553bef2d61ad613cb7257dd1",
+      "acceptedArchive": "/home/pr4nz/dev/glyphd/incoming-antigravity/homewright.zip",
+      "acceptedArchiveSha256": "93d398a35adce5da70ff8b56b9332fd9db9a15fc9c9e31eea12559092ab42d38"
+    },
+    {
+      "placeId": "app:gummy-worlds",
+      "repository": "bohselecta/videoworlds3",
+      "revision": "b955eb82a5894a9abd85ac65d896aec3c9892d38",
+      "supportingPlan": "/home/pr4nz/dev/VideoWorlds/paste-into-codex.md",
+      "supportingPlanSha256": "b74e751e1962a8f9293baca37d42f495294eef75c5905dbfb8f12531279da05d"
+    },
+    {
+      "placeId": "app:gummy-table",
+      "repository": null,
+      "revision": "sha256:916a88cb6508d7add763e7a092afaef50a131ccf980bec5e86ff05f0c1b60e78",
+      "canonicalSpec": "/home/pr4nz/Downloads/EASY-FOOD-SPEC-v1.1-FINAL.md"
+    },
+    {
+      "placeId": "app:gummy-radio",
+      "repository": "bohselecta/talkprint-studio",
+      "revision": "afce402244d06a21dcf848bc23d172f00bb22f90",
+      "supportingRecord": "/home/pr4nz/dev/glyphd-and-zeke/returns/census_raw/talkprint-studio.readme.txt",
+      "supportingRecordSha256": "8ef56896000df16ee68ac2d2b1fda7de60568865b36a7ebfc1ee4c7366d404ae"
+    }
+  ]
+}

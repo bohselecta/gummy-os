@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/source-package.schema.json",
+  "title": "Gummy Scoped Source Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "sources",
+    "includedFields",
+    "explicitExclusions",
+    "purpose",
+    "targetPlaceId",
+    "privacy",
+    "audience",
+    "quotePermission",
+    "voiceLikenessPermission",
+    "rights",
+    "provenance",
+    "retention",
+    "costCeiling",
+    "limitations",
+    "humanApproval",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.source-package/v1" },
+    "id": { "type": "string", "pattern": "^source-package:" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "revision", "hash"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "revision": { "type": ["string", "integer"] },
+          "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "includedFields": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "explicitExclusions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "targetPlaceId": { "type": "string", "pattern": "^app:" },
+    "privacy": { "enum": ["private", "participants", "unlisted", "public"] },
+    "audience": { "type": "string", "minLength": 1 },
+    "quotePermission": { "type": "boolean" },
+    "voiceLikenessPermission": { "type": "boolean" },
+    "rights": { "type": "object", "minProperties": 1 },
+    "provenance": { "type": "object", "minProperties": 1 },
+    "retention": { "type": "string", "minLength": 1 },
+    "costCeiling": { "type": ["number", "null"], "minimum": 0 },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "humanApproval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approved", "approvedBy", "approvedAt"],
+      "properties": {
+        "approved": { "type": "boolean" },
+        "approvedBy": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

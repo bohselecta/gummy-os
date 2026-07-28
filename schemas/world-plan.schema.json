@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/world-plan.schema.json",
+  "title": "Gummy World Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "revision",
+    "title",
+    "intent",
+    "starterId",
+    "experience",
+    "sources",
+    "typedOperations",
+    "constraints",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.world-plan/v1" },
+    "id": { "type": "string", "pattern": "^world-plan:" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "intent": { "type": "string", "minLength": 1 },
+    "starterId": { "type": "string", "minLength": 1 },
+    "experience": { "enum": ["sit", "walk"] },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "revision", "hash", "verified", "rights"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "revision": { "type": ["string", "integer"] },
+          "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "verified": { "type": "boolean" },
+          "rights": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "typedOperations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "parameters"],
+        "properties": {
+          "type": {
+            "enum": [
+              "scene.configure",
+              "asset.place",
+              "material.assign",
+              "light.configure",
+              "camera.configure",
+              "experience.configure"
+            ]
+          },
+          "parameters": { "type": "object" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxCost", "maxMinutes", "arbitraryCodeAllowed"],
+      "properties": {
+        "maxCost": { "type": "number", "minimum": 0 },
+        "maxMinutes": { "type": "integer", "minimum": 1 },
+        "arbitraryCodeAllowed": { "const": false }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

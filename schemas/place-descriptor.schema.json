@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/place-descriptor.schema.json",
+  "title": "Gummy Place Descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "shortLabel",
+    "actorId",
+    "actorAddress",
+    "placeClass",
+    "canonicalSource",
+    "legacyAliases",
+    "standaloneTargets",
+    "surfaceModes",
+    "authoritativeDataLocation",
+    "domainSchemas",
+    "projectionSchemas",
+    "capabilityScopes",
+    "acceptedPackages",
+    "producedPackages",
+    "privacyBoundary",
+    "executionBoundary",
+    "locality",
+    "connectionState",
+    "activationState",
+    "releaseTruth",
+    "featureFlag"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.place-descriptor/v1" },
+    "id": { "type": "string", "pattern": "^app:[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "shortLabel": { "type": "string", "minLength": 1 },
+    "actorId": { "type": "string", "pattern": "^actor:[a-z0-9-]+$" },
+    "actorAddress": { "type": "string", "pattern": "^@[a-z0-9-]+$" },
+    "placeClass": {
+      "enum": ["studio", "private-place", "connected-place"]
+    },
+    "canonicalSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reference", "revision"],
+      "properties": {
+        "kind": { "enum": ["repository", "archive", "spec", "scaffold"] },
+        "reference": { "type": "string", "minLength": 1 },
+        "revision": { "type": "string", "minLength": 1 }
+      }
+    },
+    "legacyAliases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "standaloneTargets": {
+      "type": "array",
+      "items": { "enum": ["web", "pwa", "android", "ios", "desktop", "none"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "surfaceModes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "standalone",
+          "personal",
+          "production-context",
+          "session-context",
+          "companion-status",
+          "capture-inbox"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "authoritativeDataLocation": { "type": "string", "minLength": 1 },
+    "domainSchemas": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "projectionSchemas": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "capabilityScopes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "acceptedPackages": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "producedPackages": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "privacyBoundary": { "type": "string", "minLength": 1 },
+    "executionBoundary": { "type": "string", "minLength": 1 },
+    "locality": {
+      "type": "array",
+      "items": { "enum": ["browser", "local", "mobile", "remote"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "connectionState": {
+      "enum": [
+        "connected",
+        "disconnected",
+        "companion-required",
+        "runtime-required",
+        "service-required",
+        "staged",
+        "blocked"
+      ]
+    },
+    "activationState": {
+      "enum": [
+        "available",
+        "local-runtime-required",
+        "remote-service-required",
+        "mobile-companion-required",
+        "staged",
+        "blocked"
+      ]
+    },
+    "releaseTruth": { "type": "string", "minLength": 1 },
+    "featureFlag": { "type": "boolean" }
+  }
+}

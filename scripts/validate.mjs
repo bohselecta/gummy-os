@@ -12,6 +12,9 @@ const required = [
   'src/core/production-repository.js',
   'src/core/capability-broker.js',
   'src/core/product-registry.js',
+  'src/core/place-system.js',
+  'src/core/place-ui-contracts.js',
+  'src/places/place-doctrines.js',
   'src/integrations/app-handoff.js',
   'src/integrations/local-operator.js',
   'src/integrations/gummy-rooms.js',
@@ -20,6 +23,7 @@ const required = [
   'src/apps/production.js',
   'src/apps/actor-surface.js',
   'src/apps/master-control.js',
+  'src/apps/places.js',
   'src/brand/gummy-utility-tiles.js',
   'src/production.css',
   'docs/BRAND_SYSTEM.md',
@@ -53,6 +57,11 @@ const required = [
   'evidence/consolidation-feature-source-map.json',
   'public/registry/product-map.json',
   'public/registry/first-party-applications.json',
+  'public/registry/gummy-places.json',
+  'docs/PLACE_SYSTEM.md',
+  'plans/active/2026-07-28-phase-14-gummy-places.md',
+  'evidence/phase14-source-resolution.json',
+  'evidence/phase14-place-compatibility-map.json',
   'examples/glopper-web.agent.json',
   'examples/hayden.gummy-box.json',
   'examples/project-brief.work-order.json',
@@ -133,6 +142,12 @@ const schemas = [
   'schemas/product-map.schema.json',
   'schemas/application-registry.schema.json',
   'schemas/app-handoff.schema.json',
+  'schemas/place-descriptor.schema.json',
+  'schemas/place-registry.schema.json',
+  'schemas/place-binding.schema.json',
+  'schemas/source-package.schema.json',
+  'schemas/place-handoff.schema.json',
+  'schemas/world-plan.schema.json',
   'schemas/capability-grant.schema.json',
   'schemas/action-receipt.schema.json',
   'schemas/organization.schema.json',
@@ -158,6 +173,25 @@ for (const schema of schemas) {
   if (!parsed.$id || !parsed.title) throw new Error(`${schema} is missing $id or title`);
   ajv.addSchema(parsed);
   parsedSchemas.set(schema, parsed);
+}
+
+const placeRegistry = JSON.parse(await readFile('public/registry/gummy-places.json', 'utf8'));
+const validatePlaceRegistry = ajv.getSchema('https://mygum.my/schemas/place-registry.schema.json');
+if (!validatePlaceRegistry(placeRegistry)) {
+  throw new Error(`Place registry validation failed: ${ajv.errorsText(validatePlaceRegistry.errors)}`);
+}
+for (const identity of [
+  ['app:gummy-channels', 'Gummy Channels', '@channels'],
+  ['app:gummy-wardrobe', 'Wardrobe', '@wardrobe'],
+  ['app:gummy-house', 'House', '@house'],
+  ['app:gummy-worlds', 'Worlds', '@worlds'],
+  ['app:gummy-table', 'Table', '@table'],
+  ['app:gummy-radio', 'Radio', '@radio']
+]) {
+  const place = placeRegistry.places.find(candidate => candidate.id === identity[0]);
+  if (!place || place.name !== identity[1] || place.actorAddress !== identity[2]) {
+    throw new Error(`Phase 14 Place identity changed: ${identity[0]}`);
+  }
 }
 
 const naming = await readFile('docs/GLOPPER_NAMING.md', 'utf8');

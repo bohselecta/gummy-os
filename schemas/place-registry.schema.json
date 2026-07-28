@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/place-registry.schema.json",
+  "title": "Gummy Place Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "migrationSource", "places"],
+  "properties": {
+    "schema": { "const": "gummy.place-registry/v1" },
+    "id": { "type": "string", "pattern": "^place-registry:" },
+    "migrationSource": { "const": "gummy.application-registry/v1" },
+    "places": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "$ref": "https://mygum.my/schemas/place-descriptor.schema.json"
+      }
+    }
+  }
+}

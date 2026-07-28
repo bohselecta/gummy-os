@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/place-handoff.schema.json",
+  "title": "Gummy Place Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "sourcePackageId",
+    "sourcePlaceId",
+    "targetPlaceId",
+    "sentFields",
+    "withheldFields",
+    "rights",
+    "provenance",
+    "expectedOutput",
+    "permissionScopes",
+    "locality",
+    "runtime",
+    "costCeiling",
+    "retention",
+    "approvalBoundary",
+    "executionState",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.place-handoff/v1" },
+    "id": { "type": "string", "pattern": "^place-handoff:" },
+    "sourcePackageId": { "type": "string", "pattern": "^source-package:" },
+    "sourcePlaceId": { "type": "string", "pattern": "^app:" },
+    "targetPlaceId": { "type": "string", "pattern": "^app:" },
+    "sentFields": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "withheldFields": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "rights": { "type": "object", "minProperties": 1 },
+    "provenance": { "type": "object", "minProperties": 1 },
+    "expectedOutput": { "type": "string", "minLength": 1 },
+    "permissionScopes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "locality": { "enum": ["browser", "local", "mobile", "remote"] },
+    "runtime": { "type": "string", "minLength": 1 },
+    "costCeiling": { "type": ["number", "null"], "minimum": 0 },
+    "retention": { "type": "string", "minLength": 1 },
+    "approvalBoundary": { "enum": ["make-production", "place-confirmation"] },
+    "executionState": { "enum": ["preview", "approved", "submitted", "blocked", "cancelled"] },
+    "approval": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["approved", "approvedBy", "approvedAt"],
+      "properties": {
+        "approved": { "const": true },
+        "approvedBy": { "type": "string", "pattern": "^actor:" },
+        "approvedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

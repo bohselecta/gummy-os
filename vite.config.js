@@ -18,7 +18,9 @@ export default defineConfig({
     emptyOutDir: true,
     minify: 'terser',
     terserOptions: {
-      compress: { passes: 2 },
+      module: true,
+      toplevel: true,
+      compress: { passes: 5 },
       format: { comments: false }
     }
   },
@@ -55,7 +57,7 @@ export default defineConfig({
         runtimeCaching: [
           { urlPattern: ({ url }) => url.pathname.startsWith('/api/'), handler: 'NetworkOnly' },
           { urlPattern: ({ url }) => url.pathname.startsWith('/schemas/'), handler: 'CacheFirst', options: { cacheName: 'gummy-schemas-v1' } },
-          { urlPattern: ({ url }) => url.pathname.startsWith('/registry/'), handler: 'CacheFirst', options: { cacheName: 'gummy-product-registry-v1' } },
+          { urlPattern: ({ url }) => url.pathname.startsWith('/registry/'), handler: 'CacheFirst', options: { cacheName: 'gummy-product-registry-v2' } },
           {
             urlPattern: ({ url }) => url.pathname.startsWith('/brand/gummy/realm/'),
             handler: 'CacheFirst',

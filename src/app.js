@@ -23,7 +23,7 @@ import {
   addNightGummyLaunchRoster,
   createProduction
 } from './core/production-runtime.js';
-import { applicationLaunchState, loadProductCatalog } from './core/product-registry.js';
+import { PHASE14_PLACES } from './places/manifest.js';
 import { createProductionApp } from './apps/production.js';
 import { createActorSurface } from './apps/actor-surface.js';
 import { createMasterControlApp } from './apps/master-control.js';
@@ -83,7 +83,7 @@ const surfaces = [
   ['work-orders', '⇢', 'Work Orders'],
   ['receipts', '✓', 'Receipts'],
   ['control', '⌁', 'Master Control'],
-  ['applications', '⌘', 'Applications'],
+  ['applications', '⌘', 'Places'],
   ['about', 'ⓘ', 'About / Limits']
 ];
 
@@ -550,6 +550,10 @@ async function renderShell() {
         }
       } else if (id.startsWith('private-chat:')) {
         await openPrivateChatWindow(id.slice('private-chat:'.length));
+      } else if (id.startsWith('place-window:')) {
+        const [, placeSlug, contextType, ...contextParts] = id.split(':');
+        const contextId = decodeURIComponent(contextParts.join(':'));
+        await openPlaceWindow(`app:${placeSlug}`, { type: contextType, id: contextId });
       }
     }
   } else {
@@ -561,7 +565,11 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
   if (!bar) return;
   const pending = (await repository.all('workOrders')).filter(order => order.status === 'awaiting-approval').length;
   const receipts = (await repository.all('receipts')).length;
-  const hasSelectedTab = surfaces.some(([id]) => id === selectedApp);
+  const pinRecord = await repository.get('meta', 'place-pins:actor:hayden');
+  const pinnedIds = pinRecord?.placeIds || [];
+  const pinnedPlaces = PHASE14_PLACES.filter(place => pinnedIds.includes(place.id));
+  const hasSelectedTab = surfaces.some(([id]) => id === selectedApp)
+    || pinnedPlaces.some(place => selectedApp === `place:${place.id}`);
   bar.replaceChildren();
   surfaces.forEach(([id, icon, label], index) => {
     const button = h('button', {
@@ -593,6 +601,33 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
     });
     bar.append(button);
   });
+  for (const place of pinnedPlaces) {
+    const button = h('button', {
+      class: 'bar-candy place-pin',
+      role: 'tab',
+      'aria-selected': String(selectedApp === `place:${place.id}`),
+      tabindex: selectedApp === `place:${place.id}` ? '0' : '-1',
+      dataset: { app: `place:${place.id}`, placeId: place.id },
+      onclick: () => openPlaceWindow(place.id, place.context)
+    }, [
+      h('span', { class: 'icon', 'aria-hidden': 'true', text: place.icon }),
+      h('span', { class: 'label', text: place.name })
+    ]);
+    button.addEventListener('keydown', event => {
+      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const buttons = [...bar.querySelectorAll('.bar-candy')];
+      const current = buttons.indexOf(button);
+      const next = event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? buttons.length - 1
+          : (current + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
+      buttons.forEach((item, itemIndex) => item.tabIndex = itemIndex === next ? 0 : -1);
+      buttons[next].focus();
+    });
+    bar.append(button);
+  }
 }
 
 async function toggleMode() {
@@ -612,7 +647,7 @@ async function openSurface(id) {
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
     control: ['Master Control', 'authority and revocation'],
-    applications: ['Applications', 'full Gummy OS product map'],
+    applications: ['Places', 'private, studio, and connected Places'],
     about: ['About Gummy', 'capabilities, limits, privacy, and build']
   };
   const content = await buildSurface(id);
@@ -1319,7 +1354,7 @@ async function controlSurface() {
     await gummyBoxRecoverySurface(),
     h('section', { class: 'card' }, [
       h('h3', { text: 'Managed Gummy Box' }),
-      h('p', { text: 'Optional managed synchronization infrastructure. It never replaces Local Box, Gummy OS, Applications, the Operator, or Social computing.' }),
+      h('p', { text: 'Optional managed synchronization infrastructure. It never replaces Local Box, Gummy OS, Places, the Operator, or Social computing.' }),
       h('span', { class: 'status offline', text: 'Staged · explicit opt-in only' }),
       h('p', { class: 'meta', text: 'Local Gummy Box remains authoritative. No managed provider has been connected or granted access.' })
     ]),
@@ -1630,76 +1665,78 @@ async function loadGitHubRepositories(card) {
   }
 }
 
-async function applicationsSurface() {
-  const root = h('div', {}, [
-    h('p', { class: 'eyebrow', text: 'First-party Gummy OS applications' }),
-    h('h2', { text: 'Applications' }),
-    h('p', { class: 'lede', text: 'Specialist products keep their own interfaces, repositories, protocols, evidence, and execution boundaries. Gummy OS launches or connects them truthfully.' })
-  ]);
-  try {
-    const { productMap, applicationRegistry } = await loadProductCatalog();
-    const applicationGrid = h('div', { class: 'card-grid application-grid', dataset: { testid: 'first-party-applications' } });
-    for (const application of applicationRegistry.applications) {
-      const launch = applicationLaunchState(application);
-      const action = launch.available
-        ? h('a', { class: 'button primary', href: launch.route, target: '_blank', rel: 'noopener noreferrer', text: launch.label })
-        : h('button', { class: 'button', disabled: true, text: launch.label });
-      applicationGrid.append(h('article', { class: 'card application-card', dataset: { applicationId: application.id } }, [
-        h('div', { class: 'application-heading' }, [
-          h('div', {}, [
-            h('p', { class: 'eyebrow', text: application.id }),
-            h('h3', { text: application.name })
-          ]),
-          h('span', {
-            class: `status ${launch.available ? '' : 'offline'}`,
-            text: launch.available ? 'Available' : application.connectionStatus.replaceAll('-', ' ')
-          })
-        ]),
-        h('p', { text: application.productPurpose }),
-        h('p', { class: 'meta', text: `${application.canonicalRepository} · ${application.releaseStatus}` }),
-        h('div', { class: 'button-row' }, [action]),
-        !launch.available ? h('p', { class: 'notice compact-notice', text: launch.reason }) : null,
-        h('details', {}, [
-          h('summary', { text: 'Capabilities and continuity' }),
-          facts([
-            ['Launch mode', application.launchMode],
-            ['Locality', application.locality.join(', ')],
-            ['Capabilities', application.capabilities.join(', ')],
-            ['Accepted inputs', application.acceptedInputs.join(', ') || 'none'],
-            ['Produces', application.producedArtifacts.join(', ')],
-            ['Protocols', application.protocolVersions.join(', ')]
-          ])
-        ])
-      ]));
-    }
-    const pillarGrid = h('div', { class: 'product-pillar-list' });
-    for (const pillar of productMap.pillars) {
-      pillarGrid.append(h('article', { class: 'record-row', dataset: { pillarId: pillar.id } }, [
-        h('div', {}, [
-          h('strong', { text: pillar.name }),
-          h('small', { text: pillar.productPurpose }),
-          h('small', { text: pillar.canonicalSource })
-        ]),
-        h('span', { class: 'status', text: pillar.integrationStatus.replaceAll('-', ' ') })
-      ]));
-    }
-    root.append(
-      applicationGrid,
-      h('section', { class: 'product-map-section' }, [
-        h('p', { class: 'eyebrow', text: 'Protected full product map' }),
-        h('h3', { text: productMap.controllingRule }),
-        h('p', { text: 'Social computing may ship after the personal proof, but it remains visible and architectural. Cloudflare storage, GitHub, and Google Drive remain optional infrastructure.' }),
-        pillarGrid
-      ])
-    );
-  } catch (error) {
-    root.append(h('section', { class: 'card' }, [
-      h('h3', { text: 'Product registry unavailable' }),
-      h('p', { text: error.message }),
-      h('p', { class: 'notice', text: 'Protected applications are not silently hidden. Launch remains blocked until the registry can be validated.' })
-    ]));
+async function togglePlacePin(placeId) {
+  const definition = PHASE14_PLACES.find(place => place.id === placeId);
+  const record = await repository.get('meta', 'place-pins:actor:hayden');
+  const placeIds = new Set(record?.placeIds || []);
+  const pinned = !placeIds.has(placeId);
+  if (pinned) placeIds.add(placeId);
+  else placeIds.delete(placeId);
+  await repository.put('meta', {
+    id: 'place-pins:actor:hayden',
+    schema: 'gummy.place-pins/v1',
+    actorId: 'actor:hayden',
+    placeIds: [...placeIds],
+    updatedAt: new Date().toISOString()
+  }, { validate: false });
+  announce(`${definition?.name || 'Place'} ${pinned ? 'pinned to' : 'removed from'} your Gummy Bar.`);
+  await renderBar();
+  if (windowManager?.windows.has('applications')) await openSurface('applications');
+}
+
+async function openPlaceWindow(placeId, context) {
+  const definition = PHASE14_PLACES.find(place => place.id === placeId);
+  if (!definition) {
+    announce(`Place unavailable: ${placeId}`);
+    return;
   }
-  return root;
+  const [{ loadPlaceCatalog, placeWindowId }, { createPlaceSurface }] = await Promise.all([
+    import('./core/place-ui-contracts.js'),
+    import('./apps/places.js')
+  ]);
+  const { placeRegistry } = await loadPlaceCatalog();
+  const descriptor = placeRegistry.places.find(place => place.id === placeId);
+  if (!descriptor) {
+    announce(`Place descriptor unavailable: ${placeId}`);
+    return;
+  }
+  const id = placeWindowId(placeId, context);
+  selectedApp = `place:${placeId}`;
+  await renderBar();
+  const content = await createPlaceSurface({
+    definition,
+    descriptor,
+    context,
+    repository,
+    openPlaceWindow,
+    togglePlacePin
+  });
+  const existing = windowManager.windows.get(id);
+  if (existing) {
+    existing.querySelector('.window-body').replaceChildren(content);
+    existing.hidden = false;
+    windowManager.focus(existing);
+    return;
+  }
+  await windowManager.open({
+    id,
+    title: definition.name,
+    subtitle: `${context.type} · ${context.id}`,
+    content
+  });
+}
+
+async function applicationsSurface() {
+  try {
+    const { createPlacesDirectory } = await import('./apps/places.js');
+    return createPlacesDirectory({ repository, openPlaceWindow, togglePlacePin });
+  } catch (error) {
+    return h('section', { class: 'card' }, [
+      h('h3', { text: 'Place registry unavailable' }),
+      h('p', { text: error.message }),
+      h('p', { class: 'notice', text: 'Protected Places are not silently hidden. Launch remains blocked until the registry can be validated.' })
+    ]);
+  }
 }
 
 async function aboutSurface() {
