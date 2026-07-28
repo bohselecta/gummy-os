@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema", "id", "migrationSource", "places"],
   "properties": {
-    "schema": { "const": "gummy.place-registry/v1" },
+    "schema": { "enum": ["gummy.place-registry/v1", "gummy.place-registry/v2"] },
     "id": { "type": "string", "pattern": "^place-registry:" },
     "migrationSource": { "const": "gummy.application-registry/v1" },
     "places": {
