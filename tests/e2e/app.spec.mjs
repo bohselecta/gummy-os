@@ -272,7 +272,7 @@ test('revocation blocks before provider, replacement Mold is additive, and two A
   await expect(page.getByText('Two-Actor Composition Proof')).toBeVisible();
 });
 
-test('phone Glopper panel is a bottom sheet and 320px layout remains operable', async ({ page }) => {
+test('phone Glopper panel is a full-height sheet and 320px layout remains operable', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 720 });
   await onboard(page);
   const compactBrand = page.getByRole('button', { name: 'Gummy OS — open Gummy guide' }).locator('img');
@@ -296,6 +296,6 @@ test('phone Glopper panel is a bottom sheet and 320px layout remains operable', 
   await expect(panel).toBeVisible();
   const box = await panel.boundingBox();
   expect(box.width).toBe(320);
-  expect(box.y).toBeGreaterThan(100);
+  expect(box.y).toBeLessThanOrEqual(60);
   await expect(page.getByRole('tab', { name: /Work Orders/ })).toBeVisible();
 });

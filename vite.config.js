@@ -5,9 +5,13 @@ import { execFileSync } from 'node:child_process';
 const buildCommit = process.env.VERCEL_GIT_COMMIT_SHA
   || process.env.GUMMY_BUILD_COMMIT
   || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+const buildEnvironment = process.env.VERCEL_ENV || process.env.GUMMY_BUILD_ENVIRONMENT || 'local';
 
 export default defineConfig({
-  define: { __GUMMY_BUILD_COMMIT__: JSON.stringify(buildCommit) },
+  define: {
+    __GUMMY_BUILD_COMMIT__: JSON.stringify(buildCommit),
+    __GUMMY_BUILD_ENVIRONMENT__: JSON.stringify(buildEnvironment)
+  },
   build: {
     outDir: 'build',
     sourcemap: false,

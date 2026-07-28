@@ -57,6 +57,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   min-width: 320px; min-height: 260px; resize: both; overflow: hidden;
   border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-raised); box-shadow: var(--shadow);
 }
+.gummy-window[data-focused="false"] {
+  opacity: .86;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--g-ink) 30%, transparent);
+}
+.gummy-window[data-focused="true"] { outline: 1px solid color-mix(in srgb, var(--g-gold) 72%, transparent); }
 .gummy-window.is-maximized { inset: 10px !important; width: auto !important; height: auto !important; resize: none; }
 .window-bar { min-height: 54px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-3); padding: 0 var(--space-4); border-bottom: 1px solid var(--line); cursor: move; user-select: none; }
 .window-controls { display: flex; gap: var(--space-2); }
@@ -80,10 +85,12 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .gummy-bar {
   z-index: 1100; display: flex; align-items: center; gap: var(--space-2); overflow-x: auto; padding: var(--space-3) max(var(--space-4), calc((100vw - 980px) / 2));
   border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(18px);
+  scroll-snap-type: x proximity; overscroll-behavior-x: contain; scrollbar-width: thin;
 }
 .bar-candy {
   position: relative; flex: 0 0 82px; min-height: 66px; border: 1px solid var(--line); border-radius: var(--radius-md);
   background: var(--surface-soft); color: var(--text); display: grid; place-items: center; align-content: center; gap: 1px;
+  scroll-snap-align: center;
 }
 .bar-candy[aria-selected="true"] { border-color: var(--g-gold); background: var(--g-purple-deep); color: var(--g-cream); }
 .bar-candy .icon { font-size: 1.25rem; line-height: 1; }

@@ -62,6 +62,7 @@ export class WindowManager {
     const node = this.windows.get(id);
     if (!node) return;
     if (action === 'close') {
+      node.dispatchEvent(new CustomEvent('gummy:window-close', { bubbles: true }));
       node.remove();
       this.windows.delete(id);
       await this.repository.delete('meta', `window:${id}`);
@@ -75,6 +76,18 @@ export class WindowManager {
     node.style.zIndex = String(++this.z);
     for (const candidate of this.windows.values()) candidate.dataset.focused = String(candidate === node);
     void this.persist(node.dataset.windowId);
+  }
+
+  cycleFocus() {
+    const visible = [...this.windows.values()]
+      .filter(node => node.isConnected)
+      .sort((a, b) => Number(a.style.zIndex || 0) - Number(b.style.zIndex || 0));
+    if (!visible.length) return null;
+    const focused = visible.findIndex(node => node.dataset.focused === 'true');
+    const next = visible[(focused + 1) % visible.length];
+    next.hidden = false;
+    this.focus(next);
+    return next;
   }
 
   async persist(id) {
