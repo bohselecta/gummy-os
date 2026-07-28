@@ -75,7 +75,7 @@ test('House Intent Gate and Worlds local planning create durable non-executing s
   await worlds.getByLabel('Title').fill('Listening Chamber');
   await worlds.getByLabel('Intent').fill('A calm place for sitting, listening, and conversation.');
   await worlds.getByRole('button', { name: 'Create valid Sit plan' }).click();
-  await worlds.getByRole('button', { name: 'Validate & estimate' }).click();
+  await worlds.getByRole('button', { name: 'Validate and estimate' }).click();
   await expect(worlds.getByRole('status').last()).toContainText('executing: false');
   await worlds.getByRole('button', { name: 'Duplicate' }).click();
   await expect(worlds.locator('[data-record-type="world-plan"]')).toHaveCount(2);
