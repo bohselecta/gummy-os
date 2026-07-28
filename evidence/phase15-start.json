@@ -1,0 +1,24 @@
+{
+  "schema": "gummy.phase15-start/v1",
+  "status": "active",
+  "baseCommit": "39f23fc37241c5648bb828a24f258682dd758dfb",
+  "branch": "codex/phase15-place-activation",
+  "objective": "Activate useful persistent Place cores, separate advanced capability states, and materially complete additional first-party apps.",
+  "workingOrder": [
+    "activation-model-and-local-runtime",
+    "radio-and-house",
+    "wardrobe",
+    "worlds",
+    "channels",
+    "table",
+    "rooms-and-specialist-polish",
+    "executable-cross-place-journeys",
+    "founder-gated-release"
+  ],
+  "truthRules": [
+    "Do not mark a core available without durable user-created state and evidence.",
+    "Do not let one unavailable advanced capability stage an otherwise useful Place.",
+    "Do not claim remote services, final voice, publication, address release, shopping, or native 3D execution without verified runtimes."
+  ],
+  "startedAt": "2026-07-28T14:50:00.000Z"
+}
