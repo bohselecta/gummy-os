@@ -1,0 +1,110 @@
+{
+  "schema": "gummy.place-activation-registry/v1",
+  "id": "place-activation-registry:gummy-os:phase15",
+  "baseRegistry": "place-registry:gummy-os:first-party",
+  "generatedAt": "2026-07-28T16:05:00.000Z",
+  "places": [
+    {
+      "placeId": "app:gummy-channels",
+      "coreAvailability": "available",
+      "coreCapabilities": ["channel-guide.manage", "watch-groups.manage", "family-room.compose", "premiere-draft.prepare"],
+      "capabilityStates": [
+        { "id": "channel-guide.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create and maintain local channel, episode, favorite, and guide records." },
+        { "id": "watch-groups.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create Human-defined watch groups without an algorithmic feed." },
+        { "id": "family-room.compose", "availability": "available", "startsExecution": false, "releaseTruth": "Create bounded bulletin notes; no open chat is implied." },
+        { "id": "premiere-draft.prepare", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Prepare and approve a local premiere draft without publishing it." },
+        { "id": "channel.publish", "availability": "remote-service-required", "startsExecution": true, "releaseTruth": "Remote publication remains unavailable until the Channels service and moderation system are verified." }
+      ],
+      "releaseTruth": "The local guide, watch groups, Family Room notes, and premiere drafts work now. Remote publication still needs the Channels service."
+    },
+    {
+      "placeId": "app:gummy-wardrobe",
+      "coreAvailability": "available",
+      "coreCapabilities": ["wardrobe.items.manage", "outfit.compose", "availability.update", "outfit.export"],
+      "capabilityStates": [
+        { "id": "wardrobe.items.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Add, edit, organize, and remove confirmed owned items." },
+        { "id": "outfit.compose", "availability": "available", "startsExecution": false, "releaseTruth": "Compile and save one owned-item-first outfit." },
+        { "id": "availability.update", "availability": "available", "startsExecution": false, "releaseTruth": "Mark an item unavailable without turning it into a dislike." },
+        { "id": "outfit.export", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export only the selected outfit and its item references." },
+        { "id": "item.capture.camera", "availability": "mobile-companion-required", "startsExecution": false, "releaseTruth": "Manual entry works now; camera classification needs a mobile capture capability." },
+        { "id": "shopping.checkout", "availability": "blocked", "startsExecution": true, "releaseTruth": "Wardrobe has no checkout or autonomous purchase capability." }
+      ],
+      "releaseTruth": "Owned-item management, outfit composition, temporary availability, history, and selected-outfit export work locally. Camera classification needs a companion."
+    },
+    {
+      "placeId": "app:gummy-house",
+      "coreAvailability": "available",
+      "coreCapabilities": ["house.projection.manage", "intent.preview", "two-note.commit", "house.export"],
+      "capabilityStates": [
+        { "id": "house.projection.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Maintain a scoped local projection of rooms, observations, and projects." },
+        { "id": "intent.preview", "availability": "available", "startsExecution": false, "releaseTruth": "Preview exactly what crosses the Scope Wall." },
+        { "id": "two-note.commit", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Commit intent and consequence together with a Place receipt." },
+        { "id": "house.export", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export selected House records without address or ambient photos." },
+        { "id": "homewright.open", "availability": "remote-service-required", "startsExecution": false, "releaseTruth": "The full HomeWright workbench route still needs production binding." }
+      ],
+      "releaseTruth": "Scoped House memory, Intent Gate, two-note commits, and exports work locally. The full HomeWright workbench route still needs binding."
+    },
+    {
+      "placeId": "app:gummy-worlds",
+      "coreAvailability": "available",
+      "coreCapabilities": ["world-plan.manage", "world.validate", "world.estimate", "world.inspect", "world.package", "world.duplicate", "sit.preview"],
+      "capabilityStates": [
+        { "id": "world-plan.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create and edit structured World Plans." },
+        { "id": "world.validate", "availability": "available", "startsExecution": false, "releaseTruth": "Validate sources, operations, and constraints without execution." },
+        { "id": "world.estimate", "availability": "available", "startsExecution": false, "releaseTruth": "Compute a bounded local estimate; no provider is contacted." },
+        { "id": "world.inspect", "availability": "available", "startsExecution": false, "releaseTruth": "Inspect the exact structured plan and history." },
+        { "id": "world.package", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export a versioned World Plan package." },
+        { "id": "world.duplicate", "availability": "available", "startsExecution": false, "releaseTruth": "Create an isolated revision-one copy." },
+        { "id": "sit.preview", "availability": "available", "startsExecution": false, "releaseTruth": "Preview the supported Sit experience configuration." },
+        { "id": "make_world", "availability": "local-runtime-required", "startsExecution": true, "releaseTruth": "Only real scene construction requires Meshmallow." },
+        { "id": "walk.preview", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Walk remains a separately gated experience." }
+      ],
+      "releaseTruth": "World planning, Sit preview, validation, estimates, inspection, duplication, and packages work locally. Only real 3D construction needs Meshmallow."
+    },
+    {
+      "placeId": "app:gummy-table",
+      "coreAvailability": "available",
+      "coreCapabilities": ["table.manage", "invite.manage", "rsvp.manage", "rules.acknowledge", "dishes.manage", "pantry.gift", "table.export"],
+      "capabilityStates": [
+        { "id": "table.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create and preserve an invite-only Table." },
+        { "id": "invite.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create private invitation records; no discovery is created." },
+        { "id": "rsvp.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Record yes, no, or maybe for an invited participant." },
+        { "id": "rules.acknowledge", "availability": "available", "startsExecution": false, "releaseTruth": "Record Table Rules acknowledgement without ideological profiling." },
+        { "id": "dishes.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Coordinate dishes for the selected Table." },
+        { "id": "pantry.gift", "availability": "available", "startsExecution": false, "releaseTruth": "Record gifts without balance, debt, score, or exchange rate." },
+        { "id": "table.export", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export the selected Table without an exact address." },
+        { "id": "address.release", "availability": "remote-service-required", "startsExecution": true, "releaseTruth": "Exact address release requires the verified civic service." }
+      ],
+      "releaseTruth": "Private Table planning, invitations, RSVPs, rules, dishes, Pantry gifts, and export work locally. Exact-address release needs the verified service."
+    },
+    {
+      "placeId": "app:gummy-radio",
+      "coreAvailability": "available",
+      "coreCapabilities": ["source-package.import", "script.revise", "script.approve", "speech.preview", "episode.export"],
+      "capabilityStates": [
+        { "id": "source-package.import", "availability": "available", "startsExecution": false, "releaseTruth": "Import only exact selected sources and exclusions." },
+        { "id": "script.revise", "availability": "available", "startsExecution": false, "releaseTruth": "Create revisions and invalidate stale approvals." },
+        { "id": "script.approve", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Approve the exact script revision." },
+        { "id": "speech.preview", "availability": "available", "startsExecution": false, "releaseTruth": "Preview synthetic browser speech; it is not final audio." },
+        { "id": "episode.export", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export a private episode package without publishing it." },
+        { "id": "voice.render", "availability": "remote-service-required", "startsExecution": true, "releaseTruth": "Final generated audio requires a separate approved renderer." },
+        { "id": "episode.publish", "availability": "blocked", "startsExecution": true, "releaseTruth": "Public publication is not part of the current release." }
+      ],
+      "releaseTruth": "Scoped sources, revisioned scripts, approvals, browser speech, and private episode export work locally. Final voice and publishing remain separate."
+    },
+    {
+      "placeId": "app:gummy-rooms",
+      "coreAvailability": "available",
+      "coreCapabilities": ["room.local.create", "room.local.join", "queue.manage", "thread.manage", "gummy.share"],
+      "capabilityStates": [
+        { "id": "room.local.create", "availability": "available", "startsExecution": false, "releaseTruth": "Create a private local room owned by this browser." },
+        { "id": "room.local.join", "availability": "available", "startsExecution": false, "releaseTruth": "Join the same local room from another tab without claiming remote identity." },
+        { "id": "queue.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Maintain a deterministic round-robin queue." },
+        { "id": "thread.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create room-scoped threads without merging private chats." },
+        { "id": "gummy.share", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Share only selected Gummy references." },
+        { "id": "room.remote", "availability": "remote-service-required", "startsExecution": true, "releaseTruth": "Remote rooms and live media remain separately unavailable." }
+      ],
+      "releaseTruth": "Private local rooms, second-tab joining, fair queues, threads, and selected Gummy sharing work locally. Remote rooms and live media need a service."
+    }
+  ]
+}
