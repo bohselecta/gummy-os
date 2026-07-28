@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production-agreement.schema.json",
+  "title": "Gummy Production Agreement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "productionId", "revision", "status", "governance", "participants", "decisionRules", "contributionPolicy", "creditPolicy", "ownershipPolicy", "publicationPolicy", "amendmentPolicy", "approvals", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.production-agreement/v1" },
+    "id": { "type": "string", "pattern": "^production-agreement:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "sharedVisionId": { "type": ["string", "null"], "pattern": "^shared-vision:" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["draft", "awaiting-approval", "active", "superseded", "rejected", "terminated", "expired"] },
+    "governance": { "enum": ["owner-led", "equal-collective", "producer", "custom"] },
+    "participants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "role", "status"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "role": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["proposed", "active", "withdrawn", "removed"] },
+          "decisionWeight": { "type": "number", "minimum": 0 },
+          "requiredApprovalClasses": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    },
+    "decisionRules": {
+      "type": "object",
+      "required": ["defaultThreshold", "protectedDecisions"],
+      "properties": {
+        "defaultThreshold": { "enum": ["owner", "unanimous", "simple-majority", "supermajority", "custom"] },
+        "customThreshold": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "protectedDecisions": {
+          "type": "object",
+          "additionalProperties": { "enum": ["owner", "unanimous", "simple-majority", "supermajority", "named-actors", "custom"] }
+        }
+      },
+      "additionalProperties": true
+    },
+    "contributionPolicy": {
+      "type": "object",
+      "required": ["ledgerRequired", "acceptedCategories", "valuationMode"],
+      "properties": {
+        "ledgerRequired": { "const": true },
+        "acceptedCategories": { "type": "array", "items": { "enum": ["compute", "financial", "creative", "asset", "labor", "expertise", "rights", "infrastructure", "distribution", "other"] }, "uniqueItems": true },
+        "valuationMode": { "enum": ["descriptive", "declared-value", "agreed-value", "mixed"] }
+      },
+      "additionalProperties": true
+    },
+    "creditPolicy": { "type": "object" },
+    "ownershipPolicy": {
+      "type": "object",
+      "required": ["mode", "automaticFromContribution"],
+      "properties": {
+        "mode": { "enum": ["single-owner", "joint", "licensed-contribution", "work-for-hire", "custom", "undecided"] },
+        "automaticFromContribution": { "const": false },
+        "terms": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "compensationPolicy": { "type": "object" },
+    "revenuePolicy": { "type": "object" },
+    "publicationPolicy": {
+      "type": "object",
+      "required": ["separateApprovalRequired"],
+      "properties": {
+        "separateApprovalRequired": { "const": true },
+        "allowedAudiences": { "type": "array", "items": { "enum": ["private", "invite", "organization", "unlisted", "public"] }, "uniqueItems": true },
+        "requiredCreditApproval": { "type": "boolean" },
+        "requiredLikenessApproval": { "type": "boolean" },
+        "requiredVoiceApproval": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "privacyPolicy": { "type": "object" },
+    "withdrawalPolicy": { "type": "object" },
+    "disputePolicy": { "type": "object" },
+    "amendmentPolicy": {
+      "type": "object",
+      "required": ["createsNewRevision", "staleApprovalsInvalid"],
+      "properties": {
+        "createsNewRevision": { "const": true },
+        "staleApprovalsInvalid": { "const": true },
+        "threshold": { "enum": ["owner", "unanimous", "simple-majority", "supermajority", "custom"] }
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "revision", "decision", "decidedAt"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "decision": { "enum": ["approve", "reject", "needs-change", "withdraw"] },
+          "decidedAt": { "type": "string", "format": "date-time" },
+          "receiptId": { "type": ["string", "null"], "pattern": "^receipt:" }
+        }
+      }
+    },
+    "supersedesAgreementId": { "type": ["string", "null"], "pattern": "^production-agreement:" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
