@@ -155,3 +155,30 @@ export function clarifyPrivateReferenceContext(inputRuntime) {
 
   return Object.freeze({ runtime, changed });
 }
+
+function annotateSavedReferenceContexts(root = document) {
+  for (const card of root.querySelectorAll?.('.saved-context-card') || []) {
+    if (card.dataset.referenceLabelClarified === 'true') continue;
+    const title = card.querySelector('strong');
+    if (title?.textContent !== 'Ranch Day — private reference') continue;
+    const note = document.createElement('small');
+    note.className = 'meta';
+    note.append('Original project label: ');
+    const original = document.createElement('span');
+    original.textContent = 'Ranch Day';
+    note.append(original);
+    title.parentElement?.append(note);
+    card.dataset.referenceLabelClarified = 'true';
+  }
+}
+
+if (typeof document !== 'undefined' && typeof MutationObserver !== 'undefined') {
+  queueMicrotask(() => annotateSavedReferenceContexts());
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === 1) annotateSavedReferenceContexts(node);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+}
