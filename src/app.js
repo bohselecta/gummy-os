@@ -36,6 +36,7 @@ import {
 } from './core/living-actor.js';
 import { WindowManager } from './window-manager.js';
 import { gummyAssets } from './brand/gummy-assets.js';
+import { gummyRealmAssets, realmPicture } from './brand/gummy-realm-assets.js';
 
 const appRoot = document.querySelector('#app');
 const announcer = document.querySelector('#announcer');
@@ -213,11 +214,36 @@ function onboarding() {
   const copy = uxCopy.onboarding;
   const choices = { mode: null, name: '', address: '', addressEdited: false };
   const root = h('section', { class: 'onboarding', 'aria-label': 'Gummy OS onboarding' });
+  const realm = h('div', { class: 'onboarding-realm', 'aria-hidden': 'true' });
   const card = h('div', { class: 'onboarding-card' });
-  root.append(card);
+  const renderRealm = mode => {
+    const safeMode = mode === 'day' ? 'day' : 'night';
+    const picture = realmPicture(safeMode, { className: 'onboarding-realm-picture' });
+    picture.querySelector('img').fetchPriority = 'high';
+    realm.replaceChildren(
+      picture,
+      h('div', { class: 'onboarding-realm-vignette' }),
+      h('img', {
+        class: 'onboarding-glopper',
+        src: gummyRealmAssets.glopper.standing,
+        alt: '',
+        width: '512',
+        height: '512',
+        decoding: 'async'
+      }),
+      h('div', { class: 'realm-caption' }, [
+        h('span', { text: 'THE GUMMY REALM' }),
+        h('strong', { text: 'The Lantern Chamber' }),
+        h('small', { text: safeMode === 'day' ? 'Day Gummy · warm creative calm' : 'Night Gummy · focused creative calm' })
+      ])
+    );
+  };
+  renderRealm(document.documentElement.dataset.gummyMode);
+  root.append(realm, card);
 
   const render = () => {
     card.replaceChildren();
+    card.dataset.step = String(step);
     const identity = h('picture', { class: 'onboarding-brand' }, [
       h('source', { media: '(max-width: 520px)', srcset: gummyAssets.compactHeadMark }),
       h('img', {
@@ -244,11 +270,32 @@ function onboarding() {
         h('h1', { text: copy.welcome.title }),
         h('p', { class: 'lede', text: copy.welcome.lede }),
         h('p', { text: copy.welcome.detail }),
-        h('div', { class: 'choice-grid' }, ['night', 'day'].map(mode => h('button', {
-          class: 'choice', 'aria-pressed': String(choices.mode === mode), dataset: { testid: `mode-${mode}` },
-          onclick: () => { choices.mode = mode; void applyMode(mode, false); render(); }
-        }, [h('strong', { text: mode === 'night' ? 'Night Gummy' : 'Day Gummy' }), h('span', { text: mode === 'night' ? 'Deep purple space, cream type.' : 'Cream space, inky type.' })]))),
-        nextButton('Enter Gummy OS', () => step += 1, () => Boolean(choices.mode))
+        h('div', { class: 'choice-grid realm-choice-grid' }, ['night', 'day'].map(mode => h('button', {
+          class: 'choice realm-choice', 'aria-pressed': String(choices.mode === mode), dataset: { testid: `mode-${mode}` },
+          onclick: () => {
+            choices.mode = mode;
+            void applyMode(mode, false);
+            renderRealm(mode);
+            render();
+          }
+        }, [
+          h('img', {
+            src: gummyRealmAssets.realm.expressions[mode].preview,
+            alt: '',
+            width: '320',
+            height: '180',
+            loading: 'eager',
+            decoding: 'async'
+          }),
+          h('strong', { text: mode === 'night' ? 'Night Gummy' : 'Day Gummy' }),
+          h('span', { text: mode === 'night' ? 'Deep, electric, focused.' : 'Warm, bright, energetic.' })
+        ]))),
+        nextButton('Enter Gummy OS', () => step += 1, () => Boolean(choices.mode)),
+        h('ul', { class: 'onboarding-trust', 'aria-label': 'Local-first promises' }, [
+          h('li', { text: 'Private on this device' }),
+          h('li', { text: 'No account required' }),
+          h('li', { text: 'Nothing runs until Make Production' })
+        ])
       );
     } else if (step === 1) {
       const name = h('input', {
@@ -520,7 +567,19 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
     const button = h('button', {
       class: 'bar-candy', role: 'tab', 'aria-selected': String(selectedApp === id), tabindex: selectedApp === id || (!hasSelectedTab && index === 0) ? '0' : '-1',
       dataset: { app: id }, onclick: () => id === 'glopper' ? togglePanel() : openSurface(id)
-    }, [h('span', { class: 'icon', 'aria-hidden': 'true', text: icon }), h('span', { class: 'label', text: label })]);
+    }, [
+      id === 'glopper'
+        ? h('img', {
+            class: 'bar-glopper-icon',
+            src: gummyRealmAssets.glopper.avatar64,
+            alt: '',
+            width: '64',
+            height: '64',
+            decoding: 'async'
+          })
+        : h('span', { class: 'icon', 'aria-hidden': 'true', text: icon }),
+      h('span', { class: 'label', text: label })
+    ]);
     if (id === 'work-orders' && pending) button.append(h('span', { class: 'badge', 'aria-label': `${pending} awaiting approval`, text: String(pending) }));
     if (id === 'receipts' && receipts) button.append(h('span', { class: 'badge', 'aria-label': `${receipts} receipts`, text: String(receipts) }));
     button.addEventListener('keydown', event => {
@@ -753,17 +812,13 @@ function guideSurface() {
       ])
     ]),
     h('figure', { class: 'gummy-guide-figure compact-guide-figure', dataset: { gummyAssistant: 'gummy' } }, [
-      h('img', {
-        src: gummyAssets.mascotHead,
-        alt: 'Gummy, the VR-goggled chimp guide',
-        width: '512',
-        height: '768',
-        loading: 'lazy',
-        decoding: 'async'
+      realmPicture(document.documentElement.dataset.gummyMode, {
+        decorative: false,
+        className: 'guide-realm-picture'
       }),
       h('figcaption', {}, [
-        h('strong', { text: 'Gummy keeps your place.' }),
-        h('span', { text: 'Purple-dominant orientation · gold action cues' })
+        h('strong', { text: 'One realm. Two expressions.' }),
+        h('span', { text: 'Purple establishes place · gold marks action' })
       ])
     ])
   ]);
@@ -957,21 +1012,44 @@ async function actorsSurface() {
       class: 'presence-card',
       dataset: { presenceId: item.id }
     }, [
-      h('div', { class: 'presence-heading' }, [
-        h('div', {}, [h('h3', { text: item.name }), h('p', { class: 'meta', text: item.identity })]),
-        h('span', { class: `status ${item.tone === 'ready' ? '' : 'review'}`, text: item.state })
-      ]),
-      h('p', { class: 'presence-capability', text: item.capability }),
-      h('div', { class: 'presence-current' }, [
-        h('strong', { text: 'Current state' }),
-        h('span', { text: item.current })
-      ]),
-      h('p', { class: 'boundary-note compact', text: item.truth }),
-      h('div', { class: 'button-row' }, [
-        h('button', { class: 'button primary', onclick: item.interact }, item.action),
-        item.id !== 'actor:glopper'
-          ? h('button', { class: 'button', onclick: () => openActorSurface(item.id) }, 'Open standalone Actor view')
-          : null
+      h('img', {
+        class: 'presence-portal',
+        src: item.id === 'actor:glopper'
+          ? gummyRealmAssets.portals.glopper
+          : item.id === 'actor:imagehoss'
+          ? gummyRealmAssets.portals.imagehoss
+          : item.id === 'actor:videoboss'
+          ? gummyRealmAssets.portals.videoboss
+          : gummyRealmAssets.portals.meshmallow,
+        alt: item.id === 'actor:glopper'
+          ? 'Glopper Guide Alcove in the Lantern Chamber'
+          : item.id === 'actor:imagehoss'
+          ? 'ImageHoss Light Table in the Lantern Chamber'
+          : item.id === 'actor:videoboss'
+          ? 'VideoBoss Projection Bay in the Lantern Chamber'
+          : 'Meshmallow Form Workshop in the Lantern Chamber',
+        width: '960',
+        height: '540',
+        loading: 'lazy',
+        decoding: 'async'
+      }),
+      h('div', { class: 'presence-card-body' }, [
+        h('div', { class: 'presence-heading' }, [
+          h('div', {}, [h('h3', { text: item.name }), h('p', { class: 'meta', text: item.identity })]),
+          h('span', { class: `status ${item.tone === 'ready' ? '' : 'review'}`, text: item.state })
+        ]),
+        h('p', { class: 'presence-capability', text: item.capability }),
+        h('div', { class: 'presence-current' }, [
+          h('strong', { text: 'Current state' }),
+          h('span', { text: item.current })
+        ]),
+        h('p', { class: 'boundary-note compact', text: item.truth }),
+        h('div', { class: 'button-row' }, [
+          h('button', { class: 'button primary', onclick: item.interact }, item.action),
+          item.id !== 'actor:glopper'
+            ? h('button', { class: 'button', onclick: () => openActorSurface(item.id) }, 'Open standalone Actor view')
+            : null
+        ])
       ])
     ]))),
     h('h3', { text: 'Your local Actors' }),
@@ -1707,7 +1785,14 @@ async function renderPanel() {
   const panel = h('aside', { class: 'glopper-panel', 'aria-label': 'Glopper Panel', dataset: { gummyAssistant: 'glopper' } });
   const header = h('header', { class: 'panel-header' }, [
     h('div', { class: 'glopper-identity' }, [
-      h('div', { class: 'mascot-slot', 'aria-label': 'Temporary Glopper mascot slot', text: '✦' }),
+      h('div', { class: 'glopper-avatar-frame' }, h('img', {
+        class: 'glopper-avatar',
+        src: gummyRealmAssets.glopper.avatar64,
+        alt: 'Glopper',
+        width: '96',
+        height: '96',
+        decoding: 'async'
+      })),
       h('div', {}, [h('strong', { text: 'Glopper' }), h('small', { class: 'meta', text: 'agent:glopper-web' })])
     ]),
     h('button', { class: 'button', 'aria-label': 'Close Glopper Panel', onclick: () => togglePanel(false) }, '×')

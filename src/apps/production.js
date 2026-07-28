@@ -1,6 +1,7 @@
 import { button, clear, el, sectionHeading } from '../core/dom.js';
 import { utilityTile } from '../brand/gummy-utility-tiles.js';
 import { stateCopy } from '../core/product-copy.js';
+import { gummyRealmAssets } from '../brand/gummy-realm-assets.js';
 import {
   acceptProductionResult,
   addActorToProduction,
@@ -56,6 +57,30 @@ export function createProductionApp({
       el('h1', { text: 'Start a Production' }),
       el('p', { text: 'A Production keeps the people, specialists, sources, decisions, Runs, results, and evidence for one undertaking together.' }),
       el('p', { class: 'boundary-note', text: 'Configure freely. Nothing runs until you review and choose Make Production.' }),
+      el('div', { class: 'production-cover-choices', 'aria-label': 'Production cover previews' }, [
+        el('figure', { class: 'production-cover-card' }, [
+          el('img', {
+            src: gummyRealmAssets.productions.untitled,
+            alt: 'Quiet Lantern Chamber plate for an untitled Production',
+            width: 1200,
+            height: 900,
+            loading: 'lazy',
+            decoding: 'async'
+          }),
+          el('figcaption', { text: 'Blank private Production' })
+        ]),
+        el('figure', { class: 'production-cover-card' }, [
+          el('img', {
+            src: gummyRealmAssets.productions.launch,
+            alt: 'Night Gummy Launch Production cover in the Lantern Chamber',
+            width: 1600,
+            height: 900,
+            loading: 'lazy',
+            decoding: 'async'
+          }),
+          el('figcaption', { text: 'Night Gummy Launch sample' })
+        ])
+      ]),
       el('div', { class: 'production-first-actions' }, [
         button('Start a blank Production', 'primary-button large-action', () => {
           const result = createProduction(store.getState().productionRuntime, {
@@ -101,6 +126,25 @@ export function createProductionApp({
     const owner = runtime.actors.find(item => item.id === production.ownerActorId);
     const configurations = runtime.configurations.filter(item => item.productionId === production.id);
     const costCeiling = configurations.reduce((total, config) => total + Number(config.costCeiling?.amount || 0), 0);
+    root.append(el('figure', { class: 'production-cover-hero' }, [
+      el('img', {
+        src: production.id === 'production:night-gummy-launch'
+          ? gummyRealmAssets.productions.launch
+          : gummyRealmAssets.productions.untitled,
+        alt: production.id === 'production:night-gummy-launch'
+          ? 'Night Gummy Launch Production cover in the Lantern Chamber'
+          : 'Quiet Lantern Chamber plate for this unexecuted Production',
+        width: production.id === 'production:night-gummy-launch' ? 1600 : 1200,
+        height: 900,
+        loading: 'lazy',
+        decoding: 'async'
+      }),
+      el('figcaption', {
+        text: production.id === 'production:night-gummy-launch'
+          ? 'Brand-owned environment cover · no result implied'
+          : 'Environment-only cover · no completed result implied'
+      })
+    ]));
     root.append(el('header', { class: 'production-header' }, [
       el('div', {}, [
         el('span', { class: 'eyebrow', text: 'PRODUCTION' }),

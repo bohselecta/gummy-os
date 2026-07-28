@@ -11,6 +11,7 @@ import {
   updateTranscriptGummy
 } from '../core/living-actor.js';
 import { createReceipt } from '../core/records.js';
+import { gummyRealmAssets } from '../brand/gummy-realm-assets.js';
 
 function h(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -360,10 +361,19 @@ export async function createPrivateChatApp({
     }
     root.replaceChildren();
     const header = h('section', { class: 'chat-header' }, [
-      h('div', {}, [
-        h('p', { class: 'eyebrow', text: 'Private Actor chat' }),
-        h('h2', { text: chat.title }),
-        h('p', { class: 'meta', text: `${chat.id} · ${chat.visibility} · ${chat.status}` })
+      h('div', { class: 'chat-identity' }, [
+        participantActorId === 'actor:glopper' ? h('div', { class: 'chat-glopper-frame' }, h('img', {
+          src: gummyRealmAssets.glopper.chatBust,
+          alt: 'Glopper',
+          width: '256',
+          height: '256',
+          decoding: 'async'
+        })) : null,
+        h('div', {}, [
+          h('p', { class: 'eyebrow', text: 'Private Actor chat' }),
+          h('h2', { text: chat.title }),
+          h('p', { class: 'meta', text: `${chat.id} · ${chat.visibility} · ${chat.status}` })
+        ])
       ]),
       h('span', {
         class: `status ${chat.status === 'open' ? '' : 'review'}`,

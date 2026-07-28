@@ -24,6 +24,8 @@
   --text: var(--g-cream);
   --muted: color-mix(in srgb, var(--g-cream) 68%, var(--g-purple));
   --line: color-mix(in srgb, var(--g-cream) 18%, transparent);
+  --canvas-wallpaper: url('/brand/gummy/realm/lantern-chamber-night-1280x720.avif');
+  --boot-wallpaper: url('/brand/gummy/realm/lantern-chamber-night-lqip.webp');
 }
 
 :root[data-gummy-mode="day"] {
@@ -33,4 +35,6 @@
   --text: var(--g-ink);
   --muted: color-mix(in srgb, var(--g-ink) 66%, var(--g-purple));
   --line: color-mix(in srgb, var(--g-ink) 18%, transparent);
+  --canvas-wallpaper: url('/brand/gummy/realm/lantern-chamber-day-1280x720.avif');
+  --boot-wallpaper: url('/brand/gummy/realm/lantern-chamber-day-lqip.webp');
 }
