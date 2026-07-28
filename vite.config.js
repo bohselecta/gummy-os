@@ -29,7 +29,7 @@ export default defineConfig({
       manifest: {
         name: 'Gummy OS',
         short_name: 'Gummy',
-        description: 'A governed personal AI computer you can open.',
+        description: 'Your creative computer, with you in control.',
         theme_color: '#4B187A',
         background_color: '#100817',
         display: 'standalone',
@@ -55,7 +55,17 @@ export default defineConfig({
         runtimeCaching: [
           { urlPattern: ({ url }) => url.pathname.startsWith('/api/'), handler: 'NetworkOnly' },
           { urlPattern: ({ url }) => url.pathname.startsWith('/schemas/'), handler: 'CacheFirst', options: { cacheName: 'gummy-schemas-v1' } },
-          { urlPattern: ({ url }) => url.pathname.startsWith('/registry/'), handler: 'CacheFirst', options: { cacheName: 'gummy-product-registry-v1' } }
+          { urlPattern: ({ url }) => url.pathname.startsWith('/registry/'), handler: 'CacheFirst', options: { cacheName: 'gummy-product-registry-v1' } },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/brand/gummy/realm/'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'gummy-realm-v1' }
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/brand/gummy/actors/') || url.pathname.startsWith('/brand/gummy/productions/'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'gummy-realm-lazy-v1' }
+          }
         ]
       }
     })

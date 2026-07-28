@@ -54,15 +54,15 @@ test('production Gummy identity is intact, responsive, addressable, and separate
     fit: 'cover'
   });
 
-  const guide = page.getByAltText('Gummy, the VR-goggled chimp guide');
+  const guide = page.getByAltText('Night Gummy Lantern Chamber');
   await expect(guide).toBeVisible();
   expect(await guide.evaluate(image => ({
     natural: [image.naturalWidth, image.naturalHeight],
     fit: getComputedStyle(image).objectFit
-  }))).toEqual({ natural: [512, 768], fit: 'cover' });
+  }))).toEqual({ natural: [1280, 720], fit: 'cover' });
 
   await page.getByRole('tab', { name: /Glopper/ }).click();
-  await expect(page.getByRole('complementary', { name: 'Glopper Panel' }).locator('img[src*="/brand/gummy/"]')).toHaveCount(0);
+  await expect(page.getByRole('complementary', { name: 'Glopper Panel' }).getByAltText('Glopper')).toBeVisible();
   await expect(page.getByText(/temporary artwork slot/i)).toHaveCount(0);
 
   const requiredAssets = [
@@ -286,7 +286,7 @@ test('phone Glopper panel is a full-height sheet and 320px layout remains operab
     natural: [512, 512],
     fit: 'contain'
   });
-  const phoneGuide = page.getByAltText('Gummy, the VR-goggled chimp guide');
+  const phoneGuide = page.getByAltText('Night Gummy Lantern Chamber');
   await phoneGuide.scrollIntoViewIfNeeded();
   const guideBox = await phoneGuide.boundingBox();
   expect(guideBox.y).toBeGreaterThanOrEqual(56);

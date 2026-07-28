@@ -1,4 +1,33 @@
 @media (max-width: 760px) {
+  .onboarding {
+    grid-template-columns: 1fr; grid-template-rows: minmax(110px, 20dvh) minmax(0, 1fr);
+    gap: 0; padding: 0; overflow: hidden;
+  }
+  .onboarding-realm { border: 0; border-radius: 0; }
+  .onboarding-realm-picture img { object-position: left 63%; }
+  .onboarding-realm-vignette {
+    background: linear-gradient(180deg, transparent 24%, color-mix(in srgb, var(--g-ink) 86%, transparent));
+  }
+  .onboarding-glopper { right: 4%; bottom: -18%; width: min(38%, 170px); }
+  .realm-caption { left: var(--space-3); bottom: var(--space-3); max-width: 68%; }
+  .realm-caption strong { font-size: 1.3rem; }
+  .realm-caption small { display: none; }
+  .onboarding-card {
+    align-self: stretch; max-height: none; min-height: 0; border-width: 1px 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: var(--space-4);
+    box-shadow: 0 -16px 34px color-mix(in srgb, var(--g-ink) 48%, transparent);
+  }
+  .onboarding-card h1 { margin-block: var(--space-2); font-size: clamp(1.55rem, 8vw, 2.1rem); line-height: 1.03; }
+  .onboarding-card .lede { margin-block: var(--space-2); font-size: .92rem; }
+  .onboarding-card > p:not(.eyebrow):not(.lede):not(.meta) { margin-block: var(--space-2); font-size: .82rem; }
+  .onboarding-brand { width: 44px; height: 44px; margin-bottom: 4px; }
+  .step-meter { margin-bottom: var(--space-2); }
+  .onboarding-card[data-step="0"] > .eyebrow { display: none; }
+  .realm-choice-grid { grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+  .realm-choice { min-height: 84px; padding: 5px; }
+  .realm-choice img { height: 44px; aspect-ratio: auto; margin-bottom: 3px; }
+  .realm-choice span { font-size: .68rem; }
+  .onboarding-trust { gap: 3px var(--space-3); margin-top: var(--space-2); font-size: .68rem; }
   .os-shell { grid-template-rows: calc(56px + env(safe-area-inset-top)) 1fr calc(76px + env(safe-area-inset-bottom)); }
   .authority-strip { display: none; }
   .topbar { padding: env(safe-area-inset-top) var(--space-2) 0; }
@@ -30,14 +59,15 @@
   .panel-tabs { overflow-x: auto; scroll-snap-type: x mandatory; }
   .panel-tabs button { flex: 0 0 auto; min-width: 88px; scroll-snap-align: start; }
   .panel-content { padding: var(--space-3); padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom)); }
-  .choice-grid, .split, .doorway-actions, .application-grid, .presence-grid { grid-template-columns: 1fr; }
+  .choice-grid:not(.realm-choice-grid), .split, .doorway-actions, .application-grid, .presence-grid { grid-template-columns: 1fr; }
   .presence-grid { gap: var(--space-3); }
-  .presence-card { min-height: 0; padding: var(--space-3); }
+  .presence-card { min-height: 0; padding: 0; }
+  .presence-portal { aspect-ratio: 4 / 3; max-height: 180px; }
+  .presence-card-body { padding: var(--space-3); }
   .presence-heading { align-items: center; }
   .presence-capability { margin-block: var(--space-2); }
   .presence-current { margin: var(--space-2) 0; padding: var(--space-2); }
   .presence-card .button-row { margin-top: var(--space-2); }
-  .onboarding-brand { width: 56px; height: 56px; }
   .onboarding-brand img { object-fit: contain; }
   .gummy-guide-figure img { height: 240px; }
   .facts { grid-template-columns: 1fr; gap: .15rem; }
@@ -61,6 +91,12 @@
 }
 
 @media (max-width: 360px) {
+  .onboarding { grid-template-rows: 108px minmax(0, 1fr); }
+  .onboarding-glopper { width: 120px; }
+  .realm-caption strong { font-size: 1.1rem; }
+  .onboarding-card { padding: .75rem; }
+  .onboarding-card h1 { font-size: 1.45rem; }
+  .onboarding-trust { display: grid; grid-template-columns: 1fr; }
   .bar-candy { flex-basis: 60px; }
   .bar-candy .label { font-size: .62rem; }
   .window-control { width: 26px; min-width: 26px; min-height: 26px; }

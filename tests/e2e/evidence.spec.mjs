@@ -43,14 +43,14 @@ test('captures phone and reduced-motion evidence', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 720 });
   await onboarding(page, 'night', 'phone');
   await page.screenshot({ path: evidencePath('night-phone-reduced-motion.png'), fullPage: true });
-  await page.getByAltText('Gummy, the VR-goggled chimp guide').scrollIntoViewIfNeeded();
+  await page.getByAltText('Night Gummy Lantern Chamber').scrollIntoViewIfNeeded();
   await page.screenshot({ path: evidencePath('night-phone-brand.png'), fullPage: true });
   await page.getByRole('tab', { name: /Glopper/ }).click();
   await page.screenshot({ path: evidencePath('phone-reduced-motion.png'), fullPage: true });
   await page.getByRole('button', { name: 'Switch Night or Day Gummy' }).click();
   await page.getByRole('button', { name: 'Close Glopper Panel' }).click();
   await expect(page.locator('.toast-layer .toast')).toHaveCount(0, { timeout: 6_000 });
-  await page.getByAltText('Gummy, the VR-goggled chimp guide').scrollIntoViewIfNeeded();
+  await page.getByAltText('Night Gummy Lantern Chamber').scrollIntoViewIfNeeded();
   await page.screenshot({ path: evidencePath('day-phone-brand.png'), fullPage: true });
   await page.getByRole('tab', { name: /Applications/ }).click();
   await expect(page.getByTestId('first-party-applications').locator('[data-application-id]')).toHaveCount(4);

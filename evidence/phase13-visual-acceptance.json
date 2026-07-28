@@ -1,0 +1,129 @@
+{
+  "schema": "gummy.phase13-visual-acceptance/v1",
+  "issue": 27,
+  "baselineCommit": "00115aae2dcec1908a9f355b61c85e7b21468c8a",
+  "world": "The Lantern Chamber",
+  "status": "pending-founder-visual-acceptance",
+  "mergeAllowed": false,
+  "rubric": {
+    "scale": "0-100",
+    "previewThreshold": 80,
+    "dimensions": [
+      "brandLegibility",
+      "productFit",
+      "worldConsistency",
+      "identityStability",
+      "applicationUsability",
+      "technicalDelivery"
+    ]
+  },
+  "environmentReview": {
+    "nightLanternChamber": {
+      "brandLegibility": 94,
+      "productFit": 93,
+      "worldConsistency": 94,
+      "identityStability": 96,
+      "applicationUsability": 92,
+      "technicalDelivery": 96,
+      "average": 94.2,
+      "decision": "selected-for-preview"
+    },
+    "dayLanternChamber": {
+      "brandLegibility": 92,
+      "productFit": 91,
+      "worldConsistency": 95,
+      "identityStability": 96,
+      "applicationUsability": 91,
+      "technicalDelivery": 96,
+      "average": 93.5,
+      "decision": "selected-for-preview",
+      "note": "Identity-preserving lighting edit of the Night master; camera and architecture are unchanged."
+    }
+  },
+  "glopperCandidateReview": {
+    "candidateA": {
+      "scores": {
+        "brandLegibility": 84,
+        "productFit": 73,
+        "worldConsistency": 82,
+        "identityStability": 72,
+        "applicationUsability": 78,
+        "technicalDelivery": 90
+      },
+      "average": 79.8,
+      "decision": "rejected",
+      "reason": "Feline cheek and ear read plus taller proportions weaken the compact Glopper guide identity."
+    },
+    "candidateB": {
+      "scores": {
+        "brandLegibility": 82,
+        "productFit": 72,
+        "worldConsistency": 80,
+        "identityStability": 70,
+        "applicationUsability": 76,
+        "technicalDelivery": 90
+      },
+      "average": 78.3,
+      "decision": "rejected",
+      "reason": "Round head and body read too close to a generic gummy bear and lose expression at small sizes."
+    },
+    "candidateC": {
+      "scores": {
+        "brandLegibility": 92,
+        "productFit": 91,
+        "worldConsistency": 91,
+        "identityStability": 93,
+        "applicationUsability": 94,
+        "technicalDelivery": 94
+      },
+      "average": 92.5,
+      "decision": "selected-for-preview",
+      "reason": "Best balance of pointed ears, three-lobed tuft, large eyes, tiny fangs, paws, compact silhouette, and matte soft dimensionality."
+    }
+  },
+  "performance": {
+    "desktopBudgetBytes": 430080,
+    "phoneBudgetBytes": 266240,
+    "nightDesktopInitialHeroBytes": 28108,
+    "dayDesktopInitialHeroBytes": 39345,
+    "nightPhoneInitialHeroBytes": 36003,
+    "dayPhoneInitialHeroBytes": 47907
+  },
+  "browserReview": {
+    "widthsVerified": [
+      320,
+      390,
+      430,
+      1440
+    ],
+    "modesVerified": [
+      "night",
+      "day"
+    ],
+    "reducedMotionVerified": true,
+    "keyboardSelectorVerified": true,
+    "accessibilityViolations": 0,
+    "consoleErrors": 0,
+    "failedImages": 0
+  },
+  "evidence": {
+    "candidateContactSheet": "design/source/gummy-realm/lantern-chamber/contact-sheets/phase13-glopper-candidates.png",
+    "nightDoorwayDesktop": "artifacts/evidence/phase13-onboarding-night-1440x900.png",
+    "dayDoorwayDesktop": "artifacts/evidence/phase13-onboarding-day-1440x900.png",
+    "nightDoorwayMobile": "artifacts/evidence/phase13-onboarding-night-390x844.png",
+    "dayDoorwayMobile": "artifacts/evidence/phase13-onboarding-day-390x844.png",
+    "nightCanvas": "artifacts/evidence/phase13-desktop-night-two-windows.png",
+    "dayCanvas": "artifacts/evidence/phase13-desktop-day-two-windows.png",
+    "actorPresence": "artifacts/evidence/phase13-actor-presence-grid.png",
+    "glopperPanel": "artifacts/evidence/phase13-glopper-panel.png",
+    "glopperPrivateChat": "artifacts/evidence/phase13-glopper-private-chat.png",
+    "productionCover": "artifacts/evidence/phase13-night-gummy-launch-cover.png",
+    "socialComposition": "public/brand/gummy/social/gummy-og-1200x630.webp"
+  },
+  "founderDecision": {
+    "required": true,
+    "prompt": "Accept or reject the Lantern Chamber environment and candidate C Glopper identity for merge.",
+    "decision": null,
+    "decidedAt": null
+  }
+}

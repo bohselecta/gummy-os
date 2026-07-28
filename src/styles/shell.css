@@ -16,15 +16,22 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .boot {
-  min-height: 100dvh;
+  position: relative; min-height: 100dvh; overflow: hidden;
   display: grid;
   place-content: center;
   justify-items: center;
-  background: radial-gradient(circle at 50% 35%, var(--g-purple-deep), var(--g-ink) 68%);
+  background:
+    linear-gradient(color-mix(in srgb, var(--g-ink) 54%, transparent), color-mix(in srgb, var(--g-ink) 84%, transparent)),
+    var(--boot-wallpaper) center / cover no-repeat;
   color: var(--g-cream);
 }
-.boot h1 { margin: var(--space-4) 0 0; }
-.boot p { color: var(--muted); }
+.boot::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 44%, transparent 0 12%, color-mix(in srgb, var(--g-ink) 66%, transparent) 72%);
+}
+.boot > * { position: relative; z-index: 1; }
+.boot h1 { margin: var(--space-4) 0 0; text-shadow: 0 2px 16px var(--g-ink); }
+.boot p { color: var(--g-cream); text-shadow: 0 2px 12px var(--g-ink); }
 .boot-mark {
   display: block; width: 96px; height: 96px; object-fit: contain;
   border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow);
@@ -44,12 +51,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .canvas {
   position: relative; min-height: 0; overflow: hidden;
   background:
-    radial-gradient(circle at 18% 24%, color-mix(in srgb, var(--g-purple) 35%, transparent), transparent 28%),
-    linear-gradient(135deg, var(--surface), color-mix(in srgb, var(--surface) 88%, var(--g-purple-deep)));
+    linear-gradient(90deg, color-mix(in srgb, var(--surface) 46%, transparent), color-mix(in srgb, var(--surface) 24%, transparent)),
+    linear-gradient(180deg, color-mix(in srgb, var(--g-ink) 10%, transparent), color-mix(in srgb, var(--surface) 34%, transparent)),
+    var(--canvas-wallpaper) center / cover no-repeat;
 }
 .canvas::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .22;
-  background-image: radial-gradient(var(--g-gold) .7px, transparent .7px); background-size: 26px 26px;
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 45%, transparent 15%, color-mix(in srgb, var(--surface) 32%, transparent) 100%);
 }
 .window-layer { position: absolute; inset: 0; }
 .gummy-window {
@@ -76,12 +84,14 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .gummy-guide-figure img {
   display: block; width: 100%; height: clamp(250px, 30vw, 320px); object-fit: cover; object-position: center;
 }
+.guide-realm-picture { display: block; }
+.guide-realm-picture img { object-position: center; }
 .gummy-guide-figure figcaption {
   display: grid; gap: 2px; padding: var(--space-3) var(--space-4); border-top: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface-raised) 92%, transparent);
 }
 .gummy-guide-figure figcaption span { color: var(--muted); font-size: .78rem; }
-.compact-guide-figure { max-width: 340px; margin-top: var(--space-5); }
+.compact-guide-figure { max-width: 620px; margin-top: var(--space-5); }
 .gummy-bar {
   z-index: 1100; display: flex; align-items: center; gap: var(--space-2); overflow-x: auto; padding: var(--space-3) max(var(--space-4), calc((100vw - 980px) / 2));
   border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(18px);
@@ -94,5 +104,6 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 }
 .bar-candy[aria-selected="true"] { border-color: var(--g-gold); background: var(--g-purple-deep); color: var(--g-cream); }
 .bar-candy .icon { font-size: 1.25rem; line-height: 1; }
+.bar-glopper-icon { display: block; width: 32px; height: 32px; object-fit: contain; }
 .bar-candy .label { font-size: .68rem; white-space: nowrap; }
 .bar-candy .badge { position: absolute; top: 3px; right: 3px; min-width: 18px; border-radius: 99px; padding: 1px 5px; background: var(--g-gold); color: var(--g-ink); font-size: .65rem; font-weight: 900; }

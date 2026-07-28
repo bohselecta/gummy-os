@@ -24,13 +24,48 @@
 .facts dt { color: var(--muted); }
 .facts dd { margin: 0; overflow-wrap: anywhere; }
 .onboarding {
-  position: fixed; z-index: 5000; inset: 0; display: grid; place-items: center; padding: var(--space-4);
-  background: radial-gradient(circle at 20% 10%, var(--g-purple-deep), var(--g-ink) 72%); color: var(--g-cream);
+  position: fixed; z-index: 5000; inset: 0; display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(390px, 2fr); align-items: stretch;
+  gap: var(--space-4); padding: var(--space-4);
+  background: var(--g-ink); color: var(--g-cream);
 }
-.onboarding-card { width: min(680px, 100%); max-height: calc(100dvh - 32px); overflow: auto; border: 1px solid color-mix(in srgb, var(--g-cream) 22%, transparent); border-radius: var(--radius-lg); padding: clamp(1.25rem, 4vw, 2.5rem); background: color-mix(in srgb, var(--g-ink) 88%, var(--g-purple-deep)); box-shadow: var(--shadow); }
+.onboarding-realm {
+  position: relative; min-width: 0; min-height: 0; overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--g-cream) 22%, transparent);
+  border-radius: var(--radius-lg); background: var(--g-purple-deep); box-shadow: var(--shadow);
+}
+.onboarding-realm-picture, .onboarding-realm-picture img {
+  position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+}
+.onboarding-realm-picture img { object-fit: cover; object-position: center; }
+.onboarding-realm-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 48%, color-mix(in srgb, var(--g-ink) 76%, transparent)),
+    linear-gradient(90deg, transparent 60%, color-mix(in srgb, var(--g-ink) 40%, transparent));
+}
+.onboarding-glopper {
+  position: absolute; z-index: 2; right: clamp(.5rem, 2vw, 2rem); bottom: -2%;
+  width: min(33%, 350px); height: auto; object-fit: contain;
+}
+.realm-caption {
+  position: absolute; z-index: 3; left: clamp(1rem, 3vw, 2.5rem); bottom: clamp(1rem, 3vw, 2.5rem);
+  display: grid; gap: .2rem; max-width: 60%;
+  text-shadow: 0 2px 16px var(--g-ink);
+}
+.realm-caption span { color: var(--g-gold); font-size: .68rem; font-weight: 900; letter-spacing: .16em; }
+.realm-caption strong { font-size: clamp(1.4rem, 3vw, 2.6rem); line-height: 1; }
+.realm-caption small { color: var(--g-cream); }
+.onboarding-card {
+  width: 100%; max-height: calc(100dvh - 32px); align-self: center; overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--g-cream) 22%, transparent);
+  border-radius: var(--radius-lg); padding: clamp(1.25rem, 3vw, 2.25rem);
+  background: color-mix(in srgb, var(--g-ink) 90%, var(--g-purple-deep)); box-shadow: var(--shadow);
+}
+.onboarding-card .lede { color: color-mix(in srgb, var(--g-cream) 76%, var(--g-purple)); }
 .onboarding-brand { display: block; width: 168px; height: 60px; margin: 0 0 var(--space-4); overflow: hidden; }
 .onboarding-brand img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-.step-meter { display: flex; gap: var(--space-2); margin-bottom: var(--space-6); }
+.step-meter { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); }
 .step-meter span { height: 5px; flex: 1; border-radius: 9px; background: color-mix(in srgb, var(--g-cream) 18%, transparent); }
 .step-meter span.active { background: var(--g-gold); }
 .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
@@ -38,6 +73,21 @@
 .choice strong, .choice span { display: block; }
 .choice span { margin-top: var(--space-2); }
 .choice[aria-pressed="true"] { border-color: var(--g-gold); }
+.realm-choice {
+  min-height: 0; padding: var(--space-2); overflow: hidden;
+  background: color-mix(in srgb, var(--g-purple-deep) 78%, var(--g-ink));
+}
+.realm-choice img {
+  display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  margin-bottom: var(--space-2); border-radius: calc(var(--radius-sm) - .15rem);
+}
+.realm-choice strong, .realm-choice span { padding-inline: var(--space-1); }
+.realm-choice span { margin-top: 0; color: color-mix(in srgb, var(--g-cream) 72%, var(--g-purple)); font-size: .78rem; }
+.onboarding-trust {
+  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4);
+  margin: var(--space-4) 0 0; padding: 0; list-style: none; color: var(--g-cream); font-size: .76rem;
+}
+.onboarding-trust li::before { content: "✓"; margin-right: .35rem; color: var(--g-gold); font-weight: 900; }
 .doorway { margin-bottom: var(--space-6); }
 .doorway h1 { margin-bottom: var(--space-2); }
 .doorway-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
@@ -56,7 +106,13 @@
 }
 .panel-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); border-bottom: 1px solid var(--line); }
 .glopper-identity { display: flex; align-items: center; gap: var(--space-3); }
-.mascot-slot { display: grid; place-items: center; width: 54px; aspect-ratio: 1; border-radius: 44% 56% 52% 48%; border: 2px dashed var(--g-gold); background: var(--g-purple); color: var(--g-cream); font-weight: 900; }
+.glopper-avatar-frame, .chat-glopper-frame {
+  display: grid; place-items: center; flex: 0 0 auto; overflow: hidden;
+  border: 2px solid var(--g-gold); background: var(--g-purple-deep);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--g-purple) 38%, transparent);
+}
+.glopper-avatar-frame { width: 58px; aspect-ratio: 1; border-radius: 44% 56% 52% 48%; }
+.glopper-avatar { display: block; width: 100%; height: 100%; object-fit: contain; }
 .panel-tabs { display: flex; overflow-x: auto; padding: var(--space-2); border-bottom: 1px solid var(--line); }
 .panel-tabs button { flex: 1; min-width: max-content; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); }
 .panel-tabs button[aria-selected="true"] { border-color: var(--g-gold); color: var(--text); }
@@ -92,13 +148,15 @@
 .product-map-section { margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--line); }
 .product-pillar-list { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
 .presence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: var(--space-5) 0 var(--space-7); }
-.presence-card { display: flex; flex-direction: column; min-height: 310px; padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-soft); }
+.presence-card { display: flex; flex-direction: column; min-height: 420px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-soft); }
+.presence-portal { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--g-purple-deep); }
+.presence-card-body { display: flex; flex: 1; flex-direction: column; padding: var(--space-4); }
 .presence-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
 .presence-heading h3 { margin: 0; }
 .presence-capability { flex: 1; }
 .presence-current { display: grid; gap: var(--space-1); margin: var(--space-3) 0; padding: var(--space-3); border-left: 3px solid var(--g-purple); background: var(--surface); }
 .presence-current span { color: var(--muted); }
-.presence-card .button { margin-top: auto; }
+.presence-card .button-row { margin-top: auto; }
 .status.review::before { content: "◐"; }
 .compact { font-size: .82rem; }
 .compact-empty { padding: var(--space-5); }
@@ -112,6 +170,9 @@
 .presence-controls { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--line); }
 .private-chat-app { display: grid; gap: var(--space-4); max-width: 820px; margin: 0 auto; }
 .chat-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.chat-identity { display: flex; align-items: center; min-width: 0; gap: var(--space-3); }
+.chat-glopper-frame { width: 78px; aspect-ratio: 1; border-radius: var(--radius-md); }
+.chat-glopper-frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .chat-header h2 { margin: 0; }
 .chat-message-list {
   display: grid; gap: var(--space-3); max-height: min(46dvh, 430px); overflow: auto;
