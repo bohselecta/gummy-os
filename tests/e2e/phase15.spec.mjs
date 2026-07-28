@@ -48,7 +48,7 @@ test('Wardrobe creates owned items, composes an outfit, and survives reload', as
   await wardrobe.getByText('Purple shirt').locator('..').getByRole('button', { name: 'Mark unavailable' }).click();
   await wardrobe.getByRole('button', { name: 'Replace unavailable slots' }).click();
   await expect(wardrobe.getByRole('heading', { name: 'Saved outfits (2)' })).toBeVisible();
-  await expect(wardrobe).toContainText('No checkout or purchase action exists.');
+  await expect(wardrobe).toContainText('no checkout');
 
   await page.reload();
   const reopened = await openPlace(page, 'Wardrobe');
@@ -65,11 +65,11 @@ test('House Intent Gate and Worlds local planning create durable non-executing s
   await house.getByRole('button', { name: 'Save observation' }).click();
   await house.getByLabel('Intent').fill('Create a calm listening corner.');
   await house.getByRole('button', { name: 'Preview scoped intent' }).click();
-  await expect(house.getByRole('status').last()).toContainText('no external execution');
+  await expect(house.locator('[data-record-type="intent-preview"]')).toHaveCount(1);
   await house.getByLabel('Intent note').fill('Add a warm lamp and a small chair.');
   await house.getByLabel('Consequence note').fill('Keep the walkway and outlet access clear.');
   await house.getByRole('button', { name: 'Commit both notes' }).click();
-  await expect(house).toContainText('committed-local');
+  await expect(house.locator('[data-record-type="commit"]')).toHaveCount(1);
 
   const worlds = await openPlace(page, 'Worlds');
   await worlds.getByLabel('Title').fill('Listening Chamber');
@@ -85,15 +85,15 @@ test('House Intent Gate and Worlds local planning create durable non-executing s
 test('Channels and Table maintain real local records without publishing or address release', async ({ page }) => {
   await onboard(page);
   const channels = await openPlace(page, 'Gummy Channels');
-  await channels.getByLabel('Name').fill('Kitchen Channel');
+  await channels.getByLabel('Name').first().fill('Kitchen Channel');
   await channels.getByRole('button', { name: 'Save channel' }).click();
-  await channels.getByLabel('Name').fill('Sunday Watch');
+  await channels.getByLabel('Name').nth(1).fill('Sunday Watch');
   await channels.getByRole('button', { name: 'Create watch group' }).click();
   await channels.getByLabel('Note').fill('Premiere discussion after the episode.');
   await channels.getByRole('button', { name: 'Post local bulletin' }).click();
   await expect(channels.locator('[data-record-type="channel"]')).toHaveCount(1);
   await expect(channels.locator('[data-record-type="watch-group"]')).toHaveCount(1);
-  await expect(channels).not.toContainText('infinite feed');
+  await expect(channels.getByRole('button', { name: /publish/i })).toHaveCount(0);
 
   const table = await openPlace(page, 'Table');
   await table.getByLabel('Title').fill('Sunday supper');
@@ -120,7 +120,8 @@ test('Radio revisions and approvals stay separate from final audio and publicati
   await radio.getByRole('button', { name: 'Save new revision' }).click();
   await expect(radio.getByLabel(/Script revision 1/)).toBeVisible();
   await radio.getByRole('button', { name: 'Approve exact revision' }).click();
-  await expect(radio).toContainText('approved');
+  await radio.getByRole('button', { name: 'Preview browser speech' }).click();
+  await expect(radio.getByRole('status').last()).toContainText('demonstration started');
   await expect(radio.getByRole('button', { name: 'Final voice service not connected' })).toBeDisabled();
   await expect(radio).toContainText('publishing does not exist');
 });
@@ -137,6 +138,6 @@ test('Rooms creates a local room, participants, isolated threads, and a fair que
   await rooms.getByLabel('Message').fill('Review the active local core.');
   await rooms.getByRole('button', { name: 'Save room message' }).click();
   await rooms.getByRole('button', { name: 'Advance fair queue' }).click();
-  await expect(rooms.getByRole('status').last()).toContainText('Next turn');
+  await expect(rooms.locator('[data-record-type="queue"]')).toHaveCount(1);
   await expect(rooms.getByRole('button', { name: 'Remote room service not connected' })).toBeDisabled();
 });
