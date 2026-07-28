@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production-pool.schema.json",
+  "title": "Gummy Production Pool",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "productionId", "agreementId", "revision", "status", "currency", "estimate", "allocationMode", "allocations", "actual", "custodyModel", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.production-pool/v1" },
+    "id": { "type": "string", "pattern": "^production-pool:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "runId": { "type": ["string", "null"], "pattern": "^production-run:" },
+    "agreementId": { "type": "string", "pattern": "^production-agreement:" },
+    "agreementRevision": { "type": "integer", "minimum": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["estimating", "allocating", "awaiting-authorizations", "authorized", "reserved", "charging", "reconciling", "settled", "failed", "cancelled", "superseded"] },
+    "currency": { "const": "USD" },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum", "expected", "maximum", "basis", "estimatedAt"],
+      "properties": {
+        "minimum": { "type": "number", "minimum": 0 },
+        "expected": { "type": "number", "minimum": 0 },
+        "maximum": { "type": "number", "minimum": 0 },
+        "basis": { "type": "string", "minLength": 1 },
+        "estimatedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "allocationMode": { "enum": ["equal", "fixed-amount", "fixed-percentage", "capped-equal", "sponsor", "resource-weighted", "custom", "mixed"] },
+    "allocations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "proposedAmount", "maximumAmount", "status", "authorizationRequired"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "proposedAmount": { "type": "number", "minimum": 0 },
+          "maximumAmount": { "type": "number", "minimum": 0 },
+          "percentageBasis": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "status": { "enum": ["proposed", "committed", "authorized", "declined", "withdrawn", "captured", "released", "refunded", "failed"] },
+          "authorizationRequired": { "const": true },
+          "authorizationId": { "type": ["string", "null"] },
+          "providerCustomerRef": { "type": ["string", "null"] },
+          "privateAmount": { "type": "boolean" },
+          "approvedRevision": { "type": ["integer", "null"], "minimum": 1 },
+          "approvedAt": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "resourceCommitments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "resourceType", "description", "status"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "resourceType": { "enum": ["local-compute", "provider-credit", "storage", "equipment", "subscription", "labor", "distribution", "other"] },
+          "description": { "type": "string", "minLength": 1 },
+          "quantity": { "type": ["number", "null"], "minimum": 0 },
+          "unit": { "type": ["string", "null"] },
+          "status": { "enum": ["offered", "committed", "available", "used", "released", "withdrawn", "failed"] },
+          "receiptId": { "type": ["string", "null"], "pattern": "^receipt:" }
+        }
+      }
+    },
+    "recalculation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "reason": { "type": "string", "minLength": 1 },
+        "fromRevision": { "type": "integer", "minimum": 1 },
+        "toRevision": { "type": "integer", "minimum": 1 },
+        "increasesExistingMaximum": { "const": false },
+        "changesCompletedCharges": { "const": false },
+        "requiresFreshAuthorizations": { "const": true },
+        "proposedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "actual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["charged", "refunded", "released", "net", "providerEvidenceComplete"],
+      "properties": {
+        "charged": { "type": "number", "minimum": 0 },
+        "refunded": { "type": "number", "minimum": 0 },
+        "released": { "type": "number", "minimum": 0 },
+        "net": { "type": "number", "minimum": 0 },
+        "providerEvidenceComplete": { "type": "boolean" },
+        "reconciledAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "paymentEvents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "actorId", "type", "amount", "provider", "providerRef", "status", "occurredAt"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^payment-event:" },
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "type": { "enum": ["authorization", "capture", "charge", "release", "refund", "failure"] },
+          "amount": { "type": "number", "minimum": 0 },
+          "provider": { "type": "string", "minLength": 1 },
+          "providerRef": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pending", "succeeded", "failed", "cancelled"] },
+          "receiptId": { "type": ["string", "null"], "pattern": "^receipt:" },
+          "occurredAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "custodyModel": { "const": "external-provider-no-internal-stored-value" },
+    "internalCurrency": { "const": false },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
