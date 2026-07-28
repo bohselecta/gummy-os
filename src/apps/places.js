@@ -5,20 +5,40 @@ import {
   createPlacesDirectory as createActivePlacesDirectory
 } from './places-v15.js';
 
+function disabledBoundary(label) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'button';
+  button.disabled = true;
+  button.textContent = label;
+  return button;
+}
+
 export async function createPlaceSurface(options) {
   const surface = await createActivePlaceSurface(options);
-  if (options.definition.id !== 'app:gummy-worlds') return surface;
-
-  // The native boundary remains visible before the first World Plan exists.
   const wrapper = document.createElement('div');
   wrapper.className = 'place-surface-compatibility-wrapper';
-  const boundary = document.createElement('button');
-  boundary.type = 'button';
-  boundary.className = 'button';
-  boundary.disabled = true;
-  boundary.textContent = 'Build needs Meshmallow';
-  wrapper.append(surface, boundary);
-  return wrapper;
+  wrapper.append(surface);
+
+  if (options.definition.id === 'app:gummy-worlds') {
+    // Preserve the plain-language Phase 14 control wording and keep the native
+    // boundary visible before the first World Plan exists.
+    for (const button of surface.querySelectorAll('button')) {
+      if (button.textContent === 'Validate & estimate') button.textContent = 'Validate and estimate';
+    }
+    wrapper.append(disabledBoundary('Build needs Meshmallow'));
+    return wrapper;
+  }
+
+  if (options.definition.id === 'app:gummy-radio') {
+    // Final voice remains visibly unavailable even before an episode exists.
+    if (![...surface.querySelectorAll('button')].some(button => button.textContent === 'Final voice service not connected')) {
+      wrapper.append(disabledBoundary('Final voice service not connected'));
+    }
+    return wrapper;
+  }
+
+  return surface;
 }
 
 export async function createPlacesDirectory(options) {
@@ -46,5 +66,12 @@ export async function createPlacesDirectory(options) {
     roomsGrid.append(roomsCard);
     phase15.append(roomsGrid);
   }
+
+  // Keep the protected long-horizon social boundary visible in the full
+  // product map. Local Rooms are real; broad social computing remains staged.
+  const disclosure = document.createElement('p');
+  disclosure.className = 'notice compact-notice';
+  disclosure.textContent = 'Social computing may ship after the personal proof. Local private Rooms do not imply a public social network.';
+  directory.append(disclosure);
   return directory;
 }
