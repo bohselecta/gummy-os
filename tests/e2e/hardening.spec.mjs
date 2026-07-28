@@ -5,9 +5,9 @@ async function onboard(page) {
   await page.goto('/');
   await page.getByTestId('mode-night').click();
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
+  await page.getByLabel('What should Gummy call you?').fill('Test User');
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
-  await page.getByRole('button', { name: 'Continue without connecting' }).click();
   await page.getByTestId('enter-canvas').click();
   await expect(page.getByRole('region', { name: 'Gummy Canvas' })).toBeVisible();
 }

@@ -1,0 +1,95 @@
+{
+  "schema": "gummy.phase-11-test-user-readiness/v1",
+  "directive": {
+    "pullRequest": 23,
+    "commentId": 5097570098,
+    "title": "First User Experience Polish / Test User Readiness"
+  },
+  "baseline": {
+    "repository": "bohselecta/gummy-os",
+    "commit": "30e3e7df4537a43191bab5a17a1319b2d86a3bc1",
+    "branch": "agent/phase-11-first-user-readiness"
+  },
+  "status": "ready-for-five-trusted-test-users",
+  "audit": {
+    "releaseBlockersFound": 4,
+    "releaseBlockersFixed": 4,
+    "releaseRequirementsFound": 8,
+    "releaseRequirementsFixed": 8,
+    "rejectedArchitectureDrift": [
+      "generic chatbot replacement",
+      "Actor and Agent collapse",
+      "fake live capability presence",
+      "hidden execution cost",
+      "provider setup as onboarding prerequisite"
+    ]
+  },
+  "implemented": [
+    "blank personalized local identity with derived private address",
+    "four-step account-free onboarding",
+    "direct blank and sample Production actions",
+    "prepopulated safe sample Actor roster without execution",
+    "truthful Glopper, ImageHoss, VideoBoss, and Meshmallow presence cards",
+    "plain-language Production Actor cards",
+    "task-oriented Glopper summary and navigation",
+    "local Gummy orientation topics",
+    "visible zero pre-execution cost and reviewed cost ceiling",
+    "human-readable Make Production blockers and route review",
+    "actionable empty results state",
+    "desktop Night and phone Day first-user evidence"
+  ],
+  "safetyProof": {
+    "configurationCreatesRun": false,
+    "configurationCreatesGrant": false,
+    "sampleRequiresAccount": false,
+    "sampleRequiresProvider": false,
+    "sampleUsesPrivateLikeness": false,
+    "openingActorExecutes": false,
+    "makeProductionRemainsExecutionBoundary": true,
+    "presenceClaimsLiveCapabilityWithoutEvidence": false
+  },
+  "screenshots": [
+    "artifacts/evidence/phase11-first-run-night.png",
+    "artifacts/evidence/phase11-first-run-day.png",
+    "artifacts/evidence/phase11-first-production-choice-night.png",
+    "artifacts/evidence/phase11-first-production-choice-day.png",
+    "artifacts/evidence/phase11-sample-production-night.png",
+    "artifacts/evidence/phase11-actor-presence-night.png",
+    "artifacts/evidence/phase11-glopper-guidance-night.png",
+    "artifacts/evidence/phase11-test-user-phone-day.png"
+  ],
+  "automatedChecks": [
+    "static and contract validation",
+    "product preservation",
+    "brand and copy audits",
+    "unit and integration tests",
+    "desktop first-user Playwright journey",
+    "phone Day Gummy reduced-motion journey",
+    "reload persistence",
+    "zero Run and Grant assertion during setup",
+    "serious and critical accessibility scan",
+    "full production-like verify"
+  ],
+  "remaining": [
+    {
+      "lane": "external-cohort-feedback",
+      "status": "NOT CLAIMED",
+      "reason": "Five trusted Human sessions have not yet occurred."
+    },
+    {
+      "lane": "imagehoss-live",
+      "status": "NOT CLAIMED",
+      "reason": "Authenticated local ImageHoss and ComfyUI runtime may be absent."
+    },
+    {
+      "lane": "videoboss-live",
+      "status": "NOT CLAIMED",
+      "reason": "Supported server-side render provider may be absent."
+    },
+    {
+      "lane": "meshmallow-live",
+      "status": "NOT CLAIMED",
+      "reason": "Authenticated supervisor and supported Blender runtime may be absent."
+    }
+  ]
+}

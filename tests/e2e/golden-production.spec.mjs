@@ -6,9 +6,9 @@ async function onboard(page) {
   await page.goto('/');
   await page.getByTestId('mode-night').click();
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
+  await page.getByLabel('What should Gummy call you?').fill('Test User');
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
-  await page.getByRole('button', { name: 'Continue without connecting' }).click();
   await page.getByTestId('enter-canvas').click();
   await page.getByRole('tab', { name: /Productions/ }).click();
 }
@@ -51,7 +51,7 @@ test('Night Gummy Launch runs, compares, accepts, revises, and restarts with com
     ['gummy-storage', 'GummyStorage']
   ]) {
     await production.locator('.actor-card').filter({ hasText: `@${actorName}` })
-      .getByRole('button', { name: 'Open Actor surface' }).click();
+      .getByRole('button', { name: `Open ${actorName}` }).click();
     const actor = page.locator(`[data-window-id="actor-surface:actor:${actorId}:production:night-gummy-launch:main"]`);
     if (actorId === 'imagehoss' || actorId === 'videoboss' || actorId === '3d-bee') {
       for (const section of ['Direction', 'Deliverable', 'Locks', 'References / Assets', 'Exploration', 'Exclusions', 'Route and capability', 'Acceptance', 'Compiled preview']) {

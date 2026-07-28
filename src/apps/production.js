@@ -25,7 +25,8 @@ export function createProductionApp({
   openMasterControl,
   openProduction,
   toast,
-  specialistAdapters = null
+  specialistAdapters = null,
+  copy
 }) {
   const root = el('div', { class: 'production-app' });
   let selectedTab = 'canvas';
@@ -75,9 +76,10 @@ export function createProductionApp({
             audience: 'public-launch',
             sourceGummyIds: ['gummy:night-gummy-launch-brief', 'gummy:night-gummy-launch-brand-kit']
           });
-          setRuntime(result.runtime);
+          const withRoster = addNightGummyLaunchRoster(result.runtime, result.production.id, 'sample');
+          setRuntime(withRoster);
           productionId = result.production.id;
-          toast('Night Gummy Launch opened', 'The safe sample is ready to configure. No image, video, or scene work ran.');
+          toast('Night Gummy Launch opened', 'The safe sample and specialist roster are ready to explore. No image, video, or scene work ran.');
           render();
         })
       ]),
@@ -97,6 +99,8 @@ export function createProductionApp({
 
   function renderProduction(runtime, production) {
     const owner = runtime.actors.find(item => item.id === production.ownerActorId);
+    const configurations = runtime.configurations.filter(item => item.productionId === production.id);
+    const costCeiling = configurations.reduce((total, config) => total + Number(config.costCeiling?.amount || 0), 0);
     root.append(el('header', { class: 'production-header' }, [
       el('div', {}, [
         el('span', { class: 'eyebrow', text: 'PRODUCTION' }),
@@ -113,11 +117,13 @@ export function createProductionApp({
       fact('Status', production.status),
       fact('Visibility', production.visibility),
       fact('Revision', production.revision),
-      fact('Authority', production.authoritativeLocation)
+      fact('Authority', production.authoritativeLocation),
+      fact('Cost before Make Production', '$0.00'),
+      fact('Reviewed cost ceiling', `$${costCeiling.toFixed(2)}`)
     ]));
     root.append(el('div', { class: 'boundary-callout configuration-boundary' }, [
-      el('strong', { text: 'Configure freely. Nothing runs yet.' }),
-      el('p', { text: 'Opening specialists, assigning sources, and saving settings only prepares this Production. Make Production is the only step that starts authorized work.' })
+      el('strong', { text: copy.boundaryTitle }),
+      el('p', { text: copy.boundaryDetail })
     ]));
     if (production.id === 'production:night-gummy-launch') {
       root.append(el('div', { class: 'demonstration-lane', role: 'status' }, [
@@ -243,13 +249,24 @@ export function createProductionApp({
       }, [
         el('div', { class: 'actor-card-topline' }, [
           el('span', { class: `actor-kind kind-${actor.kind}`, text: actor.kind }),
-          el('span', { class: `status ${config?.readiness === 'ready' || actor.kind === 'person' ? '' : 'review'}`, text: config?.readiness || participant.status })
+          el('span', {
+            class: `status ${config?.readiness === 'ready' || actor.kind === 'person' ? '' : 'review'}`,
+            text: actorPresence(actor, config, copy.actorPresence).state
+          })
         ]),
-        el('h3', { text: actor.address }),
-        el('p', { text: participant.roles.join(' · ') }),
-        el('small', { text: participant.assignedAgentId ? `Agent: ${participant.assignedAgentId}` : 'No execution Agent required' }),
+        el('h3', { text: actor.name }),
+        el('p', { text: `${actor.address} · ${participant.roles.join(' · ')}` }),
+        el('div', { class: 'actor-presence-detail' }, [
+          el('strong', { text: 'Capability' }),
+          el('span', { text: actorPresence(actor, config, copy.actorPresence).capability }),
+          el('strong', { text: 'Current state' }),
+          el('span', { text: config ? config.readiness.replaceAll('-', ' ') : participant.status })
+        ]),
+        el('small', { text: participant.assignedAgentId
+          ? `Executor (advanced): ${participant.assignedAgentId}`
+          : 'This Actor does not need an execution Agent.' }),
         el('div', { class: 'card-actions' }, [
-          button('Open Actor surface', 'secondary-button', () => openActorSurface(actor.id, actor.kind === 'service' ? production.id : null)),
+          button(`Open ${actor.name}`, 'secondary-button', () => openActorSurface(actor.id, actor.kind === 'service' ? production.id : null)),
           button('Keyboard/touch proposal', 'ghost-button inline-action', () => proposeIntent({
             sourceKind: 'actor',
             sourceId: actor.id,
@@ -547,17 +564,30 @@ export function createProductionApp({
         fact('Participants', String(preview.participants.length)),
         fact('Source Gummies', String(preview.sourceGummies.length)),
         fact('Locality', preview.locality.join(', ')),
-        fact('Cost ceiling', '$0 deterministic reference')
+        fact('Maximum approved cost', `$${Number(preview.totalCostCeiling.amount).toFixed(2)} ${preview.totalCostCeiling.currency}`)
+      ]),
+      el('div', { class: 'route-review-list' }, [
+        el('strong', { text: 'Routes that would run' }),
+        ...preview.executionRoutes.map(route => {
+          const actor = runtime.actors.find(item => item.id === route.actorId);
+          return el('p', {
+            text: `${actor?.name || route.actorId}: ${route.lane === 'deterministic' ? 'demonstration route' : route.lane} · ${route.locality || 'not available'} · $${Number(route.costCeilingUsd || 0).toFixed(2)} ceiling`
+          });
+        })
       ]),
       el('div', { class: blocked ? 'blocker-list' : 'approval-list' }, [
         el('strong', { text: blocked ? 'Unresolved blockers' : 'Authority path' }),
         ...(blocked
-          ? preview.blockers.map(item => el('p', { text: item }))
+          ? preview.blockers.map(item => el('p', { text: friendlyBlocker(item, runtime) }))
           : [
               el('p', { text: 'Human → Master Control → active Mold → Work Order → Task Lease → bounded Grant → selected Agent.' }),
               el('p', { text: 'Context is sliced per node. Each frozen route is deterministic or an authenticated specialist boundary.' })
             ])
       ]),
+      blocked ? el('details', { class: 'technical-blockers' }, [
+        el('summary', { text: 'Advanced: technical blocker IDs' }),
+        ...preview.blockers.map(item => el('code', { text: item }))
+      ]) : null,
       el('div', { class: 'modal-actions' }, [
         button('Close preview', 'secondary-button', () => { runPreview = null; render(); }),
         button('Inspect full Master Control', 'secondary-button', () => openMasterControl(production.id)),
@@ -611,6 +641,48 @@ function setupTileForActor(actorId) {
     'actor:project-composer': 'gummy.utility.setup',
     'actor:gummy-storage': 'gummy.utility.deliver'
   }[actorId] || 'gummy.utility.setup';
+}
+
+function actorPresence(actor, configuration, copy) {
+  if (actor.kind === 'person') {
+    return {
+      state: copy.person[0],
+      capability: copy.person[1]
+    };
+  }
+  const language = copy[actor.id];
+  return language ? {
+    state: language[configuration?.readiness === 'ready' ? 0 : 1],
+    capability: language[2]
+  } : {
+    state: configuration?.readiness?.replaceAll('-', ' ') || 'Available to configure',
+    capability: 'Open this Actor to inspect what it contributes and what it needs.'
+  };
+}
+
+function friendlyBlocker(blocker, runtime) {
+  const [kind, actorId] = blocker.split(':', 2);
+  const actor = runtime.actors.find(item => item.id === actorId || item.id.endsWith(`:${actorId}`));
+  if (blocker.startsWith('missing-required-actor:')) {
+    const id = blocker.slice('missing-required-actor:'.length);
+    const missing = runtime.actors.find(item => item.id === id);
+    return `Add ${missing?.name || id} to this Production before review.`;
+  }
+  if (blocker.startsWith('configuration-not-ready:')) {
+    const id = blocker.slice('configuration-not-ready:'.length);
+    const pending = runtime.actors.find(item => item.id === id);
+    return `Finish and save ${pending?.name || id} configuration. Opening it will not execute work.`;
+  }
+  if (blocker.startsWith('production-run-recovery-required:')) {
+    return 'A previous provider request needs inspect-first recovery before another submission can be approved.';
+  }
+  if (blocker.startsWith('relationship-revoked:')) {
+    return 'A required participant relationship was revoked. Review it in Master Control before continuing.';
+  }
+  if (kind === 'specialist-route-mismatch') {
+    return `${actor?.name || 'A specialist'} has a route that does not match its authenticated runtime. Choose a supported route.`;
+  }
+  return blocker.replaceAll('-', ' ').replaceAll(':', ' · ');
 }
 
 function acceptanceRole(gummy) {

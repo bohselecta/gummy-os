@@ -6,9 +6,9 @@ async function onboard(page, mode = 'night') {
   await page.goto('/');
   await page.getByTestId(`mode-${mode}`).click();
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
+  await page.getByLabel('What should Gummy call you?').fill('Test User');
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
-  await page.getByRole('button', { name: 'Continue without connecting' }).click();
   await page.getByTestId('enter-canvas').click();
   await page.getByRole('tab', { name: /Productions/ }).click();
   await expect(page.getByRole('heading', { name: 'Start a Production' })).toBeVisible();
@@ -109,7 +109,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
     ['gummy-storage', 'GummyStorage']
   ]) {
     await productionWindow.locator('.actor-card').filter({ hasText: `@${actorName}` })
-      .getByRole('button', { name: 'Open Actor surface' }).click();
+      .getByRole('button', { name: `Open ${actorName}` }).click();
     const actorWindow = page.locator(`[data-window-id="actor-surface:actor:${actorId}:production:ranch-day:main"]`);
     await expect(actorWindow.getByText('Production: Ranch Day')).toBeVisible();
     await expect(actorWindow.getByText(/utility tile is not its application mark/i)).toBeVisible();
@@ -182,7 +182,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
     .toEqual(beforeRestart.gummies.filter(item => item.kind === 'file').map(item => item.hash));
 
   await page.getByRole('tab', { name: /Actors/ }).click();
-  await page.locator('[data-window-id="actors"] [data-actor-id="actor:videoboss"]')
+  await page.getByTestId('actor-presence-grid').locator('[data-presence-id="actor:videoboss"]')
     .getByRole('button', { name: 'Open standalone Actor view' }).click();
   const standalone = page.locator('[data-window-id="actor-surface:actor:videoboss:standalone:main"]');
   await expect(standalone.getByText('Scope: Standalone')).toBeVisible();

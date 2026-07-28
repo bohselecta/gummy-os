@@ -1,0 +1,99 @@
+{
+  "schema": "gummy.first-user-experience/v1",
+  "onboarding": {
+    "welcome": {
+      "title": "Your creative computer, with you in control.",
+      "lede": "Start locally. Bring an idea, file, or project. Configure what you want. Nothing runs until you choose Make Production.",
+      "detail": "Choose Night or Day Gummy. Start locally without an account; connect more only when you choose."
+    },
+    "identity": {
+      "title": "Make this space yours",
+      "lede": "Your name and private @address identify your personal Actor on this device. Nothing is published, and you can change them later.",
+      "nameLabel": "What should Gummy call you?",
+      "addressLabel": "Private local @address"
+    },
+    "box": {
+      "title": "Your Local Gummy Box is ready.",
+      "lede": "It keeps your Productions, Gummies, Returns, and Receipts in this browser. You can export a backup or connect another location later.",
+      "state": "Private on this device · no external account required"
+    },
+    "starting": {
+      "title": "Choose your first Production",
+      "lede": "A Production keeps one undertaking—its people, specialists, sources, decisions, results, and history—together.",
+      "boundaryTitle": "Configure freely. Nothing runs or costs money yet.",
+      "boundaryDetail": "Make Production is the only step that starts the authorized work shown in its review.",
+      "blankDetail": "Begin with a private empty workspace and add only what you need.",
+      "sampleDetail": "Meet the specialist Actors in a safe, no-credential Gummy OS launch example.",
+      "optional": "Your Local Gummy Box works now. GitHub, Drive, model providers, and local runtimes stay optional."
+    }
+  },
+  "guide": {
+    "topics": [
+      ["What is a Production?", "One durable undertaking: the people and specialist Actors involved, its sources, decisions, Runs, results, and evidence."],
+      ["What is an Actor?", "A persistent identity or specialist you can open. An Agent is the separate executor that may act for it only with your permission."],
+      ["What happens when I choose Make Production?", "You first see the exact routes, permissions, cost ceiling, and missing capabilities. Only your approval freezes the configuration and starts eligible work."],
+      ["Where are my results and history?", "Results stay as Gummies. Returns explain each attempt, and Receipts preserve what ran, where, under whose authority, and at what cost."]
+    ],
+    "glopper": "Ready to explain your Productions, surface pending decisions, navigate results, and propose bounded work.",
+    "operator": "Optional offline task preparation stays unavailable until you pair a trusted local supervisor.",
+    "authority": "Master Control shows what may run, which Agent would do it, what it can access, and what it may cost.",
+    "unavailable": "Missing providers and local runtimes stay visible with an exact explanation. Demonstrations are always labeled.",
+    "durability": "Your Local Gummy Box keeps Productions, Gummies, Returns, and Receipts in this browser. Export a backup whenever you choose."
+  },
+  "presence": {
+    "intro": "Actors are persistent identities and specialists you can open. Agents are separate executors. Availability below describes what this browser can truthfully do now.",
+    "cards": [
+      {
+        "id": "agent:glopper-web",
+        "name": "Glopper",
+        "identity": "Companion Agent · separate from every Actor",
+        "state": "Ready to guide",
+        "tone": "ready",
+        "configured": "Guidance is available. Approved cloud execution can be proposed with an exact cost ceiling.",
+        "capability": "Local guidance is available. Cloud execution is not configured, so Glopper will not claim it can run.",
+        "truth": "Opening Glopper does not start a task."
+      },
+      {
+        "id": "actor:imagehoss",
+        "name": "ImageHoss",
+        "identity": "@ImageHoss · specialist Actor",
+        "state": "Demonstration available",
+        "capability": "Visual direction, references, compiled previews, and deterministic studies work now. Real image generation needs the authenticated local ImageHoss and ComfyUI runtime.",
+        "truth": "Opening ImageHoss only configures it. Real generation is unavailable without the authenticated runtime."
+      },
+      {
+        "id": "actor:videoboss",
+        "name": "VideoBoss",
+        "identity": "@VideoBoss · specialist Actor",
+        "state": "Planning available",
+        "capability": "Sequence and shot planning, review, and deterministic takes work now. Real rendering needs a connected server-side provider route.",
+        "truth": "Opening VideoBoss only configures it. Rendering requires a reviewed route and approval."
+      },
+      {
+        "id": "actor:3d-bee",
+        "name": "Meshmallow",
+        "identity": "@Meshmallow · specialist Actor",
+        "state": "Planning available",
+        "capability": "World intent, scene planning, mock operations, and package validation work now. Real 3D output needs the authenticated supervisor and supported Blender runtime.",
+        "truth": "Opening Meshmallow only configures it. Blender does not run until a reviewed Production is approved."
+      }
+    ]
+  },
+  "production": {
+    "boundaryTitle": "Configure freely. Nothing runs or costs money yet.",
+    "boundaryDetail": "Opening specialists, assigning sources, and saving settings only prepares this Production. Make Production first shows the exact routes, permissions, locality, and cost ceiling, then starts only the work you approve.",
+    "actorPresence": {
+      "person": ["Present", "Provides direction and Human approval. No Agent authority is implied."],
+      "actor:imagehoss": ["Demo ready", "Needs direction", "Image direction and deterministic studies are available. Real generation requires the authenticated local runtime."],
+      "actor:videoboss": ["Planning ready", "Needs setup", "Planning and deterministic takes are available. Real rendering requires a connected provider route."],
+      "actor:3d-bee": ["Planning ready", "Blender optional", "Scene planning and mock operations are available. Real 3D output requires the authenticated Blender runtime."],
+      "actor:project-composer": ["Ready to assemble", "Waiting for inputs", "Assembles accepted Production outputs and evidence without replacing specialist records."],
+      "actor:gummy-storage": ["Local Box ready", "Waiting for results", "Preserves sources, results, Returns, and Receipts in the Local Gummy Box."]
+    }
+  },
+  "glopper": {
+    "configured": "Glopper can guide you locally and propose bounded cloud work. Before execution, you see the provider, locality, permission scope, and cost ceiling.",
+    "unconfigured": "Glopper can guide and navigate locally. Cloud execution is not configured, so it will not claim that provider work is available.",
+    "emptyResults": "Results appear here after an authorized task or Production finishes. Creating and configuring a Production does not execute anything."
+  }
+}
