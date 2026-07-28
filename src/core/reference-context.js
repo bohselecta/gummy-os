@@ -55,7 +55,7 @@ export function clarifyPrivateReferenceContext(inputRuntime) {
   const hoyt = runtime.actors?.find(actor => actor.id === HOYT_REFERENCE_ACTOR_ID);
   if (hoyt) {
     update(hoyt, {
-      name: 'Hoyt — Ranch Day reference',
+      name: 'Hoyt — saved participant reference',
       kind: 'project-role',
       status: 'archived',
       humanAuthorityIds: [],
@@ -117,7 +117,7 @@ export function clarifyPrivateReferenceContext(inputRuntime) {
 
   const gummyLabels = {
     'gummy:ranch-day-source-brief': {
-      name: 'Saved reference · Ranch Day brief.md',
+      name: 'Saved reference · Ranch Day source brief.md',
       label: 'Private family reference brief'
     },
     'gummy:hoyt-likeness-approved': {
