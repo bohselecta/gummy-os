@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production-formation.schema.json",
+  "title": "Gummy Production Formation Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "sharedVisionId", "sharedVisionRevision", "productionId", "agreementId", "agreementRevision", "source", "initialActors", "initialSourceGummyIds", "formationMethod", "approvals", "receiptId", "createdAt"],
+  "properties": {
+    "schema": { "const": "gummy.production-formation/v1" },
+    "id": { "type": "string", "pattern": "^production-formation:" },
+    "sharedVisionId": { "type": "string", "pattern": "^shared-vision:" },
+    "sharedVisionRevision": { "type": "integer", "minimum": 1 },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "agreementId": { "type": "string", "pattern": "^production-agreement:" },
+    "agreementRevision": { "type": "integer", "minimum": 1 },
+    "productionPoolId": { "type": ["string", "null"], "pattern": "^production-pool:" },
+    "contributionLedgerId": { "type": ["string", "null"], "pattern": "^contribution-ledger:" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "enum": ["session", "social-instance", "bowl", "manual"] },
+        "id": { "type": "string", "minLength": 1 },
+        "recordRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "initialActors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "role"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "role": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "initialSourceGummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "initialCommitmentIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "formationMethod": { "enum": ["shared-vision-flow", "manual-from-session", "manual", "imported"] },
+    "approvals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "decision", "decidedAt"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "decision": { "const": "approve-formation" },
+          "decidedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "receiptId": { "type": "string", "pattern": "^receipt:" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}
