@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/place-binding.schema.json",
+  "title": "Gummy Place Binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "placeId",
+    "ownerActorId",
+    "contextType",
+    "contextId",
+    "externalInstanceRef",
+    "localProjectionRefs",
+    "permissionScopes",
+    "syncMode",
+    "connectionState",
+    "lastVerifiedAt",
+    "lastReceiptId",
+    "revoked"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.place-binding/v1" },
+    "id": { "type": "string", "pattern": "^place-binding:" },
+    "placeId": { "type": "string", "pattern": "^app:" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "contextType": { "enum": ["personal", "production", "session"] },
+    "contextId": { "type": "string", "minLength": 1 },
+    "externalInstanceRef": { "type": ["string", "null"] },
+    "localProjectionRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^place-projection:" },
+      "uniqueItems": true
+    },
+    "permissionScopes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "syncMode": { "enum": ["none", "manual", "pull", "push", "bidirectional"] },
+    "connectionState": {
+      "enum": [
+        "connected",
+        "disconnected",
+        "companion-required",
+        "runtime-required",
+        "service-required",
+        "staged",
+        "blocked",
+        "revoked"
+      ]
+    },
+    "lastVerifiedAt": { "type": ["string", "null"], "format": "date-time" },
+    "lastReceiptId": { "type": ["string", "null"] },
+    "revoked": { "type": "boolean" }
+  }
+}

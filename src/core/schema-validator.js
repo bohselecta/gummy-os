@@ -22,7 +22,11 @@ const schemaFiles = Object.freeze({
   'gummy.context-envelope/v0': 'context-envelope',
   'gummy.production-run/v0': 'production-run',
   'gummy.actor-update-proposal/v0': 'actor-update-proposal',
-  'gummy.drag-intent/v0': 'drag-intent'
+  'gummy.drag-intent/v0': 'drag-intent',
+  'gummy.place-binding/v1': 'place-binding',
+  'gummy.source-package/v1': 'source-package',
+  'gummy.place-handoff/v1': 'place-handoff',
+  'gummy.world-plan/v1': 'world-plan'
 });
 
 function validateNode(schema, value, path = '$') {

@@ -2,7 +2,7 @@ import { el, sectionHeading } from '../core/dom.js';
 
 export function createLauncherApp({ apps, openApp }) {
   const root = el('div');
-  root.append(sectionHeading('Applications', 'Everything in Gummy is a capability surface, not merely an icon.'));
+  root.append(sectionHeading('Places', 'Every Place has its own authority, context, and bounded capability surface.'));
   const grid = el('div', { class: 'app-grid' });
   for (const app of Object.values(apps).filter(item => item.id !== 'launcher')) {
     grid.append(el('button', { class: 'app-card', onclick: () => openApp(app.id) }, [

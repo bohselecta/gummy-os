@@ -6,8 +6,11 @@ const paths = [
   'src/apps/production.js',
   'src/apps/actor-surface.js',
   'src/apps/master-control.js',
+  'src/apps/places.js',
+  'src/places/place-doctrines.js',
   'public/registry/first-party-applications.json',
-  'public/registry/product-map.json'
+  'public/registry/product-map.json',
+  'public/registry/gummy-places.json'
 ];
 const text = (await Promise.all(paths.map(path => readFile(path, 'utf8')))).join('\n');
 const requirements = [
@@ -22,7 +25,14 @@ const requirements = [
   'Cancelled',
   'Provider outcome needs recovery',
   'Results are ready',
-  'Accepted'
+  'Accepted',
+  'Gummy Channels',
+  'Wardrobe',
+  'House',
+  'Worlds',
+  'Table',
+  'Radio',
+  'Only Places you pin appear in the Gummy Bar.'
 ];
 const missing = requirements.filter(value => !text.includes(value));
 if (missing.length) throw new Error(`Product copy audit missing: ${missing.join(', ')}`);

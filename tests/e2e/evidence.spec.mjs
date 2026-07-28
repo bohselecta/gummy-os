@@ -28,9 +28,10 @@ test('captures founder-review visual evidence', async ({ page }) => {
   await page.getByRole('button', { name: 'Close Glopper Panel' }).click();
   await page.screenshot({ path: evidencePath('day-canvas-bar.png'), fullPage: true });
   await expect(page.locator('html')).toHaveAttribute('data-gummy-mode', 'day');
-  await page.getByRole('tab', { name: /Applications/ }).click();
+  await page.getByRole('tab', { name: /Places/ }).click();
+  await expect(page.getByTestId('phase14-places').locator('[data-place-id]')).toHaveCount(6);
   await expect(page.getByTestId('first-party-applications').locator('[data-application-id]')).toHaveCount(4);
-  await page.screenshot({ path: evidencePath('full-product-applications.png'), fullPage: true });
+  await page.screenshot({ path: evidencePath('phase14-places.png'), fullPage: true });
   await page.getByRole('tab', { name: /My Gummies/ }).click();
   await page.locator('input[type="file"]').setInputFiles({ name: 'quarantine-proof.md', mimeType: 'text/markdown', buffer: Buffer.from('# quarantine proof') });
   await page.getByRole('button', { name: 'Deny promotion' }).click();
@@ -52,7 +53,8 @@ test('captures phone and reduced-motion evidence', async ({ page }) => {
   await expect(page.locator('.toast-layer .toast')).toHaveCount(0, { timeout: 6_000 });
   await page.getByAltText('Night Gummy Lantern Chamber').scrollIntoViewIfNeeded();
   await page.screenshot({ path: evidencePath('day-phone-brand.png'), fullPage: true });
-  await page.getByRole('tab', { name: /Applications/ }).click();
+  await page.getByRole('tab', { name: /Places/ }).click();
+  await expect(page.getByTestId('phase14-places').locator('[data-place-id]')).toHaveCount(6);
   await expect(page.getByTestId('first-party-applications').locator('[data-application-id]')).toHaveCount(4);
-  await page.screenshot({ path: evidencePath('full-product-applications-phone.png'), fullPage: true });
+  await page.screenshot({ path: evidencePath('phase14-places-phone.png'), fullPage: true });
 });

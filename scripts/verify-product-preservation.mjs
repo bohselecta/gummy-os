@@ -25,13 +25,37 @@ const requiredApplications = Object.freeze([
   ['app:3d-bee', 'bohselecta/3d-bee'],
   ['app:gummy-rooms', 'bohselecta/gummy2']
 ]);
+const requiredPhase14Places = Object.freeze([
+  ['app:gummy-channels', 'Gummy Channels', '@channels'],
+  ['app:gummy-wardrobe', 'Wardrobe', '@wardrobe'],
+  ['app:gummy-house', 'House', '@house'],
+  ['app:gummy-worlds', 'Worlds', '@worlds'],
+  ['app:gummy-table', 'Table', '@table'],
+  ['app:gummy-radio', 'Radio', '@radio']
+]);
 
-const [productMap, applicationRegistry, productSchema, applicationSchema, appSource, recordsSource, viteSource] = await Promise.all([
+const [
+  productMap,
+  applicationRegistry,
+  placeRegistry,
+  productSchema,
+  applicationSchema,
+  placeDescriptorSchema,
+  placeRegistrySchema,
+  appSource,
+  placesSource,
+  recordsSource,
+  viteSource
+] = await Promise.all([
   readFile('public/registry/product-map.json', 'utf8').then(JSON.parse),
   readFile('public/registry/first-party-applications.json', 'utf8').then(JSON.parse),
+  readFile('public/registry/gummy-places.json', 'utf8').then(JSON.parse),
   readFile('schemas/product-map.schema.json', 'utf8').then(JSON.parse),
   readFile('schemas/application-registry.schema.json', 'utf8').then(JSON.parse),
+  readFile('schemas/place-descriptor.schema.json', 'utf8').then(JSON.parse),
+  readFile('schemas/place-registry.schema.json', 'utf8').then(JSON.parse),
   readFile('src/app.js', 'utf8'),
+  readFile('src/apps/places.js', 'utf8'),
   readFile('src/core/records.js', 'utf8'),
   readFile('vite.config.js', 'utf8')
 ]);
@@ -40,8 +64,11 @@ const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats(ajv);
 const validateProductMap = ajv.compile(productSchema);
 const validateApplications = ajv.compile(applicationSchema);
+ajv.addSchema(placeDescriptorSchema);
+const validatePlaces = ajv.compile(placeRegistrySchema);
 assert.equal(validateProductMap(productMap), true, ajv.errorsText(validateProductMap.errors));
 assert.equal(validateApplications(applicationRegistry), true, ajv.errorsText(validateApplications.errors));
+assert.equal(validatePlaces(placeRegistry), true, ajv.errorsText(validatePlaces.errors));
 
 const pillarIds = productMap.pillars.map(pillar => pillar.id);
 assert.deepEqual(new Set(pillarIds), new Set(requiredPillars));
@@ -58,16 +85,30 @@ assert.equal(applications.get('app:imagehoss').connectionStatus, 'capability-req
 assert.equal(applications.get('app:3d-bee').connectionStatus, 'capability-required');
 assert.equal(applications.get('app:gummy-rooms').launchMode, 'unavailable');
 
-for (const surface of ["['actors', '◎', 'Actors / Bowls']", "['applications', '⌘', 'Applications']"]) {
+const places = new Map(placeRegistry.places.map(place => [place.id, place]));
+for (const [id] of requiredApplications) {
+  assert.ok(places.has(id), `${id} disappeared during the Application-to-Place migration`);
+}
+for (const [id, name, actorAddress] of requiredPhase14Places) {
+  assert.equal(places.get(id)?.name, name, `${id} Place name changed or disappeared`);
+  assert.equal(places.get(id)?.actorAddress, actorAddress, `${id} Actor address changed`);
+  assert.ok(places.get(id)?.producedPackages.includes('gummy.place-handoff/v1'), `${id} lost the Place handoff protocol`);
+}
+
+for (const surface of ["['actors', '◎', 'Actors / Bowls']", "['applications', '⌘', 'Places']"]) {
   assert.ok(appSource.includes(surface), `protected Gummy Bar surface disappeared: ${surface}`);
 }
-assert.match(appSource, /loadProductCatalog/);
-assert.match(appSource, /data.*applicationId|applicationId/);
+const placeUiSource = `${appSource}\n${placesSource}`;
+assert.match(placeUiSource, /loadPlaceCatalog/);
+assert.match(placeUiSource, /data.*applicationId|applicationId/);
+assert.match(placeUiSource, /data.*placeId|placeId/);
+assert.match(appSource, /placeWindowId/);
+assert.match(appSource, /place-pins:actor:hayden/);
 assert.equal(appSource.includes('Social, federation, enterprise expansion, and native distribution are not part of this build.'), false);
 assert.match(recordsSource, /localOperatorRecord/);
 assert.match(recordsSource, /agent:gummy-operator-local|LOCAL_OPERATOR_ID/);
 assert.match(viteSource, /registry\/\*\.json/);
-assert.match(viteSource, /gummy-product-registry-v1/);
+assert.match(viteSource, /gummy-product-registry-v2/);
 
 const protocolSchemaPaths = [
   'schemas/actor.schema.json',
@@ -85,7 +126,13 @@ const protocolSchemaPaths = [
   'schemas/app-pack.schema.json',
   'schemas/product-map.schema.json',
   'schemas/application-registry.schema.json',
-  'schemas/app-handoff.schema.json'
+  'schemas/app-handoff.schema.json',
+  'schemas/place-descriptor.schema.json',
+  'schemas/place-registry.schema.json',
+  'schemas/place-binding.schema.json',
+  'schemas/source-package.schema.json',
+  'schemas/place-handoff.schema.json',
+  'schemas/world-plan.schema.json'
 ];
 const protocolSchemaHashes = {};
 for (const path of protocolSchemaPaths) {
@@ -112,12 +159,15 @@ const report = {
   requiredPillars,
   visiblePillars: pillarIds,
   registryApplicationIds: [...applications.keys()],
+  registryPlaceIds: [...places.keys()],
+  phase14PlaceIds: requiredPhase14Places.map(([id]) => id),
   protectedGummyBarSurfaceIds: ['actors', 'applications'],
   brandMasterHashes: Object.fromEntries(sourceAssets.map(asset => [asset.source, asset.sha256])),
   protocolSchemaHashes,
   checkTotals: {
     protectedPillars: requiredPillars.length,
     firstPartyApplications: requiredApplications.length,
+    phase14Places: requiredPhase14Places.length,
     protectedBarSurfaces: 2,
     protocolSchemas: protocolSchemaPaths.length,
     brandMasters: sourceAssets.length
@@ -134,4 +184,4 @@ const report = {
 };
 await mkdir('artifacts', { recursive: true });
 await writeFile('artifacts/product-preservation-report.json', `${JSON.stringify(report, null, 2)}\n`);
-console.log(`Full-product preservation passed: ${requiredPillars.length} pillars, ${requiredApplications.length} first-party applications, ${protocolSchemaPaths.length} protocol schemas, ${sourceAssets.length} brand masters.`);
+console.log(`Full-product preservation passed: ${requiredPillars.length} pillars, ${requiredApplications.length} migrated products, ${requiredPhase14Places.length} Phase 14 Places, ${protocolSchemaPaths.length} protocol schemas, ${sourceAssets.length} brand masters.`);

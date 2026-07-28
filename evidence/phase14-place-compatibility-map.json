@@ -1,0 +1,24 @@
+{
+  "schema": "gummy.phase14-place-compatibility-map/v1",
+  "oldRegistry": "gummy.application-registry/v1",
+  "newRegistry": "gummy.place-registry/v1",
+  "readers": {
+    "gummy.app-handoff/v1": "preserved",
+    "gummy.place-handoff/v1": "preferred"
+  },
+  "preservedApplicationIds": [
+    "app:videoboss",
+    "app:imagehoss",
+    "app:3d-bee",
+    "app:gummy-rooms"
+  ],
+  "newPlaceIds": [
+    "app:gummy-channels",
+    "app:gummy-wardrobe",
+    "app:gummy-house",
+    "app:gummy-worlds",
+    "app:gummy-table",
+    "app:gummy-radio"
+  ],
+  "migrationRule": "Old IDs and envelopes remain readable; new user-facing surfaces use only current Place names."
+}
