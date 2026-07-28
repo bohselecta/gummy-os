@@ -244,3 +244,54 @@ test('feedback remote submission remains explicit and private-destination gated'
   assert.equal(blocked.code, 503);
   assert.match(blocked.body.message, /not configured/);
 });
+
+test('feedback token route is server-only, exact-repository scoped, and refuses a public destination', async () => {
+  const envelope = {
+    id: 'feedback:token-test',
+    category: 'bug',
+    note: 'A redacted test note.',
+    context: { buildCommit: 'abc', buildEnvironment: 'preview', surface: 'About' },
+    excluded: ['credentials'],
+    localReceiptId: 'receipt:token-test',
+    approvedAt: new Date().toISOString()
+  };
+  const requests = [];
+  const fetcher = async (url, options) => {
+    requests.push({ url, method: options.method, authorization: options.headers.authorization, body: options.body });
+    const issue = options.method === 'POST';
+    return {
+      ok: true,
+      status: issue ? 201 : 200,
+      json: async () => issue
+        ? { number: 12, html_url: 'https://github.com/owner/private/issues/12' }
+        : { private: true }
+    };
+  };
+  const result = await submitTesterFeedback(envelope, {
+    testMode: false,
+    environment: {
+      GUMMY_FEEDBACK_REPOSITORY: 'owner/private',
+      GUMMY_FEEDBACK_GITHUB_TOKEN: 'server-test-token'
+    },
+    fetcher
+  });
+  assert.equal(result.code, 200);
+  assert.equal(result.body.remoteId, '12');
+  assert.deepEqual(requests.map(item => [item.method, item.url]), [
+    ['GET', 'https://api.github.com/repos/owner/private'],
+    ['POST', 'https://api.github.com/repos/owner/private/issues']
+  ]);
+  assert.ok(requests.every(item => item.authorization === 'Bearer server-test-token'));
+  assert.doesNotMatch(requests[1].body, /server-test-token/);
+
+  const publicResult = await submitTesterFeedback(envelope, {
+    testMode: false,
+    environment: {
+      GUMMY_FEEDBACK_REPOSITORY: 'owner/public',
+      GUMMY_FEEDBACK_GITHUB_TOKEN: 'server-test-token'
+    },
+    fetcher: async () => ({ ok: true, status: 200, json: async () => ({ private: false }) })
+  });
+  assert.equal(publicResult.code, 422);
+  assert.match(publicResult.body.message, /must be private/);
+});

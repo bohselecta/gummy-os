@@ -70,7 +70,13 @@ export function createApiHandler() {
           csrf: session.csrf,
           githubConfigured: Boolean(process.env.GITHUB_APP_ID),
           openaiConfigured: Boolean(process.env.OPENAI_API_KEY),
-          feedbackConfigured: Boolean(process.env.GUMMY_FEEDBACK_REPOSITORY),
+          feedbackConfigured: Boolean(
+            process.env.GUMMY_FEEDBACK_REPOSITORY
+            && (
+              process.env.GUMMY_FEEDBACK_GITHUB_TOKEN
+              || (process.env.GITHUB_APP_ID && process.env.GITHUB_APP_PRIVATE_KEY)
+            )
+          ),
           signalingConfigured: Boolean(process.env.GUMMY_SIGNALING_URL),
           testMode: process.env.GUMMY_TEST_MODE === '1'
         }, { 'set-cookie': sessionCookie(session) });

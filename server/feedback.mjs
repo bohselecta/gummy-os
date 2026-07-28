@@ -15,23 +15,46 @@ const feedbackInput = z.object({
   approvedAt: z.string()
 });
 
-function configured() {
+function configured(environment = process.env) {
   return Boolean(
-    process.env.GITHUB_APP_ID
-    && process.env.GITHUB_APP_PRIVATE_KEY
-    && process.env.GUMMY_FEEDBACK_REPOSITORY
+    environment.GUMMY_FEEDBACK_REPOSITORY
+    && (
+      environment.GUMMY_FEEDBACK_GITHUB_TOKEN
+      || (environment.GITHUB_APP_ID && environment.GITHUB_APP_PRIVATE_KEY)
+    )
   );
 }
 
-async function installationClient(repository) {
+async function installationClient(repository, environment = process.env) {
   const [owner, repo] = repository.split('/');
   if (!owner || !repo) throw new Error('Feedback repository must be owner/repository.');
   const githubApp = new App({
-    appId: process.env.GITHUB_APP_ID,
-    privateKey: process.env.GITHUB_APP_PRIVATE_KEY.replace(/\\n/g, '\n')
+    appId: environment.GITHUB_APP_ID,
+    privateKey: environment.GITHUB_APP_PRIVATE_KEY.replace(/\\n/g, '\n')
   });
   const installation = await githubApp.octokit.request('GET /repos/{owner}/{repo}/installation', { owner, repo });
   return { owner, repo, client: await githubApp.getInstallationOctokit(installation.data.id) };
+}
+
+async function tokenRequest(path, {
+  method = 'GET',
+  body,
+  token,
+  fetcher = fetch
+}) {
+  const response = await fetcher(`https://api.github.com${path}`, {
+    method,
+    headers: {
+      authorization: `Bearer ${token}`,
+      accept: 'application/vnd.github+json',
+      'content-type': 'application/json',
+      'x-github-api-version': '2022-11-28'
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const data = await response.json();
+  if (!response.ok) throw Object.assign(new Error('Private feedback tracker request failed.'), { status: response.status });
+  return data;
 }
 
 export async function submitTesterFeedback(rawInput, options = {}) {
@@ -53,18 +76,39 @@ export async function submitTesterFeedback(rawInput, options = {}) {
       }
     };
   }
-  if (!configured()) {
+  const environment = options.environment || process.env;
+  if (!configured(environment)) {
     return { code: 503, body: { status: 'blocked', message: 'Private tester feedback destination is not configured.' } };
   }
-  const repository = process.env.GUMMY_FEEDBACK_REPOSITORY;
-  const { owner, repo, client } = await installationClient(repository);
-  const target = (await client.request('GET /repos/{owner}/{repo}', { owner, repo })).data;
+  const repository = environment.GUMMY_FEEDBACK_REPOSITORY;
+  const [owner, repo] = repository.split('/');
+  if (!owner || !repo) return { code: 422, body: { status: 'blocked', message: 'Private tester feedback destination is invalid.' } };
+  let target;
+  let createIssue;
+  if (environment.GUMMY_FEEDBACK_GITHUB_TOKEN) {
+    target = await tokenRequest(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`, {
+      token: environment.GUMMY_FEEDBACK_GITHUB_TOKEN,
+      fetcher: options.fetcher
+    });
+    createIssue = body => tokenRequest(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/issues`, {
+      method: 'POST',
+      body,
+      token: environment.GUMMY_FEEDBACK_GITHUB_TOKEN,
+      fetcher: options.fetcher
+    });
+  } else {
+    const installation = await installationClient(repository, environment);
+    target = (await installation.client.request('GET /repos/{owner}/{repo}', { owner, repo })).data;
+    createIssue = async body => (await installation.client.request('POST /repos/{owner}/{repo}/issues', {
+      owner,
+      repo,
+      ...body
+    })).data;
+  }
   if (!target.private) {
     return { code: 422, body: { status: 'blocked', message: 'Tester feedback destination must be private.' } };
   }
-  const issue = await client.request('POST /repos/{owner}/{repo}/issues', {
-    owner,
-    repo,
+  const issue = await createIssue({
     title: `[Tester feedback] ${input.category}`,
     body: [
       `Category: ${input.category}`,
@@ -84,8 +128,8 @@ export async function submitTesterFeedback(rawInput, options = {}) {
     body: {
       status: 'submitted',
       destination: repository,
-      remoteId: String(issue.data.number),
-      remoteUrl: issue.data.html_url
+      remoteId: String(issue.number),
+      remoteUrl: issue.html_url
     }
   };
 }
