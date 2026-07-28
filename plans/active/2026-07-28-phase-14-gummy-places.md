@@ -22,7 +22,8 @@ The activation comment supersedes the earlier review hold. Phase 13 is accepted.
 - [x] Add Gummy Channels, Wardrobe, House, Worlds, Table, and Radio surfaces.
 - [x] Add the four cross-Place journey previews.
 - [x] Automate doctrine, migration, privacy, approval, and non-simulation contracts.
-- [ ] Pass full desktop, phone, accessibility, security, production-build, and deployed-response gates.
+- [x] Pass full desktop, phone, accessibility, security, and production-build gates.
+- [ ] Pass deployed-response gates.
 - [ ] Record exact-head evidence, rollback, PR, deployment, and founder visual acceptance.
 
 ## Truthful capability state

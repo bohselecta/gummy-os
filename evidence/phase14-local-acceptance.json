@@ -1,0 +1,57 @@
+{
+  "schema": "gummy.phase14-local-acceptance/v1",
+  "issue": "https://github.com/bohselecta/gummy-os/issues/28",
+  "authorizationCommentId": 5100875881,
+  "implementationCommit": "ae9ad3f0347e228c815b028d059dccea1339c294",
+  "acceptedBaseAndRollbackCommit": "cb550d6520068784554ab1a8a025a713f3b1a4a8",
+  "verifiedAt": "2026-07-28T07:45:00.000Z",
+  "gates": {
+    "fullVerify": "PASS",
+    "unitAndContract": { "status": "PASS", "tests": 117 },
+    "browser": { "status": "PASS", "tests": 40, "engine": "Chromium" },
+    "desktop": "PASS",
+    "phone320pxReducedMotion": "PASS",
+    "accessibility": "PASS",
+    "performance": {
+      "status": "PASS",
+      "initialJavascriptBytes": 264376,
+      "totalJavascriptBytes": 307176,
+      "cssBytes": 40949,
+      "sourceMaps": 0
+    },
+    "security": {
+      "status": "PASS",
+      "sourceFilesScanned": 272,
+      "serverOnlyMarkers": 0
+    },
+    "productPreservation": {
+      "status": "PASS",
+      "protectedPillars": 8,
+      "migratedProducts": 4,
+      "phase14Places": 6,
+      "protocolSchemas": 22
+    }
+  },
+  "visualEvidence": [
+    {
+      "path": "evidence/visual/phase14/places-desktop-night.png",
+      "sha256": "8eaf6e0e4b13aaa2778ec91b4ed65e24fa29f93ca1498cc405c9ad465fbc9e87"
+    },
+    {
+      "path": "evidence/visual/phase14/places-phone-night.png",
+      "sha256": "e788ad3b323eeabd5758f117afbd9e69b4f5c6471ae64b436b966128489036ce"
+    },
+    {
+      "path": "evidence/visual/phase14/worlds-bounded-plan.png",
+      "sha256": "5cc89f17e0b04711df27915da73a64b99c1feb4d47f27f8027212c950178663a"
+    }
+  ],
+  "capabilityTruth": {
+    "fixtureBacked": ["app:gummy-channels", "app:gummy-wardrobe", "app:gummy-house", "app:gummy-table", "app:gummy-radio"],
+    "localRuntimeRequired": ["app:gummy-worlds"],
+    "liveExternalServicesClaimed": false
+  },
+  "founderVisualAcceptance": "PENDING",
+  "previewDeployment": "PENDING",
+  "productionPromotion": "BLOCKED_UNTIL_FOUNDER_VISUAL_ACCEPTANCE"
+}
