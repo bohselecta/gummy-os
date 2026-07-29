@@ -3,7 +3,7 @@
 **Date:** 2026-07-29  
 **Repository:** `bohselecta/gummy-os`  
 **Pull request:** [#42](https://github.com/bohselecta/gummy-os/pull/42)  
-**Status:** Founder-approved candidate; local release gates passed; hosted closure pending
+**Status:** Founder-approved, merged, and production verified
 
 ## Product outcome
 
@@ -48,7 +48,15 @@ a claim of patent registration, copyright registration, or legal adjudication.
 5. normal non-destructive `main` reconciliation:
    `6f19ee4cef327740e1e8cc93a83daaf9c6054de0`;
 6. locally verified authority repair:
-   `d3246881ea868f40b2b6cd8551902302ef0dba67`.
+   `d3246881ea868f40b2b6cd8551902302ef0dba67`;
+7. final candidate branch:
+   `bea69fd5587f30ce8eb78a805524049ff45ed699`;
+8. normal PR #42 merge:
+   `32abccb5736c31556570c413c3029ba3cabf7ae3`;
+9. public changelog asset repair:
+   `3ec043c4647c371d51b560cf58e5aefd8dfc2fb7`;
+10. production application source and deterministic persistence gate:
+    `ce48f42985994e7f898d4df49d232ed9f6277732`.
 
 No public or provenance commit was rebased, squashed, or force-replaced.
 
@@ -119,15 +127,41 @@ does not perform ambient localhost probing or automatic connection.
 
 ## Hosted closure and rollback
 
-GitHub Actions, preview identity, merged `main`, final production identity,
-post-alias endpoint hashes, and runtime-error inspection are deliberately not
-pre-claimed. They are resolved only after the exact final candidate is pushed
-and the hosted transaction completes.
+Hosted closure is complete:
 
-Until that closure is verified, rollback remains:
+- exact candidate verify: GitHub Actions `30442637600` — PASS;
+- exact candidate cross-browser: GitHub Actions `30442635848` — PASS;
+- exact candidate preview: `dpl_B868SWyvk4nvB5xziSrT8cKqf7Bg` — READY;
+- merged PR: #42, normal merge
+  `32abccb5736c31556570c413c3029ba3cabf7ae3`;
+- production application source:
+  `ce48f42985994e7f898d4df49d232ed9f6277732`;
+- exact production verify: GitHub Actions `30444188751` — PASS;
+- production deployment: `dpl_CKQ6MDpu1UsXMVZgupc1x9enEGQE` — READY;
+- production URL: <https://gummy-zdo7z1et7-mygummy.vercel.app>;
+- canonical URL: <https://www.mygum.my/>;
+- verified ready time: `2026-07-29T10:34:50.773Z`;
+- public smoke time: `2026-07-29T10:35:36.429Z`;
+- root, robots, sitemap, changelog, llms, JSON-LD, branded asset, and session
+  API returned 200;
+- apex root and query-bearing changelog redirects returned 308 to `www`;
+- an unknown route returned a genuine 404;
+- desktop and 320px browser checks passed with zero page/console errors;
+- Vercel reported zero runtime error clusters and zero error, warning, or fatal
+  logs for the final deployment.
+
+The exact response hashes and external hosted receipt are in
+`evidence/executive-convergence-production.json`.
+
+The tested historical rollback remains:
 
 - commit `b5b230fadce7bf337f14fccd262c584512841266`;
 - deployment `dpl_8AtyzBxFUHikmdWWi6EGHWZfFPw1`.
+
+The immediate pre-persistence-gate rollback is:
+
+- commit `3ec043c4647c371d51b560cf58e5aefd8dfc2fb7`;
+- deployment `dpl_EJCr4SJEMTwW37WwLYweXysN1rZN`.
 
 ## Truthful limitations
 
@@ -139,3 +173,11 @@ Until that closure is verified, rollback remains:
   Vitals.
 - External search results may retain stale “Ollama Chat Host” text until
   crawler re-indexing propagates.
+- The two Phase 15b live-bridge browser tests remain intentionally gated behind
+  separately configured live services.
+- No configured webmaster or indexing integration was present, so no
+  credentials or third-party trackers were added merely to request re-indexing.
+
+Issue #10 is closed as Founder Ready. Issue #36 remains open; live Phase 17 MCP
+execution, final live host/server compatibility, specialist adapters, and
+bounded MCP App Surfaces are not represented as released.

@@ -1,8 +1,8 @@
 {
   "schema": "gummy.executive-convergence-production/v1",
-  "revision": 1,
-  "status": "founder-approved-candidate-locally-verified",
-  "recordedAt": "2026-07-29T10:05:19Z",
+  "revision": 2,
+  "status": "founder-approved-merged-production-verified",
+  "recordedAt": "2026-07-29T10:38:22Z",
   "founderAuthor": "Hayden Lindley",
   "repository": "bohselecta/gummy-os",
   "pullRequest": {
@@ -44,9 +44,20 @@
     "startingBranchSha": "69b67a924d46a17eb852e04daec59c9776961bf7",
     "priorMergedPhase16Sha": "caa496a56bef499713b5dba90d355f8cdc729f05",
     "mainReconciliationMergeSha": "6f19ee4cef327740e1e8cc93a83daaf9c6054de0",
-    "verifiedCandidateSha": "d3246881ea868f40b2b6cd8551902302ef0dba67",
-    "finalCandidateBranchSha": "d3246881ea868f40b2b6cd8551902302ef0dba67",
-    "finalMergedMainSha": null
+    "verifiedCodeRepairSha": "d3246881ea868f40b2b6cd8551902302ef0dba67",
+    "finalCandidateBranchSha": "bea69fd5587f30ce8eb78a805524049ff45ed699",
+    "finalMergedMainSha": "32abccb5736c31556570c413c3029ba3cabf7ae3",
+    "productionApplicationSha": "ce48f42985994e7f898d4df49d232ed9f6277732",
+    "postMergeClosureCommits": [
+      {
+        "commit": "3ec043c4647c371d51b560cf58e5aefd8dfc2fb7",
+        "subject": "Repair public changelog brand asset"
+      },
+      {
+        "commit": "ce48f42985994e7f898d4df49d232ed9f6277732",
+        "subject": "Stabilize Composer persistence verification"
+      }
+    ]
   },
   "localVerification": {
     "status": "PASS",
@@ -160,35 +171,116 @@
     }
   ],
   "publicArtifactSourceHashes": {
-    "public/changelog.html": "2765b3b8c4a90863cea782af18bc5544bc5f8425e936632b8d551eaabcbf450b",
+    "public/changelog.html": "6ce803c7e7f92582ee233c3fb13c341e72b5babdf35329c5d9fd8e980f47b544",
     "public/robots.txt": "f563286ef3b211c92a3ab6e63d682b1e1ae7c13077099a45a837ef05e8e60370",
     "public/sitemap.xml": "9d5301749dcd4f20fb0d2fb9312c94b13de666afb65447ad069a4834aefea878",
     "public/llms.txt": "e1f15ee0a44a290e26eaf075436f322823caff792f21ddeb1a85b58ca7c77b3f",
     "public/software-application.jsonld": "1f4d2f13ba95ed3bdc4dc2e9d97ff6a65f7034e48b11f368c6848c197479357e"
   },
   "hostedClosure": {
-    "githubActionsRunIds": [],
-    "previewDeployment": null,
-    "mergedMainSha": null,
-    "productionDeploymentId": null,
-    "productionVerificationTime": null,
-    "canonicalEndpointResponses": null,
-    "runtimeErrorInspection": null,
-    "status": "pending-final-candidate-push"
+    "status": "PASS",
+    "githubActions": {
+      "candidateVerifyRunId": 30442637600,
+      "candidateDeepAcceptanceRunId": 30442635848,
+      "productionApplicationVerifyRunId": 30444188751,
+      "productionApplicationVerifyStatus": "success",
+      "productionApplicationVerifyCompletedAt": "2026-07-29T10:38:22Z"
+    },
+    "previewDeployment": {
+      "id": "dpl_B868SWyvk4nvB5xziSrT8cKqf7Bg",
+      "url": "https://gummy-d9vy9bnir-mygummy.vercel.app",
+      "sourceSha": "bea69fd5587f30ce8eb78a805524049ff45ed699",
+      "state": "READY"
+    },
+    "mergedMainSha": "32abccb5736c31556570c413c3029ba3cabf7ae3",
+    "productionApplicationSha": "ce48f42985994e7f898d4df49d232ed9f6277732",
+    "productionDeploymentId": "dpl_CKQ6MDpu1UsXMVZgupc1x9enEGQE",
+    "productionDeploymentUrl": "https://gummy-zdo7z1et7-mygummy.vercel.app",
+    "canonicalUrl": "https://www.mygum.my/",
+    "productionReadyAt": "2026-07-29T10:34:50.773Z",
+    "productionVerificationTime": "2026-07-29T10:35:36.429Z",
+    "canonicalEndpointResponses": {
+      "/": {
+        "status": 200,
+        "sha256": "02a9fe1efbaa447696e3c2ba9a6da7461e6b30f8deb0fb5f3e366d339d56fce2"
+      },
+      "/robots.txt": {
+        "status": 200,
+        "sha256": "f563286ef3b211c92a3ab6e63d682b1e1ae7c13077099a45a837ef05e8e60370"
+      },
+      "/sitemap.xml": {
+        "status": 200,
+        "sha256": "9d5301749dcd4f20fb0d2fb9312c94b13de666afb65447ad069a4834aefea878"
+      },
+      "/changelog": {
+        "status": 200,
+        "sha256": "2765b3b8c4a90863cea782af18bc5544bc5f8425e936632b8d551eaabcbf450b"
+      },
+      "/llms.txt": {
+        "status": 200,
+        "sha256": "e1f15ee0a44a290e26eaf075436f322823caff792f21ddeb1a85b58ca7c77b3f"
+      },
+      "/software-application.jsonld": {
+        "status": 200,
+        "sha256": "1f4d2f13ba95ed3bdc4dc2e9d97ff6a65f7034e48b11f368c6848c197479357e"
+      },
+      "/brand/gummy/web/gummy-lockup-horizontal.webp": {
+        "status": 200,
+        "sha256": "432c5d02332c23ea37bc4f544e603450e1048849975aeadcb6a9218ca630d8c9"
+      },
+      "/api/v1/session": {
+        "status": 200,
+        "cacheControl": "no-store",
+        "bodyHashRetained": false,
+        "reason": "The CSRF value is intentionally dynamic and was inspected without retaining its value."
+      },
+      "/definitely-not-a-gummy-route": {
+        "status": 404,
+        "sha256": "97eb5c811437058a8ba635fc20e020d0b93cb2559f8f5ebfc39f55efc2e41e5e"
+      },
+      "https://mygum.my/": {
+        "status": 308,
+        "location": "https://www.mygum.my/"
+      },
+      "https://mygum.my/changelog?source=release": {
+        "status": 308,
+        "location": "https://www.mygum.my/changelog?source=release"
+      }
+    },
+    "browserVerification": {
+      "desktop": "PASS",
+      "phone320px": "PASS",
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "changelogLogoNaturalSize": "768x512"
+    },
+    "runtimeErrorInspection": {
+      "window": "1h",
+      "errorClusters": 0,
+      "errorWarningFatalLogs": 0
+    },
+    "issueDisposition": {
+      "issue10": "closed-founder-ready",
+      "issue36": "open-live-mcp-disabled"
+    },
+    "externalAttestation": "https://github.com/bohselecta/gummy-os/pull/42#issuecomment-5116632493"
   },
   "rollback": {
     "commit": "b5b230fadce7bf337f14fccd262c584512841266",
     "deploymentId": "dpl_8AtyzBxFUHikmdWWi6EGHWZfFPw1",
     "canonicalUrl": "https://www.mygum.my/",
-    "verificationRequiredAfterRollback": true
+    "verificationRequiredAfterRollback": true,
+    "immediatePriorCommit": "3ec043c4647c371d51b560cf58e5aefd8dfc2fb7",
+    "immediatePriorDeploymentId": "dpl_EJCr4SJEMTwW37WwLYweXysN1rZN"
   },
   "limitations": [
     "Phase 17 live MCP execution is review-held and not enabled.",
     "Remote multi-Human presence, verified remote identity, live audio/video, real payment processing, final Radio voice, remote Channels publication, and authenticated native specialist services remain capability-specific and gated unless separately configured.",
     "Performance evidence is local Chromium lab evidence rather than field Core Web Vitals.",
     "The loopback CSP allowance remains a documented local-companion compatibility decision; the public app does not perform ambient localhost probing or automatic connection.",
-    "External search results may retain stale Ollama-host copy until crawler re-indexing propagates.",
-    "The final hosted identities are unresolved in this candidate record until the exact green branch is pushed, merged, deployed, and verified."
+    "External search results may retain stale Ollama-host copy until crawler re-indexing propagates; no configured webmaster or indexing service was available and no new credentials or trackers were added.",
+    "The two Phase 15b live-bridge browser tests remain intentionally gated because their separately configured live services are not part of the deterministic merge gate.",
+    "A source-controlled record cannot contain the commit and deployment identifiers created by publishing that same record. The exact production application pair is recorded here, and the later external PR receipt is the non-self-referential final hosted attestation."
   ],
   "legalBoundary": "This record preserves authorship, source lineage, public publication, technical verification, and rollback provenance. It does not claim patent registration, copyright registration, or legal adjudication."
 }

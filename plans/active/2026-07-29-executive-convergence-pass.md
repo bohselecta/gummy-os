@@ -2,7 +2,7 @@
 
 ## Status
 
-**ACTIVE / EXECUTIVE CONTROL TRANSFERRED FROM SUSPENDED CODEX RUN**
+**COMPLETE / FOUNDER-APPROVED MERGED PRODUCTION VERIFIED**
 
 This pass follows the founder-authorized protocol:
 
@@ -173,12 +173,12 @@ Composer remains the Human representation of the existing Actor Plan and Product
 - [x] complete Chromium browser suite — 62 passed, 2 gated live-bridge skips
 - [x] full-product preservation — 8 pillars, 4 products, 6 Places, 22 schemas, 8 brand masters
 - [x] bounded Chromium/Firefox/WebKit deep smoke — 3 passed
-- [ ] exact-head hosted preview
+- [x] exact-head hosted preview — `dpl_B868SWyvk4nvB5xziSrT8cKqf7Bg` / `bea69fd5587f30ce8eb78a805524049ff45ed699`
 - [x] rendered Gummy Box and Composer review — desktop and 320px evidence retained with SHA-256
-- [ ] crawler/static-route verification
-- [ ] merge exact accepted head
-- [ ] exact-commit production promotion
-- [ ] production verification
+- [x] crawler/static-route verification — root, robots, sitemap, changelog, llms, JSON-LD, API, redirects, and real 404 passed
+- [x] merge exact accepted head — normal merge `32abccb5736c31556570c413c3029ba3cabf7ae3`
+- [x] exact-commit production promotion — application source `ce48f42985994e7f898d4df49d232ed9f6277732`
+- [x] production verification — `dpl_CKQ6MDpu1UsXMVZgupc1x9enEGQE`, canonical aliases, desktop/320px, and runtime errors passed
 - [x] rollback record — `b5b230f` / `dpl_8AtyzBxFUHikmdWWi6EGHWZfFPw1`
 
 The branch must not be merged merely because its architecture is persuasive. The executable evidence must remain stronger than the prose.
@@ -186,5 +186,13 @@ The branch must not be merged merely because its architecture is persuasive. The
 Current machine-readable release transaction:
 `evidence/executive-convergence-production.json`.
 
-Current locally verified candidate:
-`d3246881ea868f40b2b6cd8551902302ef0dba67`.
+Final release identities:
+
+- candidate: `bea69fd5587f30ce8eb78a805524049ff45ed699`;
+- normal merge: `32abccb5736c31556570c413c3029ba3cabf7ae3`;
+- production application: `ce48f42985994e7f898d4df49d232ed9f6277732`;
+- production deployment: `dpl_CKQ6MDpu1UsXMVZgupc1x9enEGQE`;
+- exact production verify run: `30444188751`.
+
+Issue #10 is closed as Founder Ready. Issue #36 remains open and Phase 17 live
+MCP execution remains disabled.

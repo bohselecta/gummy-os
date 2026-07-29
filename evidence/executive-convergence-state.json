@@ -1,12 +1,12 @@
 {
   "schema": "gummy.executive-convergence-state/v1",
-  "status": "founder-approved-candidate-locally-verified",
+  "status": "founder-approved-merged-production-verified",
   "baseline": {
     "mainCommit": "caa496a56bef499713b5dba90d355f8cdc729f05",
     "productionPhase": "Phase 16 Living Collaboration"
   },
   "pullRequest": 42,
-  "branch": "agent/phase16-living-collaboration",
+  "branch": "main",
   "implemented": [
     "Human-owned Gummy Box launchpad",
     "goal-first visual Composer",
@@ -30,16 +30,24 @@
     "acceptance is not publication",
     "Phase 17 live MCP execution remains disabled"
   ],
-  "requiredBeforeMerge": [
+  "completedReleaseGates": [
     "complete deterministic verification — passed: 186 Node tests and 62 Chromium browser tests",
     "cross-browser deep acceptance — passed: Chromium, Firefox, and WebKit",
-    "exact-head Vercel preview",
-    "server route and metadata verification",
+    "exact-head Vercel preview — dpl_B868SWyvk4nvB5xziSrT8cKqf7Bg at bea69fd5587f30ce8eb78a805524049ff45ed699",
+    "server route and metadata verification — passed",
     "rendered desktop and phone evidence — passed and SHA-256 recorded",
-    "exact accepted-head merge and production verification"
+    "exact accepted-head normal merge — 32abccb5736c31556570c413c3029ba3cabf7ae3",
+    "production application verification — ce48f42985994e7f898d4df49d232ed9f6277732 / dpl_CKQ6MDpu1UsXMVZgupc1x9enEGQE",
+    "exact production GitHub Actions verification — run 30444188751 passed",
+    "Founder Ready issue closure — Issue #10 closed",
+    "Phase 17 boundary preserved — Issue #36 open"
   ],
-  "verifiedCandidate": {
-    "commit": "d3246881ea868f40b2b6cd8551902302ef0dba67",
+  "verifiedRelease": {
+    "candidateCommit": "bea69fd5587f30ce8eb78a805524049ff45ed699",
+    "mergeCommit": "32abccb5736c31556570c413c3029ba3cabf7ae3",
+    "productionApplicationCommit": "ce48f42985994e7f898d4df49d232ed9f6277732",
+    "productionDeploymentId": "dpl_CKQ6MDpu1UsXMVZgupc1x9enEGQE",
+    "productionVerifyRunId": 30444188751,
     "nodeTestsPassed": 186,
     "chromiumTestsPassed": 62,
     "chromiumTestsSkipped": 2,
@@ -52,5 +60,5 @@
     "productionEvidence": "evidence/executive-convergence-production.json",
     "releaseDocument": "docs/release/EXECUTIVE-CONVERGENCE-2026-07-29.md"
   },
-  "recordedAt": "2026-07-29T10:05:19.000Z"
+  "recordedAt": "2026-07-29T10:38:22.000Z"
 }
