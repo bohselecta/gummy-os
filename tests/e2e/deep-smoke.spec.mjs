@@ -28,7 +28,7 @@ test('Human-owned workspace and goal-first Composer survive a cross-browser retu
 
   const starter = composer.locator('.composer-starter-card').filter({ hasText: 'Research and make a brief' });
   await starter.getByRole('button', { name: 'Use this pattern' }).click();
-  await expect(composer.locator('[data-node-id]').filter({ hasText: 'Glopper' })).toBeVisible();
+  await expect(composer.locator('[data-node-id]').filter({ hasText: 'Cross Browser Tester' })).toBeVisible();
   await expect(composer.locator('[data-node-id]').filter({ hasText: 'Human reviews the result' })).toBeVisible();
   await expect(composer.getByTestId('composer-impact')).toContainText('Proposal only');
   await expect(composer.getByRole('button', { name: /Make Production/ })).toHaveCount(0);
@@ -36,5 +36,5 @@ test('Human-owned workspace and goal-first Composer survive a cross-browser retu
   await page.reload();
   await page.getByRole('tab', { name: 'Composer' }).click();
   await expect(page.getByTestId('composer-brief').getByLabel('Desired result')).toHaveValue('Create a cited private brief.');
-  await expect(page.getByTestId('composer-surface').locator('[data-node-id]').filter({ hasText: 'Glopper' })).toBeVisible();
+  await expect(page.getByTestId('composer-surface').locator('[data-node-id]').filter({ hasText: 'Cross Browser Tester' })).toBeVisible();
 });
