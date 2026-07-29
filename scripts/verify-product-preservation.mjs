@@ -95,7 +95,10 @@ for (const [id, name, actorAddress] of requiredPhase14Places) {
   assert.ok(places.get(id)?.producedPackages.includes('gummy.place-handoff/v1'), `${id} lost the Place handoff protocol`);
 }
 
-for (const surface of ["['actors', '◎', 'Actors / Bowls']", "['applications', '⌘', 'Places']"]) {
+for (const surface of [
+  "['actors', '◎', 'People & groups', 'People & groups · Actors / Bowls']",
+  "['applications', '◌', 'Places']"
+]) {
   assert.ok(appSource.includes(surface), `protected Gummy Bar surface disappeared: ${surface}`);
 }
 const placeUiSource = `${appSource}\n${placesSource}`;

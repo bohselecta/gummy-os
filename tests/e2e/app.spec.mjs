@@ -97,7 +97,7 @@ test('onboarding, Night/Day continuity, Canvas windows, Bar keyboard, and access
   await expect(page.getByRole('tab', { name: /Glopper/ })).toBeVisible();
   await page.getByRole('tab', { name: /My Gummies/ }).focus();
   await page.keyboard.press('ArrowRight');
-  await expect(page.getByRole('tab', { name: /Browser/ })).toBeFocused();
+  await expect(page.getByRole('tab', { name: 'Composer' })).toBeFocused();
   await page.getByRole('tab', { name: /My Gummies/ }).click();
   await expect(page.getByRole('region', { name: 'My Gummies window' })).toBeVisible();
   await page.reload();
@@ -296,11 +296,13 @@ test('phone Glopper panel is a full-height sheet and 320px layout remains operab
   const guideBox = await phoneGuide.boundingBox();
   expect(guideBox.y).toBeGreaterThanOrEqual(56);
   expect(guideBox.y + guideBox.height).toBeLessThanOrEqual(638);
-  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   const panel = page.getByRole('complementary', { name: 'Glopper Panel' });
   await expect(panel).toBeVisible();
   const box = await panel.boundingBox();
   expect(box.width).toBe(320);
   expect(box.y).toBeLessThanOrEqual(60);
+  await page.getByRole('button', { name: 'Close Glopper Panel' }).click();
+  await page.getByRole('button', { name: 'More / System' }).click();
   await expect(page.getByRole('tab', { name: /Work Orders/ })).toBeVisible();
 });

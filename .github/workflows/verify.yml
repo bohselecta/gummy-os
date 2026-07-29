@@ -23,9 +23,9 @@ jobs:
       - name: Run complete verification and retain log
         shell: bash
         run: |
-          mkdir -p artifacts
+          mkdir -p artifacts/evidence
           set -o pipefail
-          npm run verify 2>&1 | tee artifacts/verify.log
+          GUMMY_EVIDENCE_DIR=artifacts/evidence npm run verify 2>&1 | tee artifacts/verify.log
       - uses: actions/upload-artifact@v7
         if: always()
         with:

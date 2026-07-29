@@ -12,7 +12,7 @@
       "type": "object",
       "required": ["kind", "id"],
       "properties": {
-        "kind": { "enum": ["actor", "gummy", "production", "configuration", "plan-node"] },
+        "kind": { "enum": ["actor", "gummy", "production", "composition", "configuration", "plan-node", "place", "shared-vision", "review-gate", "destination", "composition-node"] },
         "id": { "type": "string" }
       },
       "additionalProperties": false
@@ -21,7 +21,7 @@
       "type": "object",
       "required": ["kind", "id"],
       "properties": {
-        "kind": { "enum": ["actor", "gummy", "production", "configuration", "plan", "plan-node"] },
+        "kind": { "enum": ["actor", "gummy", "production", "configuration", "plan", "plan-node", "composition", "composition-node", "lane"] },
         "id": { "type": "string" }
       },
       "additionalProperties": false

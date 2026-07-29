@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/production-composition.schema.json",
+  "title": "Gummy OS Production Composition",
+  "description": "The Human-editable visual representation of a Production. It links canonical objects and never executes work.",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "revision",
+    "ownerActorId",
+    "nodes",
+    "edges",
+    "sourceObjects",
+    "destinationPlans",
+    "readiness",
+    "provenance",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.production-composition/v1" },
+    "id": { "type": "string", "pattern": "^composition:" },
+    "title": { "type": "string", "minLength": 1 },
+    "revision": { "type": "string", "minLength": 1 },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "productionId": { "type": ["string", "null"], "pattern": "^production:" },
+    "brief": {
+      "type": "object",
+      "description": "Human-readable outcome framing. This is intent context, not execution authority.",
+      "required": ["goal", "audience", "successCriteria", "constraints", "starterId", "updatedAt"],
+      "properties": {
+        "goal": { "type": "string" },
+        "audience": { "type": "string" },
+        "successCriteria": { "type": "string" },
+        "constraints": { "type": "string" },
+        "starterId": { "type": ["string", "null"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "ref", "label", "lane", "position", "optional", "availability"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^composition-node:" },
+          "ref": {
+            "type": "object",
+            "required": ["kind", "id"],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "actor",
+                  "gummy",
+                  "place",
+                  "production",
+                  "composition",
+                  "shared-vision",
+                  "review-gate",
+                  "destination"
+                ]
+              },
+              "id": { "type": "string", "minLength": 1 },
+              "revision": { "type": ["string", "null"] },
+              "hash": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          },
+          "label": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "lane": {
+            "enum": [
+              "inputs",
+              "people-tools",
+              "steps-connections",
+              "review-approval",
+              "destinations"
+            ]
+          },
+          "position": {
+            "type": "object",
+            "required": ["x", "y", "order"],
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "order": { "type": "integer", "minimum": 0 }
+            },
+            "additionalProperties": false
+          },
+          "optional": { "type": "boolean" },
+          "availability": {
+            "type": "object",
+            "required": ["state", "reason"],
+            "properties": {
+              "state": { "enum": ["available", "planned", "blocked", "unavailable"] },
+              "reason": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "fromNodeId",
+          "toNodeId",
+          "edgeType",
+          "dataClasses",
+          "approvalRule",
+          "optional"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^composition-edge:" },
+          "fromNodeId": { "type": "string", "pattern": "^composition-node:" },
+          "toNodeId": { "type": "string", "pattern": "^composition-node:" },
+          "edgeType": {
+            "enum": [
+              "setup",
+              "context",
+              "input",
+              "execution",
+              "review",
+              "approval",
+              "storage",
+              "publication"
+            ]
+          },
+          "dataClasses": { "type": "array", "items": { "type": "string" } },
+          "approvalRule": { "type": "string" },
+          "optional": { "type": "boolean" },
+          "sourceIntentId": { "type": "string", "pattern": "^drag-intent:" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "sourceObjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "revision", "hash"],
+        "properties": {
+          "id": { "type": "string" },
+          "revision": { "type": ["string", "null"] },
+          "hash": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "destinationPlans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["nodeId", "type", "status"],
+        "properties": {
+          "nodeId": { "type": "string", "pattern": "^composition-node:" },
+          "type": { "type": "string" },
+          "status": { "enum": ["planned", "available", "blocked", "prepared", "approved", "released", "published"] },
+          "distributionPlanId": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["state", "blockers", "warnings"],
+      "properties": {
+        "state": { "enum": ["draft", "needs-input", "needs-permission", "blocked", "ready-to-apply", "applied"] },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "linkedActorPlan": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^actor-plan:" },
+        "revision": { "type": "string" }
+      },
+      "required": ["id", "revision"],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["createdByActorId", "source", "compiler"],
+      "properties": {
+        "createdByActorId": { "type": "string", "pattern": "^actor:" },
+        "source": { "enum": ["blank", "production", "duplicate", "template"] },
+        "sourceCompositionId": { "type": ["string", "null"] },
+        "compiler": { "const": "gummy.composer/v1" }
+      },
+      "additionalProperties": true
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "appliedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "additionalProperties": true
+}

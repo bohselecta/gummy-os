@@ -1,0 +1,46 @@
+name: deep-acceptance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 10 * * 2'
+  pull_request:
+    paths:
+      - '.github/workflows/deep-acceptance.yml'
+      - 'playwright.deep.config.js'
+      - 'tests/e2e/deep-smoke.spec.mjs'
+      - 'package.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deep-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cross-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Run bounded cross-browser workspace acceptance
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          set -o pipefail
+          npm run test:deep 2>&1 | tee artifacts/deep-acceptance.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gummy-deep-acceptance
+          path: |
+            artifacts/deep-acceptance.log
+            artifacts/playwright-deep-report
+            artifacts/deep-test-results

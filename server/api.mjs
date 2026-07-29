@@ -45,8 +45,8 @@ function sameOrigin(request) {
   return origin === `http://${request.headers.host}` || origin === `https://${request.headers.host}`;
 }
 
-function rateAllowed(request) {
-  const key = request.socket.remoteAddress || 'unknown';
+function rateAllowed(request, scope) {
+  const key = `${request.socket.remoteAddress || 'unknown'}:${scope}`;
   const current = limits.get(key) || { count: 0, reset: Date.now() + 60_000 };
   if (current.reset <= Date.now()) Object.assign(current, { count: 0, reset: Date.now() + 60_000 });
   current.count += 1;
@@ -61,9 +61,13 @@ export function createApiHandler() {
     let status = 200;
     let event = 'api';
     try {
-      if (!sameOrigin(request)) return send(response, 403, { status: 'blocked', message: 'Origin rejected.' });
-      if (!rateAllowed(request)) return send(response, 429, { status: 'blocked', message: 'Rate limit exceeded.' });
       const url = new URL(request.url, `http://${request.headers.host}`);
+      if (!sameOrigin(request)) return send(response, 403, { status: 'blocked', message: 'Origin rejected.' });
+      // Session bootstrap is a read-only local capability disclosure. It must not make the app
+      // appear offline merely because many independent browser contexts start in one test minute.
+      if (!(request.method === 'GET' && url.pathname === '/api/v1/session') && !rateAllowed(request, `${request.method}:${url.pathname}`)) {
+        return send(response, 429, { status: 'blocked', message: 'Rate limit exceeded.' });
+      }
       if (request.method === 'GET' && url.pathname === '/api/v1/session') {
         const session = sessionFrom(request) || newSession();
         return send(response, 200, {

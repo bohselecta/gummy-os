@@ -19,6 +19,7 @@ const schemaFiles = Object.freeze({
   'gummy.production-actor-configuration/v0': 'production-actor-configuration',
   'gummy.actor-app-descriptor/v0': 'actor-app-descriptor',
   'gummy.actor-plan/v0': 'actor-plan',
+  'gummy.production-composition/v1': 'production-composition',
   'gummy.context-envelope/v0': 'context-envelope',
   'gummy.production-run/v0': 'production-run',
   'gummy.actor-update-proposal/v0': 'actor-update-proposal',

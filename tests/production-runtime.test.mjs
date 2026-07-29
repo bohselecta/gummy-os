@@ -612,7 +612,9 @@ test('native invocation is denied without explicit Bridge, Mold, Lease, and Gran
 test('Production runtime seed is deterministic and records non-destructive migration intent', () => {
   const first = createInitialProductionRuntime();
   const second = createInitialProductionRuntime();
-  assert.equal(first.version, 2);
+  assert.equal(first.version, 3);
   assert.equal(first.migrationLog[0].preservesLegacyState, true);
+  assert.equal(first.migrationLog.at(-1).id, 'migration:production-composition-v1');
+  assert.deepEqual(first.compositions, []);
   assert.deepEqual(second, first);
 });

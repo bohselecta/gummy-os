@@ -17,23 +17,37 @@ function h(tag, props = {}, children = []) {
 }
 
 function actorWindowContent(actor, presence) {
+  const operator = presence.operator || {};
   return h('div', { class: 'social-actor-window', dataset: { actorId: actor.id } }, [
-    h('p', { class: 'eyebrow', text: 'ACTOR PRESENCE · LOCAL PROOF' }),
+    h('p', { class: 'eyebrow', text: 'ACTOR PRESENCE · LOCAL EXAMPLE' }),
     h('h2', { text: actor.name }),
+    h('p', { text: actor.role }),
+    h('span', { class: 'status', text: presence.state.replaceAll('-', ' ') }),
     h('p', { class: 'lede', text: presence.disclosure }),
-    h('dl', { class: 'facts' }, [
-      h('dt', { text: 'Actor' }),
-      h('dd', { text: actor.id }),
-      h('dt', { text: 'Role' }),
-      h('dd', { text: actor.role }),
-      h('dt', { text: 'Presence' }),
-      h('dd', { text: presence.state.replaceAll('-', ' ') }),
-      h('dt', { text: 'Operator' }),
-      h('dd', { text: presence.operator?.operatorId || 'none' }),
-      h('dt', { text: 'Authority' }),
-      h('dd', { text: presence.operator?.grantId || 'No representation Grant' }),
-      h('dt', { text: 'Media' }),
-      h('dd', { text: 'Local fixture text only' })
+    h('p', { text: presence.state === 'offline' ? 'Possible here: leave a local message.' : 'Possible here: use the local text thread.' }),
+    presence.state === 'ai-represented'
+      ? h('p', { class: 'boundary-note compact', text: 'AI represented · explicitly disclosed and Human-revocable.' })
+      : null,
+    h('details', {}, [
+      h('summary', { text: 'Show system details' }),
+      h('dl', { class: 'facts' }, [
+        h('dt', { text: 'Actor ID' }),
+        h('dd', { text: actor.id }),
+        h('dt', { text: 'Operator / Agent' }),
+        h('dd', { text: operator.operatorId || 'none' }),
+        h('dt', { text: 'Mold' }),
+        h('dd', { text: operator.moldId || 'none' }),
+        h('dt', { text: 'Grant' }),
+        h('dd', { text: operator.grantId || 'No representation Grant' }),
+        h('dt', { text: 'Sponsor' }),
+        h('dd', { text: operator.sponsorHumanId || 'none' }),
+        h('dt', { text: 'Expiry / revocation' }),
+        h('dd', { text: presence.revokedAt ? `revoked ${presence.revokedAt}` : presence.expiresAt || 'not expiring' }),
+        h('dt', { text: 'Locality and runtime' }),
+        h('dd', { text: 'This browser · deterministic local example · no remote runtime claimed' }),
+        h('dt', { text: 'Media' }),
+        h('dd', { text: 'Local example text only' })
+      ])
     ]),
     h('p', {
       class: 'boundary-note compact',
@@ -59,11 +73,13 @@ async function threadWindowContent(repository, social) {
       return h('li', { class: message.selectedForSharedVision ? 'is-selected' : 'is-excluded' }, [
         h('strong', { text: actor?.name || message.senderActorId }),
         h('p', { text: message.text }),
-        h('small', {
-          text: message.selectedForSharedVision
-            ? `Selected provenance · ${message.id}@${message.revision}`
-            : `Explicitly excluded · ${message.id}@${message.revision}`
-        })
+        h('small', { text: message.selectedForSharedVision ? 'Included in the idea' : 'Kept private' }),
+        h('details', {}, [
+          h('summary', { text: 'Show provenance' }),
+          h('small', {
+            text: `${message.id}@${message.revision} · sha256:${message.hash}${message.selectedForSharedVision ? '' : ' · Canonical selection state: Explicitly excluded'}`
+          })
+        ])
       ]);
     })),
     h('p', { class: 'boundary-note compact', text: social.resumeInstructions })

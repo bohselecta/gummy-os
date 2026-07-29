@@ -18,6 +18,7 @@ import {
   PRODUCTION_RUNTIME_INDEX_ID,
   ProductionRuntimeRepository
 } from '../src/core/production-repository.js';
+import { ensureProductionComposition } from '../src/core/production-composition.js';
 
 class MemoryByteStore {
   constructor() {
@@ -80,6 +81,8 @@ test('Production state restarts from IndexedDB and OPFS with isolated configurat
   })).runtime;
 
   runtime = compileActorPlan(runtime, ranch.production.id).runtime;
+  const composed = ensureProductionComposition(runtime, ranch.production.id);
+  runtime = composed.runtime;
   const completed = await makeProduction(runtime, ranch.production.id, { approvedBy: 'human:hayden' });
   assert.equal(completed.denied, undefined);
   await first.persist(completed.runtime);
@@ -109,6 +112,10 @@ test('Production state restarts from IndexedDB and OPFS with isolated configurat
   assert.ok(restored.grants.some(item => item.id === run.grantIds[0]));
   assert.ok(restored.returns.some(item => run.returnIds.includes(item.id) && item.result === 'completed'));
   assert.ok(restored.receipts.some(item => item.productionRunId === run.id && item.outcome === 'completed'));
+  const restoredComposition = restored.compositions.find(item => item.id === composed.composition.id);
+  assert.equal(restoredComposition.schema, 'gummy.production-composition/v1');
+  assert.equal(restoredComposition.productionId, ranch.production.id);
+  assert.ok(restoredComposition.nodes.length > 0);
 
   const source = restored.gummies.find(item => item.id === 'gummy:ranch-day-source-brief');
   const result = restored.gummies.find(item => run.resultGummyIds.includes(item.id));

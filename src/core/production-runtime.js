@@ -4,7 +4,7 @@ import { migrateMeshmallowConfiguration } from '../integrations/meshmallow.js';
 
 export const PRODUCTION_SCHEMA = 'gummy.production/v0';
 export const PRODUCTION_RUN_SCHEMA = 'gummy.production-run/v0';
-export const PRODUCTION_STATE_VERSION = 2;
+export const PRODUCTION_STATE_VERSION = 3;
 
 const now = () => new Date().toISOString();
 const uid = prefix => `${prefix}:${crypto.randomUUID()}`;
@@ -37,7 +37,10 @@ const dragUtilityByAction = Object.freeze({
   'plan-edge': 'gummy.utility.deliver',
   'preservation-policy': 'gummy.utility.deliver',
   'copy-configuration': 'gummy.utility.setup',
-  'plan-reorder': 'gummy.utility.setup'
+  'plan-reorder': 'gummy.utility.setup',
+  'composition-add': 'gummy.utility.attach',
+  'composition-move': 'gummy.utility.setup',
+  'composition-connect': 'gummy.utility.deliver'
 });
 
 const serviceDefinitions = [
@@ -365,6 +368,7 @@ export function createInitialProductionRuntime() {
     productions: [],
     participants: [],
     configurations: [],
+    compositions: [],
     actorPlans: [],
     contextEnvelopes: [],
     productionRuns: [],
@@ -454,6 +458,14 @@ export function createInitialProductionRuntime() {
       status: 'applied',
       preservesLegacyState: true,
       appliedAt: '2026-07-26T12:00:00.000Z'
+    }, {
+      id: 'migration:production-composition-v1',
+      from: 2,
+      to: 3,
+      status: 'applied',
+      preservesLegacyState: true,
+      addedCollection: 'compositions',
+      appliedAt: '2026-07-29T12:00:00.000Z'
     }]
   };
 }

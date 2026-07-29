@@ -1,0 +1,194 @@
+{
+  "schema": "gummy.executive-convergence-production/v1",
+  "revision": 1,
+  "status": "founder-approved-candidate-locally-verified",
+  "recordedAt": "2026-07-29T10:05:19Z",
+  "founderAuthor": "Hayden Lindley",
+  "repository": "bohselecta/gummy-os",
+  "pullRequest": {
+    "number": 42,
+    "url": "https://github.com/bohselecta/gummy-os/pull/42"
+  },
+  "founderDecision": {
+    "statement": "Promoted to production for IP protection purposes. It is moving fast, and I am staying as far ahead as I can. Approved for now.",
+    "interpretation": [
+      "The currently deployed product direction is founder-approved.",
+      "No additional visual approval round is required for this cleanup.",
+      "Deterministic verification, exact-state evidence, security, rollback, and production smoke remain required.",
+      "This record is authorship, publication, and technical provenance evidence; it is not a claim of patent registration, copyright registration, or legal adjudication."
+    ]
+  },
+  "interimPublicPublication": {
+    "status": "founder-approved-interim-publication",
+    "commit": "b5b230fadce7bf337f14fccd262c584512841266",
+    "deploymentId": "dpl_8AtyzBxFUHikmdWWi6EGHWZfFPw1",
+    "originalPreviewDeploymentId": "dpl_8J3DjUMhbVToUKZ1w1Sfhe53gDyN",
+    "deploymentUrl": "https://gummy-dqxcqv4vu-mygummy.vercel.app",
+    "canonicalUrl": "https://www.mygum.my/",
+    "publishedAt": "2026-07-29T08:56:51Z",
+    "deploymentState": "READY",
+    "rollbackCapable": true
+  },
+  "postPublicationCorrections": [
+    {
+      "commit": "3b14f90e845d69ceb8c0dc8cb330d20392a2e7d4",
+      "subject": "Recognize hashed external Gummy Box references in Composer readiness"
+    },
+    {
+      "commit": "69b67a924d46a17eb852e04daec59c9776961bf7",
+      "subject": "Avoid duplicate launchpad labels while preserving exact object actions"
+    }
+  ],
+  "sourceLineage": {
+    "startingBranch": "agent/phase16-living-collaboration",
+    "startingBranchSha": "69b67a924d46a17eb852e04daec59c9776961bf7",
+    "priorMergedPhase16Sha": "caa496a56bef499713b5dba90d355f8cdc729f05",
+    "mainReconciliationMergeSha": "6f19ee4cef327740e1e8cc93a83daaf9c6054de0",
+    "verifiedCandidateSha": "d3246881ea868f40b2b6cd8551902302ef0dba67",
+    "finalCandidateBranchSha": "d3246881ea868f40b2b6cd8551902302ef0dba67",
+    "finalMergedMainSha": null
+  },
+  "localVerification": {
+    "status": "PASS",
+    "completedAt": "2026-07-29T10:00:00Z",
+    "cleanInstall": {
+      "command": "npm ci",
+      "packages": 377,
+      "vulnerabilities": 0
+    },
+    "check": {
+      "status": "PASS",
+      "finishKitFiles": 11,
+      "finishKitPhases": 10,
+      "finishKitGates": 19
+    },
+    "nodeTests": {
+      "command": "npm test",
+      "passed": 186,
+      "failed": 0,
+      "skipped": 0
+    },
+    "chromiumE2E": {
+      "command": "npm run test:e2e",
+      "passed": 62,
+      "failed": 0,
+      "skipped": 2,
+      "skipReason": "The two Phase 15b live-bridge tests require separately configured live services and remain intentionally gated."
+    },
+    "deepAcceptance": {
+      "command": "npm run test:deep",
+      "chromiumPassed": 1,
+      "firefoxPassed": 1,
+      "webkitPassed": 1,
+      "failed": 0
+    },
+    "aggregate": {
+      "command": "npm run verify",
+      "status": "PASS"
+    },
+    "accessibility": {
+      "status": "PASS",
+      "criticalOrSeriousViolations": 0,
+      "coverage": "Night/Day, limited-motion, desktop, tablet, and 320px phone"
+    },
+    "securityAudit": {
+      "command": "npm run security:audit",
+      "status": "PASS",
+      "sourceFilesScanned": 374,
+      "sourceMaps": 0,
+      "serverOnlyMarkers": 0
+    },
+    "dependencyAudit": {
+      "command": "npm audit --audit-level=moderate",
+      "status": "PASS",
+      "vulnerabilities": 0
+    },
+    "bundleBytes": {
+      "javascriptTotal": 505976,
+      "javascriptInitial": 253663,
+      "phase16LazyJavascript": 59809,
+      "composerLazyJavascript": 61694,
+      "gummyBoxLazyJavascript": 16580,
+      "css": 60834
+    },
+    "productPreservation": {
+      "status": "PASS",
+      "pillars": 8,
+      "migratedProducts": 4,
+      "phase14Places": 6,
+      "protocolSchemas": 22,
+      "brandMasters": 8
+    },
+    "patchHygiene": {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  },
+  "architectureBoundaries": [
+    "Composer edits are proposal-only and explicitly report executed: false.",
+    "Master Control remains the authority surface.",
+    "Make Production remains the sole Production-wide execution transition.",
+    "Actor, Agent, and Human identities remain distinct.",
+    "Completion is not Human acceptance.",
+    "Acceptance is not publication.",
+    "Phase 17 live MCP execution remains disabled and Issue #36 remains open."
+  ],
+  "retainedEvidence": [
+    {
+      "path": "evidence/visual/phase16-founder-gate/first-run-workspace-phone-320.png",
+      "sha256": "d5cfeb510256f90369cbd61f387bfed6f1b4082847d359ea753eacd73ae73fc2"
+    },
+    {
+      "path": "evidence/visual/phase16-founder-gate/gummy-box-desktop.png",
+      "sha256": "157c87034eafe3416362c23259700675007c33ca014141a0e62681c9500905e3"
+    },
+    {
+      "path": "evidence/visual/phase16-founder-gate/composer-populated-desktop.png",
+      "sha256": "8e9540888b8af0ca3df0e352deb29c7c3eacbe19814ad999d1992e51c52524c0"
+    },
+    {
+      "path": "evidence/visual/phase16-founder-gate/composer-populated-phone-320.png",
+      "sha256": "b8b12b51b08240decb6f9111d8d6110f63ccc14cf9daf1cb777f4c6d2f72fe65"
+    },
+    {
+      "path": "evidence/visual/phase16-founder-gate/production-linked-composer-desktop.png",
+      "sha256": "b8ee1c3b6b534f348642098bff20e064ae3afc3547115a633865fb1acb30e775"
+    },
+    {
+      "path": "evidence/visual/phase16-founder-gate/production-linked-composer-phone-320.png",
+      "sha256": "63cc40a8eb46e5209f27e4e6a51b9dfae67e6f6b84dda552ce80c9ae1fc51bc5"
+    }
+  ],
+  "publicArtifactSourceHashes": {
+    "public/changelog.html": "46d59208fa481d3ed0ff6f88cb098a5353e33fa31fe3d6afd0102922e28b7e23",
+    "public/robots.txt": "f563286ef3b211c92a3ab6e63d682b1e1ae7c13077099a45a837ef05e8e60370",
+    "public/sitemap.xml": "9d5301749dcd4f20fb0d2fb9312c94b13de666afb65447ad069a4834aefea878",
+    "public/llms.txt": "e1f15ee0a44a290e26eaf075436f322823caff792f21ddeb1a85b58ca7c77b3f",
+    "public/software-application.jsonld": "1f4d2f13ba95ed3bdc4dc2e9d97ff6a65f7034e48b11f368c6848c197479357e"
+  },
+  "hostedClosure": {
+    "githubActionsRunIds": [],
+    "previewDeployment": null,
+    "mergedMainSha": null,
+    "productionDeploymentId": null,
+    "productionVerificationTime": null,
+    "canonicalEndpointResponses": null,
+    "runtimeErrorInspection": null,
+    "status": "pending-final-candidate-push"
+  },
+  "rollback": {
+    "commit": "b5b230fadce7bf337f14fccd262c584512841266",
+    "deploymentId": "dpl_8AtyzBxFUHikmdWWi6EGHWZfFPw1",
+    "canonicalUrl": "https://www.mygum.my/",
+    "verificationRequiredAfterRollback": true
+  },
+  "limitations": [
+    "Phase 17 live MCP execution is review-held and not enabled.",
+    "Remote multi-Human presence, verified remote identity, live audio/video, real payment processing, final Radio voice, remote Channels publication, and authenticated native specialist services remain capability-specific and gated unless separately configured.",
+    "Performance evidence is local Chromium lab evidence rather than field Core Web Vitals.",
+    "The loopback CSP allowance remains a documented local-companion compatibility decision; the public app does not perform ambient localhost probing or automatic connection.",
+    "External search results may retain stale Ollama-host copy until crawler re-indexing propagates.",
+    "The final hosted identities are unresolved in this candidate record until the exact green branch is pushed, merged, deployed, and verified."
+  ],
+  "legalBoundary": "This record preserves authorship, source lineage, public publication, technical verification, and rollback provenance. It does not claim patent registration, copyright registration, or legal adjudication."
+}

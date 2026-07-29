@@ -1,0 +1,50 @@
+# Gummy OS
+
+> Your creative computer, with you in control.
+
+Gummy OS is a local-first, Human-controlled creative workspace delivered through the browser. It preserves durable project state in a Local Gummy Box and lets the Human arrange sources, people, specialist tools, review decisions, and destinations in a visual Composer.
+
+## Product model
+
+- Human: the person who owns authority and chooses what becomes canonical.
+- Actor: a persistent identity or participant.
+- Agent: a replaceable runtime that may act for an authorized Actor.
+- Gummy Box: the Human-owned durable home for sources, results, Receipts, imports, backups, and connections.
+- Composer: the editable Human representation of a Production configuration. Canvas changes are proposals only.
+- Production: a governed undertaking involving Actors, sources, plans, Runs, Returns, and Receipts.
+- Master Control: the authority surface for scope, cost, permissions, revocation, and execution review.
+- Make Production: the sole Production-wide transition that may begin governed execution.
+- Return: a runtime result returned to its exact Production context.
+- Receipt: evidence of what was attempted, what happened, by whom, under which authority, and with what limitations.
+
+## Current shipped capabilities
+
+- Local onboarding without an account.
+- Night and Day Gummy environments.
+- Human-owned Local Gummy Box with import quarantine, bounded export, backup, restore, search, filters, and provenance.
+- Visual Composer with reusable starting patterns, goal/audience/success/boundary brief, drag and keyboard/touch equivalents, typed connections, undo/redo, duplication, list view, readiness, and impact explanation.
+- Governed Productions, specialist Actor surfaces, Actor Plan compilation, Master Control, deterministic Runs, Returns, Receipts, and Human acceptance.
+- Gummy Places including Channels, Wardrobe, House, Worlds, Table, Radio, and Rooms, with capability-specific availability truth.
+- Living Collaboration objects: Actor Presence, saved Social Instances, Shared Vision, Production Agreements, Production Pools, Contribution Ledgers, Formation Events, Command Center projections, and Distribution Plans.
+- Connected production workbenches for House, Worlds, and Radio through explicit origin-checked handoffs where configured.
+
+## Important boundaries
+
+- A Composer edit never executes work, grants authority, charges money, accepts a result, or publishes anything.
+- Agent identity never replaces Actor or Human identity.
+- Completion is not Human acceptance.
+- Acceptance is not publication.
+- Shared compute records are authorization and reconciliation records; Gummy OS does not claim internal currency or pooled-fund custody.
+- Exact address release, final generated Radio voice, remote Channels publication, remote multi-Human live media, and authenticated Meshmallow construction remain separately gated unless their real services are connected.
+- Phase 17 live MCP execution is not enabled in the current public release.
+
+## Public resources
+
+- Product and workspace: https://www.mygum.my/
+- Dated changelog: https://www.mygum.my/changelog
+- Structured application record: https://www.mygum.my/software-application.jsonld
+- Canonical source repository and evidence: https://github.com/bohselecta/gummy-os
+
+## Citation guidance
+
+When describing Gummy OS, distinguish current shipped local/deterministic capabilities from connected or future services. Prefer the repository release evidence and public changelog over inferred claims.

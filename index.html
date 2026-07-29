@@ -4,12 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#4B187A" />
-  <meta name="description" content="Your creative computer, with you in control. Start locally with no account; nothing runs until Make Production." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="description" content="Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production." />
   <link rel="canonical" href="https://www.mygum.my/" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Gummy OS machine-readable product summary" />
+  <link rel="alternate" type="application/ld+json" href="/software-application.jsonld" title="Gummy OS structured product record" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Gummy OS" />
   <meta property="og:title" content="Gummy OS — Your creative computer, with you in control." />
-  <meta property="og:description" content="Enter a living personal creative computer. Start locally with no account; nothing runs until Make Production." />
+  <meta property="og:description" content="Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production." />
   <meta property="og:url" content="https://www.mygum.my/" />
   <meta property="og:image" content="https://www.mygum.my/brand/gummy/social/gummy-og-1200x630.webp" />
   <meta property="og:image:width" content="1200" />
@@ -17,9 +20,9 @@
   <meta property="og:image:alt" content="Gummy OS Lantern Chamber with real Gummy windows open" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Gummy OS — Your creative computer, with you in control." />
-  <meta name="twitter:description" content="A living personal creative computer with real windows and Human-controlled work." />
+  <meta name="twitter:description" content="Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production." />
   <meta name="twitter:image" content="https://www.mygum.my/brand/gummy/social/gummy-social-1200x675.webp" />
-  <title>Gummy OS — Personal Gummy</title>
+  <title>Gummy OS — Your creative computer, with you in control.</title>
   <link rel="preload" as="image" type="image/avif" href="/brand/gummy/realm/lantern-chamber-night-1280x720.avif" media="(min-width: 761px)" fetchpriority="high" />
   <link rel="preload" as="image" type="image/avif" href="/brand/gummy/realm/lantern-chamber-night-mobile-828x1472.avif" media="(max-width: 760px)" fetchpriority="high" />
   <link rel="preload" as="image" type="image/webp" href="/brand/gummy/web/gummy-app-icon-monogram.webp" fetchpriority="high" />
@@ -32,11 +35,22 @@
 <body>
   <div id="boot" class="boot" aria-live="polite">
     <img class="boot-mark" src="/brand/gummy/web/gummy-app-icon-monogram.webp" width="96" height="96" alt="Gummy OS" fetchpriority="high" />
-    <h1>Opening Gummy OS</h1>
-    <p>Checking your durable state…</p>
+    <h1>Your creative computer, with you in control.</h1>
+    <p>Picking up where you left off…</p>
+    <div class="boot-public-summary">
+      <p>Arrange sources, people, specialist tools, review decisions, and destinations in one visible Composer. Your Gummy Box keeps the durable project state; nothing executes merely because it appears on the canvas.</p>
+      <p><a href="/changelog">What has shipped</a> · <a href="/llms.txt">Machine-readable summary</a></p>
+    </div>
   </div>
   <div id="app"></div>
   <div id="announcer" class="sr-only" aria-live="polite"></div>
+  <noscript>
+    <main>
+      <h1>Gummy OS — your creative computer, with you in control.</h1>
+      <p>Gummy OS is a local-first creative workspace with a Human-owned Gummy Box, a visual Composer, governed Productions, explicit authority, and inspectable Returns and Receipts.</p>
+      <p>JavaScript is required to open the private workspace. The <a href="/changelog">public changelog</a> and <a href="/llms.txt">machine-readable summary</a> remain available without it.</p>
+    </main>
+  </noscript>
   <script type="module" src="/src/app.js"></script>
 </body>
 </html>

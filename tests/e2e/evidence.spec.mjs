@@ -17,7 +17,7 @@ async function onboarding(page, mode, layout = 'desktop') {
 test('captures founder-review visual evidence', async ({ page }) => {
   await onboarding(page, 'night');
   await page.screenshot({ path: evidencePath('night-canvas-bar.png'), fullPage: true });
-  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   await expect(page.getByRole('complementary', { name: 'Glopper Panel' })).toBeVisible();
   await page.screenshot({ path: evidencePath('glopper-conversation.png'), fullPage: true });
   await page.getByRole('tab', { name: 'Inbox' }).click();
@@ -46,7 +46,7 @@ test('captures phone and reduced-motion evidence', async ({ page }) => {
   await page.screenshot({ path: evidencePath('night-phone-reduced-motion.png'), fullPage: true });
   await page.getByAltText('Night Gummy Lantern Chamber').scrollIntoViewIfNeeded();
   await page.screenshot({ path: evidencePath('night-phone-brand.png'), fullPage: true });
-  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   await page.screenshot({ path: evidencePath('phone-reduced-motion.png'), fullPage: true });
   await page.getByRole('button', { name: 'Switch Night or Day Gummy' }).click();
   await page.getByRole('button', { name: 'Close Glopper Panel' }).click();

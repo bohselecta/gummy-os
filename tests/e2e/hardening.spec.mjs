@@ -173,12 +173,12 @@ test('production workload, persistence, long-session, phone, and cached-shell bu
 
   await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
   await page.reload();
-  await expect(page.getByRole('tablist', { name: 'Gummy Bar' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Gummy Bar' })).toBeVisible();
   await context.setOffline(true);
   const cachedShellStarted = Date.now();
   try {
     await page.reload({ waitUntil: 'domcontentloaded' });
-    await expect(page.getByRole('tablist', { name: 'Gummy Bar' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Gummy Bar' })).toBeVisible();
   } finally {
     await context.setOffline(false);
   }
@@ -231,7 +231,7 @@ test('accessibility remains clean across modes, limits, desktop, tablet, and pho
     await page.setViewportSize(viewport);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.filter(item => ['critical', 'serious'].includes(item.impact))).toEqual([]);
-    await expect(page.getByRole('tablist', { name: 'Gummy Bar' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Gummy Bar' })).toBeVisible();
   }
   await page.getByRole('button', { name: 'Switch Night or Day Gummy' }).click();
   let results = await new AxeBuilder({ page }).analyze();

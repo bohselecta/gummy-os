@@ -1,0 +1,56 @@
+{
+  "schema": "gummy.executive-convergence-state/v1",
+  "status": "founder-approved-candidate-locally-verified",
+  "baseline": {
+    "mainCommit": "caa496a56bef499713b5dba90d355f8cdc729f05",
+    "productionPhase": "Phase 16 Living Collaboration"
+  },
+  "pullRequest": 42,
+  "branch": "agent/phase16-living-collaboration",
+  "implemented": [
+    "Human-owned Gummy Box launchpad",
+    "goal-first visual Composer",
+    "optional reversible starting patterns",
+    "typed cross-surface canonical references",
+    "Composer impact and readiness explanation",
+    "public changelog and bounded machine-readable product record",
+    "real crawler files and genuine unknown-route 404 behavior",
+    "scheduled Chromium Firefox WebKit acceptance",
+    "IndexedDB byte fallback when OPFS is unavailable",
+    "truthful OPFS or IndexedDB byte-store metadata",
+    "canonical Human Actor preservation in starter patterns",
+    "automated desktop and phone convergence screenshots"
+  ],
+  "preservedBoundaries": [
+    "Composer edits never execute work",
+    "Master Control remains the authority surface",
+    "Make Production remains the sole Production-wide execution transition",
+    "Agent identity does not replace Actor or Human identity",
+    "completion is not acceptance",
+    "acceptance is not publication",
+    "Phase 17 live MCP execution remains disabled"
+  ],
+  "requiredBeforeMerge": [
+    "complete deterministic verification — passed: 186 Node tests and 62 Chromium browser tests",
+    "cross-browser deep acceptance — passed: Chromium, Firefox, and WebKit",
+    "exact-head Vercel preview",
+    "server route and metadata verification",
+    "rendered desktop and phone evidence — passed and SHA-256 recorded",
+    "exact accepted-head merge and production verification"
+  ],
+  "verifiedCandidate": {
+    "commit": "d3246881ea868f40b2b6cd8551902302ef0dba67",
+    "nodeTestsPassed": 186,
+    "chromiumTestsPassed": 62,
+    "chromiumTestsSkipped": 2,
+    "deepBrowserTestsPassed": {
+      "chromium": 1,
+      "firefox": 1,
+      "webkit": 1
+    },
+    "npmAuditVulnerabilities": 0,
+    "productionEvidence": "evidence/executive-convergence-production.json",
+    "releaseDocument": "docs/release/EXECUTIVE-CONVERGENCE-2026-07-29.md"
+  },
+  "recordedAt": "2026-07-29T10:05:19.000Z"
+}

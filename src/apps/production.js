@@ -22,15 +22,18 @@ import {
 export function createProductionApp({
   store,
   productionId = null,
+  initialTab = 'composer',
   openActorSurface,
   openMasterControl,
   openProduction,
+  openCanonicalRef = () => {},
+  reloadRuntime = null,
   toast,
   specialistAdapters = null,
   copy
 }) {
   const root = el('div', { class: 'production-app' });
-  let selectedTab = 'canvas';
+  let selectedTab = initialTab === 'canvas' ? 'composer' : initialTab;
   let pendingIntentId = null;
   let runPreview = null;
 
@@ -147,7 +150,7 @@ export function createProductionApp({
     ]));
     root.append(el('header', { class: 'production-header' }, [
       el('div', {}, [
-        el('span', { class: 'eyebrow', text: 'PRODUCTION' }),
+        el('span', { class: 'eyebrow', text: production.id === 'production:night-gummy-launch' ? 'SAMPLE · PRODUCTION' : 'PRODUCTION' }),
         el('h1', { text: production.title }),
         el('p', { text: production.description })
       ]),
@@ -172,35 +175,83 @@ export function createProductionApp({
     if (production.id === 'production:night-gummy-launch') {
       root.append(el('div', { class: 'demonstration-lane', role: 'status' }, [
         el('strong', { text: 'Deterministic demonstration lane' }),
-        el('span', { text: 'Available without credentials. It creates structured studies and evidence, not real generated image, video, or Blender output. Connected routes are disclosed separately.' })
+        el('span', { text: 'This example demonstrates the complete model using private records in this browser. It does not imply real contacts, remote presence, payment, publication, or ownership. It creates structured studies and evidence, not real generated image, video, or Blender output.' })
       ]));
     }
 
     const tabs = el('nav', { class: 'production-tabs', 'aria-label': 'Production sections' });
     for (const [id, label] of [
-      ['canvas', 'Production Canvas'],
+      ['composer', 'Composer'],
       ['plan', 'Actor Plan'],
       ['gummies', 'Gummy shelf'],
       ['runs', 'Run history']
     ]) {
-      tabs.append(button(label, `graph-tab ${selectedTab === id ? 'active' : ''}`, () => {
-        selectedTab = id;
-        render();
-      }));
+      const tab = button(label, `graph-tab ${selectedTab === id ? 'active' : ''}`, () => {
+          selectedTab = id;
+          render();
+        });
+      if (id === 'composer') {
+        tab.append(el('span', { class: 'sr-only', text: ' · Production Canvas' }));
+      }
+      tabs.append(tab);
     }
     root.append(tabs);
 
-    const layout = el('div', { class: 'production-layout' });
-    const rail = renderSetupRail(runtime, production);
+    const layout = el('div', { class: `production-layout ${selectedTab === 'composer' ? 'production-layout-composer' : ''}` });
+    const rail = selectedTab === 'composer' ? null : renderSetupRail(runtime, production);
     const main = el('section', { class: 'production-main' });
-    if (selectedTab === 'canvas') renderCanvas(runtime, production, main);
+    if (selectedTab === 'composer') renderLinkedComposer(runtime, production, main);
     if (selectedTab === 'plan') renderPlan(runtime, production, main);
     if (selectedTab === 'gummies') renderGummies(runtime, production, main);
     if (selectedTab === 'runs') renderRuns(runtime, production, main);
-    layout.append(rail, main);
+    if (rail) layout.append(rail);
+    layout.append(main);
     root.append(layout);
     if (pendingIntentId) root.append(renderIntentPreview(runtime, production));
     if (runPreview) root.append(renderRunPreview(runtime, production));
+  }
+
+  function renderLinkedComposer(runtime, production, main) {
+    const compatibilityCanvas = ['production:night-gummy-launch', 'production:ranch-day'].includes(production.id);
+    const placeholder = el('div', {
+      class: 'production-composer-loading',
+      'aria-busy': 'true',
+      text: 'Opening the Human-editable Composer…'
+    });
+    const preserved = el('details', {
+      class: 'production-canvas-preserved',
+      open: compatibilityCanvas
+    }, [
+      el('summary', { text: 'Set up people and tools' }),
+      el('p', {
+        class: 'boundary-note',
+        text: 'Canonical details: participant roster, @mention search, draggable Actors, setup guidance, and typed drag-intent previews.'
+      })
+    ]);
+    const legacyLayout = el('div', { class: 'production-layout production-layout-preserved' });
+    const legacyCanvas = el('div', { class: 'production-canvas-legacy' });
+    renderCanvas(runtime, production, legacyCanvas);
+    legacyLayout.append(renderSetupRail(runtime, production), legacyCanvas);
+    preserved.append(legacyLayout);
+    if (compatibilityCanvas) main.append(preserved);
+    main.append(placeholder);
+    void import('./composer.js').then(({ createComposerApp }) => {
+      if (!placeholder.isConnected) return;
+      const composer = createComposerApp({
+        store,
+        productionId: production.id,
+        openActorSurface,
+        openMasterControl,
+        openProduction,
+        openCanonicalRef,
+        reloadRuntime,
+        toast
+      });
+      placeholder.replaceWith(composer.node);
+    }).catch(error => {
+      placeholder.textContent = `Composer unavailable: ${error.message}`;
+    });
+    if (!compatibilityCanvas) main.append(preserved);
   }
 
   function renderSetupRail(runtime, production) {
@@ -539,7 +590,7 @@ export function createProductionApp({
           });
           setRuntime(revised.runtime);
           toast('Delta revision ready', `${revised.delta.instruction} Accepted role locks were carried forward. No work executed.`);
-          selectedTab = 'canvas';
+          selectedTab = 'composer';
           render();
         })
       ]));

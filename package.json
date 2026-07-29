@@ -22,6 +22,7 @@
     "test:a11y": "playwright test tests/e2e/app.spec.mjs tests/e2e/hardening.spec.mjs --grep accessibility",
     "test:visual": "playwright test tests/e2e/evidence.spec.mjs",
     "test:acceptance": "playwright test",
+    "test:deep": "playwright test -c playwright.deep.config.js",
     "verify:product-preservation": "node scripts/verify-product-preservation.mjs",
     "verify": "npm run check && npm test && npm run build && npm run security:audit && npm run test:e2e && npm run verify:product-preservation -- --suite-complete",
     "security:audit": "node scripts/release-hardening.mjs",

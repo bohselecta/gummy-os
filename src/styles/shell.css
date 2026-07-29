@@ -20,18 +20,23 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   display: grid;
   place-content: center;
   justify-items: center;
+  padding: var(--space-6);
   background:
     linear-gradient(color-mix(in srgb, var(--g-ink) 54%, transparent), color-mix(in srgb, var(--g-ink) 84%, transparent)),
     var(--boot-wallpaper) center / cover no-repeat;
   color: var(--g-cream);
+  text-align: center;
 }
 .boot::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(circle at 50% 44%, transparent 0 12%, color-mix(in srgb, var(--g-ink) 66%, transparent) 72%);
 }
 .boot > * { position: relative; z-index: 1; }
-.boot h1 { margin: var(--space-4) 0 0; text-shadow: 0 2px 16px var(--g-ink); }
+.boot h1 { max-width: 760px; margin: var(--space-4) 0 0; text-shadow: 0 2px 16px var(--g-ink); }
 .boot p { color: var(--g-cream); text-shadow: 0 2px 12px var(--g-ink); }
+.boot-public-summary { max-width: 680px; margin-top: var(--space-3); }
+.boot-public-summary p { margin: var(--space-2) 0; }
+.boot-public-summary a { color: var(--g-gold); }
 .boot-mark {
   display: block; width: 96px; height: 96px; object-fit: contain;
   border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow);
