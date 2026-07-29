@@ -88,7 +88,7 @@ export function applyCompositionStarter(runtime, options) {
  * Human-approved, non-executing intent law used by pointer/keyboard/touch canvas proposals.
  */
 export function addCompositionReferenceWithIntent(runtime, compositionId, reference, {
-  inputMode = 'keyboard'
+  inputMode = reference.inputMode || 'keyboard'
 } = {}) {
   const current = composition(runtime, compositionId);
   if (!current) return { runtime, denied: true, reason: 'composition-not-found' };
@@ -116,6 +116,16 @@ export function addCompositionReferenceWithIntent(runtime, compositionId, refere
     intent: accepted.intent,
     executed: false
   };
+}
+
+/**
+ * Compatibility export: callers that add a canonical reference automatically receive the typed,
+ * receipted, non-executing path instead of a silent mutation.
+ */
+export function addCompositionReference(runtime, compositionId, reference) {
+  return addCompositionReferenceWithIntent(runtime, compositionId, reference, {
+    inputMode: reference.inputMode || 'keyboard'
+  });
 }
 
 export function addRecommendedCompositionElement(runtime, compositionId, recommendationId) {
