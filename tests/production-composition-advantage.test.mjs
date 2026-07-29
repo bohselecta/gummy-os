@@ -63,7 +63,7 @@ test('starter patterns create editable, non-executing compositions with Human re
   assert.equal(result.receipt.cost.amount, 0);
 });
 
-test('a starter pattern preserves an existing Human brief and records the proposal change', () => {
+test('a starter pattern preserves an existing Human brief, canonical Actor, and evidence', () => {
   const created = createProductionComposition(runtime(), { title: 'Human-defined work' });
   const briefed = updateProductionCompositionBrief(created.runtime, created.composition.id, {
     goal: 'Prepare a cited launch brief',
@@ -79,7 +79,8 @@ test('a starter pattern preserves an existing Human brief and records the propos
   assert.equal(patterned.composition.brief.audience, 'Founding collaborators');
   assert.equal(patterned.composition.brief.constraints.includes('No publication'), true);
   assert.equal(patterned.composition.brief.starterId, 'research-brief');
-  assert.equal(patterned.receipt.summary.includes('Human brief was preserved'), true);
+  assert.ok(patterned.composition.nodes.some(node => node.ref.id === 'actor:hayden'));
+  assert.equal(patterned.receipt.summary.includes('Human brief and canonical Actor identity were preserved'), true);
   const analysis = analyzeProductionComposition(patterned.composition, patterned.runtime);
   assert.equal(analysis.authority, 'proposal-only');
   assert.equal(analysis.executionState, 'not-started');
