@@ -2,7 +2,7 @@
   "schema": "gummy.place-activation-registry/v1",
   "id": "place-activation-registry:gummy-os:phase15",
   "baseRegistry": "place-registry:gummy-os:first-party",
-  "generatedAt": "2026-07-28T16:05:00.000Z",
+  "generatedAt": "2026-07-28T23:56:00.000Z",
   "places": [
     {
       "placeId": "app:gummy-channels",
@@ -13,9 +13,15 @@
         { "id": "watch-groups.manage", "availability": "available", "startsExecution": false, "releaseTruth": "Create Human-defined watch groups without an algorithmic feed." },
         { "id": "family-room.compose", "availability": "available", "startsExecution": false, "releaseTruth": "Create bounded bulletin notes; no open chat is implied." },
         { "id": "premiere-draft.prepare", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Prepare and approve a local premiere draft without publishing it." },
+        { "id": "channels.android.open", "availability": "mobile-companion-required", "startsExecution": false, "releaseTruth": "Open the installed Gummy Channels compatibility build through its exact native route." },
         { "id": "channel.publish", "availability": "remote-service-required", "startsExecution": true, "releaseTruth": "Remote publication remains unavailable until the Channels service and moderation system are verified." }
       ],
-      "releaseTruth": "The local guide, watch groups, Family Room notes, and premiere drafts work now. Remote publication still needs the Channels service."
+      "connectionRoutes": [
+        { "kind": "android", "route": "gummy-channels://open", "status": "available" },
+        { "kind": "remote-service", "route": null, "status": "needs-setup" }
+      ],
+      "lastVerifiedAt": "2026-07-28T23:52:00.000Z",
+      "releaseTruth": "The local guide and installed Android route work now. Remote publication still needs the Channels service and production signing."
     },
     {
       "placeId": "app:gummy-wardrobe",
@@ -40,9 +46,13 @@
         { "id": "intent.preview", "availability": "available", "startsExecution": false, "releaseTruth": "Preview exactly what crosses the Scope Wall." },
         { "id": "two-note.commit", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Commit intent and consequence together with a Place receipt." },
         { "id": "house.export", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export selected House records without address or ambient photos." },
-        { "id": "homewright.open", "availability": "remote-service-required", "startsExecution": false, "releaseTruth": "The full HomeWright workbench route still needs production binding." }
+        { "id": "homewright.open", "availability": "available", "startsExecution": false, "releaseTruth": "Open the verified full House workbench and import only the exact Human-approved two-note commit." }
       ],
-      "releaseTruth": "Scoped House memory, Intent Gate, two-note commits, and exports work locally. The full HomeWright workbench route still needs binding."
+      "connectionRoutes": [
+        { "kind": "web", "route": "https://homewright.vercel.app/", "status": "available" }
+      ],
+      "lastVerifiedAt": "2026-07-28T23:56:00.000Z",
+      "releaseTruth": "Scoped House memory, the Intent Gate, and the verified full workbench are connected through exact two-note commit receipts."
     },
     {
       "placeId": "app:gummy-worlds",
@@ -56,10 +66,16 @@
         { "id": "world.package", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export a versioned World Plan package." },
         { "id": "world.duplicate", "availability": "available", "startsExecution": false, "releaseTruth": "Create an isolated revision-one copy." },
         { "id": "sit.preview", "availability": "available", "startsExecution": false, "releaseTruth": "Preview the supported Sit experience configuration." },
+        { "id": "worlds.studio.open", "availability": "available", "startsExecution": false, "releaseTruth": "Open the full Worlds Studio and import the exact bounded plan without starting native construction." },
         { "id": "make_world", "availability": "local-runtime-required", "startsExecution": true, "releaseTruth": "Only real scene construction requires Meshmallow." },
         { "id": "walk.preview", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Walk remains a separately gated experience." }
       ],
-      "releaseTruth": "World planning, Sit preview, validation, estimates, inspection, duplication, and packages work locally. Only real 3D construction needs Meshmallow."
+      "connectionRoutes": [
+        { "kind": "web", "route": "https://videoworldsnet.vercel.app/create", "status": "available" },
+        { "kind": "local-bridge", "route": "http://127.0.0.1:5214", "status": "needs-setup" }
+      ],
+      "lastVerifiedAt": "2026-07-28T23:53:00.000Z",
+      "releaseTruth": "World planning and the full Worlds Studio are connected through exact bounded-plan receipts. Only real 3D construction needs Meshmallow."
     },
     {
       "placeId": "app:gummy-table",
@@ -87,10 +103,15 @@
         { "id": "script.approve", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Approve the exact script revision." },
         { "id": "speech.preview", "availability": "available", "startsExecution": false, "releaseTruth": "Preview synthetic browser speech; it is not final audio." },
         { "id": "episode.export", "availability": "approval-required", "startsExecution": false, "releaseTruth": "Export a private episode package without publishing it." },
+        { "id": "aftercast.open", "availability": "available", "startsExecution": false, "releaseTruth": "Open the verified full Radio Studio and import exact scoped A/B sources." },
         { "id": "voice.render", "availability": "remote-service-required", "startsExecution": true, "releaseTruth": "Final generated audio requires a separate approved renderer." },
         { "id": "episode.publish", "availability": "blocked", "startsExecution": true, "releaseTruth": "Public publication is not part of the current release." }
       ],
-      "releaseTruth": "Scoped sources, revisioned scripts, approvals, browser speech, and private episode export work locally. Final voice and publishing remain separate."
+      "connectionRoutes": [
+        { "kind": "web", "route": "https://www.getaftercast.com/", "status": "available" }
+      ],
+      "lastVerifiedAt": "2026-07-28T23:53:00.000Z",
+      "releaseTruth": "Scoped A/B sources now import into the verified full Radio Studio. Final voice and public publishing remain separate."
     },
     {
       "placeId": "app:gummy-rooms",

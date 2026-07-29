@@ -704,7 +704,10 @@ async function openPrivateChatWindow(participantActorId = 'actor:glopper') {
 async function buildSurface(id) {
   if (id === 'guide') return guideSurface();
   if (id === 'gummies') return gummiesSurface();
-  if (id === 'browser') return browserSurface();
+  if (id === 'browser') {
+    const { createBrowserSurface } = await import('./apps/browser-surface.js');
+    return createBrowserSurface({ h, repository });
+  }
   if (id === 'productions') return productionSurface();
   if (id === 'actors') return actorsSurface();
   if (id === 'work-orders') return workOrdersSurface();
@@ -973,28 +976,6 @@ async function burnWorkspace() {
   });
   announce('Disposable workspace burned; accepted evidence was preserved.');
   await refreshSurface('gummies');
-}
-
-function browserSurface() {
-  const input = h('input', { value: 'https://example.com', 'aria-label': 'External URL' });
-  const frame = h('iframe', { title: 'Isolated external preview', sandbox: '', hidden: true });
-  return h('div', {}, [
-    h('p', { class: 'eyebrow', text: 'Isolated navigation' }),
-    h('h2', { text: 'Gummy Browser' }),
-    h('p', { class: 'notice', text: 'External pages open in a sandbox without same-origin privileges. Imported text is rendered as text and never executed.' }),
-    h('label', { class: 'field' }, [h('span', { text: 'HTTPS address' }), input]),
-    h('button', { class: 'button', onclick: () => {
-      try {
-        const url = new URL(input.value);
-        if (url.protocol !== 'https:') throw new Error();
-        frame.src = url.toString();
-        frame.hidden = false;
-      } catch {
-        announce('Only valid HTTPS addresses can open in the isolated preview.');
-      }
-    } }, 'Open isolated preview'),
-    frame
-  ]);
 }
 
 async function actorsSurface() {

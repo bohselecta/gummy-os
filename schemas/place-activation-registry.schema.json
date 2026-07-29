@@ -43,6 +43,20 @@
               }
             }
           },
+          "connectionRoutes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "route", "status"],
+              "properties": {
+                "kind": { "type": "string", "minLength": 1 },
+                "route": { "type": ["string", "null"] },
+                "status": { "enum": ["available", "needs-setup", "blocked"] }
+              }
+            }
+          },
+          "lastVerifiedAt": { "type": ["string", "null"], "format": "date-time" },
           "releaseTruth": { "type": "string", "minLength": 1 }
         }
       }

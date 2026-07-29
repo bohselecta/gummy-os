@@ -17,6 +17,10 @@ import {
   validateAndEstimateWorld
 } from '../places/active-place-domains.js';
 import { PHASE14_PLACES } from '../places/manifest.js';
+import {
+  openStandaloneHandoff,
+  standaloneAdapter
+} from '../places/standalone-adapters.js';
 
 function h(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -94,6 +98,7 @@ async function channelsBody({ local, scope, refresh }) {
   const bulletin = h('textarea', { rows: '2', placeholder: 'Family Room note' });
   const premiere = h('input', { placeholder: 'Premiere title' });
   const records = await local.list(scope);
+  const adapter = standaloneAdapter('app:gummy-channels');
   const add = async (recordType, recordId, value, operation) => {
     try {
       await local.put(scope, recordType, recordId, value, { operation });
@@ -111,6 +116,19 @@ async function channelsBody({ local, scope, refresh }) {
       h('section', { class: 'card' }, [h('h4', { text: 'Family Room note' }), field('Note', bulletin), btn('Post local bulletin', () => add('bulletin', `bulletin:${crypto.randomUUID()}`, { title: 'Family Room note', detail: bulletin.value.trim(), openChat: false }, 'bulletin.create'))]),
       h('section', { class: 'card' }, [h('h4', { text: 'Premiere draft' }), field('Title', premiere), btn('Prepare draft', () => add('premiere', `premiere:${slug(premiere.value)}:${crypto.randomUUID()}`, { title: premiere.value.trim(), published: false, guidePlacementApproved: false }, 'premiere.prepare'))])
     ]),
+    h('div', { class: 'button-row' }, [
+      h('a', {
+        class: 'button primary',
+        href: adapter.route,
+        text: 'Open installed Gummy Channels'
+      }),
+      h('a', {
+        class: 'button',
+        href: adapter.webFallback,
+        text: 'Keep using the web guide'
+      })
+    ]),
+    h('p', { class: 'notice compact-notice', text: 'The Android route opens only an installed compatibility build. Remote creator publication remains unavailable until its authenticated service and moderation gates are verified.' }),
     output,
     h('div', { class: 'record-list' }, records.map(record => recordCard(record)))
   ]);
@@ -169,6 +187,7 @@ async function houseBody({ local, scope, refresh }) {
   const consequenceNote = h('textarea', { rows: '2', placeholder: 'Consequence note' });
   const records = await local.list(scope);
   const previews = records.filter(record => record.recordType === 'intent-preview');
+  const commits = records.filter(record => record.recordType === 'commit');
   return h('div', {}, [
     h('h3', { text: 'Scoped House memory' }),
     h('p', { text: 'This local projection does not replace the Home Graph. Address and ambient photos remain outside the Scope Wall.' }),
@@ -197,6 +216,21 @@ async function houseBody({ local, scope, refresh }) {
           await refresh();
         } catch (error) { output.textContent = `Blocked · ${error.message}`; }
       })
+    ]),
+    h('div', { class: 'button-row' }, [
+      btn('Open latest commit in the full House workbench', async () => {
+        try {
+          const commit = commits.at(-1)?.value;
+          if (!commit) throw new Error('Commit both House notes first.');
+          output.textContent = 'Opening the full House workbench and waiting for its exact import receipt…';
+          const ack = await openStandaloneHandoff('app:gummy-house', commit);
+          output.textContent = ack.imported
+            ? 'The full House workbench imported the Human-approved two-note commit.'
+            : 'The full House workbench opened without importing the commit.';
+        } catch (error) {
+          output.textContent = `Handoff · ${error.message}`;
+        }
+      }, 'button primary')
     ]),
     output,
     h('div', { class: 'record-list' }, records.map(record => recordCard(record)))
@@ -238,6 +272,21 @@ async function worldsBody({ local, scope, refresh }) {
         await refresh();
       } catch (error) { output.textContent = `Blocked · ${error.message}`; }
     }, 'button primary')]),
+    h('div', { class: 'button-row' }, [
+      btn('Open latest plan in the Worlds Studio', async () => {
+        try {
+          const plan = plans.at(-1)?.value;
+          if (!plan) throw new Error('Create a valid Sit plan first.');
+          output.textContent = 'Opening the Worlds Studio and waiting for its exact import receipt…';
+          const ack = await openStandaloneHandoff('app:gummy-worlds', plan);
+          output.textContent = ack.imported
+            ? 'The Worlds Studio imported the bounded Sit plan. No native construction ran.'
+            : 'The Worlds Studio opened without importing the plan.';
+        } catch (error) {
+          output.textContent = `Handoff · ${error.message}`;
+        }
+      }, 'button primary')
+    ]),
     output,
     h('div', { class: 'card-grid' }, plans.map(record => recordCard(record, [
       btn('Validate & estimate', () => { const value = validateAndEstimateWorld(record.value); output.textContent = `Valid · ${value.validation.operationCount} operations · ${value.estimate.estimatedMinutes} minutes · $${value.estimate.costCeiling} ceiling · executing: ${value.estimate.executing}.`; }),
@@ -282,18 +331,34 @@ async function sha256(text) {
 async function radioBody({ local, scope, refresh }) {
   const output = status();
   const title = h('input', { placeholder: 'Episode title' });
-  const sources = h('textarea', { rows: '4', placeholder: 'Paste the selected, approved source material' });
+  const sourceA = h('textarea', { rows: '4', placeholder: 'One selected Host A source per line (at least two)' });
+  const sourceB = h('textarea', { rows: '4', placeholder: 'One selected Host B source per line (at least two)' });
   const script = h('textarea', { rows: '6', placeholder: 'Revisioned script' });
   const episodes = await local.list(scope, { recordType: 'episode' });
   const current = episodes.at(-1);
   if (current?.value?.script?.text) script.value = current.value.script.text;
   const createEpisode = async () => {
     try {
-      const sourceText = sources.value.trim();
+      const selected = [
+        ...sourceA.value.split('\n').map(text => ({ ownerRole: 'A', content: text.trim() })),
+        ...sourceB.value.split('\n').map(text => ({ ownerRole: 'B', content: text.trim() }))
+      ].filter(source => source.content);
+      if (selected.filter(source => source.ownerRole === 'A').length < 2 || selected.filter(source => source.ownerRole === 'B').length < 2) {
+        throw new Error('Select at least two source lines for Host A and two for Host B.');
+      }
       const sourcePackage = {
         schema: 'gummy.source-package/v1',
         id: `source-package:radio:${crypto.randomUUID()}`,
-        sources: [{ id: `gummy:radio-source:${crypto.randomUUID()}`, revision: 1, hash: await sha256(sourceText) }],
+        sources: await Promise.all(selected.map(async (source, index) => ({
+          id: `gummy:radio-source:${source.ownerRole.toLowerCase()}:${crypto.randomUUID()}`,
+          revision: 1,
+          ownerRole: source.ownerRole,
+          content: source.content,
+          hash: await sha256(source.content),
+          included: true,
+          order: index
+        }))),
+        stageNames: { A: 'Host A', B: 'Host B' },
         includedFields: ['selected-source-text'],
         explicitExclusions: ['ambient-profile', 'credentials', 'unselected-conversation'],
         purpose: 'Create a private Radio episode',
@@ -303,6 +368,7 @@ async function radioBody({ local, scope, refresh }) {
         quotePermission: false,
         voiceLikenessPermission: false,
         rights: { ownerApproved: true },
+        permissions: { quotePermission: false, voiceLikenessPermission: false },
         provenance: { source: 'Human-pasted selected text', importedAt: new Date().toISOString() },
         retention: 'local-until-reset',
         costCeiling: 0,
@@ -334,7 +400,12 @@ async function radioBody({ local, scope, refresh }) {
   return h('div', {}, [
     h('h3', { text: 'Private Radio Studio' }),
     h('p', { text: 'Import exact sources, revise and approve scripts, preview browser speech, and export a private episode package. Browser speech is not final audio and publishing does not exist.' }),
-    h('section', { class: 'card' }, [field('Episode title', title), field('Selected source material', sources), btn('Create private episode', createEpisode, 'button primary')]),
+    h('section', { class: 'card' }, [
+      field('Episode title', title),
+      field('Host A selected sources', sourceA),
+      field('Host B selected sources', sourceB),
+      btn('Create private episode', createEpisode, 'button primary')
+    ]),
     current ? h('section', { class: 'card' }, [h('h4', { text: current.value.title }), field(`Script revision ${current.value.script.revision}`, script), h('div', { class: 'button-row' }, [btn('Save new revision', saveRevision), btn('Approve exact revision', approve, 'button primary'), btn('Preview browser speech', () => {
       if (!current.value.script.approved) return void (output.textContent = 'Blocked · approve the exact script revision first.');
       if (!('speechSynthesis' in window)) return void (output.textContent = 'Browser speech is unavailable on this device.');
@@ -345,6 +416,19 @@ async function radioBody({ local, scope, refresh }) {
       try { downloadJson(`${slug(current.value.title)}.gummy-radio.json`, createRadioExport(current.value)); }
       catch (error) { output.textContent = `Blocked · ${error.message}`; }
     }), btn('Final voice service not connected', null, 'button', { disabled: true })])]) : null,
+    current ? h('div', { class: 'button-row' }, [
+      btn('Open scoped sources in AfterCast', async () => {
+        try {
+          output.textContent = 'Opening AfterCast and waiting for its exact source-import receipt…';
+          const ack = await openStandaloneHandoff('app:gummy-radio', current.value.sourcePackage);
+          output.textContent = ack.imported
+            ? 'AfterCast imported the scoped A/B sources. Review source boundaries there before shaping the episode.'
+            : 'AfterCast opened without importing the source package.';
+        } catch (error) {
+          output.textContent = `Handoff · ${error.message}`;
+        }
+      }, 'button primary')
+    ]) : null,
     output,
     h('div', { class: 'record-list' }, episodes.map(record => recordCard(record)))
   ]);
@@ -462,7 +546,11 @@ export async function createPlacesDirectory({ repository, openPlaceWindow, toggl
   for (const app of applicationRegistry.applications) {
     const launch = applicationLaunchState(app);
     migrated.append(h('article', { class: 'card application-card', dataset: { applicationId: app.id } }, [
+      h('p', { class: 'eyebrow', text: `${app.locality.join(' · ')} · ${app.connectionStatus.replaceAll('-', ' ')}` }),
       h('h3', { text: app.name }),
+      h('p', { text: app.productPurpose }),
+      h('p', { class: 'meta', text: app.releaseStatus }),
+      h('p', { class: 'meta', text: `${app.capabilities.length} declared capabilities · ${app.producedArtifacts.length} artifact types` }),
       launch.available
         ? h('a', { class: 'button primary', href: launch.route, target: '_blank', rel: 'noopener noreferrer', text: launch.label })
         : h('p', { class: 'notice compact-notice', text: launch.reason })
