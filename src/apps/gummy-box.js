@@ -19,8 +19,8 @@ function h(tag, props = {}, children = []) {
   return node;
 }
 
-function button(label, onclick, className = 'button') {
-  return h('button', { type: 'button', class: className, onclick }, label);
+function button(label, onclick, className = 'button', props = {}) {
+  return h('button', { type: 'button', class: className, onclick, ...props }, label);
 }
 
 function isResult(gummy) {
@@ -55,9 +55,10 @@ export function createGummyBoxApp(options) {
     });
     const actions = card.querySelector('.button-row') || h('div', { class: 'button-row' });
     if (!actions.parentNode) card.append(actions);
-    actions.append(button('Add in Composer', () => sendToComposer(reference)));
-    const hint = h('small', { class: 'composer-drag-hint', text: 'Drag this into an open Composer, or use Add in Composer.' });
-    card.append(hint);
+    actions.append(button('Add in Composer', () => sendToComposer(reference), 'button', {
+      'aria-label': `Add ${reference.label || reference.id} in Composer`
+    }));
+    card.append(h('small', { class: 'composer-drag-hint', text: 'Drag this into an open Composer, or use Add in Composer.' }));
   }
 
   function decorateGummies() {
@@ -176,11 +177,16 @@ export function createGummyBoxApp(options) {
           h('p', { text: 'Start with a blank Composer or one of its optional patterns.' }),
           button('Open Composer', options.openComposer, 'button primary')
         ]),
-        recentResult ? h('article', { class: 'continue-card' }, [
+        recentResult ? h('article', {
+          class: 'continue-card',
+          title: recentResult.title || recentResult.name || recentResult.id
+        }, [
           h('span', { class: 'eyebrow', text: 'RECENT RESULT' }),
-          h('strong', { text: recentResult.title || recentResult.name || recentResult.id }),
-          h('p', { text: recentResult.acceptance ? 'Accepted result' : 'Candidate result awaiting a Human decision' }),
-          button('Add in Composer', () => sendToComposer({
+          h('strong', { text: 'Most recent result' }),
+          h('p', { text: recentResult.acceptance
+            ? 'Accepted result · open Results for the exact item and provenance.'
+            : 'Candidate result awaiting a Human decision · open Results for exact details.' }),
+          button('Add recent result in Composer', () => sendToComposer({
             kind: 'gummy',
             id: recentResult.id,
             revision: String(recentResult.revision || 1),
@@ -189,7 +195,9 @@ export function createGummyBoxApp(options) {
             description: 'A selected result from the Local Gummy Box.',
             lane: 'inputs',
             availability: { state: 'available', reason: 'Stored in this browser.' }
-          }))
+          }), 'button', {
+            'aria-label': `Add ${recentResult.title || recentResult.name || recentResult.id} in Composer`
+          })
         ]) : null
       ])
     ]);
