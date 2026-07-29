@@ -9,9 +9,11 @@ import {
 export { LEGACY_PRODUCTION_STORAGE_KEY, PRODUCTION_RUNTIME_INDEX_ID };
 
 function metadataStorageClass(byteStore) {
-  if (byteStore?.storageClass === 'opfs') return 'OPFS';
   if (byteStore?.storageClass === 'indexeddb') return 'IndexedDB';
-  return 'local-byte-store';
+  if (byteStore?.storageClass === 'opfs') return 'OPFS';
+  // Pre-fallback injected stores represented the OPFS byte plane without exposing a class field.
+  // Preserve that stable compatibility label; the real ByteStore always declares its actual class.
+  return 'OPFS';
 }
 
 /**
