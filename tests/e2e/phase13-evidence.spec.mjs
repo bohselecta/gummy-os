@@ -59,7 +59,7 @@ test('captures the complete Actor presence grid', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 2400 });
   await enterCanvas(page);
   await page.getByRole('tab', { name: /Actors/ }).click();
-  await page.getByRole('button', { name: 'Maximize Actors & Bowls' }).click();
+  await page.getByRole('button', { name: 'Maximize People & groups' }).click();
   await expect(page.getByTestId('actor-presence-grid').locator('.presence-card')).toHaveCount(4);
   await settleImages(page, '[data-testid="actor-presence-grid"] img');
   await page.screenshot({

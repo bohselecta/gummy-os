@@ -152,7 +152,7 @@ export async function createBrowserSurface({ h, repository }) {
       gummy.provenance.receiptIds = [receipt.id];
       await repository.putValidated('gummies', gummy);
       selectedText.value = '';
-      output.textContent = `Saved “${gummy.title}” in My Gummies. No embedded-page content was read.`;
+      output.textContent = `Saved “${gummy.title}” in Gummy Box. No embedded-page content was read.`;
     } catch (error) {
       output.textContent = error.message;
     }

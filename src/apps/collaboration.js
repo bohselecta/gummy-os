@@ -53,6 +53,7 @@ function emptyState(text) {
 function presenceCard(actor, presence) {
   const represented = presence.state === 'ai-represented';
   const truthful = ['offline', 'static', 'dormant', 'revoked'].includes(presence.state);
+  const operator = presence.operator || {};
   return h('article', {
     class: 'phase16-presence-card',
     dataset: {
@@ -63,18 +64,42 @@ function presenceCard(actor, presence) {
     h('div', { class: 'phase16-presence-heading' }, [
       h('div', {}, [
         h('strong', { text: actor.name }),
-        h('small', { text: `${actor.id} · ${actor.role}` })
+        h('small', { text: actor.role })
       ]),
       objectStatus('Presence', presence.state.replaceAll('-', ' '), truthful ? 'review' : '')
     ]),
     h('p', { text: presence.disclosure }),
-    h('dl', { class: 'phase16-mini-facts' }, [
-      h('dt', { text: 'Operator' }),
-      h('dd', { text: presence.operator.operatorId || 'none' }),
-      h('dt', { text: 'Authority' }),
-      h('dd', { text: represented ? `${presence.operator.moldId} · ${presence.operator.grantId}` : 'No representation authority' }),
-      h('dt', { text: 'Media truth' }),
-      h('dd', { text: 'Local fixture text only' })
+    h('p', {
+      class: 'phase16-possible-interaction',
+      text: presence.state === 'offline'
+        ? 'Possible here: leave a local message or invitation.'
+        : 'Possible here: open the local text window or leave a message.'
+    }),
+    represented
+      ? h('p', { class: 'boundary-note compact', text: 'AI represented · explicitly disclosed and Human-revocable.' })
+      : null,
+    h('details', { class: 'phase16-system-details' }, [
+      h('summary', { text: 'Show system details' }),
+      h('dl', { class: 'phase16-mini-facts' }, [
+        h('dt', { text: 'Actor ID' }),
+        h('dd', { text: actor.id }),
+        h('dt', { text: 'Operator / Agent' }),
+        h('dd', { text: operator.operatorId || 'none' }),
+        h('dt', { text: 'Mold' }),
+        h('dd', { text: operator.moldId || 'none' }),
+        h('dt', { text: 'Grant' }),
+        h('dd', { text: operator.grantId || 'none' }),
+        h('dt', { text: 'Human sponsor' }),
+        h('dd', { text: operator.sponsorHumanId || 'none' }),
+        h('dt', { text: 'Expiry / revocation' }),
+        h('dd', { text: presence.revokedAt ? `revoked ${presence.revokedAt}` : presence.expiresAt || 'not expiring' }),
+        h('dt', { text: 'Authority' }),
+        h('dd', { text: represented ? 'Bounded representation only; revocable' : 'No representation authority' }),
+        h('dt', { text: 'Locality and runtime truth' }),
+        h('dd', { text: 'This browser · deterministic local example · no remote model claimed' }),
+        h('dt', { text: 'Media truth' }),
+        h('dd', { text: 'Local example text only; no remote audio or video' })
+      ])
     ])
   ]);
 }
@@ -84,7 +109,7 @@ function socialPreview(social, presenceByActor) {
   return h('div', {
     class: 'phase16-layout-preview',
     dataset: { testid: 'phase16-layout-preview' },
-    role: 'img',
+    role: 'region',
     'aria-label': 'Saved multi-window Social Instance layout'
   }, windows.map(windowRecord => {
     const actor = PHASE16_ACTORS.find(item => item.id === windowRecord.subjectId);
@@ -96,12 +121,16 @@ function socialPreview(social, presenceByActor) {
       h('span', { class: 'phase16-window-dot', 'aria-hidden': 'true' }),
       h('strong', { text: actor?.name || 'Shared thread' }),
       h('small', { text: actor ? presence?.state?.replaceAll('-', ' ') || 'offline' : windowRecord.subjectId }),
-      h('small', { text: `${windowRecord.width}×${windowRecord.height} · ${windowRecord.state}` })
+      h('small', { text: windowRecord.state }),
+      h('details', {}, [
+        h('summary', { text: 'Show window details' }),
+        h('small', { text: `${windowRecord.windowId} · ${windowRecord.width}×${windowRecord.height} at ${windowRecord.x},${windowRecord.y} · z-index ${windowRecord.zIndex} · saved revision ${social.revision}` })
+      ])
     ]);
   }));
 }
 
-function progressCard(label, record, detail) {
+function progressCard(label, canonicalLabel, record, detail) {
   return h('li', {
     class: record ? 'phase16-progress-complete' : '',
     dataset: { phase16Step: label.toLowerCase().replaceAll(' ', '-') }
@@ -109,7 +138,11 @@ function progressCard(label, record, detail) {
     h('span', { class: 'phase16-progress-mark', 'aria-hidden': 'true', text: record ? '✓' : '○' }),
     h('div', {}, [
       h('strong', { text: label }),
-      h('small', { text: record ? detail(record) : 'Waiting for explicit Human action' })
+      h('small', { text: record ? 'Complete in this browser' : 'Waiting for your choice' }),
+      h('details', {}, [
+        h('summary', { text: 'Show system step' }),
+        h('small', { text: record ? `${canonicalLabel} · ${detail(record)}` : canonicalLabel })
+      ])
     ])
   ]);
 }
@@ -159,26 +192,34 @@ function commandMetric(label, records) {
   ]);
 }
 
-function attentionCard(item) {
+function attentionCard(item, openMasterControl) {
   return h('article', { class: 'record-row phase16-attention-card' }, [
     h('div', {}, [
       h('strong', { text: item.title }),
-      h('small', { text: `${item.class.replaceAll('-', ' ')} · ${item.sourceObject.id}@${item.sourceObject.revision}` }),
-      h('p', { text: item.explanation })
+      h('p', { text: `What happened: ${item.materialState.replaceAll('-', ' ')}.` }),
+      h('p', { text: `Why it matters: ${item.explanation}` }),
+      h('div', { class: 'button-row' }, [
+        button(item.nextVerb, () => item.authorityRequired ? openMasterControl() : undefined),
+        button('Leave it as it is', () => {})
+      ])
     ]),
     h('div', {}, [
-      objectStatus('Next', item.nextVerb, item.class === 'blocked' ? 'review' : ''),
-      h('small', { text: item.authorityRequired || 'No authority required' })
+      objectStatus('Approval', item.authorityRequired ? 'Master Control required' : 'not required', item.class === 'blocked' ? 'review' : ''),
+      h('details', {}, [
+        h('summary', { text: 'Show source details' }),
+        h('small', { text: `${item.sourceObject.kind} · ${item.sourceObject.id}@${item.sourceObject.revision}` }),
+        h('small', { text: `Projection ${item.id} · generated by ${item.generatedBy}` })
+      ])
     ])
   ]);
 }
 
 function distributionCard(plan, released) {
   const label = plan.destination.type === 'private-export'
-    ? 'Private export'
+    ? 'Keep private / export'
     : plan.destination.type === 'radio'
-      ? 'Radio'
-      : 'Channels';
+      ? 'Prepare for Radio'
+      : 'Prepare for Channels';
   const release = released.find(item => item.distributionPlanId === plan.id);
   return h('article', {
     class: 'card phase16-distribution-card',
@@ -246,10 +287,10 @@ export async function createCollaborationApp({
     const accepted = currentRuntime.gummies.find(item => item.productionId === PHASE16_IDS.production && item.status === 'accepted');
     const command = await generateCommandCenterView(repository, currentRuntime);
 
-    const runButton = button('Run complete local proof', async event => {
+    const runButton = button('Create the full local example', async event => {
       const target = event.currentTarget;
       target.disabled = true;
-      target.textContent = 'Running governed local proof…';
+      target.textContent = 'Creating governed local example…';
       try {
         const result = await runLivingCollaborationProof(repository, currentRuntime, {
           persistProductionRuntime: async runtime => {
@@ -258,29 +299,34 @@ export async function createCollaborationApp({
           }
         });
         currentRuntime = result.runtime;
-        announce('Phase 16 local proof completed. No provider charge occurred; one private destination was explicitly released.');
+        announce('Full local example created. Phase 16 local proof completed. The deterministic route charged $0.00 and nothing was published remotely.');
         await render();
       } catch (error) {
         target.disabled = false;
-        target.textContent = 'Run complete local proof';
-        announce(`Phase 16 proof blocked: ${error.message}`);
+        target.textContent = 'Create the full local example';
+        announce(`Local example blocked: ${error.message}`);
       }
     }, 'button primary', { dataset: { testid: 'phase16-run-proof' } });
 
     root.replaceChildren(
       h('header', { class: 'phase16-hero' }, [
         h('div', {}, [
-          h('p', { class: 'eyebrow', text: 'PHASE 16 · LIVING COLLABORATION' }),
-          h('h2', { text: 'See what needs attention' }),
+          h('p', { class: 'eyebrow', text: 'COMMAND CENTER · LIVING COLLABORATION' }),
+          h('h2', { text: 'Choose what to continue' }),
           h('p', {
             class: 'lede',
-            text: 'Restore a group, recognize shared intent, agree how to make it, choose contributions, Make Production, review evidence, and send an accepted result somewhere—without silent authority.'
-          })
+            text: 'Open a saved group, shape an idea into a Production, review decisions, or send an accepted result somewhere. Nothing acts without your choice.'
+          }),
+          h('details', { class: 'phase16-how-it-works' }, [
+            h('summary', { text: 'How this works' }),
+            h('p', { text: 'Zeke explains and routes what appears here. Glopper remains the separate companion. Neither can silently rank your goals, approve, spend, execute, publish, or assign ownership.' }),
+            h('p', { text: 'The Command Center is a generated, non-executing view over exact local records. You may open and change the underlying objects individually.' })
+          ])
         ]),
         h('aside', { class: 'phase16-authority-law' }, [
-          h('strong', { text: 'Command Center shows what needs attention.' }),
+          h('strong', { text: 'This page helps you understand and choose.' }),
           h('span', { text: 'Master Control decides what is allowed.' }),
-          h('small', { text: 'Zeke explains and routes here. Glopper remains the companion. Neither can approve, spend, execute, publish, or assign ownership.' })
+          h('small', { text: 'Nothing runs merely because it appears here.' })
         ])
       ]),
       h('div', { class: 'phase16-command-metrics' }, [
@@ -291,7 +337,8 @@ export async function createCollaborationApp({
         commandMetric('Returns', command.returns),
         commandMetric('Receipts', command.receipts)
       ]),
-      section('Friday Brainstorm Crew', 'OPEN THIS GROUP', [
+      section('Friday Brainstorm Crew', 'LOCAL EXAMPLE · OPEN A SAVED GROUP', [
+        h('p', { class: 'boundary-note', text: 'This example demonstrates the complete model using private records in this browser. It does not imply real contacts, remote presence, payment, publication, or ownership.' }),
         h('p', { text: `${social.purpose} Bowl, Session, and Social Instance remain separate durable objects.` }),
         socialPreview(social, presenceByActor),
         h('div', { class: 'button-row' }, [
@@ -307,96 +354,132 @@ export async function createCollaborationApp({
         ]),
         h('p', { class: 'boundary-note compact', text: social.resumeInstructions })
       ], { dataset: { testid: 'phase16-social-instance' } }),
-      section('Truthful Actor Presence', 'WHO IS HERE', [
+      section('Who is available here?', 'LOCAL EXAMPLE · ACTOR PRESENCE', [
         h('div', { class: 'phase16-presence-grid' }, PHASE16_ACTORS.map(actor => presenceCard(actor, presenceByActor[actor.id]))),
         h('p', { class: 'boundary-note compact', text: 'Human-live means this local browser fixture only. AI represented is disclosed with Agent, Mold, Grant, Human sponsor, scope, expiry, exclusions, and revocation. No remote audio/video is claimed.' })
       ]),
-      section('Complete local-first journey', 'PROOF STATUS', [
+      section('Choose a part to inspect or create', 'LOCAL EXAMPLE · OPTIONAL COMPLETE JOURNEY', [
         h('ol', { class: 'phase16-progress' }, [
-          progressCard('Restore saved Social Instance', social, record => `${record.layout.windows.length} windows · revision ${record.revision}`),
-          progressCard('Create Shared Vision', sharedVision, record => `${record.origin.recordRefs.length} exact selected records · no execution`),
-          progressCard('Approve Production Agreement', agreement, record => `revision ${record.revision} · ${record.approvals.length} Actor approvals`),
-          progressCard('Authorize $10 Production Pool', originalPool, record => `${record.allocations.map(item => money(item.maximumAmount)).join(' / ')} maximums`),
-          progressCard('Propose fourth contributor', revisedPool, record => `${record.allocations.length} future shares · prior authorizations unchanged`),
-          progressCard('Record Contribution Ledger', ledger, record => `${record.entries.length} append-only entries · revision ${record.revision}`),
-          progressCard('Form Production', formation, record => `${record.id} · immutable`),
-          progressCard('Make Production', run, record => `${record.id} · ${record.status} · ${money(record.policy.costCeiling)} run ceiling`),
-          progressCard('Human accepts result', accepted, record => `${record.id} · ${record.acceptance.role}`),
-          progressCard('Prepare Distribution Plans', plans.length ? { id: 'plans', length: plans.length } : null, record => `${record.length} separate destinations`),
-          progressCard('Release one destination', releases[0], record => `${record.destination.type} · ${money(record.cost.amount)} actual`)
+          progressCard('Restore saved group', 'Social Instance', social, record => `${record.layout.windows.length} windows · revision ${record.revision}`),
+          progressCard('Save the idea', 'Shared Vision', sharedVision, record => `${record.origin.recordRefs.length} exact selected records · no execution`),
+          progressCard('Agree how to make it', 'Production Agreement', agreement, record => `revision ${record.revision} · ${record.approvals.length} Actor approvals`),
+          progressCard('Set contribution limits', 'Production Pool', originalPool, record => `${record.allocations.map(item => money(item.maximumAmount)).join(' / ')} maximums`),
+          progressCard('Invite another contributor', 'Production Pool revision proposal', revisedPool, record => `${record.allocations.length} future shares · prior authorizations unchanged`),
+          progressCard('Record contributions', 'Contribution Ledger', ledger, record => `${record.entries.length} append-only entries · revision ${record.revision}`),
+          progressCard('Form the Production', 'Production Formation Event', formation, record => `${record.id} · immutable`),
+          progressCard('Make Production', 'Production Run', run, record => `${record.id} · ${record.status} · ${money(record.policy.costCeiling)} run ceiling`),
+          progressCard('Accept the result', 'Human acceptance', accepted, record => `${record.id} · ${record.acceptance.role}`),
+          progressCard('Prepare destinations', 'Distribution Plans', plans.length ? { id: 'plans', length: plans.length } : null, record => `${record.length} separate destinations`),
+          progressCard('Release one destination', 'Distribution Release', releases[0], record => `${record.destination.type} · ${money(record.cost.amount)} actual`)
         ]),
         h('div', { class: 'button-row' }, [
           runButton,
           button('Open Master Control', openMasterControl)
         ]),
-        h('p', { class: 'boundary-note compact', text: 'The proof uses the existing Make Production runtime and a deterministic local route. The $10 Pool is an estimate/authorization record; actual provider cost remains $0.00.' })
+        h('p', { class: 'boundary-note compact', text: 'Creates the remaining example records in this browser, uses the governed deterministic route, charges $0.00, and publishes nothing remotely.' }),
+        h('p', { text: 'This is optional. You can instead inspect and manipulate individual objects through Composer and the sections below.' })
       ], { dataset: { testid: 'phase16-proof-status' } }),
       h('div', { class: 'phase16-split' }, [
-        section('Shared Vision', 'SAVE THIS IDEA', sharedVision ? [
+        section('Saved idea', 'SHARED VISION', sharedVision ? [
           objectStatus('Status', sharedVision.status.replaceAll('-', ' ')),
           h('h4', { text: sharedVision.goal }),
           h('p', { text: sharedVision.intent }),
-          h('ul', {}, sharedVision.origin.recordRefs.map(item => h('li', { text: `${item.id}@${item.revision} · sha256:${item.hash.slice(0, 12)}…` }))),
-          h('p', { class: 'boundary-note compact', text: `Excluded: ${sharedVision.origin.explicitExclusions.join(', ')}. A Shared Vision creates no authority, spending, ownership, publication, or execution.` })
+          h('p', { text: `People: ${sharedVision.participantActorIds.map(actorId => PHASE16_ACTORS.find(actor => actor.id === actorId)?.name || actorId).join(', ')}.` }),
+          h('strong', { text: 'Included in the idea' }),
+          h('ul', {}, sharedVision.volunteeredContributions.map(item => h('li', { text: item.description }))),
+          h('strong', { text: 'Kept private' }),
+          h('p', { text: 'Unselected conversation, private budget details, credentials, and one deliberately excluded message.' }),
+          h('p', { class: 'boundary-note compact', text: 'Saving this idea creates no authority, spending, ownership, publication, or execution.' }),
+          h('details', {}, [
+            h('summary', { text: 'Show provenance' }),
+            h('p', { text: `${sharedVision.id}@${sharedVision.revision} · source ${sharedVision.origin.sourceId}` }),
+            h('ul', {}, sharedVision.origin.recordRefs.map(item => h('li', { text: `${item.id}@${item.revision} · sha256:${item.hash}` }))),
+            h('p', { text: `Explicit exclusions: ${sharedVision.origin.explicitExclusions.join(', ')}` })
+          ])
         ] : [emptyState('Select exact Session records to create a non-executing Shared Vision.')]),
-        section('Production Agreement', 'AGREE HOW WE WILL MAKE IT', agreement ? [
-          objectStatus('Agreement', `revision ${agreement.revision} · ${agreement.status}`),
+        section('How the group agreed to make it', 'PRODUCTION AGREEMENT', agreement ? [
           h('dl', { class: 'phase16-mini-facts' }, [
-            h('dt', { text: 'Governance' }), h('dd', { text: agreement.governance }),
-            h('dt', { text: 'Creative credit' }), h('dd', { text: 'Separate approval' }),
-            h('dt', { text: 'Ownership' }), h('dd', { text: 'Undecided · never automatic' }),
-            h('dt', { text: 'Compensation' }), h('dd', { text: 'None in this proof' }),
-            h('dt', { text: 'Revenue' }), h('dd', { text: 'Undecided' }),
-            h('dt', { text: 'Publication' }), h('dd', { text: 'Separate exact approval' })
+            h('dt', { text: 'Who decides?' }), h('dd', { text: 'The three participants decide together; protected decisions are unanimous.' }),
+            h('dt', { text: 'How will people be credited?' }), h('dd', { text: 'Creative credit is separate and requires approval.' }),
+            h('dt', { text: 'Who owns what?' }), h('dd', { text: 'Undecided. Contribution never creates ownership automatically.' }),
+            h('dt', { text: 'Is anyone being paid?' }), h('dd', { text: 'No compensation is promised in this local example.' }),
+            h('dt', { text: 'How would revenue be handled?' }), h('dd', { text: 'Undecided; there is no automatic participation.' }),
+            h('dt', { text: 'Who may publish?' }), h('dd', { text: 'Only after a separate exact publication approval.' })
+          ]),
+          h('details', {}, [
+            h('summary', { text: 'Show agreement details' }),
+            h('p', { text: `${agreement.id}@${agreement.revision} · ${agreement.status} · governance ${agreement.governance}` }),
+            h('p', { text: `${agreement.approvals.length} exact-revision approvals. Any amendment creates a new revision and makes stale approvals invalid: ${String(agreement.amendmentPolicy.staleApprovalsInvalid)}.` })
           ])
         ] : [emptyState('The exact Agreement revision has not been approved.')])
       ]),
-      section('Production Pool', 'CHOOSE YOUR CONTRIBUTION', [
+      section('Set contribution limits', 'PRODUCTION POOL', [
+        h('p', { class: 'phase16-law', text: "These are individual maximum authorizations, not collected money. Nobody's limit changes until that person approves a new revision." }),
         poolTable(originalPool, revisedPool),
-        h('div', { class: 'phase16-pool-truth' }, [
-          objectStatus('Custody', originalPool?.custodyModel || 'no Pool yet'),
-          objectStatus('Internal currency', originalPool?.internalCurrency ? 'yes' : 'no'),
-          objectStatus('Actual charge', money(originalPool?.actual?.charged || 0))
+        h('details', {}, [
+          h('summary', { text: 'Show authorization and reconciliation evidence' }),
+          h('div', { class: 'phase16-pool-truth' }, [
+            objectStatus('Custody', originalPool?.custodyModel || 'no Pool yet'),
+            objectStatus('Internal currency', originalPool?.internalCurrency ? 'yes' : 'no'),
+            objectStatus('Actual charge', money(originalPool?.actual?.charged || 0))
+          ]),
+          originalPool ? h('p', { text: `${originalPool.id}@${originalPool.revision} · ${originalPool.allocations.map(item => item.authorizationId).join(', ')} · provider evidence complete: ${String(originalPool.actual.providerEvidenceComplete)}` }) : null
         ])
       ], { dataset: { testid: 'phase16-pool' } }),
       h('div', { class: 'phase16-split' }, [
-        section('Contribution Ledger', 'WHAT HAPPENED', ledger ? [
+        section('What each person contributed', 'CONTRIBUTION LEDGER', ledger ? [
           h('p', { class: 'phase16-law', text: 'The Ledger records what happened. The Agreement determines what it means.' }),
           h('div', { class: 'record-list' }, ledger.entries.slice().reverse().map(entry => h('article', { class: 'record-row' }, [
             h('div', {}, [
               h('strong', { text: entry.description }),
-              h('small', { text: `${entry.contributorActorId} · ${entry.category} · ${entry.status}` })
+              h('small', { text: `${PHASE16_ACTORS.find(actor => actor.id === entry.contributorActorId)?.name || 'Local contributor'} · ${entry.status}` }),
+              h('details', {}, [
+                h('summary', { text: 'Show contribution details' }),
+                h('small', { text: `${entry.id} · ${entry.contributorActorId} · ${entry.category} · revision ${ledger.revision}` }),
+                h('small', { text: `Evidence: ${entry.evidenceRefs.map(ref => `${ref.id}@${ref.revision}`).join(', ')}` })
+              ])
             ]),
             h('small', { text: `ownership: ${entry.ownershipEffect.automatic ? 'automatic' : 'not automatic'}` })
           ])))
         ] : [emptyState('No contributions have been recorded.')]),
-        section('Production Formation Event', 'FORM PRODUCTION', formation ? [
+        section('The Production was formed', 'PRODUCTION FORMATION EVENT', formation ? [
           objectStatus('Formation', 'immutable'),
-          h('h4', { text: formation.productionId }),
-          h('p', { text: `${formation.sharedVisionId}@${formation.sharedVisionRevision} → ${formation.agreementId}@${formation.agreementRevision}` }),
-          h('p', { text: `${formation.initialActors.length} founding Actors · Receipt ${formation.receiptId}` }),
-          h('p', { class: 'boundary-note compact', text: 'Formation records the agreement transition. Make Production remains a later, separately approved execution transition.' })
+          h('p', { text: 'The group approved the exact agreement and formed a Production. No work ran during formation.' }),
+          h('details', {}, [
+            h('summary', { text: 'Show formation evidence' }),
+            h('h4', { text: formation.productionId }),
+            h('p', { text: `${formation.sharedVisionId}@${formation.sharedVisionRevision} → ${formation.agreementId}@${formation.agreementRevision}` }),
+            h('p', { text: `${formation.initialActors.length} founding Actors · Receipt ${formation.receiptId}` })
+          ]),
+          h('p', { class: 'boundary-note compact', text: 'Make Production remains a later, separately approved execution transition.' })
         ] : [emptyState('Formation waits for the exact Shared Vision, Agreement, Pool, and Ledger.')])
       ]),
-      section('Command Center attention', 'ZEKE EXPLAINS · MASTER CONTROL DECIDES', [
+      section('Things you may choose to review', 'COMMAND CENTER ATTENTION', [
         command.attentionItems.length
-          ? h('div', { class: 'record-list' }, command.attentionItems.map(attentionCard))
+          ? h('div', { class: 'record-list' }, command.attentionItems.map(item => attentionCard(item, openMasterControl)))
           : emptyState('No current attention items. Command Center remains a generated non-executing projection.'),
-        h('p', { class: 'boundary-note compact', text: `Projection generated ${command.generatedAt}. Authority source: ${command.authoritySource}. Executing: ${String(command.executing)}.` })
+        h('details', {}, [
+          h('summary', { text: 'Show source details' }),
+          h('p', { class: 'boundary-note compact', text: `Projection generated ${command.generatedAt}. Authority source: ${command.authoritySource}. Executing: ${String(command.executing)}.` }),
+          h('p', { text: command.sourceRevisions.map(item => `${item.id}@${item.revision ?? 'unrevisioned'}`).join(' · ') })
+        ])
       ], { dataset: { testid: 'phase16-attention' } }),
-      section('Send somewhere', 'DISTRIBUTION', plans.length ? [
+      section('Choose where an accepted result could go', 'DISTRIBUTION', plans.length ? [
         h('div', { class: 'card-grid phase16-distribution-grid' }, plans.map(plan => distributionCard(plan, releases))),
         h('p', { class: 'phase16-law', text: 'Accepting a result never publishes it.' }),
-        h('p', { class: 'boundary-note compact', text: 'Radio, Channels, and private export are separate versioned plans. Only the approved private local destination is released in this proof.' })
+        h('p', { class: 'boundary-note compact', text: 'Prepared, blocked, approved, released, and published are different states. Radio, Channels, and private export remain separate versioned plans.' })
       ] : [
         emptyState('Distribution waits for an exact Human-accepted Artifact revision.')
       ], { dataset: { testid: 'phase16-distribution' } }),
       h('footer', { class: 'phase16-footer' }, [
-        h('strong', { text: 'Canonical objects remain inspectable' }),
-        h('p', { text: 'Human · Actor · Agent · Mold · Bowl · Session · Social Instance · Shared Vision · Production · Production Agreement · Production Pool · Contribution Ledger · Production Formation Event · Work Order · Task Lease · Grant · Master Control · Command Center · Gummy · Return · Receipt · Distribution Plan' }),
-        production
-          ? h('small', { text: `${production.id} · ${production.status} · ${production.runIds.length} immutable Run(s)` })
-          : h('small', { text: 'No Phase 16 Production has formed yet.' })
+        h('strong', { text: 'The full architecture is still here.' }),
+        h('details', {}, [
+          h('summary', { text: 'Show the system objects behind this view' }),
+          h('p', { text: 'Human · Actor · Agent · Mold · Bowl · Session · Social Instance · Shared Vision · Production · Production Agreement · Production Pool · Contribution Ledger · Production Formation Event · Work Order · Task Lease · Grant · Master Control · Command Center · Gummy · Return · Receipt · Distribution Plan' }),
+          production
+            ? h('small', { text: `${production.id} · ${production.status} · ${production.runIds.length} immutable Run(s)` })
+            : h('small', { text: 'No local-example Production has formed yet.' })
+        ])
       ])
     );
   };

@@ -13,6 +13,7 @@ const COLLECTION_STORES = Object.freeze({
   productions: 'productions',
   participants: 'productionParticipants',
   configurations: 'productionConfigurations',
+  compositions: 'productionCompositions',
   actorPlans: 'actorPlans',
   contextEnvelopes: 'contextEnvelopes',
   productionRuns: 'productionRuns',
@@ -94,8 +95,24 @@ export class ProductionRuntimeRepository {
     if (!this.storage?.getItem) return null;
     try {
       const legacy = JSON.parse(this.storage.getItem(LEGACY_PRODUCTION_STORAGE_KEY) || 'null');
-      if (legacy?.productionRuntime?.version !== PRODUCTION_STATE_VERSION) return null;
-      return clone(legacy.productionRuntime);
+      const runtime = legacy?.productionRuntime;
+      if (!runtime || Number(runtime.version || 0) < 2 || Number(runtime.version || 0) > PRODUCTION_STATE_VERSION) return null;
+      const migrated = clone(runtime);
+      migrated.version = PRODUCTION_STATE_VERSION;
+      migrated.compositions ||= [];
+      migrated.migrationLog ||= [];
+      if (!migrated.migrationLog.some(item => item.id === 'migration:production-composition-v1')) {
+        migrated.migrationLog.push({
+          id: 'migration:production-composition-v1',
+          from: Number(runtime.version || 2),
+          to: PRODUCTION_STATE_VERSION,
+          status: 'applied',
+          preservesLegacyState: true,
+          addedCollection: 'compositions',
+          appliedAt: new Date().toISOString()
+        });
+      }
+      return migrated;
     } catch {
       return null;
     }
@@ -104,9 +121,11 @@ export class ProductionRuntimeRepository {
   async load() {
     const index = await this.repository.get('meta', PRODUCTION_RUNTIME_INDEX_ID);
     if (!index) return this.initialize();
+    const requiresCompositionMigration = Number(index.version || 0) < PRODUCTION_STATE_VERSION
+      || !Object.hasOwn(index.collections || {}, 'compositions');
     const runtime = {
       schema: 'gummy.production-runtime/v0',
-      version: index.version,
+      version: PRODUCTION_STATE_VERSION,
       actorDefaults: clone(index.actorDefaults || {}),
       windowState: clone(index.windowState || []),
       migrationLog: clone(index.migrationLog || [])
@@ -116,15 +135,27 @@ export class ProductionRuntimeRepository {
       const records = await Promise.all(ids.map(id => this.repository.get(store, id)));
       runtime[collection] = records.filter(Boolean);
     }
+    if (requiresCompositionMigration && !runtime.migrationLog.some(item => item.id === 'migration:production-composition-v1')) {
+      runtime.migrationLog.push({
+        id: 'migration:production-composition-v1',
+        from: Number(index.version || 2),
+        to: PRODUCTION_STATE_VERSION,
+        status: 'applied',
+        preservesLegacyState: true,
+        addedCollection: 'compositions',
+        appliedAt: new Date().toISOString()
+      });
+    }
     runtime.gummies = await Promise.all(runtime.gummies.map(record => this.hydrateGummy(record)));
     const clarified = clarifyPrivateReferenceContext(runtime);
-    if (clarified.changed) {
+    if (clarified.changed || requiresCompositionMigration) {
       await this.persist(clarified.runtime, {
         referenceContextMigration: {
           classification: 'private-reference',
           historicalRecordsPreserved: true,
           defaultIdentityAmbiguityRemoved: true
-        }
+        },
+        compositionMigration: requiresCompositionMigration
       });
       await this.flush();
     }
@@ -147,9 +178,13 @@ export class ProductionRuntimeRepository {
     for (const [collection, store] of Object.entries(COLLECTION_STORES)) {
       records[collection] = [];
       for (const record of runtime[collection] || []) {
-        records[collection].push(collection === 'gummies'
+        const persisted = collection === 'gummies'
           ? await this.persistedGummy(record)
-          : clone(record));
+          : clone(record);
+        if (collection === 'compositions' && this.repository.validator) {
+          await this.repository.validator(persisted, store, this.repository);
+        }
+        records[collection].push(persisted);
       }
     }
     const collections = Object.fromEntries(

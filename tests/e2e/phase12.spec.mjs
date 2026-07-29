@@ -122,7 +122,7 @@ test('phone Bar, notifications, Actor cards, full Glopper sheet, chat, and media
   await page.getByRole('tab', { name: /Actors/ }).click();
   const presence = page.locator('.presence-card').first();
   expect(await presence.evaluate(node => node.getBoundingClientRect().width <= 300)).toBe(true);
-  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   const panel = page.getByRole('complementary', { name: 'Glopper Panel' });
   await expect(panel).toBeVisible();
   const box = await panel.boundingBox();

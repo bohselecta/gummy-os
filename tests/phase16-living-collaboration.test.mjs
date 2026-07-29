@@ -107,7 +107,7 @@ test('Social Instance persists a topology and resumes as a distinct Session revi
   assert.notEqual(resumed.socialInstance.id, resumed.session.id);
 });
 
-test('database version 4 adds collaboration stores without losing existing local records', async t => {
+test('database version 5 adds collaboration and Production Composition stores without losing existing local records', async t => {
   const databaseName = `gummy-phase16-migration-${crypto.randomUUID()}`;
   const legacyRequest = indexedDB.open(databaseName, 3);
   const legacy = await new Promise((resolve, reject) => {
@@ -134,8 +134,10 @@ test('database version 4 adds collaboration stores without losing existing local
   assert.equal((await repository.get('humans', 'human:existing')).name, 'Existing Human');
   await repository.put('socialInstances', { id: 'social-instance:migrated-proof' }, { validate: false });
   await repository.put('productionFormations', { id: 'production-formation:migrated-proof' }, { validate: false });
+  await repository.put('productionCompositions', { id: 'composition:migrated-proof' }, { validate: false });
   assert.equal((await repository.all('socialInstances')).length, 1);
   assert.equal((await repository.all('productionFormations')).length, 1);
+  assert.equal((await repository.all('productionCompositions')).length, 1);
 });
 
 test('Shared Vision, Agreement, and Formation require exact revisions without silently executing', async t => {

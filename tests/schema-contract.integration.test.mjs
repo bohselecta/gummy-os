@@ -13,6 +13,7 @@ import {
   promoteSettingToActorDefault,
   saveProductionActorConfiguration
 } from '../src/core/production-runtime.js';
+import { ensureProductionComposition } from '../src/core/production-composition.js';
 
 const schemaNames = [
   'production',
@@ -20,6 +21,7 @@ const schemaNames = [
   'production-actor-configuration',
   'actor-app-descriptor',
   'actor-plan',
+  'production-composition',
   'context-envelope',
   'production-run',
   'actor-update-proposal',
@@ -44,6 +46,7 @@ test('canonical Production runtime artifacts validate against versioned JSON Sch
     runtime = (await saveProductionActorConfiguration(runtime, created.production.id, actorId, {})).runtime;
   }
   runtime = compileActorPlan(runtime, created.production.id).runtime;
+  runtime = ensureProductionComposition(runtime, created.production.id).runtime;
   const drag = createDragIntent(runtime, {
     productionId: created.production.id,
     sourceKind: 'gummy',
@@ -66,6 +69,7 @@ test('canonical Production runtime artifacts validate against versioned JSON Sch
     'production-actor-configuration': runtime.configurations,
     'actor-app-descriptor': runtime.actorAppDescriptors,
     'actor-plan': runtime.actorPlans,
+    'production-composition': runtime.compositions,
     'context-envelope': runtime.contextEnvelopes,
     'production-run': runtime.productionRuns,
     'actor-update-proposal': runtime.actorUpdateProposals,

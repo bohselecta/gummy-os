@@ -105,6 +105,17 @@
   .phase16-table { min-width: 620px; }
   .phase16-attention-card { grid-template-columns: 1fr; }
   .phase16-attention-card > div:last-child { justify-items: start; }
+  .gummy-box-layout { grid-template-columns: 1fr; }
+  .gummy-box-sidebar {
+    position: static;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+  }
+  .gummy-box-folder { flex: 0 0 170px; scroll-snap-align: start; }
+  .gummy-box-header { padding: var(--space-4); }
+  .gummy-box-filters { grid-template-columns: 1fr; }
+  .gummy-box-objects.grid, .gummy-box-projects { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 360px) {

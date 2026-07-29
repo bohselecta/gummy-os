@@ -24,7 +24,6 @@ import {
   createProduction
 } from './core/production-runtime.js';
 import { PHASE14_PLACES } from './places/manifest.js';
-import { createProductionApp } from './apps/production.js';
 import { createActorSurface } from './apps/actor-surface.js';
 import { createMasterControlApp } from './apps/master-control.js';
 import { createBrowserSpecialistRegistry } from './integrations/specialist-runtime.js';
@@ -60,6 +59,7 @@ let session = {
 let panelOpen = false;
 let panelTab = 'conversation';
 let selectedApp = 'guide';
+let systemExpanded = window.matchMedia('(min-width: 900px)').matches;
 let selectedWorkOrderId = 'work-order:project-brief';
 let productionState = { productionRuntime: null };
 let uxCopy;
@@ -74,19 +74,26 @@ const productionStore = {
   }
 };
 
-const surfaces = [
-  ['glopper', '✦', 'Glopper'],
-  ['gummies', '▤', 'My Gummies'],
-  ['browser', '◉', 'Browser'],
+const primarySurfaces = [
+  ['guide', '⌂', 'Gummy'],
+  ['gummies', '▤', 'Gummy Box', 'Gummy Box · My Gummies'],
+  ['composer', '⌘', 'Composer'],
   ['productions', '◇', 'Productions'],
+  ['actors', '◎', 'People & groups', 'People & groups · Actors / Bowls'],
+  ['applications', '◌', 'Places'],
   ['command-center', '◈', 'Command Center'],
-  ['actors', '◎', 'Actors / Bowls'],
+  ['control', '⌁', 'Master Control']
+];
+
+const systemSurfaces = [
+  ['glopper', '✦', 'Glopper'],
+  ['browser', '◉', 'Browser'],
   ['work-orders', '⇢', 'Work Orders'],
   ['receipts', '✓', 'Receipts'],
-  ['control', '⌁', 'Master Control'],
-  ['applications', '⌘', 'Places'],
   ['about', 'ⓘ', 'About / Limits']
 ];
+
+const surfaces = [...primarySurfaces, ...systemSurfaces];
 
 function h(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -96,7 +103,7 @@ function h(tag, props = {}, children = []) {
     else if (key === 'text') node.textContent = value;
     else if (key === 'dataset') Object.assign(node.dataset, value);
     else if (key.startsWith('on') && typeof value === 'function') node.addEventListener(key.slice(2).toLowerCase(), value);
-    else if (key === 'checked' || key === 'disabled' || key === 'hidden') node[key] = value;
+    else if (key === 'checked' || key === 'disabled' || key === 'hidden' || key === 'selected') node[key] = value;
     else node.setAttribute(key, value);
   }
   for (const child of Array.isArray(children) ? children : [children]) {
@@ -525,7 +532,7 @@ async function renderShell() {
   const layer = h('div', { class: 'window-layer' });
   const toasts = h('div', { class: 'toast-layer', 'aria-live': 'polite' });
   canvas.append(layer, toasts);
-  const bar = h('nav', { class: 'gummy-bar', 'aria-label': 'Gummy Bar', role: 'tablist' });
+  const bar = h('nav', { class: 'gummy-bar', 'aria-label': 'Gummy Bar' });
   shell.append(topbar, canvas, bar);
   appRoot.append(shell);
   windowManager = new WindowManager(layer, repository);
@@ -575,10 +582,16 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
   const hasSelectedTab = surfaces.some(([id]) => id === selectedApp)
     || pinnedPlaces.some(place => selectedApp === `place:${place.id}`);
   bar.replaceChildren();
-  surfaces.forEach(([id, icon, label], index) => {
-    const button = h('button', {
-      class: 'bar-candy', role: 'tab', 'aria-selected': String(selectedApp === id), tabindex: selectedApp === id || (!hasSelectedTab && index === 0) ? '0' : '-1',
-      dataset: { app: id }, onclick: () => id === 'glopper' ? togglePanel() : openSurface(id)
+
+  const appendSurface = ([id, icon, label, accessibleLabel], group, parent = bar) => {
+    const surfaceButton = h('button', {
+      class: `bar-candy bar-${group}`,
+      role: 'tab',
+      'aria-label': accessibleLabel || label,
+      'aria-selected': String(selectedApp === id),
+      tabindex: selectedApp === id || (!hasSelectedTab && id === 'guide') ? '0' : '-1',
+      dataset: { app: id, group },
+      onclick: () => id === 'glopper' ? togglePanel() : openSurface(id)
     }, [
       id === 'glopper'
         ? h('img', {
@@ -592,21 +605,44 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
         : h('span', { class: 'icon', 'aria-hidden': 'true', text: icon }),
       h('span', { class: 'label', text: label })
     ]);
-    if (id === 'work-orders' && pending) button.append(h('span', { class: 'badge', 'aria-label': `${pending} awaiting approval`, text: String(pending) }));
-    if (id === 'receipts' && receipts) button.append(h('span', { class: 'badge', 'aria-label': `${receipts} receipts`, text: String(receipts) }));
-    button.addEventListener('keydown', event => {
-      const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
-      if (!keys.includes(event.key)) return;
-      event.preventDefault();
-      const buttons = [...bar.querySelectorAll('.bar-candy')];
-      const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
-      buttons.forEach((item, itemIndex) => item.tabIndex = itemIndex === next ? 0 : -1);
-      buttons[next].focus();
-    });
-    bar.append(button);
+    if (id === 'work-orders' && pending) surfaceButton.append(h('span', { class: 'badge', 'aria-label': `${pending} awaiting approval`, text: String(pending) }));
+    if (id === 'receipts' && receipts) surfaceButton.append(h('span', { class: 'badge', 'aria-label': `${receipts} receipts`, text: String(receipts) }));
+    parent.append(surfaceButton);
+  };
+
+  const primaryGroup = h('span', {
+    class: 'gummy-primary-surfaces',
+    role: 'tablist',
+    'aria-label': 'Primary workspaces'
   });
+  bar.append(primaryGroup);
+  primarySurfaces.forEach(surface => appendSurface(surface, 'primary', primaryGroup));
+  const systemToggle = h('button', {
+    class: 'bar-candy bar-system-toggle',
+    type: 'button',
+    'aria-expanded': String(systemExpanded),
+    'aria-controls': 'gummy-system-surfaces',
+    onclick: () => {
+      systemExpanded = !systemExpanded;
+      void renderBar();
+    }
+  }, [
+    h('span', { class: 'icon', 'aria-hidden': 'true', text: '•••' }),
+    h('span', { class: 'label', text: 'More / System' })
+  ]);
+  bar.append(systemToggle);
+  const systemGroup = h('span', {
+    id: 'gummy-system-surfaces',
+    class: 'gummy-system-surfaces',
+    role: 'tablist',
+    'aria-label': 'System workspaces',
+    hidden: !systemExpanded
+  });
+  bar.append(systemGroup);
+  systemSurfaces.forEach(surface => appendSurface(surface, 'system', systemGroup));
+
   for (const place of pinnedPlaces) {
-    const button = h('button', {
+    const placeButton = h('button', {
       class: 'bar-candy place-pin',
       role: 'tab',
       'aria-selected': String(selectedApp === `place:${place.id}`),
@@ -617,11 +653,14 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
       h('span', { class: 'icon', 'aria-hidden': 'true', text: place.icon }),
       h('span', { class: 'label', text: place.name })
     ]);
-    button.addEventListener('keydown', event => {
+    primaryGroup.append(placeButton);
+  }
+  for (const candy of bar.querySelectorAll('.bar-candy')) {
+    candy.addEventListener('keydown', event => {
       if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
-      const buttons = [...bar.querySelectorAll('.bar-candy')];
-      const current = buttons.indexOf(button);
+      const buttons = [...bar.querySelectorAll('.bar-candy')].filter(item => !item.closest('[hidden]'));
+      const current = buttons.indexOf(candy);
       const next = event.key === 'Home'
         ? 0
         : event.key === 'End'
@@ -630,7 +669,6 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
       buttons.forEach((item, itemIndex) => item.tabIndex = itemIndex === next ? 0 : -1);
       buttons[next].focus();
     });
-    bar.append(button);
   }
 }
 
@@ -640,15 +678,17 @@ async function toggleMode() {
 }
 
 async function openSurface(id) {
+  if (systemSurfaces.some(([surfaceId]) => surfaceId === id)) systemExpanded = true;
   selectedApp = id;
   await renderBar();
   const titles = {
-    guide: ['Welcome to your Gummy', 'orientation'],
-    gummies: ['My Gummies', 'objects and quarantine'],
+    guide: ['Gummy', 'Orientation and continuity'],
+    gummies: ['Gummy Box', 'Your files, projects, results, and history'],
+    composer: ['Composer', 'Arrange and connect work'],
     browser: ['Gummy Browser', 'isolated navigation'],
     productions: ['Productions', 'Actor-first durable undertakings'],
     'command-center': ['Command Center', 'attention, collaboration, and governed release'],
-    actors: ['Actors & Bowls', 'composition proof'],
+    actors: ['People & groups', 'Actors, Bowls, and Social Instances'],
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
     control: ['Master Control', 'authority and revocation'],
@@ -663,6 +703,18 @@ async function openSurface(id) {
     windowManager.focus(existing);
   } else {
     await windowManager.open({ id, title: titles[id]?.[0] || id, subtitle: titles[id]?.[1], content });
+  }
+  if (id === 'gummies') {
+    const boxWindow = windowManager.windows.get(id);
+    boxWindow?.setAttribute('aria-label', 'Gummy Box window · My Gummies window');
+    const labels = { close: 'Close', minimize: 'Minimize', maximize: 'Maximize' };
+    for (const [action, label] of Object.entries(labels)) {
+      boxWindow?.querySelector(`[data-window-action="${action}"]`)
+        ?.setAttribute('aria-label', `${label} Gummy Box · ${label} My Gummies`);
+    }
+  }
+  if (id === 'guide') {
+    windowManager.windows.get(id)?.setAttribute('aria-label', 'Gummy window · Welcome to your Gummy window');
   }
 }
 
@@ -709,6 +761,24 @@ async function openPrivateChatWindow(participantActorId = 'actor:glopper') {
 async function buildSurface(id) {
   if (id === 'guide') return guideSurface();
   if (id === 'gummies') return gummiesSurface();
+  if (id === 'composer') {
+    const [{ createComposerApp }, bowls, sharedVisions, socialInstances] = await Promise.all([
+      import('./apps/composer.js'),
+      repository.all('bowls'),
+      repository.all('sharedVisions'),
+      repository.all('socialInstances')
+    ]);
+    return createComposerApp({
+      store: productionStore,
+      paletteRecords: { bowls, sharedVisions, socialInstances },
+      openActorSurface,
+      openMasterControl: openProductionMasterControl,
+      openProduction,
+      openCanonicalRef,
+      reloadRuntime: () => productionRepository.load(),
+      toast: (title, detail) => announce(`${title}. ${detail}`)
+    }).node;
+  }
   if (id === 'browser') {
     const { createBrowserSurface } = await import('./apps/browser-surface.js');
     return createBrowserSurface({ h, repository });
@@ -746,23 +816,27 @@ async function buildSurface(id) {
   return applicationsSurface();
 }
 
-function productionSurface(productionId = null) {
+async function productionSurface(productionId = null, initialTab = 'composer') {
+  const { createProductionApp } = await import('./apps/production.js');
   return createProductionApp({
     store: productionStore,
     productionId,
+    initialTab,
     openActorSurface,
     openMasterControl: openProductionMasterControl,
     openProduction,
+    openCanonicalRef,
+    reloadRuntime: () => productionRepository.load(),
     toast: (title, detail) => announce(`${title}. ${detail}`),
     specialistAdapters,
     copy: uxCopy.production
   }).node;
 }
 
-async function openProduction(productionId) {
+async function openProduction(productionId, initialTab = 'composer') {
   const production = productionState.productionRuntime.productions.find(item => item.id === productionId);
   const id = `production-window:${productionId}`;
-  const content = productionSurface(productionId);
+  const content = await productionSurface(productionId, initialTab);
   const existing = windowManager.windows.get(id);
   if (existing) {
     existing.querySelector('.window-body').replaceChildren(content);
@@ -776,6 +850,19 @@ async function openProduction(productionId) {
     subtitle: `${productionId} · Actor-first Production`,
     content
   });
+}
+
+async function openCanonicalRef(ref) {
+  if (ref.kind === 'gummy') return openSurface('gummies');
+  if (ref.kind === 'production') return openProduction(ref.id);
+  if (ref.kind === 'actor') return openActorSurface(ref.id);
+  if (ref.kind === 'place') {
+    const place = PHASE14_PLACES.find(item => item.id === ref.id);
+    return place ? openPlaceWindow(place.id, place.context) : openSurface('applications');
+  }
+  if (ref.kind === 'destination' && ref.id === 'destination:gummy-box') return openSurface('gummies');
+  if (ref.kind === 'review-gate') return openSurface('control');
+  return openSurface('command-center');
 }
 
 async function openActorSurface(actorId, productionId = null) {
@@ -805,10 +892,10 @@ async function openActorSurface(actorId, productionId = null) {
 
 async function refreshProductionSurfaces(productionId = null) {
   const overview = windowManager?.windows.get('productions');
-  if (overview) overview.querySelector('.window-body').replaceChildren(productionSurface());
+  if (overview) overview.querySelector('.window-body').replaceChildren(await productionSurface());
   if (productionId) {
     const scoped = windowManager?.windows.get(`production-window:${productionId}`);
-    if (scoped) scoped.querySelector('.window-body').replaceChildren(productionSurface(productionId));
+    if (scoped) scoped.querySelector('.window-body').replaceChildren(await productionSurface(productionId));
   }
   await renderBar();
 }
@@ -892,8 +979,88 @@ function guideSurface() {
 }
 
 async function gummiesSurface() {
+  const [
+    gummies,
+    receipts,
+    sharedVisions,
+    socialInstances,
+    box,
+    recovery,
+    connection,
+    { createGummyBoxApp }
+  ] = await Promise.all([
+    repository.all('gummies'),
+    repository.all('receipts').then(items => items.sort((a, b) => b.createdAt.localeCompare(a.createdAt))),
+    repository.all('sharedVisions'),
+    repository.all('socialInstances'),
+    repository.get('boxes', 'box:hayden'),
+    gummyBoxRecoverySurface(),
+    githubSurface(),
+    import('./apps/gummy-box.js')
+  ]);
+  const picker = h('input', { type: 'file', accept: '.md,.txt,text/plain,text/markdown', hidden: true });
+  picker.addEventListener('change', async () => {
+    const file = picker.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) return announce('Import blocked: general imports are limited to 10 MiB.');
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const id = createId('gummy');
+    try {
+      const stored = await byteStore.writeGummy(id, 1, bytes);
+      const timestamp = new Date().toISOString();
+      const record = {
+        schema: 'gummy.gummy/v0', id, kind: 'file', title: file.name, ownerActorId: 'actor:hayden', creatorActorId: 'actor:hayden',
+        visibility: 'private', revision: 1, content: { mediaType: file.type || 'application/octet-stream', byteRef: stored.path, sizeBytes: stored.byteLength },
+        hash: { algorithm: 'sha256', value: stored.hash },
+        quarantine: { status: 'quarantined', source: 'browser import', classification: 'unknown external file', nativeAuthority: false },
+        capabilities: [], createdAt: timestamp, updatedAt: timestamp,
+        extensions: { workspaceId: 'workspace:imports' }
+      };
+      await repository.putValidated('gummies', record);
+      const workspace = await repository.get('workspaces', 'workspace:imports') || { id: 'workspace:imports', status: 'disposable', recordRefs: [], opfsPaths: [], createdAt: timestamp };
+      workspace.recordRefs.push({ store: 'gummies', id });
+      workspace.opfsPaths.push(stored.path);
+      await repository.put('workspaces', workspace, { validate: false });
+      announce(`${file.name} imported into quarantine.`);
+      await refreshSurface('gummies');
+    } catch (error) {
+      announce(`Persistence blocked: ${error.message}`);
+    }
+  });
+  return createGummyBoxApp({
+    gummies,
+    receipts,
+    sharedVisions,
+    socialInstances,
+    box,
+    runtime: productionState.productionRuntime,
+    picker,
+    recovery,
+    connection,
+    openComposer: () => openSurface('composer'),
+    openCommandCenter: () => openSurface('command-center'),
+    openProduction,
+    boundedExport,
+    denyPromotion,
+    burnWorkspace
+  });
+}
+
+async function legacyGummiesSurface() {
   const gummies = await repository.all('gummies');
-  const root = h('div');
+  const receipts = (await repository.all('receipts')).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const sharedVisions = await repository.all('sharedVisions');
+  const socialInstances = await repository.all('socialInstances');
+  const box = await repository.get('boxes', 'box:hayden');
+  const runtime = productionState.productionRuntime;
+  const recovery = await gummyBoxRecoverySurface();
+  const connection = await githubSurface();
+  const root = h('div', { class: 'gummy-box-workspace', dataset: { testid: 'gummy-box' } });
+  let category = 'home';
+  let presentation = 'list';
+  let query = '';
+  let typeFilter = 'all';
+  let stateFilter = 'all';
   const picker = h('input', { type: 'file', accept: '.md,.txt,text/plain,text/markdown', hidden: true });
   picker.addEventListener('change', async () => {
     const file = picker.files[0];
@@ -922,35 +1089,313 @@ async function gummiesSurface() {
       announce(`Persistence blocked: ${error.message}`);
     }
   });
-  root.append(
-    h('p', { class: 'eyebrow', text: 'User-owned objects' }),
-    h('h2', { text: 'My Gummies' }),
-    h('p', { class: 'lede', text: 'Sources and results are separate. Provider and unknown imports remain bounded and never receive native authority.' }),
+
+  const categoryDefinitions = [
+    ['home', 'Home', 'Your recent projects, sources, results, and imports'],
+    ['projects', 'Projects / Productions', `${runtime.productions.length} undertakings`],
+    ['sources', 'Sources', `${gummies.filter(isSourceGummy).length} source objects`],
+    ['results', 'Results', `${gummies.filter(isResultGummy).length} result objects`],
+    ...(sharedVisions.length || socialInstances.length
+      ? [['shared', 'Shared with me', `${sharedVisions.length + socialInstances.length} real local records`]]
+      : []),
+    ['history', 'Receipts and history', `${receipts.length} evidence records`],
+    ['imports', 'Imports / Quarantine', `${gummies.filter(item => item.quarantine).length} bounded imports`],
+    ['backups', 'Backups and connections', box?.mirrorLocations?.length ? `${box.mirrorLocations.length} mirror connections` : 'Local only']
+  ];
+
+  const header = h('header', { class: 'gummy-box-header' }, [
+    h('div', {}, [
+      h('p', { class: 'eyebrow', text: 'YOUR HOME WORKSPACE' }),
+      h('h1', { text: 'Gummy Box' }),
+      h('p', { class: 'lede', text: 'Your files, projects, results, and history' }),
+      h('p', { class: 'gummy-box-location', text: "Stored in this browser's Local Gummy Box." })
+    ]),
     h('div', { class: 'button-row' }, [
       h('button', { class: 'button primary', onclick: () => picker.click(), dataset: { testid: 'import-gummy' } }, 'Import a Gummy'),
-      h('button', { class: 'button', onclick: burnWorkspace }, 'Burn disposable imports')
+      h('button', { class: 'button', onclick: () => openSurface('composer') }, 'Open Composer')
     ]),
     picker
-  );
-  const list = h('ul', { class: 'record-list' });
-  for (const gummy of gummies) {
-    const row = h('li', { class: 'record-row' });
-    const details = h('div', {}, [
-      h('strong', { text: gummy.title || gummy.id }),
-      h('small', { text: `${gummy.kind} · revision ${gummy.revision} · ${gummy.content.mediaType}` }),
-      h('small', { class: 'receipt-hash', text: `sha256:${gummy.hash.value}` }),
-      h('span', { class: `status ${['quarantined', 'blocked'].includes(gummy.quarantine?.status) ? 'blocked' : ''}`, text: gummy.quarantine?.status || 'local' })
-    ]);
-    const actions = h('div', { class: 'button-row' });
-    if (gummy.quarantine?.status === 'quarantined') {
-      actions.append(h('button', { class: 'button', onclick: () => denyPromotion(gummy) }, 'Deny promotion'));
+  ]);
+  const sidebar = h('nav', { class: 'gummy-box-sidebar', 'aria-label': 'Gummy Box folders' });
+  const main = h('section', { class: 'gummy-box-main', 'aria-live': 'polite' });
+
+  const renderSidebar = () => {
+    sidebar.replaceChildren(...categoryDefinitions.map(([id, label, count]) => h('button', {
+      class: `gummy-box-folder ${category === id ? 'active' : ''}`,
+      'aria-current': category === id ? 'page' : null,
+      onclick: () => {
+        category = id;
+        renderSidebar();
+        renderMain();
+      }
+    }, [
+      h('strong', { text: label }),
+      h('small', { text: count })
+    ])));
+  };
+
+  const renderMain = () => {
+    main.replaceChildren();
+    const definition = categoryDefinitions.find(([id]) => id === category);
+    main.append(h('div', { class: 'gummy-box-section-heading' }, [
+      h('div', {}, [
+        h('p', { class: 'eyebrow', text: 'GUMMY BOX' }),
+        h('h2', { text: definition?.[1] || 'Home' })
+      ]),
+      categoryUsesGummyList(category) ? h('div', { class: 'button-row' }, [
+        h('button', {
+          class: `button ${presentation === 'list' ? 'primary' : ''}`,
+          'aria-pressed': String(presentation === 'list'),
+          onclick: () => { presentation = 'list'; renderMain(); }
+        }, 'List'),
+        h('button', {
+          class: `button ${presentation === 'grid' ? 'primary' : ''}`,
+          'aria-pressed': String(presentation === 'grid'),
+          onclick: () => { presentation = 'grid'; renderMain(); }
+        }, 'Grid')
+      ]) : null
+    ]));
+
+    if (category === 'projects') {
+      renderProductions(main, runtime);
+      return;
     }
-    if (gummy.kind === 'result') actions.append(h('button', { class: 'button', onclick: () => boundedExport(gummy) }, 'Bounded browser export'));
-    row.append(details, actions);
-    list.append(row);
-  }
-  root.append(list);
+    if (category === 'shared') {
+      renderShared(main, sharedVisions, socialInstances);
+      return;
+    }
+    if (category === 'history') {
+      renderBoxHistory(main, receipts);
+      return;
+    }
+    if (category === 'backups') {
+      main.append(
+        h('p', { text: "Local remains authoritative. A connection never receives broad filesystem authority and does not silently become authoritative." }),
+        recovery,
+        connection
+      );
+      return;
+    }
+
+    const search = h('input', {
+      type: 'search',
+      value: query,
+      placeholder: 'Search names, types, states, and IDs',
+      'aria-label': 'Search Gummy Box'
+    });
+    search.addEventListener('input', () => {
+      query = search.value;
+      renderGummyResults();
+    });
+    const type = h('select', { 'aria-label': 'Filter Gummy Box by type' }, [
+      ...['all', 'file', 'source', 'reference', 'result', 'artifact'].map(value => h('option', {
+        value,
+        text: value === 'all' ? 'All types' : value,
+        selected: typeFilter === value
+      }))
+    ]);
+    type.addEventListener('change', () => {
+      typeFilter = type.value;
+      renderGummyResults();
+    });
+    const state = h('select', { 'aria-label': 'Filter Gummy Box by state' }, [
+      ...['all', 'local', 'quarantined', 'blocked', 'accepted'].map(value => h('option', {
+        value,
+        text: value === 'all' ? 'All states' : value,
+        selected: stateFilter === value
+      }))
+    ]);
+    state.addEventListener('change', () => {
+      stateFilter = state.value;
+      renderGummyResults();
+    });
+    const list = h('div', { class: `gummy-box-objects ${presentation}` });
+    const renderGummyResults = () => {
+      list.className = `gummy-box-objects ${presentation}`;
+      list.replaceChildren();
+      const visible = gummies.filter(gummy => {
+        if (category === 'sources' && !isSourceGummy(gummy)) return false;
+        if (category === 'results' && !isResultGummy(gummy)) return false;
+        if (category === 'imports' && !gummy.quarantine) return false;
+        const term = query.trim().toLowerCase();
+        if (term && !`${gummy.title || gummy.name || ''} ${gummy.id} ${gummy.kind} ${gummy.quarantine?.status || 'local'}`.toLowerCase().includes(term)) return false;
+        if (typeFilter !== 'all' && normalizedGummyKind(gummy) !== typeFilter) return false;
+        const gummyState = gummy.acceptance ? 'accepted' : gummy.quarantine?.status || 'local';
+        if (stateFilter !== 'all' && gummyState !== stateFilter) return false;
+        return true;
+      });
+      for (const gummy of visible) list.append(gummyBoxCard(gummy, runtime));
+      if (!visible.length) list.append(h('p', { class: 'empty-state', text: 'No Gummy Box objects match these choices.' }));
+    };
+    main.append(h('div', { class: 'gummy-box-filters' }, [search, type, state]));
+    if (category === 'imports') {
+      main.append(h('div', { class: 'button-row' }, [
+        h('button', { class: 'button primary', onclick: () => picker.click() }, 'Import another Gummy'),
+        h('button', { class: 'button danger', onclick: burnWorkspace }, 'Burn disposable imports')
+      ]));
+    }
+    main.append(list);
+    renderGummyResults();
+  };
+
+  root.append(header, h('div', { class: 'gummy-box-layout' }, [sidebar, main]));
+  renderSidebar();
+  renderMain();
   return root;
+}
+
+function categoryUsesGummyList(category) {
+  return ['home', 'sources', 'results', 'imports'].includes(category);
+}
+
+function normalizedGummyKind(gummy) {
+  if (gummy.kind === 'deliverable') return 'artifact';
+  return gummy.kind;
+}
+
+function isResultGummy(gummy) {
+  return ['result', 'artifact', 'deliverable'].includes(gummy.kind) || Boolean(gummy.acceptance);
+}
+
+function isSourceGummy(gummy) {
+  return !isResultGummy(gummy) && !gummy.quarantine;
+}
+
+function owningProduction(runtime, gummyId) {
+  return runtime.productions.find(production => production.gummyIds.includes(gummyId));
+}
+
+function gummyBoxCard(gummy, runtime) {
+  const production = owningProduction(runtime, gummy.id);
+  const hash = typeof gummy.hash === 'string' ? gummy.hash.replace(/^sha256:/, '') : gummy.hash?.value;
+  const mediaType = gummy.content?.mediaType || gummy.mediaType || 'unknown media';
+  const byteRef = gummy.content?.byteRef || 'No byte reference';
+  const state = gummy.acceptance ? 'accepted' : gummy.quarantine?.status || gummy.status || 'local';
+  return h('article', { class: 'gummy-box-object', dataset: { gummyId: gummy.id } }, [
+    h('div', { class: 'gummy-box-object-heading' }, [
+      h('span', { class: 'gummy-file-icon', 'aria-hidden': 'true', text: isResultGummy(gummy) ? '◆' : '▤' }),
+      h('div', {}, [
+        h('strong', { text: gummy.title || gummy.name || gummy.id }),
+        h('small', { text: `${humanGummyKind(gummy)} · ${mediaType}` })
+      ]),
+      h('span', { class: `status ${['quarantined', 'blocked'].includes(state) ? 'blocked' : ''}`, text: state })
+    ]),
+    h('p', { class: 'gummy-box-location compact', text: "Stored in this browser's Local Gummy Box." }),
+    h('div', { class: 'button-row' }, [
+      production ? h('button', { class: 'button primary', onclick: () => openProduction(production.id) }, `Open ${production.title}`) : null,
+      byteRef !== 'No byte reference'
+        ? h('button', { class: 'button', onclick: () => boundedExport(gummy) }, 'Bounded export')
+        : null,
+      gummy.quarantine?.status === 'quarantined'
+        ? h('button', { class: 'button', onclick: () => denyPromotion(gummy) }, 'Deny promotion')
+        : null
+    ]),
+    h('details', {}, [
+      h('summary', { text: 'Show provenance' }),
+      h('dl', { class: 'facts' }, [
+        h('dt', { text: 'Created by' }), h('dd', { text: gummy.creatorActorId || 'unknown' }),
+        h('dt', { text: 'Owned by' }), h('dd', { text: gummy.ownerActorId || 'unknown' }),
+        h('dt', { text: 'Owning Production' }), h('dd', { text: production?.id || 'Not attached to a Production' }),
+        h('dt', { text: 'Canonical Gummy' }), h('dd', { text: gummy.id }),
+        h('dt', { text: 'Created' }), h('dd', { text: gummy.createdAt || 'not recorded' })
+      ])
+    ]),
+    h('details', {}, [
+      h('summary', { text: 'Show storage details' }),
+      h('dl', { class: 'facts' }, [
+        h('dt', { text: 'Storage provider' }), h('dd', { text: 'Local Gummy Box · IndexedDB record + OPFS bytes' }),
+        h('dt', { text: 'Byte reference' }), h('dd', { text: byteRef }),
+        h('dt', { text: 'Hash' }), h('dd', { class: 'receipt-hash', text: hash ? `sha256:${hash}` : 'No content hash' }),
+        h('dt', { text: 'Revision' }), h('dd', { text: String(gummy.revision) }),
+        h('dt', { text: 'Quarantine' }), h('dd', { text: gummy.quarantine?.status || 'not quarantined' }),
+        h('dt', { text: 'Synchronization eligibility' }), h('dd', { text: gummy.quarantine?.status ? 'Not eligible while bounded or quarantined' : 'Eligible only through a Human-approved Box connection' }),
+        h('dt', { text: 'Native filesystem authority' }), h('dd', { text: 'None' })
+      ])
+    ])
+  ]);
+}
+
+function humanGummyKind(gummy) {
+  if (isResultGummy(gummy)) return 'Result';
+  if (gummy.quarantine) return 'Imported file';
+  if (gummy.kind === 'reference') return 'Reference';
+  return 'Source';
+}
+
+function renderProductions(main, runtime) {
+  const grid = h('div', { class: 'gummy-box-projects' });
+  for (const production of runtime.productions) {
+    const sample = production.id.includes('night-gummy') || production.id.includes('cyberpunk');
+    grid.append(h('article', { class: 'gummy-box-project' }, [
+      h('div', {}, [
+        h('span', { class: 'eyebrow', text: sample ? 'SAMPLE · PRODUCTION' : 'PRODUCTION' }),
+        h('h3', { text: production.title }),
+        h('p', { text: production.description }),
+        sample ? h('p', { class: 'boundary-note compact', text: 'This example demonstrates the complete model using private records in this browser. It does not imply real contacts, remote presence, payment, publication, or ownership.' }) : null
+      ]),
+      h('div', { class: 'button-row' }, [
+        h('button', { class: 'button primary', onclick: () => openProduction(production.id) }, 'Open Production'),
+        h('button', { class: 'button', onclick: () => openProduction(production.id, 'composer') }, 'Open linked Composer')
+      ]),
+      h('details', {}, [
+        h('summary', { text: 'Show project details' }),
+        h('p', { text: `${production.id}@${production.revision} · ${production.status} · ${production.gummyIds.length} Gummy objects · ${production.runIds.length} immutable Runs` })
+      ])
+    ]));
+  }
+  if (!runtime.productions.length) grid.append(h('p', { class: 'empty-state', text: 'No Productions yet. Start one in Composer.' }));
+  main.append(grid);
+}
+
+function renderShared(main, sharedVisions, socialInstances) {
+  main.append(h('p', {
+    class: 'boundary-note',
+    text: 'Only real records stored in this browser appear here. A local example is labeled and never implies a remote contact or live presence.'
+  }));
+  for (const social of socialInstances) {
+    main.append(h('article', { class: 'gummy-box-object' }, [
+      h('span', { class: 'eyebrow', text: 'LOCAL EXAMPLE · SAVED GROUP' }),
+      h('h3', { text: social.title }),
+      h('p', { text: `${social.members?.length || 0} Actor records · ${social.layout?.windows?.length || 0} saved windows` }),
+      h('button', { class: 'button', onclick: () => openSurface('command-center') }, 'Open in Command Center')
+    ]));
+  }
+  for (const vision of sharedVisions) {
+    main.append(h('article', { class: 'gummy-box-object' }, [
+      h('span', { class: 'eyebrow', text: 'LOCAL EXAMPLE · SAVED IDEA' }),
+      h('h3', { text: vision.goal || vision.title }),
+      h('p', { text: vision.intent }),
+      h('details', {}, [
+        h('summary', { text: 'Show provenance' }),
+        h('p', { text: `${vision.id}@${vision.revision} · ${vision.origin?.recordRefs?.length || 0} selected source records` })
+      ])
+    ]));
+  }
+}
+
+function renderBoxHistory(main, receipts) {
+  const query = h('input', { type: 'search', placeholder: 'Search actions and evidence', 'aria-label': 'Search Gummy Box history' });
+  const list = h('div', { class: 'record-list' });
+  const render = () => {
+    const term = query.value.toLowerCase();
+    list.replaceChildren(...receipts
+      .filter(receipt => JSON.stringify(receipt).toLowerCase().includes(term))
+      .map(receipt => h('article', { class: 'record-row' }, [
+        h('div', {}, [
+          h('strong', { text: receipt.action }),
+          h('small', { text: `${receipt.outcome} · ${receipt.createdAt}` })
+        ]),
+        h('details', {}, [
+          h('summary', { text: 'Show evidence' }),
+          h('p', { text: receipt.detail || 'No additional detail.' }),
+          h('code', { text: receipt.canonicalHash || receipt.id })
+        ])
+      ])));
+    if (!list.children.length) list.append(h('p', { class: 'empty-state', text: 'No history matches.' }));
+  };
+  query.addEventListener('input', render);
+  main.append(query, list);
+  render();
 }
 
 async function denyPromotion(gummy) {
@@ -1075,7 +1520,7 @@ async function actorsSurface() {
           : 'Meshmallow Form Workshop in the Lantern Chamber',
         width: '960',
         height: '540',
-        loading: 'lazy',
+        loading: 'eager',
         decoding: 'async'
       }),
       h('div', { class: 'presence-card-body' }, [
@@ -1779,6 +2224,7 @@ async function aboutSurface() {
           h('li', { text: 'Live ImageHoss output is not claimed without its authenticated bridge and supported ComfyUI runtime.' }),
           h('li', { text: 'Live VideoBoss output is not claimed without a trusted server render broker and provider credential.' }),
           h('li', { text: 'Live Meshmallow .blend, preview, and export are not claimed without supported Blender 4.5 LTS and a project-scoped proof.' }),
+          h('li', { text: 'Phase 17 live MCP execution remains review-held and unavailable in this build.' }),
           h('li', { text: 'No arbitrary shell, Python, filesystem browsing, manufacturing, safety, compliance, or finished-game authority is granted.' })
         ])
       ]),

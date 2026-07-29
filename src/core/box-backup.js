@@ -319,7 +319,7 @@ const resetStores = Object.freeze({
   layout: ['meta'],
   workspace: ['workspaces', 'outbox', 'gummies'],
   production: [
-    'productions', 'productionParticipants', 'productionConfigurations', 'actorPlans',
+    'productions', 'productionParticipants', 'productionConfigurations', 'productionCompositions', 'actorPlans',
     'contextEnvelopes', 'productionRuns', 'actorUpdateProposals', 'dragIntents',
     'workOrders', 'taskLeases', 'grants', 'returns', 'receipts', 'links', 'gummies'
   ],
