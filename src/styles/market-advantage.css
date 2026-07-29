@@ -1,0 +1,157 @@
+.composer-market-layer {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1rem;
+}
+
+.market-card {
+  border: 1px solid color-mix(in srgb, var(--gummy-violet, #7C2FD0) 38%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface, #100817) 88%, var(--warm-cream, #FFF1C7) 12%);
+  padding: 1rem;
+  box-shadow: 0 18px 48px rgb(16 8 23 / 0.2);
+}
+
+.market-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.market-card-heading h2,
+.market-card-heading p {
+  margin-block: 0.2rem;
+}
+
+.composer-brief-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+.composer-brief-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.composer-brief-field input,
+.composer-brief-field textarea {
+  width: 100%;
+}
+
+.composer-starters > summary {
+  cursor: pointer;
+  font-weight: 750;
+  font-size: 1rem;
+}
+
+.composer-starter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+.composer-starter-card,
+.continue-card {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--honey-gold, #F2B544) 30%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface, #100817) 92%, var(--honey-gold, #F2B544) 8%);
+  padding: 0.8rem;
+}
+
+.composer-starter-card p,
+.continue-card p {
+  margin: 0;
+}
+
+.composer-impact-metrics,
+.gummy-box-home-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.8rem 0;
+}
+
+.composer-impact-law {
+  display: grid;
+  grid-template-columns: minmax(90px, auto) 1fr;
+  gap: 0.35rem 0.8rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--deep-indigo, #4B187A) 18%, transparent);
+  padding: 0.75rem;
+}
+
+.composer-next-moves {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.composer-next-move {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--warm-cream, #FFF1C7) 16%, transparent);
+  padding-top: 0.55rem;
+}
+
+.composer-next-move p {
+  margin: 0.2rem 0 0;
+}
+
+.gummy-box-launchpad {
+  margin-bottom: 1rem;
+}
+
+.gummy-box-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0.8rem 0;
+}
+
+.gummy-box-continue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.75rem;
+}
+
+.composer-draggable-source {
+  cursor: grab;
+}
+
+.composer-draggable-source:active {
+  cursor: grabbing;
+}
+
+.composer-drag-hint {
+  display: block;
+  margin-top: 0.55rem;
+  opacity: 0.72;
+}
+
+@media (max-width: 760px) {
+  .market-card-heading,
+  .composer-next-move {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .composer-brief-grid,
+  .composer-impact-metrics,
+  .gummy-box-home-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .composer-impact-law {
+    grid-template-columns: 1fr;
+  }
+}
