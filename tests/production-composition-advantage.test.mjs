@@ -31,6 +31,8 @@ function runtime() {
     actorPlans: [],
     configurations: [],
     compositions: [],
+    dragIntents: [],
+    links: [],
     receipts: [],
     productionRuns: [],
     workOrders: [],
@@ -84,7 +86,7 @@ test('a starter pattern preserves an existing Human brief and records the propos
   assert.equal(analysis.nextMoves.some(item => item.id === 'define-goal'), false);
 });
 
-test('external canonical references can be linked without duplication or execution', () => {
+test('external canonical references create accepted typed intents, deduplicate, and do not execute', () => {
   const started = applyCompositionStarter(runtime(), { starterId: 'research-brief' });
   const first = addCompositionReference(started.runtime, started.composition.id, {
     kind: 'production',
@@ -102,6 +104,9 @@ test('external canonical references can be linked without duplication or executi
   });
   const canonical = second.runtime.compositions.find(item => item.id === started.composition.id);
   assert.equal(canonical.nodes.filter(node => node.ref.id === 'production:another').length, 1);
+  assert.equal(second.intent.status, 'accepted');
+  assert.equal(second.intent.startsExecution, false);
+  assert.equal(second.intent.grantsAuthority, false);
   assert.equal(second.runtime.productionRuns.length, 0);
   assert.equal(second.runtime.receipts.some(receipt => receipt.action?.includes('run')), false);
 });
