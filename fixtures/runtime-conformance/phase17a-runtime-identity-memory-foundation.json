@@ -1,0 +1,777 @@
+{
+  "fixture": "phase17a-runtime-identity-memory-foundation",
+  "version": 1,
+  "clock": {
+    "startedAt": "2026-07-29T20:00:00.000Z",
+    "leaseExpiresAt": "2026-07-29T20:15:00.000Z",
+    "grantExpiresAt": "2026-07-29T20:12:00.000Z",
+    "providerWindowEndsAt": "2026-08-05T20:00:00.000Z"
+  },
+  "identities": {
+    "humanId": "human:hayden",
+    "actorId": "actor:hayden-repository-steward",
+    "agentId": "agent:repository-steward-v1",
+    "replacementAgentId": "agent:repository-steward-v2",
+    "otherActorId": "actor:other-human",
+    "otherAgentId": "agent:other-worker",
+    "productionId": "production:gummy-os-repository-audit",
+    "otherProductionId": "production:unrelated-project"
+  },
+  "runtimeBindings": [
+    {
+      "schema": "gummy.actor-agent-runtime-binding/v1",
+      "extendsRuntimeBindingSchema": "gummy.runtime-binding/v1",
+      "actorId": "actor:hayden-repository-steward",
+      "humanOwnerId": "human:hayden",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "workOrderId": "work-order:repository-steward-proof",
+      "authorityLeaseId": "lease:repository-steward-proof",
+      "moldId": "mold:repository-steward-read-only",
+      "grantId": "grant:repository-steward-read-only",
+      "runtimeBindingId": "runtime-binding:repository-steward:1",
+      "runtimeBindingRevision": 1,
+      "supersedesRuntimeBindingId": null,
+      "runtimeProvider": "google-agent-platform",
+      "runtimeResourceId": "projects/example/locations/us-central1/reasoningEngines/steward-v1",
+      "runtimePrincipal": "principal://agents.example/repository-steward-v1",
+      "runtimePrincipalType": "provider-agent-identity",
+      "principalAttestation": {
+        "issuer": "google-agent-platform",
+        "subject": "repository-steward-v1",
+        "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "observedAt": "2026-07-29T20:00:01.000Z"
+      },
+      "providerPolicyRefs": ["google-policy:repository-read-only"],
+      "operationalMemoryScopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "returnAnchor": "gummy-box:production-gummy-os:repository-steward-return",
+      "canonicalStateVersion": "canonical:gummy-os:v1",
+      "receiptPolicy": {
+        "providerEvidenceRequired": true,
+        "exactMemoryRevisionsRequired": true,
+        "gummyCompilesReceipt": true
+      },
+      "acceptanceRequired": true,
+      "locality": "cloud",
+      "region": "us-central1",
+      "protocolVersions": {
+        "runtimeBinding": "gummy.runtime-binding/v1",
+        "providerAdapter": "google-agent-platform/foundation-v1"
+      },
+      "providerFeatureStates": {
+        "longRunningOperations": "supported",
+        "memoryBank": "disabled",
+        "agentIdentity": "not-verified",
+        "liveExecution": "disabled"
+      },
+      "operationClasses": ["read-only", "idempotent"],
+      "liveExecutionEnabled": false,
+      "createdAt": "2026-07-29T20:00:00.000Z",
+      "expiresAt": "2026-07-29T20:30:00.000Z",
+      "revokedAt": "2026-07-29T20:04:00.000Z"
+    },
+    {
+      "schema": "gummy.actor-agent-runtime-binding/v1",
+      "extendsRuntimeBindingSchema": "gummy.runtime-binding/v1",
+      "actorId": "actor:hayden-repository-steward",
+      "humanOwnerId": "human:hayden",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "workOrderId": "work-order:repository-steward-proof",
+      "authorityLeaseId": "lease:repository-steward-proof",
+      "moldId": "mold:repository-steward-read-only",
+      "grantId": "grant:repository-steward-read-only",
+      "runtimeBindingId": "runtime-binding:repository-steward:2",
+      "runtimeBindingRevision": 2,
+      "supersedesRuntimeBindingId": "runtime-binding:repository-steward:1",
+      "runtimeProvider": "google-agent-platform",
+      "runtimeResourceId": "projects/example/locations/us-central1/reasoningEngines/steward-v1",
+      "runtimePrincipal": "principal://agents.example/repository-steward-v1-rotated",
+      "runtimePrincipalType": "provider-agent-identity",
+      "principalAttestation": {
+        "issuer": "google-agent-platform",
+        "subject": "repository-steward-v1-rotated",
+        "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "observedAt": "2026-07-29T20:04:00.000Z"
+      },
+      "providerPolicyRefs": ["google-policy:repository-read-only"],
+      "operationalMemoryScopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "returnAnchor": "gummy-box:production-gummy-os:repository-steward-return",
+      "canonicalStateVersion": "canonical:gummy-os:v1",
+      "receiptPolicy": {
+        "providerEvidenceRequired": true,
+        "exactMemoryRevisionsRequired": true,
+        "gummyCompilesReceipt": true
+      },
+      "acceptanceRequired": true,
+      "locality": "cloud",
+      "region": "us-central1",
+      "protocolVersions": {
+        "runtimeBinding": "gummy.runtime-binding/v1",
+        "providerAdapter": "google-agent-platform/foundation-v1"
+      },
+      "providerFeatureStates": {
+        "longRunningOperations": "supported",
+        "memoryBank": "disabled",
+        "agentIdentity": "not-verified",
+        "liveExecution": "disabled"
+      },
+      "operationClasses": ["read-only", "idempotent"],
+      "liveExecutionEnabled": false,
+      "createdAt": "2026-07-29T20:04:00.000Z",
+      "expiresAt": "2026-07-29T20:30:00.000Z",
+      "revokedAt": "2026-07-29T20:10:00.000Z"
+    },
+    {
+      "schema": "gummy.actor-agent-runtime-binding/v1",
+      "extendsRuntimeBindingSchema": "gummy.runtime-binding/v1",
+      "actorId": "actor:hayden-repository-steward",
+      "humanOwnerId": "human:hayden",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "workOrderId": "work-order:repository-steward-proof",
+      "authorityLeaseId": "lease:repository-steward-proof",
+      "moldId": "mold:repository-steward-read-only",
+      "grantId": "grant:repository-steward-read-only",
+      "runtimeBindingId": "runtime-binding:repository-steward:3",
+      "runtimeBindingRevision": 3,
+      "supersedesRuntimeBindingId": "runtime-binding:repository-steward:2",
+      "runtimeProvider": "deterministic",
+      "runtimeResourceId": "deterministic:repository-steward-failover",
+      "runtimePrincipal": "local-process:repository-steward-failover",
+      "runtimePrincipalType": "local-process",
+      "principalAttestation": {
+        "issuer": "gummy-deterministic-harness",
+        "subject": "repository-steward-failover",
+        "fingerprint": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "observedAt": "2026-07-29T20:10:00.000Z"
+      },
+      "providerPolicyRefs": ["gummy-policy:repository-read-only"],
+      "operationalMemoryScopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "returnAnchor": "gummy-box:production-gummy-os:repository-steward-return",
+      "canonicalStateVersion": "canonical:gummy-os:v1",
+      "receiptPolicy": {
+        "providerEvidenceRequired": true,
+        "exactMemoryRevisionsRequired": true,
+        "gummyCompilesReceipt": true
+      },
+      "acceptanceRequired": true,
+      "locality": "local",
+      "region": "local",
+      "protocolVersions": {
+        "runtimeBinding": "gummy.runtime-binding/v1",
+        "providerAdapter": "deterministic/foundation-v1"
+      },
+      "providerFeatureStates": {
+        "longRunningOperations": "supported",
+        "memoryBank": "disabled",
+        "liveExecution": "disabled"
+      },
+      "operationClasses": ["read-only", "idempotent"],
+      "liveExecutionEnabled": false,
+      "createdAt": "2026-07-29T20:10:00.000Z",
+      "expiresAt": "2026-07-29T20:30:00.000Z",
+      "revokedAt": "2026-07-29T20:12:00.000Z"
+    },
+    {
+      "schema": "gummy.actor-agent-runtime-binding/v1",
+      "extendsRuntimeBindingSchema": "gummy.runtime-binding/v1",
+      "actorId": "actor:hayden-repository-steward",
+      "humanOwnerId": "human:hayden",
+      "agentId": "agent:repository-steward-v2",
+      "productionId": "production:gummy-os-repository-audit",
+      "workOrderId": "work-order:repository-steward-proof",
+      "authorityLeaseId": "lease:repository-steward-proof",
+      "moldId": "mold:repository-steward-read-only",
+      "grantId": "grant:repository-steward-read-only",
+      "runtimeBindingId": "runtime-binding:repository-steward:4",
+      "runtimeBindingRevision": 4,
+      "supersedesRuntimeBindingId": "runtime-binding:repository-steward:3",
+      "runtimeProvider": "deterministic",
+      "runtimeResourceId": "deterministic:repository-steward-agent-v2",
+      "runtimePrincipal": "local-process:repository-steward-v2",
+      "runtimePrincipalType": "local-process",
+      "principalAttestation": {
+        "issuer": "gummy-deterministic-harness",
+        "subject": "repository-steward-v2",
+        "fingerprint": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "observedAt": "2026-07-29T20:12:00.000Z"
+      },
+      "providerPolicyRefs": ["gummy-policy:repository-read-only"],
+      "operationalMemoryScopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "returnAnchor": "gummy-box:production-gummy-os:repository-steward-return",
+      "canonicalStateVersion": "canonical:gummy-os:v1",
+      "receiptPolicy": {
+        "providerEvidenceRequired": true,
+        "exactMemoryRevisionsRequired": true,
+        "gummyCompilesReceipt": true
+      },
+      "acceptanceRequired": true,
+      "locality": "local",
+      "region": "local",
+      "protocolVersions": {
+        "runtimeBinding": "gummy.runtime-binding/v1",
+        "providerAdapter": "deterministic/foundation-v1"
+      },
+      "providerFeatureStates": {
+        "longRunningOperations": "supported",
+        "memoryBank": "disabled",
+        "liveExecution": "disabled"
+      },
+      "operationClasses": ["read-only", "idempotent"],
+      "liveExecutionEnabled": false,
+      "createdAt": "2026-07-29T20:12:00.000Z",
+      "expiresAt": "2026-07-29T20:30:00.000Z",
+      "revokedAt": null
+    }
+  ],
+  "memoryScopePolicies": [
+    {
+      "schema": "gummy.memory-scope-policy/v1",
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "scopeType": "actor-production",
+      "actorId": "actor:hayden-repository-steward",
+      "productionId": "production:gummy-os-repository-audit",
+      "permittedAgentIds": ["agent:repository-steward-v1", "agent:repository-steward-v2"],
+      "dataClasses": ["internal", "source-code"],
+      "allowedUses": ["resume-context", "planning-context", "reconciliation-context", "receipt-evidence"],
+      "crossActorAccess": false,
+      "crossProductionAccess": false,
+      "exactRevisionRequired": true,
+      "maximumTtl": 86400,
+      "providerProjection": {
+        "provider": "google-agent-platform",
+        "resourceId": "not-provisioned",
+        "scopeKey": "actor-hayden/production-gummy-os",
+        "region": "us-central1",
+        "deletionRequiredOnRevoke": true
+      },
+      "canonicalProvenanceLocation": "gummy-box",
+      "providerIsSoleCopy": false,
+      "createdAt": "2026-07-29T20:00:00.000Z",
+      "expiresAt": "2026-07-30T20:00:00.000Z",
+      "revokedAt": null
+    },
+    {
+      "schema": "gummy.memory-scope-policy/v1",
+      "scopeId": "memory-scope:actor-other:production-unrelated",
+      "scopeType": "actor-production",
+      "actorId": "actor:other-human",
+      "productionId": "production:unrelated-project",
+      "permittedAgentIds": ["agent:other-worker"],
+      "dataClasses": ["private"],
+      "allowedUses": ["resume-context"],
+      "crossActorAccess": false,
+      "crossProductionAccess": false,
+      "exactRevisionRequired": true,
+      "maximumTtl": 3600,
+      "providerProjection": {
+        "provider": "deterministic",
+        "resourceId": "deterministic:other-memory",
+        "scopeKey": "actor-other/production-unrelated",
+        "region": "local",
+        "deletionRequiredOnRevoke": true
+      },
+      "canonicalProvenanceLocation": "gummy-box",
+      "providerIsSoleCopy": false,
+      "createdAt": "2026-07-29T20:00:00.000Z",
+      "expiresAt": "2026-07-29T21:00:00.000Z",
+      "revokedAt": null
+    }
+  ],
+  "memories": [
+    {
+      "schema": "gummy.operational-memory/v1",
+      "memoryId": "memory:repository-conventions",
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "scopeType": "actor-production",
+      "actorId": "actor:hayden-repository-steward",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "sourceEventRefs": ["event:repository-readme-v1"],
+      "sourceHashes": ["sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+      "generatorProvider": "deterministic",
+      "generatorModel": "fixture-model-v1",
+      "generatedAt": "2026-07-29T20:01:00.000Z",
+      "revision": 1,
+      "supersedes": null,
+      "confidence": 0.8,
+      "claims": [
+        {
+          "claimId": "claim:repository-conventions-v1",
+          "text": "The repository requires additive provider-neutral runtime contracts.",
+          "sourceEventRefs": ["event:repository-readme-v1"]
+        }
+      ],
+      "allowedUses": ["resume-context", "planning-context", "receipt-evidence"],
+      "prohibitedUses": ["authorize-action", "expand-lease", "expand-grant", "expand-budget", "change-ownership", "mutate-canonical-state", "accept-result", "publish"],
+      "canonicalStateVersionObserved": "canonical:gummy-os:v1",
+      "ttl": 86400,
+      "expiresAt": "2026-07-30T20:01:00.000Z",
+      "invalidatedAt": null,
+      "reviewState": "unreviewed",
+      "promotionPolicy": {
+        "automaticPromotion": false,
+        "humanAcceptanceRequired": true,
+        "targetKinds": ["production", "project"]
+      },
+      "status": "superseded",
+      "authoritative": false,
+      "authorityEffect": "none",
+      "canonicalMutationApplied": false
+    },
+    {
+      "schema": "gummy.operational-memory/v1",
+      "memoryId": "memory:repository-conventions",
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "scopeType": "actor-production",
+      "actorId": "actor:hayden-repository-steward",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "sourceEventRefs": ["event:repository-readme-v1", "event:agents-doctrine-v1"],
+      "sourceHashes": [
+        "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "generatorProvider": "deterministic",
+      "generatorModel": "fixture-model-v1",
+      "generatedAt": "2026-07-29T20:02:00.000Z",
+      "revision": 2,
+      "supersedes": {
+        "memoryId": "memory:repository-conventions",
+        "revision": 1
+      },
+      "confidence": 0.9,
+      "claims": [
+        {
+          "claimId": "claim:repository-conventions-v2",
+          "text": "The repository requires additive provider-neutral contracts and explicit Human authority.",
+          "sourceEventRefs": ["event:repository-readme-v1", "event:agents-doctrine-v1"]
+        }
+      ],
+      "allowedUses": ["resume-context", "planning-context", "reconciliation-context", "receipt-evidence"],
+      "prohibitedUses": ["authorize-action", "expand-lease", "expand-grant", "expand-budget", "change-ownership", "mutate-canonical-state", "accept-result", "publish"],
+      "canonicalStateVersionObserved": "canonical:gummy-os:v1",
+      "ttl": 86400,
+      "expiresAt": "2026-07-30T20:02:00.000Z",
+      "invalidatedAt": null,
+      "reviewState": "reviewed",
+      "promotionPolicy": {
+        "automaticPromotion": false,
+        "humanAcceptanceRequired": true,
+        "targetKinds": ["production", "project"]
+      },
+      "status": "active",
+      "authoritative": false,
+      "authorityEffect": "none",
+      "canonicalMutationApplied": false
+    },
+    {
+      "schema": "gummy.operational-memory/v1",
+      "memoryId": "memory:expired-observation",
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "scopeType": "actor-production",
+      "actorId": "actor:hayden-repository-steward",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "sourceEventRefs": ["event:obsolete-scan"],
+      "sourceHashes": ["sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"],
+      "generatorProvider": "deterministic",
+      "generatorModel": "fixture-model-v1",
+      "generatedAt": "2026-07-29T19:00:00.000Z",
+      "revision": 1,
+      "supersedes": null,
+      "confidence": 0.7,
+      "claims": [
+        {
+          "claimId": "claim:expired-observation",
+          "text": "This observation has expired.",
+          "sourceEventRefs": ["event:obsolete-scan"]
+        }
+      ],
+      "allowedUses": ["resume-context"],
+      "prohibitedUses": ["authorize-action", "expand-lease", "expand-grant", "expand-budget", "change-ownership", "mutate-canonical-state", "accept-result", "publish"],
+      "canonicalStateVersionObserved": "canonical:gummy-os:v0",
+      "ttl": 3600,
+      "expiresAt": "2026-07-29T20:00:00.000Z",
+      "invalidatedAt": null,
+      "reviewState": "unreviewed",
+      "promotionPolicy": {
+        "automaticPromotion": false,
+        "humanAcceptanceRequired": true,
+        "targetKinds": []
+      },
+      "status": "expired",
+      "authoritative": false,
+      "authorityEffect": "none",
+      "canonicalMutationApplied": false
+    },
+    {
+      "schema": "gummy.operational-memory/v1",
+      "memoryId": "memory:invalidated-observation",
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "scopeType": "actor-production",
+      "actorId": "actor:hayden-repository-steward",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "sourceEventRefs": ["event:contradicted-scan"],
+      "sourceHashes": ["sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"],
+      "generatorProvider": "deterministic",
+      "generatorModel": "fixture-model-v1",
+      "generatedAt": "2026-07-29T20:03:00.000Z",
+      "revision": 1,
+      "supersedes": null,
+      "confidence": 0.4,
+      "claims": [
+        {
+          "claimId": "claim:invalidated-observation",
+          "text": "This observation was contradicted and invalidated.",
+          "sourceEventRefs": ["event:contradicted-scan"]
+        }
+      ],
+      "allowedUses": ["receipt-evidence"],
+      "prohibitedUses": ["authorize-action", "expand-lease", "expand-grant", "expand-budget", "change-ownership", "mutate-canonical-state", "accept-result", "publish"],
+      "canonicalStateVersionObserved": "canonical:gummy-os:v1",
+      "ttl": 86400,
+      "expiresAt": "2026-07-30T20:03:00.000Z",
+      "invalidatedAt": "2026-07-29T20:06:00.000Z",
+      "reviewState": "rejected",
+      "promotionPolicy": {
+        "automaticPromotion": false,
+        "humanAcceptanceRequired": true,
+        "targetKinds": []
+      },
+      "status": "invalidated",
+      "authoritative": false,
+      "authorityEffect": "none",
+      "canonicalMutationApplied": false
+    },
+    {
+      "schema": "gummy.operational-memory/v1",
+      "memoryId": "memory:other-actor-private",
+      "scopeId": "memory-scope:actor-other:production-unrelated",
+      "scopeType": "actor-production",
+      "actorId": "actor:other-human",
+      "agentId": "agent:other-worker",
+      "productionId": "production:unrelated-project",
+      "sourceEventRefs": ["event:other-private"],
+      "sourceHashes": ["sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
+      "generatorProvider": "deterministic",
+      "generatorModel": "fixture-model-v1",
+      "generatedAt": "2026-07-29T20:01:00.000Z",
+      "revision": 1,
+      "supersedes": null,
+      "confidence": 0.8,
+      "claims": [
+        {
+          "claimId": "claim:other-private",
+          "text": "This belongs only to another Actor and Production.",
+          "sourceEventRefs": ["event:other-private"]
+        }
+      ],
+      "allowedUses": ["resume-context"],
+      "prohibitedUses": ["authorize-action", "expand-lease", "expand-grant", "expand-budget", "change-ownership", "mutate-canonical-state", "accept-result", "publish"],
+      "canonicalStateVersionObserved": "canonical:unrelated:v1",
+      "ttl": 3600,
+      "expiresAt": "2026-07-29T21:01:00.000Z",
+      "invalidatedAt": null,
+      "reviewState": "unreviewed",
+      "promotionPolicy": {
+        "automaticPromotion": false,
+        "humanAcceptanceRequired": true,
+        "targetKinds": []
+      },
+      "status": "active",
+      "authoritative": false,
+      "authorityEffect": "none",
+      "canonicalMutationApplied": false
+    }
+  ],
+  "memoryDerivations": [
+    {
+      "schema": "gummy.memory-derivation/v1",
+      "derivationId": "memory-derivation:repository-conventions:2",
+      "memoryId": "memory:repository-conventions",
+      "memoryRevision": 2,
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "actorId": "actor:hayden-repository-steward",
+      "agentId": "agent:repository-steward-v1",
+      "productionId": "production:gummy-os-repository-audit",
+      "sourceEventRefs": ["event:repository-readme-v1", "event:agents-doctrine-v1"],
+      "sourceHashes": [
+        "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "generatorProvider": "deterministic",
+      "generatorModel": "fixture-model-v1",
+      "method": "deterministic-fixture",
+      "generatedAt": "2026-07-29T20:02:00.000Z",
+      "canonicalStateVersionObserved": "canonical:gummy-os:v1",
+      "conflictDisposition": "preserved-as-revisions",
+      "derivationHash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "authoritative": false,
+      "authorityEffect": "none",
+      "canonicalMutationApplied": false
+    }
+  ],
+  "longRunningWorkPolicy": {
+    "schema": "gummy.long-running-work-policy/v1",
+    "policyId": "long-work-policy:repository-steward-proof",
+    "workOrderId": "work-order:repository-steward-proof",
+    "runtimeBindingId": "runtime-binding:repository-steward:1",
+    "maximumWallTime": 1800,
+    "providerMaximumWallTime": 604800,
+    "checkpointInterval": 120,
+    "heartbeatPolicy": {
+      "interval": 30,
+      "missedBeforeStop": 2,
+      "evidenceRequired": true
+    },
+    "idleComputePolicy": {
+      "allowWhileAwaitingHuman": false,
+      "maxIdleSeconds": 0,
+      "chargeRequiresAuthorization": true
+    },
+    "budgetCeiling": {
+      "currency": "USD",
+      "hardStopMicros": 500000,
+      "warningMicros": 400000,
+      "consumedMicros": 100000
+    },
+    "productionPoolAuthorizationRefs": ["pool-authorization:repository-steward-proof"],
+    "leaseExpiry": "2026-07-29T20:15:00.000Z",
+    "leaseRenewalPolicy": {
+      "explicitDecisionRequired": true,
+      "receiptRequired": true,
+      "automaticRenewal": false
+    },
+    "grantExpiry": "2026-07-29T20:12:00.000Z",
+    "humanInputPolicy": {
+      "masterControlDecisionRequired": true,
+      "pauseWithoutAuthorityExpansion": true,
+      "timeoutAction": "checkpoint-and-stop"
+    },
+    "cancellationPolicy": {
+      "cooperative": true,
+      "acknowledgementIsTermination": false,
+      "terminalConfirmationRequired": true
+    },
+    "staleCanonicalStatePolicy": {
+      "failClosed": true,
+      "state": "reconciliation-required",
+      "silentApplicationAllowed": false
+    },
+    "returnDeadline": "2026-07-29T20:40:00.000Z",
+    "recoveryPolicy": {
+      "checkpointLocation": "gummy-box",
+      "providerStateCanonical": false,
+      "latestValidCheckpointRequired": true
+    },
+    "providerFailoverPolicy": {
+      "allowed": true,
+      "newBindingRevisionRequired": true,
+      "preserveWorkOrder": true,
+      "preserveReturnAnchor": true
+    },
+    "memoryGenerationPolicy": {
+      "enabled": true,
+      "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+      "exactRevisionEvidenceRequired": true,
+      "canonicalPromotionAllowed": false
+    },
+    "notificationPolicy": {
+      "attentionStates": ["input-required", "budget-warning", "cancellation-requested", "reconciliation-required", "failed", "expired", "result-candidate"],
+      "coalesceProgress": true
+    },
+    "providerContinuationRenewsAuthority": false,
+    "ambientAuthorityAllowed": false
+  },
+  "providerEvidenceBundle": {
+    "schema": "gummy.provider-evidence-bundle/v1",
+    "providerEvidenceBundleId": "provider-evidence:repository-steward-proof",
+    "runtimeBindingId": "runtime-binding:repository-steward:3",
+    "runtimeBindingRevision": 3,
+    "provider": "deterministic",
+    "providerRuntimeResourceId": "deterministic:repository-steward-failover",
+    "runtimePrincipal": "local-process:repository-steward-failover",
+    "runtimePrincipalAttestation": {
+      "issuer": "gummy-deterministic-harness",
+      "subject": "repository-steward-failover",
+      "fingerprint": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "observedAt": "2026-07-29T20:10:00.000Z"
+    },
+    "deploymentRevision": "deterministic-fixture-v1",
+    "sourceProvenance": {
+      "kind": "source",
+      "reference": "fixture:phase17a-runtime-identity-memory-foundation",
+      "digest": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    },
+    "events": [
+      {
+        "eventId": "provider-event:start",
+        "sequence": 0,
+        "kind": "start",
+        "at": "2026-07-29T20:00:00.000Z",
+        "status": "running",
+        "hash": "sha256:1000000000000000000000000000000000000000000000000000000000000001"
+      },
+      {
+        "eventId": "provider-event:checkpoint",
+        "sequence": 1,
+        "kind": "checkpoint",
+        "at": "2026-07-29T20:08:00.000Z",
+        "status": "checkpointed",
+        "hash": "sha256:1000000000000000000000000000000000000000000000000000000000000002"
+      },
+      {
+        "eventId": "provider-event:pause",
+        "sequence": 2,
+        "kind": "pause",
+        "at": "2026-07-29T20:09:00.000Z",
+        "status": "input-required",
+        "hash": "sha256:1000000000000000000000000000000000000000000000000000000000000003"
+      },
+      {
+        "eventId": "provider-event:resume",
+        "sequence": 3,
+        "kind": "resume",
+        "at": "2026-07-29T20:10:30.000Z",
+        "status": "running",
+        "hash": "sha256:1000000000000000000000000000000000000000000000000000000000000004"
+      },
+      {
+        "eventId": "provider-event:completion",
+        "sequence": 4,
+        "kind": "completion",
+        "at": "2026-07-29T20:11:30.000Z",
+        "status": "completed",
+        "hash": "sha256:1000000000000000000000000000000000000000000000000000000000000005"
+      }
+    ],
+    "toolCalls": [
+      {
+        "callId": "tool-call:repository-list",
+        "tool": "github.repository.read",
+        "operationClass": "read-only",
+        "status": "completed",
+        "hash": "sha256:2000000000000000000000000000000000000000000000000000000000000001"
+      }
+    ],
+    "gatewayPolicyDecisions": [
+      {
+        "policyRef": "gummy-policy:repository-read-only",
+        "decision": "allow",
+        "at": "2026-07-29T20:10:01.000Z",
+        "hash": "sha256:3000000000000000000000000000000000000000000000000000000000000001"
+      }
+    ],
+    "traceIds": ["trace:repository-steward-proof"],
+    "memoryReads": [
+      {
+        "memoryId": "memory:repository-conventions",
+        "revision": 2,
+        "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+        "readAt": "2026-07-29T20:07:00.000Z",
+        "contentHash": "sha256:4000000000000000000000000000000000000000000000000000000000000001"
+      }
+    ],
+    "generatedMemoryRevisions": [
+      {
+        "memoryId": "memory:repository-conventions",
+        "revision": 2,
+        "scopeId": "memory-scope:actor-hayden:production-repository-steward",
+        "derivationId": "memory-derivation:repository-conventions:2"
+      }
+    ],
+    "resourceUsage": {
+      "wallTimeSeconds": 690,
+      "inputTokens": 1200,
+      "outputTokens": 400
+    },
+    "costEvidence": {
+      "currency": "USD",
+      "amountMicros": 250000,
+      "pricingSource": "deterministic-price-table-v1",
+      "observedAt": "2026-07-29T20:11:31.000Z"
+    },
+    "providerLogs": [
+      {
+        "logRef": "fixture-log:repository-steward-proof",
+        "hash": "sha256:5000000000000000000000000000000000000000000000000000000000000001",
+        "retentionClass": "test-evidence"
+      }
+    ],
+    "observedTerminalState": "completed",
+    "complete": true,
+    "bundleHash": "sha256:6000000000000000000000000000000000000000000000000000000000000001",
+    "generatedAt": "2026-07-29T20:11:32.000Z",
+    "classification": "receipt-input",
+    "receiptAuthority": "gummy",
+    "acceptanceState": "not-determined",
+    "canonicalMutationApplied": false
+  },
+  "chronologies": {
+    "checkpointResumeAndDrift": [
+      { "kind": "start", "at": "2026-07-29T20:00:00.000Z" },
+      { "kind": "runtime-binding-transition", "at": "2026-07-29T20:04:00.000Z", "runtimeBindingId": "runtime-binding:repository-steward:2" },
+      { "kind": "checkpoint", "at": "2026-07-29T20:08:00.000Z", "checkpointId": "gummy-box-checkpoint:1" },
+      { "kind": "provider-outage", "at": "2026-07-29T20:09:00.000Z" },
+      { "kind": "failover", "at": "2026-07-29T20:10:00.000Z", "runtimeBindingId": "runtime-binding:repository-steward:3" },
+      { "kind": "resume", "at": "2026-07-29T20:10:10.000Z", "checkpointId": "gummy-box-checkpoint:1" },
+      { "kind": "input-required", "at": "2026-07-29T20:10:20.000Z" },
+      { "kind": "human-input", "at": "2026-07-29T20:10:30.000Z", "authority": "master-control" },
+      { "kind": "canonical-state-advanced", "at": "2026-07-29T20:11:00.000Z", "canonicalStateVersion": "canonical:gummy-os:v2" },
+      { "kind": "provider-completion", "at": "2026-07-29T20:11:30.000Z" }
+    ],
+    "cooperativeCancellation": [
+      { "kind": "start", "at": "2026-07-29T20:00:00.000Z" },
+      { "kind": "cancellation-requested", "at": "2026-07-29T20:03:00.000Z" },
+      { "kind": "cancellation-acknowledged", "at": "2026-07-29T20:03:01.000Z" },
+      { "kind": "terminated", "at": "2026-07-29T20:03:05.000Z" }
+    ],
+    "budgetStop": [
+      { "kind": "start", "at": "2026-07-29T20:00:00.000Z" },
+      { "kind": "budget-charge", "at": "2026-07-29T20:01:00.000Z", "amountMicros": 350000 },
+      { "kind": "budget-charge", "at": "2026-07-29T20:02:00.000Z", "amountMicros": 100000 }
+    ],
+    "providerCompletionOnly": [
+      { "kind": "start", "at": "2026-07-29T20:00:00.000Z" },
+      { "kind": "provider-completion", "at": "2026-07-29T20:03:00.000Z" }
+    ]
+  },
+  "threatCases": [
+    { "id": "provider-principal-credential-replay", "observedFingerprint": "sha256:9999999999999999999999999999999999999999999999999999999999999999", "expected": "fail-closed" },
+    { "id": "runtime-principal-reused-by-wrong-agent", "requestedAgentId": "agent:other-worker", "expected": "fail-closed" },
+    { "id": "actor-agent-runtime-identity-confusion", "claimedActorId": "agent:repository-steward-v1", "expected": "fail-closed" },
+    { "id": "memory-poisoning", "sourceHashesValid": false, "expected": "fail-closed" },
+    { "id": "cross-actor-memory-leakage", "memoryId": "memory:other-actor-private", "expected": "fail-closed" },
+    { "id": "cross-production-memory-leakage", "requestedProductionId": "production:unrelated-project", "expected": "fail-closed" },
+    { "id": "expired-memory-use", "memoryId": "memory:expired-observation", "expected": "fail-closed" },
+    { "id": "generated-memory-treated-as-canonical", "canonicalMutationRequested": true, "expected": "fail-closed" },
+    { "id": "stale-canonical-state-application", "observedVersion": "canonical:gummy-os:v1", "currentVersion": "canonical:gummy-os:v2", "expected": "fail-closed" },
+    { "id": "lease-grant-expiry", "at": "2026-07-29T20:16:00.000Z", "expected": "fail-closed" },
+    { "id": "provider-survives-gummy-revocation", "at": "2026-07-29T20:05:00.000Z", "expected": "fail-closed" },
+    { "id": "cancellation-acknowledgement-as-termination", "terminalConfirmed": false, "expected": "fail-closed" },
+    { "id": "provider-logs-omitted-or-altered", "logsComplete": false, "hashesMatch": false, "expected": "fail-closed" },
+    { "id": "duplicate-return-and-receipt", "idempotencyKeySeen": true, "expected": "fail-closed" },
+    { "id": "budget-overrun", "chargeMicros": 500000, "expected": "fail-closed" },
+    { "id": "region-data-residency-mismatch", "requestedRegion": "global", "expected": "fail-closed" },
+    { "id": "provider-outage-without-checkpoint", "checkpointAvailable": false, "expected": "fail-closed" },
+    { "id": "runtime-redeployment-wrong-return-anchor", "returnAnchor": "gummy-box:wrong-production:return", "expected": "fail-closed" },
+    { "id": "prompt-attempts-permission-expansion", "requestedOperationClass": "publication", "expected": "fail-closed" },
+    { "id": "destructive-action-misclassified", "declaredOperationClass": "read-only", "actualOperationClass": "destructive", "expected": "fail-closed" }
+  ],
+  "expected": {
+    "actorStableAcrossAllBindings": true,
+    "principalRotated": true,
+    "providerFailoverPreservesWorkAndReturnAnchor": true,
+    "exactMemoryRead": { "memoryId": "memory:repository-conventions", "revision": 2 },
+    "driftResultState": "reconciliation-required",
+    "completionCreates": "result-candidate",
+    "completionCreatesReturn": false,
+    "completionCreatesReceipt": false,
+    "completionCreatesAcceptance": false,
+    "liveExecutionEnabled": false,
+    "credentialsProvisioned": false
+  }
+}

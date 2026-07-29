@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/memory-scope-policy.schema.json",
+  "title": "Gummy Memory Scope Policy",
+  "description": "Fail-closed Actor, Production, Agent, privacy, storage and revision boundaries for operational memory.",
+  "type": "object",
+  "required": [
+    "schema",
+    "scopeId",
+    "scopeType",
+    "actorId",
+    "productionId",
+    "permittedAgentIds",
+    "dataClasses",
+    "allowedUses",
+    "crossActorAccess",
+    "crossProductionAccess",
+    "exactRevisionRequired",
+    "maximumTtl",
+    "providerProjection",
+    "canonicalProvenanceLocation",
+    "providerIsSoleCopy",
+    "createdAt",
+    "expiresAt",
+    "revokedAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.memory-scope-policy/v1" },
+    "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+    "scopeType": {
+      "type": "string",
+      "enum": ["actor", "actor-production", "production", "social-instance", "work-order", "privacy-partition"]
+    },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "socialInstanceId": { "type": "string", "pattern": "^social-instance:" },
+    "permittedAgentIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^agent:" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "dataClasses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["public", "internal", "private", "sensitive", "source-code", "creative-work", "identity"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "allowedUses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["resume-context", "planning-context", "retrieval-context", "reconciliation-context", "receipt-evidence"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "crossActorAccess": { "const": false },
+    "crossProductionAccess": { "const": false },
+    "exactRevisionRequired": { "const": true },
+    "maximumTtl": { "type": "integer", "minimum": 1, "description": "Maximum TTL in seconds." },
+    "providerProjection": {
+      "type": "object",
+      "required": ["provider", "resourceId", "scopeKey", "region", "deletionRequiredOnRevoke"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "resourceId": { "type": "string", "minLength": 1 },
+        "scopeKey": { "type": "string", "minLength": 1 },
+        "region": { "type": "string", "minLength": 1 },
+        "deletionRequiredOnRevoke": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "canonicalProvenanceLocation": { "const": "gummy-box" },
+    "providerIsSoleCopy": { "const": false },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "additionalProperties": false
+}

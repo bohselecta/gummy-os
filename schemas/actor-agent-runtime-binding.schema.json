@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/actor-agent-runtime-binding.schema.json",
+  "title": "Gummy Actor–Agent Runtime Binding",
+  "description": "Provider-neutral additive identity and continuation extension for gummy.runtime-binding/v1.",
+  "type": "object",
+  "required": [
+    "schema",
+    "extendsRuntimeBindingSchema",
+    "actorId",
+    "humanOwnerId",
+    "agentId",
+    "productionId",
+    "workOrderId",
+    "authorityLeaseId",
+    "moldId",
+    "grantId",
+    "runtimeBindingId",
+    "runtimeBindingRevision",
+    "runtimeProvider",
+    "runtimeResourceId",
+    "runtimePrincipal",
+    "runtimePrincipalType",
+    "providerPolicyRefs",
+    "operationalMemoryScopeId",
+    "returnAnchor",
+    "canonicalStateVersion",
+    "receiptPolicy",
+    "acceptanceRequired",
+    "locality",
+    "region",
+    "protocolVersions",
+    "providerFeatureStates",
+    "operationClasses",
+    "liveExecutionEnabled",
+    "createdAt",
+    "expiresAt",
+    "revokedAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.actor-agent-runtime-binding/v1" },
+    "extendsRuntimeBindingSchema": { "const": "gummy.runtime-binding/v1" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "humanOwnerId": { "type": "string", "pattern": "^human:" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "workOrderId": { "type": "string", "pattern": "^work-order:" },
+    "authorityLeaseId": { "type": "string", "pattern": "^lease:" },
+    "moldId": { "type": "string", "pattern": "^mold:" },
+    "grantId": { "type": "string", "pattern": "^grant:" },
+    "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+    "runtimeBindingRevision": { "type": "integer", "minimum": 1 },
+    "supersedesRuntimeBindingId": {
+      "type": ["string", "null"],
+      "pattern": "^runtime-binding:"
+    },
+    "runtimeProvider": {
+      "type": "string",
+      "enum": ["deterministic", "local", "mcp", "managed-runtime", "google-agent-platform", "other"]
+    },
+    "runtimeResourceId": { "type": "string", "minLength": 1 },
+    "runtimePrincipal": { "type": "string", "minLength": 1 },
+    "runtimePrincipalType": {
+      "type": "string",
+      "enum": ["provider-agent-identity", "workload-identity", "service-account", "local-process", "mcp-client", "other"]
+    },
+    "principalAttestation": {
+      "type": "object",
+      "required": ["issuer", "subject", "fingerprint", "observedAt"],
+      "properties": {
+        "issuer": { "type": "string", "minLength": 1 },
+        "subject": { "type": "string", "minLength": 1 },
+        "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "observedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "providerPolicyRefs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "operationalMemoryScopeId": { "type": "string", "pattern": "^memory-scope:" },
+    "returnAnchor": { "type": "string", "pattern": "^gummy-box:" },
+    "canonicalStateVersion": { "type": "string", "minLength": 1 },
+    "receiptPolicy": {
+      "type": "object",
+      "required": ["providerEvidenceRequired", "exactMemoryRevisionsRequired", "gummyCompilesReceipt"],
+      "properties": {
+        "providerEvidenceRequired": { "const": true },
+        "exactMemoryRevisionsRequired": { "const": true },
+        "gummyCompilesReceipt": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "acceptanceRequired": { "const": true },
+    "locality": {
+      "type": "string",
+      "enum": ["local", "lan", "cloud", "organization", "hybrid", "unknown"]
+    },
+    "region": { "type": "string", "minLength": 1 },
+    "protocolVersions": {
+      "type": "object",
+      "required": ["runtimeBinding", "providerAdapter"],
+      "properties": {
+        "runtimeBinding": { "const": "gummy.runtime-binding/v1" },
+        "providerAdapter": { "type": "string", "minLength": 1 },
+        "mcp": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "providerFeatureStates": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["supported", "preview", "unavailable", "disabled", "not-verified"]
+      }
+    },
+    "operationClasses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "read-only",
+          "destructive",
+          "idempotent",
+          "open-world",
+          "financial",
+          "publication",
+          "identity-sensitive",
+          "privacy-sensitive"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "liveExecutionEnabled": { "type": "boolean" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "additionalProperties": false
+}

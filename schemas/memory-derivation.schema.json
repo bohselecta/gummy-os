@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/memory-derivation.schema.json",
+  "title": "Gummy Memory Derivation",
+  "description": "Auditable provenance for one operational-memory revision.",
+  "type": "object",
+  "required": [
+    "schema",
+    "derivationId",
+    "memoryId",
+    "memoryRevision",
+    "scopeId",
+    "actorId",
+    "agentId",
+    "productionId",
+    "sourceEventRefs",
+    "sourceHashes",
+    "generatorProvider",
+    "generatorModel",
+    "method",
+    "generatedAt",
+    "canonicalStateVersionObserved",
+    "conflictDisposition",
+    "derivationHash",
+    "authoritative",
+    "authorityEffect",
+    "canonicalMutationApplied"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.memory-derivation/v1" },
+    "derivationId": { "type": "string", "pattern": "^memory-derivation:" },
+    "memoryId": { "type": "string", "pattern": "^memory:" },
+    "memoryRevision": { "type": "integer", "minimum": 1 },
+    "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "sourceEventRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^event:" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "sourceHashes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "generatorProvider": { "type": "string", "minLength": 1 },
+    "generatorModel": { "type": "string", "minLength": 1 },
+    "method": {
+      "type": "string",
+      "enum": ["deterministic-fixture", "generated-summary", "event-consolidation", "human-authored-derivation"]
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "canonicalStateVersionObserved": { "type": "string", "minLength": 1 },
+    "conflictDisposition": {
+      "type": "string",
+      "enum": ["none", "preserved-as-revisions", "requires-human-review"]
+    },
+    "derivationHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "authoritative": { "const": false },
+    "authorityEffect": { "const": "none" },
+    "canonicalMutationApplied": { "const": false }
+  },
+  "additionalProperties": false
+}

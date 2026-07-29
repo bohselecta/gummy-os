@@ -18,7 +18,29 @@ Instagram: TODO — add exact public post URL
 Original local/source video: TODO — add Gummy or storage reference if retained
 ```
 
-A later edit should record platform post IDs, publication timestamps, captions, and source-file hash where available.
+A repository-wide evidence search on 2026-07-29 found no retained post URL,
+platform timestamp, source-video reference, source file, hash or timestamped
+screenshot. These fields remain `NOT SUPPLIED`; no value is inferred from file,
+commit or follow-up times.
+
+| Evidence item | Recorded value | Confidence/status |
+| --- | --- | --- |
+| demonstration date | 2026-07-28, reported by Hayden | reported |
+| TikTok URL/post ID | not supplied | NOT SUPPLIED |
+| TikTok publication timestamp | not supplied | NOT SUPPLIED |
+| Instagram URL/post ID | not supplied | NOT SUPPLIED |
+| Instagram publication timestamp | not supplied | NOT SUPPLIED |
+| original/source video link | not supplied | NOT SUPPLIED |
+| retained source-video hash | no source asset located | NOT SUPPLIED |
+| timestamped screenshots | none located | NOT SUPPLIED |
+| repository commit visibly demonstrated | not recoverable from current evidence | NOT VERIFIED |
+| repository release at follow-up | `4c2cb092cc0ccab93df31a3479ddba460099363d` | recorded follow-up state; not claimed as the visible demo commit |
+| deployed-demo URL | `https://www.mygum.my` | recorded production surface |
+| deployed-demo version at recording time | not recoverable from current evidence | NOT VERIFIED |
+
+If the original posts or source video are supplied later, add their native
+platform timestamps, content IDs, source hash, screenshots and a timestamped
+visible/spoken feature index without rewriting this evidence gap.
 
 ## 2. Why this demonstration matters
 
@@ -197,3 +219,32 @@ It establishes a dated, specific record of:
 ## 10. Founding observation
 
 > **The five-minute video was a compressed demonstration of a proposed social operating system: persistent participants, shared intent, coordinated production, visible accountability, and resumable public or private presence inside one world.**
+
+## 11. Neutral comparative chronology
+
+The chronology records only the evidence available:
+
+- Hayden reported publicly demonstrating Gummy OS’s broader Actor–Agent, WebOS,
+  Production, Return, Receipt and social-presence model on 2026-07-28.
+- Issue #44 records a reported Google platform consolidation on 2026-07-29.
+- Google’s current official release notes show that the relevant infrastructure
+  components arrived on staggered dates: the initial Gemini Enterprise Agent
+  Platform release and seven-day Agent Runtime/Memory revision/Agent Identity
+  entries on 2026-04-22; Memory Bank and Sessions global/multi-regional
+  endpoints on 2026-06-17; Agent Gateway, Registry and Observability GA entries
+  on 2026-06-18; Memory Bank `IngestEvents` GA on 2026-07-08; and Memory
+  Profiles GA on 2026-07-15.
+- The official release-note entry dated 2026-06-02 is an abuse-monitoring and
+  zero-data-retention documentation update, not the initial platform release in
+  the current record.
+- The official release-note entry dated 2026-07-29 describes the Feedback
+  service in Preview. The reported wider consolidation date is therefore
+  preserved separately from official component release dates.
+- Gummy OS and Google’s platform materially overlap at the infrastructure layer
+  around persistent agent execution, workload identity, scoped generated
+  memory, gateway policy, registry and observability.
+- No evidence of copying, plagiarism, causation or influence has been
+  established. No such claim is made here.
+
+Official provider chronology:
+[Gemini Enterprise Agent Platform release notes](https://docs.cloud.google.com/gemini-enterprise-agent-platform/release-notes).

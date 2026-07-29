@@ -1,0 +1,130 @@
+{
+  "schema": "gummy.provider-profile.google-agent-platform/v1",
+  "profileId": "provider-profile:google:phase17a-foundation",
+  "provider": "google-agent-platform",
+  "runtime": {
+    "resourceId": "not-provisioned",
+    "deploymentMethod": "not-provisioned",
+    "apiResourceName": "not-provisioned",
+    "region": "us-central1"
+  },
+  "runtimeSource": {
+    "revision": "foundation-only",
+    "containerDigest": "not-provisioned"
+  },
+  "currentDeploymentLimitations": {
+    "managedSdkLanguage": "python",
+    "sourceObjectLanguage": "python",
+    "customContainerContract": "language-neutral-http",
+    "notes": "The documented managed SDK and source-object deployment path is Python. A custom container may use another language when it implements the provider HTTP runtime contract."
+  },
+  "agentIdentity": {
+    "principal": "not-provisioned",
+    "principalType": "provider-agent-identity",
+    "apiVersion": "v1beta1",
+    "featureState": "preview"
+  },
+  "memoryBank": {
+    "resourceId": "not-provisioned",
+    "scopeKey": "memory-scope:actor-hayden:production-repository-steward",
+    "region": "us-central1",
+    "ttl": 86400,
+    "revisionsEnabled": true,
+    "ingestionMode": "not-provisioned",
+    "providerIsCanonical": false
+  },
+  "agentGateway": {
+    "policyRefs": [],
+    "featureState": "not-verified"
+  },
+  "agentRegistry": {
+    "resourceRefs": [],
+    "featureState": "not-verified",
+    "canonicalIdentityRegistry": false
+  },
+  "observability": {
+    "traceIds": [],
+    "dagIds": [],
+    "featureState": "not-verified",
+    "receiptAuthority": false
+  },
+  "maximumRuntimeDuration": 604800,
+  "features": {
+    "longRunningOperations": {
+      "state": "supported",
+      "allowedInFirstProof": true,
+      "reason": "Deterministic boundary is tested now; live continuation remains gated."
+    },
+    "memoryRevisions": {
+      "state": "supported",
+      "allowedInFirstProof": true,
+      "reason": "Exact revisions must be copied into Gummy provenance and Receipt evidence."
+    },
+    "ingestEvents": {
+      "state": "supported",
+      "allowedInFirstProof": false,
+      "reason": "Live ingestion is disabled until credentials, deletion, locality and rollback are proven."
+    },
+    "agentGateway": {
+      "state": "supported",
+      "allowedInFirstProof": false,
+      "reason": "Provider policy is supplementary and cannot replace a Gummy Lease or Grant."
+    },
+    "agentRegistry": {
+      "state": "supported",
+      "allowedInFirstProof": false,
+      "reason": "Registry projection is not required for the first bounded Repository Steward proof."
+    },
+    "a2a": {
+      "state": "preview",
+      "allowedInFirstProof": false,
+      "reason": "Fail closed while provider integration is Preview."
+    },
+    "llamaIndex": {
+      "state": "preview",
+      "allowedInFirstProof": false,
+      "reason": "Not required for the first proof and not independently verified."
+    },
+    "customRuntimeResourceControls": {
+      "state": "preview",
+      "allowedInFirstProof": false,
+      "reason": "No customized provider resource controls are needed for the first proof."
+    }
+  },
+  "pricingAndBudgetEvidence": {
+    "pricingSource": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+    "usageSource": "provider billing export plus Gummy local metering",
+    "gummyHardStopRequired": true
+  },
+  "dataResidency": {
+    "requiredRegion": "us-central1",
+    "globalEndpointAllowed": false,
+    "mismatchFailsClosed": true
+  },
+  "encryption": {
+    "cmekRequired": false,
+    "globalEndpointCmekConstraintRecorded": true
+  },
+  "revocationProcedure": [
+    "Revoke the Gummy Runtime Binding, Lease and Grant first.",
+    "Disable or delete the provider runtime identity and runtime resource.",
+    "Confirm provider terminal state and retain hashed evidence.",
+    "Invalidate provider memory projections and preserve Gummy provenance."
+  ],
+  "deletionProcedure": [
+    "Delete provider sessions and scoped memory projections after evidence retention rules are satisfied.",
+    "Delete runtime revisions and artifacts according to provider lifecycle controls.",
+    "Retain only Gummy-owned provenance, Return and Receipt records required by policy."
+  ],
+  "sourceDocumentation": [
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/release-notes",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/runtime",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/runtime-contract",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank",
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank/revisions"
+  ],
+  "credentialsProvisioned": false,
+  "liveExecutionEnabled": false,
+  "verifiedAt": "2026-07-29T18:00:00.000Z"
+}
