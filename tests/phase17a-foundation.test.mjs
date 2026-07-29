@@ -362,11 +362,23 @@ test("Google profile remains provider-neutral, uncredentialed and live-disabled"
   );
   assert.equal(profile.provider, "google-agent-platform");
   assert.equal(profile.maximumRuntimeDuration, 604800);
+  assert.equal(profile.agentIdentity.featureState, "supported");
+  assert.equal(profile.agentIdentity.productAvailability, "ga");
+  assert.equal(profile.agentIdentity.apiMaturity, "preview");
+  assert.equal(profile.agentIdentity.apiVersion, "v1beta1");
   assert.equal(profile.memoryBank.providerIsCanonical, false);
   assert.equal(profile.agentRegistry.canonicalIdentityRegistry, false);
   assert.equal(profile.observability.receiptAuthority, false);
   assert.equal(profile.features.a2a.allowedInFirstProof, false);
   assert.equal(profile.features.llamaIndex.allowedInFirstProof, false);
+  assert.equal(
+    profile.pricingAndBudgetEvidence.pricingSource,
+    "https://cloud.google.com/products/gemini-enterprise-agent-platform/pricing"
+  );
+  assert.equal(
+    profile.pricingAndBudgetEvidence.modelPricingSource,
+    "https://cloud.google.com/vertex-ai/generative-ai/pricing"
+  );
   assert.equal(profile.credentialsProvisioned, false);
   assert.equal(profile.liveExecutionEnabled, false);
 });
@@ -399,4 +411,19 @@ test("dated doctrine, threat, migration, rollback and acceptance records preserv
   }
   assert.ok(record.includes("No evidence of copying, plagiarism"));
   assert.ok(record.includes("no live Google or MCP adapter"));
+  assert.ok(
+    record.includes(
+      "Agent Identity for Agent Runtime as `supported` and\n`ga`"
+    )
+  );
+  assert.ok(
+    record.includes(
+      "Agent Identity API as `preview` at `v1beta1`"
+    )
+  );
+  assert.ok(
+    record.includes(
+      "The June 18 API entry does not demote Agent Identity for Agent\n  Runtime from GA."
+    )
+  );
 });

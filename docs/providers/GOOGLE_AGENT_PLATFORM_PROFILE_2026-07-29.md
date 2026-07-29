@@ -33,10 +33,10 @@ The official Google release notes checked on 2026-07-29 show staggered dates:
 
 | Date | Official record | Gummy interpretation |
 | --- | --- | --- |
-| 2026-04-22 | Initial Gemini Enterprise Agent Platform release; Agent Runtime naming, operations up to seven days, custom containers, Memory Bank event streaming/revisions and Agent Identity GA are listed | establishes provider capabilities; creates no Gummy authority |
+| 2026-04-22 | Initial Gemini Enterprise Agent Platform transition/release section; Agent Runtime naming, operations up to seven days, custom containers, Memory Bank event streaming/revisions and Agent Identity for Agent Runtime GA are listed | establishes provider capabilities; creates no Gummy authority |
 | 2026-06-02 | Abuse-monitoring and zero-data-retention documentation update | not the official initial platform release in the current release notes |
 | 2026-06-17 | Memory Bank and Sessions global/multi-regional endpoints GA; CMEK constraint for global endpoint recorded | locality and encryption must be checked together |
-| 2026-06-18 | Agent Gateway, Agent Observability and Agent Registry GA; the new Agent Identity API is separately listed as Preview during migration | feature-level launch stages remain distinct |
+| 2026-06-18 | Agent Gateway, Agent Observability and Agent Registry GA; the new `v1beta1` Agent Identity API is separately listed as Preview during migration | API maturity does not demote Agent Identity for Agent Runtime from GA |
 | 2026-07-08 | Memory Bank `IngestEvents` GA, including revision configuration | ingestion remains disabled for the foundation |
 | 2026-07-15 | Memory Profiles GA | structured profiles remain derived operational memory |
 | 2026-07-29 | Official release-note entry is Feedback service Preview | the reported wider consolidation date is preserved separately; no single official platform-wide GA claim is inferred |
@@ -71,7 +71,8 @@ Google Agent Identity is a provider runtime principal. It is recorded in the
 Gummy binding with:
 
 - principal string and principal type;
-- API version and feature state;
+- Agent Identity for Agent Runtime feature support and GA product availability;
+- separate Agent Identity API maturity and version;
 - attestation issuer, subject, fingerprint and observation time;
 - runtime resource and deployment revision;
 - provider policy references;
@@ -81,9 +82,10 @@ The provider documentation ties an Agent Identity to a runtime agent resource.
 Gummy still binds that principal to its own Agent and Actor. Rotation,
 redeployment or deletion of the provider principal does not change the Actor.
 
-The foundation uses `not-provisioned`, `v1beta1` and `preview` for the
-provider-identity API path. No service account, token or cloud role exists in
-this branch.
+The foundation records Agent Identity for Agent Runtime as `supported` and
+`ga`. Separately, it records the Agent Identity API as `preview` at `v1beta1`.
+The principal remains `not-provisioned`; no service account, token or cloud role
+exists in this branch.
 
 ## Memory Bank mapping
 
@@ -154,7 +156,11 @@ A future live proof must verify:
 - Sessions and Memory Bank locality;
 - CMEK requirements and the documented global-endpoint constraint;
 - provider log payload and retention;
-- actual pricing source and billing/usage evidence;
+- Agent Runtime, Agent Compute, Agent Memory, Agent Storage, Agent Gateway and
+  Memory Bank infrastructure pricing from the official Gemini Enterprise Agent
+  Platform pricing source;
+- separate model/token pricing and billing/usage evidence when a generative
+  model is used;
 - a local Gummy hard stop before provider continuation;
 - complete provider deletion and revocation behavior.
 
@@ -193,3 +199,5 @@ provider resource is provisioned.
 - [Use Agent Identity with Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity)
 - [Agent Platform Memory Bank](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank)
 - [Memory revisions](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank/revisions)
+- [Gemini Enterprise Agent Platform pricing](https://cloud.google.com/products/gemini-enterprise-agent-platform/pricing)
+- [Optional generative-model pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)

@@ -228,12 +228,15 @@ The chronology records only the evidence available:
   Production, Return, Receipt and social-presence model on 2026-07-28.
 - Issue #44 records a reported Google platform consolidation on 2026-07-29.
 - Google’s current official release notes show that the relevant infrastructure
-  components arrived on staggered dates: the initial Gemini Enterprise Agent
-  Platform release and seven-day Agent Runtime/Memory revision/Agent Identity
-  entries on 2026-04-22; Memory Bank and Sessions global/multi-regional
-  endpoints on 2026-06-17; Agent Gateway, Registry and Observability GA entries
-  on 2026-06-18; Memory Bank `IngestEvents` GA on 2026-07-08; and Memory
-  Profiles GA on 2026-07-15.
+  components arrived on staggered dates: the 2026-04-22 initial Gemini
+  Enterprise Agent Platform transition/release section contains seven-day Agent
+  Runtime operations, Memory Bank changes and Agent Identity for Agent Runtime
+  GA; Memory Bank and Sessions global/multi-regional endpoints are listed on
+  2026-06-17; Agent Gateway, Registry and Observability GA and the separate new
+  `v1beta1` Agent Identity API in Preview are listed on 2026-06-18; Memory Bank
+  `IngestEvents` GA is listed on 2026-07-08; and Memory Profiles GA is listed on
+  2026-07-15. The June 18 API entry does not demote Agent Identity for Agent
+  Runtime from GA.
 - The official release-note entry dated 2026-06-02 is an abuse-monitoring and
   zero-data-retention documentation update, not the initial platform release in
   the current record.

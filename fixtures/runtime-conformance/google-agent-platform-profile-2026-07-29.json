@@ -21,8 +21,10 @@
   "agentIdentity": {
     "principal": "not-provisioned",
     "principalType": "provider-agent-identity",
-    "apiVersion": "v1beta1",
-    "featureState": "preview"
+    "featureState": "supported",
+    "productAvailability": "ga",
+    "apiMaturity": "preview",
+    "apiVersion": "v1beta1"
   },
   "memoryBank": {
     "resourceId": "not-provisioned",
@@ -92,7 +94,8 @@
     }
   },
   "pricingAndBudgetEvidence": {
-    "pricingSource": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+    "pricingSource": "https://cloud.google.com/products/gemini-enterprise-agent-platform/pricing",
+    "modelPricingSource": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
     "usageSource": "provider billing export plus Gummy local metering",
     "gummyHardStopRequired": true
   },
@@ -122,7 +125,9 @@
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/runtime-contract",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity",
     "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank",
-    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank/revisions"
+    "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank/revisions",
+    "https://cloud.google.com/products/gemini-enterprise-agent-platform/pricing",
+    "https://cloud.google.com/vertex-ai/generative-ai/pricing"
   ],
   "credentialsProvisioned": false,
   "liveExecutionEnabled": false,

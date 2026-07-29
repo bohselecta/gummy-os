@@ -73,12 +73,21 @@
     },
     "agentIdentity": {
       "type": "object",
-      "required": ["principal", "principalType", "apiVersion", "featureState"],
+      "required": [
+        "principal",
+        "principalType",
+        "featureState",
+        "productAvailability",
+        "apiMaturity",
+        "apiVersion"
+      ],
       "properties": {
         "principal": { "type": "string", "minLength": 1 },
         "principalType": { "const": "provider-agent-identity" },
-        "apiVersion": { "type": "string", "minLength": 1 },
-        "featureState": { "type": "string", "enum": ["supported", "preview", "unavailable", "not-verified"] }
+        "featureState": { "const": "supported" },
+        "productAvailability": { "const": "ga" },
+        "apiMaturity": { "const": "preview" },
+        "apiVersion": { "const": "v1beta1" }
       },
       "additionalProperties": false
     },
@@ -162,6 +171,7 @@
       "required": ["pricingSource", "usageSource", "gummyHardStopRequired"],
       "properties": {
         "pricingSource": { "type": "string", "format": "uri" },
+        "modelPricingSource": { "type": "string", "format": "uri" },
         "usageSource": { "type": "string", "minLength": 1 },
         "gummyHardStopRequired": { "const": true }
       },
