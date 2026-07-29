@@ -9,7 +9,8 @@ import {
 } from './production-composition-market-base.js';
 import {
   connectCompositionNodes,
-  disconnectCompositionEdge
+  disconnectCompositionEdge,
+  removeCompositionNode
 } from './production-composition-base.js';
 import {
   applyDragIntent,
@@ -45,15 +46,29 @@ function referenceLane(reference) {
 }
 
 function ensureHumanActorInEmptyPattern(runtime, compositionId) {
-  let current = composition(runtime, compositionId);
-  if (!current || current.nodes.some(node => node.lane === 'people-tools')) {
-    return { runtime, composition: current };
-  }
-  const human = (runtime.actors || []).find(actor => actor.id === current.ownerActorId)
-    || (runtime.actors || []).find(actor => actor.kind === 'person');
-  if (!human) return { runtime, composition: current };
+  let working = runtime;
+  let current = composition(working, compositionId);
+  if (!current) return { runtime: working, composition: current };
 
-  const added = addCompositionReferenceBase(runtime, compositionId, {
+  // Glopper is an authorized Agent/character under an Actor, not a standalone Actor identity.
+  // Older exploratory fixtures may contain actor:glopper; starter patterns must not perpetuate it.
+  const falseActorNode = current.nodes.find(node => node.ref.kind === 'actor' && node.ref.id === 'actor:glopper');
+  if (falseActorNode) {
+    const removed = removeCompositionNode(working, compositionId, falseActorNode.id);
+    if (!removed.denied) {
+      working = removed.runtime;
+      current = composition(working, compositionId);
+    }
+  }
+
+  if (current.nodes.some(node => node.lane === 'people-tools')) {
+    return { runtime: working, composition: current };
+  }
+  const human = (working.actors || []).find(actor => actor.id === current.ownerActorId)
+    || (working.actors || []).find(actor => actor.kind === 'person');
+  if (!human) return { runtime: working, composition: current };
+
+  const added = addCompositionReferenceBase(working, compositionId, {
     kind: 'actor',
     id: human.id,
     label: human.name || 'Human owner',
@@ -62,7 +77,7 @@ function ensureHumanActorInEmptyPattern(runtime, compositionId) {
     availability: { state: 'available', reason: 'The Human owner is present in this local workspace.' }
   });
   if (added.denied) return added;
-  let working = added.runtime;
+  working = added.runtime;
   current = composition(working, compositionId);
   const humanNode = current.nodes.find(node => node.ref.kind === 'actor' && node.ref.id === human.id);
   const sourceNode = current.nodes.find(node => node.lane === 'inputs');
