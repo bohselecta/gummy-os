@@ -4,7 +4,7 @@
   "title": "Gummy Production Agreement",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "id", "productionId", "revision", "status", "governance", "participants", "decisionRules", "contributionPolicy", "creditPolicy", "ownershipPolicy", "publicationPolicy", "amendmentPolicy", "approvals", "createdAt", "updatedAt"],
+  "required": ["schema", "id", "productionId", "revision", "status", "governance", "participants", "decisionRules", "contributionPolicy", "creditPolicy", "ownershipPolicy", "compensationPolicy", "revenuePolicy", "privacyPolicy", "withdrawalPolicy", "disputePolicy", "publicationPolicy", "amendmentPolicy", "approvals", "createdAt", "updatedAt"],
   "properties": {
     "schema": { "const": "gummy.production-agreement/v1" },
     "id": { "type": "string", "pattern": "^production-agreement:" },

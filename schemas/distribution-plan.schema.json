@@ -108,6 +108,7 @@
       }
     },
     "releaseId": { "type": ["string", "null"], "pattern": "^distribution-release:" },
+    "supersedesPlanId": { "type": ["string", "null"], "pattern": "^distribution-plan:" },
     "createdAt": { "type": "string", "format": "date-time" },
     "updatedAt": { "type": "string", "format": "date-time" }
   }

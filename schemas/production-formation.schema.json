@@ -4,7 +4,7 @@
   "title": "Gummy Production Formation Event",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "id", "sharedVisionId", "sharedVisionRevision", "productionId", "agreementId", "agreementRevision", "source", "initialActors", "initialSourceGummyIds", "formationMethod", "approvals", "receiptId", "createdAt"],
+  "required": ["schema", "id", "sharedVisionId", "sharedVisionRevision", "productionId", "agreementId", "agreementRevision", "source", "initialActors", "initialSourceGummyIds", "formationMethod", "approvals", "receiptId", "immutable", "createdAt"],
   "properties": {
     "schema": { "const": "gummy.production-formation/v1" },
     "id": { "type": "string", "pattern": "^production-formation:" },
@@ -57,6 +57,7 @@
     },
     "limitations": { "type": "array", "items": { "type": "string" } },
     "receiptId": { "type": "string", "pattern": "^receipt:" },
+    "immutable": { "const": true },
     "createdAt": { "type": "string", "format": "date-time" }
   }
 }

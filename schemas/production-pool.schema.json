@@ -43,6 +43,7 @@
           "status": { "enum": ["proposed", "committed", "authorized", "declined", "withdrawn", "captured", "released", "refunded", "failed"] },
           "authorizationRequired": { "const": true },
           "authorizationId": { "type": ["string", "null"] },
+          "priorAuthorizationId": { "type": ["string", "null"] },
           "providerCustomerRef": { "type": ["string", "null"] },
           "privateAmount": { "type": "boolean" },
           "approvedRevision": { "type": ["integer", "null"], "minimum": 1 },
@@ -80,6 +81,8 @@
         "proposedAt": { "type": "string", "format": "date-time" }
       }
     },
+    "supersedesPoolId": { "type": ["string", "null"], "pattern": "^production-pool:" },
+    "priorAuthorizationIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "actual": {
       "type": "object",
       "additionalProperties": false,
