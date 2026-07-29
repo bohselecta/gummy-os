@@ -103,7 +103,13 @@ function destinationPlans(nodes) {
 
 function canonicalRecordExists(runtime, ref) {
   if (ref.kind === 'actor') return runtime.actors.some(item => item.id === ref.id);
-  if (ref.kind === 'gummy') return runtime.gummies.some(item => item.id === ref.id);
+  if (ref.kind === 'gummy') {
+    if (runtime.gummies.some(item => item.id === ref.id)) return true;
+    // Gummy Box is the authoritative store for many cross-surface objects. A versioned,
+    // content-addressed reference remains a valid canonical link even when the Production
+    // runtime does not mirror the object's full metadata.
+    return Boolean(ref.revision && ref.hash);
+  }
   if (ref.kind === 'production') return runtime.productions.some(item => item.id === ref.id);
   if (ref.kind === 'composition') return (runtime.compositions || []).some(item => item.id === ref.id);
   return true;
@@ -274,322 +280,310 @@ export function createProductionComposition(runtime, {
   };
   refreshProjection(composition, next);
   next.compositions.push(composition);
-  next.receipts.push(makeRuntimeReceipt({
+  const receipt = makeRuntimeReceipt({
     action: 'production-composition.created',
     productionId: productionId || undefined,
     actorId: ownerActorId,
     outcome: 'completed',
-    summary: `Created ${composition.title} as an editable visual proposal. No Run, Lease, Grant, provider call, charge, publication, or accepted result was created.`,
-    resources: [composition.id]
-  }));
-  return { runtime: next, composition, created: true };
-}
-
-export function ensureProductionComposition(runtime, productionId) {
-  const existing = (runtime.compositions || []).find(item => item.productionId === productionId);
-  if (existing) return { runtime, composition: existing, created: false };
-  const production = runtime.productions.find(item => item.id === productionId);
-  return createProductionComposition(runtime, {
-    id: `composition:${safeId(productionId.slice('production:'.length))}`,
-    title: `${production?.title || 'Production'} composition`,
-    productionId,
-    source: 'production'
+    summary: `Created ${composition.title} as a Human-editable proposal. No work executed.`,
+    resources: [composition.id, composition.revision]
   });
+  next.receipts.push(receipt);
+  return { runtime: next, composition, receipt, created: true };
 }
 
-function mutateComposition(runtime, compositionId, mutator) {
+export function replaceCompositionFromSnapshot(runtime, compositionId, snapshot, {
+  action = 'production-composition.snapshot-restored',
+  summary = 'Restored a prior visible composition proposal. No work executed.'
+} = {}) {
   const next = clone(runtime);
-  next.compositions ||= [];
-  const composition = next.compositions.find(item => item.id === compositionId);
-  if (!composition) return { runtime, denied: true, reason: 'composition-not-found' };
-  mutator(composition, next);
-  bump(composition, next);
-  return { runtime: next, composition, executed: false };
-}
-
-export function renameProductionComposition(runtime, compositionId, title) {
-  return mutateComposition(runtime, compositionId, composition => {
-    const value = String(title || '').trim();
-    if (value) composition.title = value;
-  });
-}
-
-export function addCompositionNode(runtime, compositionId, values) {
-  return mutateComposition(runtime, compositionId, (composition) => {
-    const order = composition.nodes.filter(node => node.lane === values.lane).length;
-    composition.nodes.push(compositionNode({ ...values, order }));
-  });
-}
-
-export function removeCompositionNode(runtime, compositionId, nodeId) {
-  return mutateComposition(runtime, compositionId, composition => {
-    composition.nodes = composition.nodes.filter(node => node.id !== nodeId);
-    composition.edges = composition.edges.filter(edge => edge.fromNodeId !== nodeId && edge.toNodeId !== nodeId);
-  });
-}
-
-export function duplicateCompositionNode(runtime, compositionId, nodeId) {
-  return mutateComposition(runtime, compositionId, composition => {
-    const source = composition.nodes.find(node => node.id === nodeId);
-    if (!source) return;
-    const copy = clone(source);
-    copy.id = uid('composition-node');
-    copy.label = `${copy.label} copy`;
-    copy.position.order = composition.nodes.filter(node => node.lane === copy.lane).length;
-    copy.position.y = copy.position.order * 132;
-    composition.nodes.push(copy);
-  });
-}
-
-export function moveCompositionNode(runtime, compositionId, nodeId, direction) {
-  return mutateComposition(runtime, compositionId, composition => {
-    const node = composition.nodes.find(item => item.id === nodeId);
-    if (!node) return;
-    const laneNodes = composition.nodes
-      .filter(item => item.lane === node.lane)
-      .sort((left, right) => left.position.order - right.position.order);
-    const index = laneNodes.findIndex(item => item.id === nodeId);
-    const targetIndex = Math.max(0, Math.min(laneNodes.length - 1, index + (direction === 'before' ? -1 : 1)));
-    if (targetIndex === index) return;
-    [laneNodes[index], laneNodes[targetIndex]] = [laneNodes[targetIndex], laneNodes[index]];
-    laneNodes.forEach((item, order) => {
-      item.position.order = order;
-      item.position.y = order * 132;
-    });
-  });
-}
-
-export function moveCompositionNodeToLane(runtime, compositionId, nodeId, lane, order = null) {
-  if (!COMPOSER_LANES.some(item => item.id === lane)) {
-    return { runtime, denied: true, reason: 'composition-lane-not-found' };
-  }
-  return mutateComposition(runtime, compositionId, composition => {
-    const node = composition.nodes.find(item => item.id === nodeId);
-    if (!node) return;
-    node.lane = lane;
-    const laneNodes = composition.nodes
-      .filter(item => item.lane === lane && item.id !== nodeId)
-      .sort((left, right) => left.position.order - right.position.order);
-    const targetOrder = order == null
-      ? laneNodes.length
-      : Math.max(0, Math.min(laneNodes.length, Number(order)));
-    laneNodes.splice(targetOrder, 0, node);
-    laneNodes.forEach((item, index) => {
-      item.position.x = laneIndex(lane) * 280;
-      item.position.y = index * 132;
-      item.position.order = index;
-    });
-  });
-}
-
-export function connectCompositionNodes(runtime, compositionId, {
-  fromNodeId,
-  toNodeId,
-  edgeType = 'execution',
-  dataClasses = ['typed-production-handoff'],
-  approvalRule = 'Master Control approval required',
-  optional = false,
-  sourceIntentId = null
-}) {
-  return mutateComposition(runtime, compositionId, composition => {
-    if (fromNodeId === toNodeId) return;
-    if (!composition.nodes.some(node => node.id === fromNodeId) || !composition.nodes.some(node => node.id === toNodeId)) return;
-    const duplicate = composition.edges.some(edge => (
-      edge.fromNodeId === fromNodeId && edge.toNodeId === toNodeId && edge.edgeType === edgeType
-    ));
-    if (duplicate) return;
-    composition.edges.push({
-      id: uid('composition-edge'),
-      fromNodeId,
-      toNodeId,
-      edgeType,
-      dataClasses: clone(dataClasses),
-      approvalRule,
-      optional: Boolean(optional),
-      ...(sourceIntentId ? { sourceIntentId } : {})
-    });
-  });
-}
-
-export function disconnectCompositionEdge(runtime, compositionId, edgeId) {
-  return mutateComposition(runtime, compositionId, composition => {
-    composition.edges = composition.edges.filter(edge => edge.id !== edgeId);
-  });
-}
-
-export function toggleCompositionBranch(runtime, compositionId, edgeId) {
-  return mutateComposition(runtime, compositionId, composition => {
-    const edge = composition.edges.find(item => item.id === edgeId);
-    if (edge) edge.optional = !edge.optional;
-  });
-}
-
-export function replaceCompositionFromSnapshot(runtime, compositionId, snapshot) {
-  const next = clone(runtime);
-  const index = (next.compositions || []).findIndex(item => item.id === compositionId);
-  if (index < 0) return { runtime, denied: true, reason: 'composition-not-found' };
+  const index = next.compositions.findIndex(item => item.id === compositionId);
+  if (index < 0) return { runtime: next, denied: true, reason: 'composition-not-found' };
   const restored = clone(snapshot);
-  restored.id = compositionId;
   restored.revision = String(Number(next.compositions[index].revision || 0) + 1);
   restored.updatedAt = now();
   restored.linkedActorPlan = null;
   restored.appliedAt = null;
   refreshProjection(restored, next);
   next.compositions[index] = restored;
-  return { runtime: next, composition: restored, executed: false };
+  const receipt = makeRuntimeReceipt({
+    action,
+    productionId: restored.productionId || undefined,
+    actorId: restored.ownerActorId,
+    outcome: 'completed',
+    summary,
+    resources: [restored.id, restored.revision]
+  });
+  next.receipts.push(receipt);
+  return { runtime: next, composition: restored, receipt };
 }
 
-export function duplicateProductionComposition(runtime, compositionId) {
+export function renameProductionComposition(runtime, compositionId, title) {
   const next = clone(runtime);
-  const source = (next.compositions || []).find(item => item.id === compositionId);
-  if (!source) return { runtime, denied: true, reason: 'composition-not-found' };
-  const duplicate = clone(source);
-  duplicate.id = uid('composition');
-  duplicate.title = `${source.title} copy`;
-  duplicate.revision = '1';
-  duplicate.productionId = null;
-  duplicate.linkedActorPlan = null;
-  duplicate.appliedAt = null;
-  duplicate.createdAt = now();
-  duplicate.updatedAt = duplicate.createdAt;
-  duplicate.nodes = duplicate.nodes.map(node => ({ ...node, id: uid('composition-node') }));
-  const nodeIds = new Map(source.nodes.map((node, index) => [node.id, duplicate.nodes[index].id]));
-  duplicate.edges = duplicate.edges.map(edge => ({
-    ...edge,
-    id: uid('composition-edge'),
-    fromNodeId: nodeIds.get(edge.fromNodeId),
-    toNodeId: nodeIds.get(edge.toNodeId)
-  }));
-  duplicate.provenance = {
-    createdByActorId: source.ownerActorId,
-    source: 'duplicate',
-    sourceCompositionId: source.id,
-    compiler: 'gummy.composer/v1'
-  };
-  refreshProjection(duplicate, next);
-  next.compositions.push(duplicate);
-  next.receipts.push(makeRuntimeReceipt({
-    action: 'production-composition.duplicated',
-    actorId: source.ownerActorId,
-    outcome: 'completed',
-    summary: `Duplicated ${source.id}@${source.revision} into an independent editable composition. No work executed.`,
-    resources: [source.id, duplicate.id]
-  }));
-  return { runtime: next, composition: duplicate, executed: false };
+  const composition = next.compositions.find(item => item.id === compositionId);
+  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  composition.title = String(title || '').trim() || 'Untitled composition';
+  bump(composition, next);
+  return { runtime: next, composition };
 }
 
 export function bindCompositionToProduction(runtime, compositionId, productionId) {
-  return mutateComposition(runtime, compositionId, composition => {
-    composition.productionId = productionId;
-    composition.provenance.boundProductionAt = now();
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  const production = next.productions.find(item => item.id === productionId);
+  if (!composition || !production) return { runtime: next, denied: true, reason: 'composition-or-production-not-found' };
+  composition.productionId = productionId;
+  composition.provenance = {
+    ...composition.provenance,
+    source: composition.provenance.source === 'blank' ? 'production' : composition.provenance.source
+  };
+  bump(composition, next);
+  return { runtime: next, composition };
+}
+
+export function addCompositionNode(runtime, compositionId, input) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  const duplicate = composition.nodes.find(item => item.ref.kind === input.ref.kind && item.ref.id === input.ref.id);
+  if (duplicate) return { runtime: next, composition, node: duplicate, created: false };
+  const node = compositionNode({
+    ...input,
+    order: composition.nodes.filter(item => item.lane === input.lane).length
   });
+  if (input.sourceIntentId) node.sourceIntentId = input.sourceIntentId;
+  composition.nodes.push(node);
+  bump(composition, next);
+  return { runtime: next, composition, node, created: true };
+}
+
+export function removeCompositionNode(runtime, compositionId, nodeId) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  const before = composition.nodes.length;
+  composition.nodes = composition.nodes.filter(item => item.id !== nodeId);
+  composition.edges = composition.edges.filter(edge => edge.fromNodeId !== nodeId && edge.toNodeId !== nodeId);
+  if (composition.nodes.length === before) return { runtime: next, denied: true, reason: 'composition-node-not-found' };
+  bump(composition, next);
+  return { runtime: next, composition };
+}
+
+export function moveCompositionNodeToLane(runtime, compositionId, nodeId, lane) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  const node = composition?.nodes.find(item => item.id === nodeId);
+  if (!composition || !node || !COMPOSER_LANES.some(item => item.id === lane)) {
+    return { runtime: next, denied: true, reason: 'composition-node-or-lane-not-found' };
+  }
+  node.lane = lane;
+  node.position.x = laneIndex(lane) * 280;
+  node.position.order = composition.nodes.filter(item => item.lane === lane && item.id !== nodeId).length;
+  node.position.y = node.position.order * 132;
+  bump(composition, next);
+  return { runtime: next, composition, node };
+}
+
+export function moveCompositionNode(runtime, compositionId, nodeId, direction) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  const node = composition?.nodes.find(item => item.id === nodeId);
+  if (!composition || !node) return { runtime: next, denied: true, reason: 'composition-node-not-found' };
+  const laneNodes = composition.nodes
+    .filter(item => item.lane === node.lane)
+    .sort((left, right) => left.position.order - right.position.order);
+  const index = laneNodes.findIndex(item => item.id === nodeId);
+  const targetIndex = direction === 'before' ? index - 1 : index + 1;
+  if (index < 0 || targetIndex < 0 || targetIndex >= laneNodes.length) return { runtime: next, composition, node };
+  [laneNodes[index], laneNodes[targetIndex]] = [laneNodes[targetIndex], laneNodes[index]];
+  laneNodes.forEach((item, order) => {
+    const current = composition.nodes.find(candidate => candidate.id === item.id);
+    current.position.order = order;
+    current.position.y = order * 132;
+  });
+  bump(composition, next);
+  return { runtime: next, composition, node: composition.nodes.find(item => item.id === nodeId) };
+}
+
+export function duplicateCompositionNode(runtime, compositionId, nodeId) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  const source = composition?.nodes.find(item => item.id === nodeId);
+  if (!composition || !source) return { runtime: next, denied: true, reason: 'composition-node-not-found' };
+  const node = clone(source);
+  node.id = uid('composition-node');
+  node.ref = {
+    ...node.ref,
+    id: node.ref.kind === 'destination' || node.ref.kind === 'review-gate'
+      ? `${node.ref.id}:copy:${node.id.split(':').at(-1)}`
+      : node.ref.id
+  };
+  node.label = `${source.label} copy`;
+  node.position.order = composition.nodes.filter(item => item.lane === source.lane).length;
+  node.position.y = node.position.order * 132;
+  composition.nodes.push(node);
+  bump(composition, next);
+  return { runtime: next, composition, node };
+}
+
+export function connectCompositionNodes(runtime, compositionId, {
+  fromNodeId,
+  toNodeId,
+  edgeType = 'context',
+  dataClasses = [],
+  approvalRule = 'Human review required',
+  optional = false,
+  sourceIntentId = null
+}) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  const from = composition?.nodes.find(item => item.id === fromNodeId);
+  const to = composition?.nodes.find(item => item.id === toNodeId);
+  if (!composition || !from || !to || fromNodeId === toNodeId) return { runtime: next, denied: true, reason: 'composition-connection-invalid' };
+  const duplicate = composition.edges.find(item => item.fromNodeId === fromNodeId && item.toNodeId === toNodeId && item.edgeType === edgeType);
+  if (duplicate) return { runtime: next, composition, edge: duplicate, created: false };
+  const edge = {
+    id: uid('composition-edge'),
+    fromNodeId,
+    toNodeId,
+    edgeType,
+    dataClasses: [...new Set(dataClasses)],
+    approvalRule,
+    optional: Boolean(optional),
+    ...(sourceIntentId ? { sourceIntentId } : {})
+  };
+  composition.edges.push(edge);
+  bump(composition, next);
+  return { runtime: next, composition, edge, created: true };
+}
+
+export function disconnectCompositionEdge(runtime, compositionId, edgeId) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  const before = composition.edges.length;
+  composition.edges = composition.edges.filter(item => item.id !== edgeId);
+  if (before === composition.edges.length) return { runtime: next, denied: true, reason: 'composition-edge-not-found' };
+  bump(composition, next);
+  return { runtime: next, composition };
+}
+
+export function toggleCompositionBranch(runtime, compositionId, edgeId) {
+  const next = clone(runtime);
+  const composition = next.compositions.find(item => item.id === compositionId);
+  const edge = composition?.edges.find(item => item.id === edgeId);
+  if (!composition || !edge) return { runtime: next, denied: true, reason: 'composition-edge-not-found' };
+  edge.optional = !edge.optional;
+  bump(composition, next);
+  return { runtime: next, composition, edge };
+}
+
+export function duplicateProductionComposition(runtime, compositionId, {
+  title = null
+} = {}) {
+  const next = clone(runtime);
+  const source = next.compositions.find(item => item.id === compositionId);
+  if (!source) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  const copy = clone(source);
+  copy.id = uid('composition');
+  copy.title = title || `${source.title} copy`;
+  copy.revision = '1';
+  copy.productionId = null;
+  copy.linkedActorPlan = null;
+  copy.appliedAt = null;
+  copy.provenance = {
+    ...copy.provenance,
+    source: 'duplicate',
+    sourceCompositionId: source.id
+  };
+  copy.nodes = source.nodes.map(node => ({
+    ...clone(node),
+    id: uid('composition-node')
+  }));
+  const nodeMap = new Map(source.nodes.map((node, index) => [node.id, copy.nodes[index].id]));
+  copy.edges = source.edges.map(edge => ({
+    ...clone(edge),
+    id: uid('composition-edge'),
+    fromNodeId: nodeMap.get(edge.fromNodeId),
+    toNodeId: nodeMap.get(edge.toNodeId)
+  }));
+  const timestamp = now();
+  copy.createdAt = timestamp;
+  copy.updatedAt = timestamp;
+  refreshProjection(copy, next);
+  next.compositions.push(copy);
+  const receipt = makeRuntimeReceipt({
+    action: 'production-composition.duplicated',
+    actorId: copy.ownerActorId,
+    outcome: 'completed',
+    summary: `Duplicated ${source.title} as a new private composition. No work executed.`,
+    resources: [source.id, copy.id]
+  });
+  next.receipts.push(receipt);
+  return { runtime: next, composition: copy, receipt };
 }
 
 export function applyProductionComposition(runtime, compositionId) {
-  let working = clone(runtime);
-  const composition = (working.compositions || []).find(item => item.id === compositionId);
-  if (!composition) return { runtime, denied: true, reason: 'composition-not-found', executed: false };
-  const production = working.productions.find(item => item.id === composition.productionId);
-  if (!production) return { runtime, denied: true, reason: 'bound-production-required', executed: false };
-  const before = {
-    runs: working.productionRuns.length,
-    workOrders: working.workOrders.length,
-    taskLeases: working.taskLeases.length,
-    grants: working.grants.length,
-    returns: working.returns.length,
-    accepted: working.gummies.filter(item => item.status === 'accepted').length,
-    executionTraces: (working.executionTraces || []).length,
-    distributionPlans: (working.distributionPlans || []).length,
-    masterControlDecisions: (working.masterControlDecisions || []).length
+  let next = clone(runtime);
+  let composition = next.compositions.find(item => item.id === compositionId);
+  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  composition.readiness = projectCompositionReadiness(composition, next);
+  if (!composition.productionId) return { runtime: next, denied: true, reason: 'composition-not-bound-to-production' };
+  if (composition.readiness.blockers.length) {
+    return { runtime: next, denied: true, reason: composition.readiness.blockers.join(' ') };
+  }
+  const beforeInventory = executionInventory(next);
+  const production = next.productions.find(item => item.id === composition.productionId);
+  const desiredActorIds = composition.nodes
+    .filter(node => node.ref.kind === 'actor')
+    .map(node => node.ref.id);
+  for (const actorId of desiredActorIds) {
+    const added = addActorToProduction(next, production.id, actorId, 'composer');
+    if (!added.denied) next = added.runtime;
+  }
+  const compiled = compileActorPlan(next, production.id);
+  if (compiled.denied) return compiled;
+  next = compiled.runtime;
+  composition = next.compositions.find(item => item.id === compositionId);
+  composition.linkedActorPlan = {
+    id: compiled.plan.id,
+    revision: compiled.plan.revision
   };
-
-  for (const node of composition.nodes.filter(item => item.ref.kind === 'actor')) {
-    const added = addActorToProduction(working, production.id, node.ref.id, 'composition');
-    working = added.runtime;
-  }
-  const editableProduction = working.productions.find(item => item.id === production.id);
-  for (const node of composition.nodes.filter(item => item.ref.kind === 'gummy')) {
-    if (!editableProduction.gummyIds.includes(node.ref.id)) editableProduction.gummyIds.push(node.ref.id);
-  }
-  for (const configuration of working.configurations.filter(item => (
-    item.productionId === production.id
-    && composition.nodes.some(node => node.ref.kind === 'actor' && node.ref.id === item.actorId)
-  ))) {
-    configuration.compositionProposal = {
-      compositionId: composition.id,
-      compositionRevision: composition.revision,
-      appliedByActorId: composition.ownerActorId,
-      startsExecution: false
-    };
-    configuration.revision = String(Number(configuration.revision || 0) + 1);
-    configuration.updatedAt = now();
-  }
-
-  const compiled = compileActorPlan(working, production.id);
-  working = compiled.runtime;
-  const plan = compiled.plan;
-  const liveComposition = working.compositions.find(item => item.id === composition.id);
-  const compositionNodes = new Map(liveComposition.nodes.map(node => [node.id, node]));
-  for (const edge of liveComposition.edges) {
-    const fromRef = compositionNodes.get(edge.fromNodeId)?.ref;
-    const toRef = compositionNodes.get(edge.toNodeId)?.ref;
-    if (fromRef?.kind !== 'actor' || toRef?.kind !== 'actor') continue;
-    const fromPlanNode = plan.nodes.find(item => item.actorId === fromRef.id);
-    const toPlanNode = plan.nodes.find(item => item.actorId === toRef.id);
-    if (!fromPlanNode || !toPlanNode) continue;
-    const duplicate = plan.edges.some(item => (
-      item.fromNodeId === fromPlanNode.id
-      && item.toNodeId === toPlanNode.id
-      && item.edgeType === edge.edgeType
-    ));
-    if (duplicate) continue;
-    plan.edges.push({
-      schema: 'gummy.actor-plan-edge/v0',
-      id: `plan-edge:${safeId(production.id)}:${safeId(edge.id)}`,
-      fromNodeId: fromPlanNode.id,
-      toNodeId: toPlanNode.id,
-      edgeType: edge.edgeType,
-      dataClasses: clone(edge.dataClasses),
-      optional: edge.optional,
-      approvalRequired: edge.approvalRule !== 'No additional approval',
-      sourceCompositionId: liveComposition.id,
-      sourceCompositionEdgeId: edge.id
-    });
-  }
-  liveComposition.linkedActorPlan = { id: plan.id, revision: plan.revision };
-  liveComposition.appliedAt = now();
-  liveComposition.updatedAt = liveComposition.appliedAt;
-  liveComposition.readiness = {
-    ...projectCompositionReadiness(liveComposition, working),
-    state: 'applied'
-  };
-  working.receipts.push(makeRuntimeReceipt({
-    action: 'production-composition.applied-as-proposal',
+  composition.appliedAt = now();
+  composition.readiness = projectCompositionReadiness(composition, next);
+  const receipt = makeRuntimeReceipt({
+    action: 'production-composition.applied',
     productionId: production.id,
-    actorId: liveComposition.ownerActorId,
+    actorId: composition.ownerActorId,
     outcome: 'completed',
-    summary: `Applied ${liveComposition.id}@${liveComposition.revision} to typed Production configuration and Actor Plan ${plan.id}@${plan.revision}. No execution records or accepted results were created.`,
-    resources: [liveComposition.id, plan.id]
-  }));
-
-  const after = {
-    runs: working.productionRuns.length,
-    workOrders: working.workOrders.length,
-    taskLeases: working.taskLeases.length,
-    grants: working.grants.length,
-    returns: working.returns.length,
-    accepted: working.gummies.filter(item => item.status === 'accepted').length,
-    executionTraces: (working.executionTraces || []).length,
-    distributionPlans: (working.distributionPlans || []).length,
-    masterControlDecisions: (working.masterControlDecisions || []).length
-  };
+    summary: `Applied ${composition.title} as a proposal to ${production.title}. The editable Actor Plan changed; no Production Run started.`,
+    resources: [composition.id, composition.revision, compiled.plan.id, compiled.plan.revision]
+  });
+  next.receipts.push(receipt);
+  const afterInventory = executionInventory(next);
   return {
-    runtime: working,
-    composition: liveComposition,
-    plan,
-    executed: false,
-    executionInventoryUnchanged: JSON.stringify(before) === JSON.stringify(after),
-    before,
-    after
+    runtime: next,
+    composition,
+    plan: compiled.plan,
+    receipt,
+    executionInventoryUnchanged: JSON.stringify(beforeInventory) === JSON.stringify(afterInventory)
+  };
+}
+
+export function ensureProductionComposition(runtime, productionId) {
+  const existing = (runtime.compositions || []).find(item => item.productionId === productionId);
+  if (existing) return { runtime: clone(runtime), composition: clone(existing), created: false };
+  return createProductionComposition(runtime, { productionId, title: `${runtime.productions.find(item => item.id === productionId)?.title || 'Production'} composition` });
+}
+
+function executionInventory(runtime) {
+  return {
+    runs: runtime.productionRuns.length,
+    workOrders: runtime.workOrders.length,
+    leases: runtime.taskLeases.length,
+    grants: runtime.grants.length,
+    returns: runtime.returns.length,
+    acceptedResults: runtime.gummies.filter(item => item.acceptance).length,
+    releasedDistributions: (runtime.distributionPlans || []).filter(item => item.status === 'released' || item.status === 'published').length
   };
 }
