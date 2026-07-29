@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gummy.runtime-binding/v1",
+  "title": "Gummy Runtime Binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bindingId",
+    "actorId",
+    "agentId",
+    "productionId",
+    "workOrderId",
+    "authorityLeaseId",
+    "moldId",
+    "grantId",
+    "returnAnchor",
+    "acceptancePolicy",
+    "contributionLedgerId",
+    "executionRoute",
+    "provider",
+    "stateHandle",
+    "budget",
+    "canonicalProjectCopy",
+    "status",
+    "createdAt"
+  ],
+  "properties": {
+    "bindingId": { "type": "string", "minLength": 1 },
+    "actorId": { "type": "string", "minLength": 1 },
+    "agentId": { "type": "string", "minLength": 1 },
+    "productionId": { "type": "string", "minLength": 1 },
+    "workOrderId": { "type": "string", "minLength": 1 },
+    "authorityLeaseId": { "type": "string", "minLength": 1 },
+    "moldId": { "type": "string", "minLength": 1 },
+    "grantId": { "type": "string", "minLength": 1 },
+    "returnAnchor": { "type": "string", "minLength": 1 },
+    "acceptancePolicy": { "type": "string", "minLength": 1 },
+    "contributionLedgerId": { "type": "string", "minLength": 1 },
+    "executionRoute": {
+      "enum": ["native-agent", "cloud-agent", "mcp-task", "human-only"]
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "profileId"],
+      "properties": {
+        "kind": {
+          "enum": ["deterministic", "native", "mcp", "managed-runtime"]
+        },
+        "profileId": { "type": "string", "minLength": 1 },
+        "externalResourceId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "stateHandle": { "type": "string", "minLength": 1 },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorizationId",
+        "currency",
+        "authorizedMicros",
+        "consumedMicros",
+        "hardStopMicros"
+      ],
+      "properties": {
+        "authorizationId": { "type": "string", "minLength": 1 },
+        "currency": { "const": "USD" },
+        "authorizedMicros": { "type": "integer", "minimum": 0 },
+        "consumedMicros": { "type": "integer", "minimum": 0 },
+        "hardStopMicros": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "canonicalProjectCopy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["location", "revisionId", "persistedAt"],
+      "properties": {
+        "location": { "const": "gummy-box" },
+        "revisionId": { "type": "string", "minLength": 1 },
+        "persistedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "status": {
+      "enum": [
+        "bound",
+        "dispatched",
+        "active",
+        "input_required",
+        "checkpointed",
+        "budget_stopped",
+        "completed",
+        "failed",
+        "cancelled",
+        "return_pending",
+        "returned"
+      ]
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

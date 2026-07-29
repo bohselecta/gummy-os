@@ -1,0 +1,41 @@
+{
+  "fixtureId": "managed-runtime-recovery-v1",
+  "adapter": "deterministic-managed-runtime",
+  "managedRuntimeBinding": {
+    "runtimeBindingId": "runtime:listening-room:001",
+    "providerProfile": {
+      "provider": "google",
+      "service": "vertex-ai-agent-engine",
+      "project": "deterministic-only",
+      "location": "us-central1",
+      "sdk": "unselected",
+      "liveEnabled": false
+    },
+    "resourceHandle": "providers/google/resources/deterministic-001",
+    "continuationHandle": "checkpoint:listening-room:004",
+    "recovery": {
+      "checkpointLocation": "gummy-box",
+      "providerIndependent": true
+    },
+    "guarantees": {
+      "credentialsVerified": false,
+      "costVerified": false,
+      "privacyVerified": false,
+      "recoveryVerified": false
+    }
+  },
+  "steps": [
+    { "kind": "dispatch" },
+    { "kind": "provider-telemetry", "status": "working" },
+    { "kind": "checkpoint", "digest": "sha256:gummy-box-004" },
+    { "kind": "provider-fault", "fault": "provider-unavailable" },
+    { "kind": "restore-from-gummy-checkpoint" },
+    { "kind": "provider-telemetry", "status": "completed" }
+  ],
+  "expected": {
+    "checkpointLocation": "gummy-box",
+    "providerStateCanonical": false,
+    "returnRecorded": false,
+    "receiptRecorded": false
+  }
+}

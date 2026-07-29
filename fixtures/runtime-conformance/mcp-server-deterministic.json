@@ -1,0 +1,22 @@
+{
+  "serverId": "server:deterministic-render",
+  "displayName": "Deterministic Render Conformance Server",
+  "protocolVersions": ["2026-07-28"],
+  "transport": "stdio",
+  "capabilities": [
+    "tools/call",
+    "io.modelcontextprotocol/tasks",
+    "tasks/get",
+    "tasks/update",
+    "tasks/cancel"
+  ],
+  "authorization": {
+    "mode": "none",
+    "issuerValidated": false
+  },
+  "trust": {
+    "profile": "deterministic",
+    "taskIdsScoped": true,
+    "liveVerified": false
+  }
+}

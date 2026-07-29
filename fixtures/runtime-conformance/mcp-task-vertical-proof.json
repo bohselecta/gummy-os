@@ -1,0 +1,101 @@
+{
+  "fixtureId": "mcp-task-vertical-proof-v1",
+  "adapter": "deterministic-mcp",
+  "binding": {
+    "bindingId": "runtime:ranch-day:001",
+    "actorId": "actor:producer",
+    "agentId": "agent:render-specialist",
+    "productionId": "production:ranch-day",
+    "workOrderId": "work-order:ranch-day:render",
+    "authorityLeaseId": "lease:ranch-day:render",
+    "moldId": "mold:video-render",
+    "grantId": "grant:ranch-day:render",
+    "returnAnchor": "return:ranch-day:render",
+    "acceptancePolicy": "human-explicit",
+    "contributionLedgerId": "ledger:ranch-day",
+    "executionRoute": "mcp-task",
+    "provider": {
+      "kind": "mcp",
+      "profileId": "deterministic-mcp-2026-07-28",
+      "externalResourceId": "task:7f41b708f2494f45"
+    },
+    "stateHandle": "production:ranch-day",
+    "budget": {
+      "authorizationId": "pool-auth:ranch-day:001",
+      "currency": "USD",
+      "authorizedMicros": 600000,
+      "consumedMicros": 0,
+      "hardStopMicros": 400000
+    },
+    "canonicalProjectCopy": {
+      "location": "gummy-box",
+      "revisionId": "revision:ranch-day:12",
+      "persistedAt": "2026-07-28T20:00:00.000Z"
+    },
+    "status": "bound",
+    "createdAt": "2026-07-28T20:00:00.000Z"
+  },
+  "mcpTaskBinding": {
+    "actorId": "actor:producer",
+    "agentId": "agent:render-specialist",
+    "productionId": "production:ranch-day",
+    "workOrderId": "work-order:ranch-day:render",
+    "authorityLeaseId": "lease:ranch-day:render",
+    "moldId": "mold:video-render",
+    "grantId": "grant:ranch-day:render",
+    "returnAnchor": "return:ranch-day:render",
+    "acceptancePolicy": "human-explicit",
+    "contributionLedgerId": "ledger:ranch-day",
+    "receiptId": "receipt:ranch-day:render",
+    "transport": {
+      "type": "mcp-task",
+      "taskId": "7f41b708f2494f45",
+      "serverId": "server:deterministic-render",
+      "protocolVersion": "2026-07-28",
+      "extensionId": "io.modelcontextprotocol/tasks",
+      "capabilitySet": ["tools/call", "tasks/get", "tasks/update", "tasks/cancel"]
+    }
+  },
+  "steps": [
+    { "kind": "restore-social-instance" },
+    { "kind": "shared-vision" },
+    { "kind": "production-agreement" },
+    { "kind": "production-pool" },
+    { "kind": "production-formation" },
+    { "kind": "work-order" },
+    { "kind": "master-control-decision", "decision": "approve-dispatch" },
+    { "kind": "authority-chain" },
+    { "kind": "runtime-binding" },
+    { "kind": "dispatch" },
+    { "kind": "provider-telemetry", "status": "working" },
+    { "kind": "provider-telemetry", "status": "input_required" },
+    { "kind": "master-control-decision", "decision": "approve-input" },
+    { "kind": "budget-charge", "amountMicros": 350000 },
+    { "kind": "budget-charge", "amountMicros": 100000, "expectDenied": true },
+    { "kind": "checkpoint", "digest": "sha256:checkpoint-001" },
+    {
+      "kind": "master-control-decision",
+      "decision": "approve-continuation",
+      "hardStopMicros": 500000
+    },
+    { "kind": "continue" },
+    { "kind": "budget-charge", "amountMicros": 100000 },
+    { "kind": "provider-telemetry", "status": "completed" },
+    { "kind": "gummy-return" },
+    { "kind": "gummy-receipt" },
+    { "kind": "human-acceptance" },
+    { "kind": "distribution-plan" },
+    { "kind": "master-control-decision", "decision": "approve-release" },
+    { "kind": "explicit-release" },
+    { "kind": "reload" },
+    { "kind": "restore-complete-state" }
+  ],
+  "expected": {
+    "consumedMicros": 450000,
+    "returnRecorded": true,
+    "receiptRecorded": true,
+    "accepted": true,
+    "released": true,
+    "restored": true
+  }
+}

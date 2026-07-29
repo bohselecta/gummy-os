@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gummy.mcp-app-surface/v1",
+  "title": "Gummy MCP App Surface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "surfaceId",
+    "serverId",
+    "actorId",
+    "productionId",
+    "sandboxed",
+    "consentRoute",
+    "privileges"
+  ],
+  "properties": {
+    "surfaceId": { "type": "string", "minLength": 1 },
+    "serverId": { "type": "string", "minLength": 1 },
+    "actorId": { "type": "string", "minLength": 1 },
+    "productionId": { "type": "string", "minLength": 1 },
+    "sandboxed": { "const": true },
+    "consentRoute": { "const": "master-control" },
+    "privileges": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["render", "submit-input", "request-tool", "request-resource"]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gummy.managed-runtime-binding/v1",
+  "title": "Gummy Managed Runtime Binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtimeBindingId",
+    "providerProfile",
+    "resourceHandle",
+    "continuationHandle",
+    "recovery",
+    "guarantees"
+  ],
+  "properties": {
+    "runtimeBindingId": { "type": "string", "minLength": 1 },
+    "providerProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "service", "project", "location", "liveEnabled"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "service": { "type": "string", "minLength": 1 },
+        "project": { "type": "string", "minLength": 1 },
+        "location": { "type": "string", "minLength": 1 },
+        "sdk": { "type": "string", "minLength": 1 },
+        "liveEnabled": { "type": "boolean" }
+      }
+    },
+    "resourceHandle": { "type": "string", "minLength": 1 },
+    "continuationHandle": { "type": "string", "minLength": 1 },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpointLocation", "providerIndependent"],
+      "properties": {
+        "checkpointLocation": { "const": "gummy-box" },
+        "providerIndependent": { "const": true }
+      }
+    },
+    "guarantees": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credentialsVerified",
+        "costVerified",
+        "privacyVerified",
+        "recoveryVerified"
+      ],
+      "properties": {
+        "credentialsVerified": { "type": "boolean" },
+        "costVerified": { "type": "boolean" },
+        "privacyVerified": { "type": "boolean" },
+        "recoveryVerified": { "type": "boolean" }
+      }
+    }
+  }
+}
