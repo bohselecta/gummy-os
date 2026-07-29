@@ -1,12 +1,34 @@
 export * from './production-composition-market-base.js';
 
 import {
+  addCompositionReference as addCompositionReferenceBase,
+  addRecommendedCompositionElement as addRecommendedCompositionElementBase,
   applyCompositionStarter as applyCompositionStarterBase,
   updateProductionCompositionBrief
 } from './production-composition-market-base.js';
-import { makeRuntimeReceipt } from './production-runtime.js';
+import {
+  applyDragIntent,
+  createDragIntent,
+  makeRuntimeReceipt
+} from './production-runtime.js';
 
 const clone = value => structuredClone(value);
+
+function composition(runtime, compositionId) {
+  return (runtime.compositions || []).find(item => item.id === compositionId) || null;
+}
+
+function referenceLane(reference) {
+  return reference.lane || ({
+    gummy: 'inputs',
+    production: 'inputs',
+    'shared-vision': 'inputs',
+    actor: 'people-tools',
+    place: 'people-tools',
+    'review-gate': 'review-approval',
+    destination: 'destinations'
+  }[reference.kind] || 'steps-connections');
+}
 
 /**
  * Apply an optional starting pattern without letting the pattern replace the Human's existing brief.
@@ -39,14 +61,14 @@ export function applyCompositionStarter(runtime, options) {
   }
 
   const next = clone(result.runtime);
-  const composition = next.compositions.find(item => item.id === result.composition.id);
+  const current = composition(next, result.composition.id);
   const receipt = makeRuntimeReceipt({
     action: 'production-composition.starter-applied',
-    productionId: composition.productionId || undefined,
-    actorId: composition.ownerActorId,
+    productionId: current.productionId || undefined,
+    actorId: current.ownerActorId,
     outcome: 'completed',
     summary: `Applied optional Composer pattern ${options.starterId}. The Human brief was preserved; no Run, Work Order, Lease, Grant, provider call, charge, acceptance, or publication was created.`,
-    resources: [composition.id, composition.revision, `starter:${options.starterId}`],
+    resources: [current.id, current.revision, `starter:${options.starterId}`],
     runtimeClass: 'browser',
     locality: 'local',
     cost: { currency: 'USD', amount: 0 }
@@ -55,7 +77,68 @@ export function applyCompositionStarter(runtime, options) {
   return {
     ...result,
     runtime: next,
-    composition: next.compositions.find(item => item.id === composition.id),
+    composition: composition(next, current.id),
+    receipt,
+    executed: false
+  };
+}
+
+/**
+ * Move a canonical object from another Gummy surface into Composer through the same typed,
+ * Human-approved, non-executing intent law used by pointer/keyboard/touch canvas proposals.
+ */
+export function addCompositionReferenceWithIntent(runtime, compositionId, reference, {
+  inputMode = 'keyboard'
+} = {}) {
+  const current = composition(runtime, compositionId);
+  if (!current) return { runtime, denied: true, reason: 'composition-not-found' };
+  const lane = referenceLane(reference);
+  const proposed = createDragIntent(runtime, {
+    productionId: current.productionId || undefined,
+    sourceKind: reference.kind,
+    sourceId: reference.id,
+    targetKind: 'lane',
+    targetId: lane,
+    action: 'composition-add',
+    dataClasses: ['canonical-reference', reference.kind, lane],
+    approvalRequired: true,
+    inputMode
+  });
+  const accepted = applyDragIntent(proposed.runtime, proposed.intent.id);
+  if (accepted.denied) return accepted;
+  const added = addCompositionReferenceBase(accepted.runtime, compositionId, {
+    ...reference,
+    lane
+  });
+  if (added.denied) return added;
+  return {
+    ...added,
+    intent: accepted.intent,
+    executed: false
+  };
+}
+
+export function addRecommendedCompositionElement(runtime, compositionId, recommendationId) {
+  const result = addRecommendedCompositionElementBase(runtime, compositionId, recommendationId);
+  if (result.denied) return result;
+  const next = clone(result.runtime);
+  const current = composition(next, compositionId);
+  const receipt = makeRuntimeReceipt({
+    action: 'production-composition.recommendation-added',
+    productionId: current.productionId || undefined,
+    actorId: current.ownerActorId,
+    outcome: 'completed',
+    summary: `The Human added optional Composer recommendation ${recommendationId}. No work executed and no authority was granted.`,
+    resources: [current.id, current.revision, `recommendation:${recommendationId}`],
+    runtimeClass: 'browser',
+    locality: 'local',
+    cost: { currency: 'USD', amount: 0 }
+  });
+  next.receipts.push(receipt);
+  return {
+    ...result,
+    runtime: next,
+    composition: composition(next, compositionId),
     receipt,
     executed: false
   };
