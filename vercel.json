@@ -40,6 +40,18 @@
       ]
     },
     {
+      "source": "/changelog",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/changelog.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
+      ]
+    },
+    {
       "source": "/robots.txt",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
@@ -47,6 +59,24 @@
     },
     {
       "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/software-application.jsonld",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/public.css",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
@@ -61,6 +91,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/[...path].mjs" }
+    { "source": "/api/(.*)", "destination": "/api/[...path].mjs" },
+    { "source": "/changelog", "destination": "/changelog.html" }
   ]
 }
