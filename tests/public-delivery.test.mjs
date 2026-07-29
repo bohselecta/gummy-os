@@ -8,8 +8,9 @@ const publicTitle = 'Gummy OS — Your creative computer, with you in control.';
 const publicDescription = 'Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production.';
 
 test('public delivery exposes real crawler files and no universal soft-404 rewrite', async () => {
-  const [vercelSource, robots, sitemap] = await Promise.all([
+  const [vercelSource, viteSource, robots, sitemap] = await Promise.all([
     read('vercel.json'),
+    read('vite.config.js'),
     read('public/robots.txt'),
     read('public/sitemap.xml')
   ]);
@@ -21,6 +22,8 @@ test('public delivery exposes real crawler files and no universal soft-404 rewri
     false,
     'unknown paths must not be rewritten to the application shell'
   );
+  assert.match(viteSource, /navigateFallbackAllowlist: \[\/\^\\\/\$\/\]/);
+  assert.match(viteSource, /navigateFallbackDenylist: \[\/\^\\\/api/);
   assert.match(robots, /^User-agent: \*$/m);
   assert.match(robots, /^Disallow: \/api\/$/m);
   assert.match(robots, /^Sitemap: https:\/\/www\.mygum\.my\/sitemap\.xml$/m);
