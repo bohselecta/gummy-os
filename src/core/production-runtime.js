@@ -373,6 +373,14 @@ export function createInitialProductionRuntime() {
     grants: [],
     returns: [],
     receipts: [],
+    runtimeBindings: [],
+    managedRuntimeBindings: [],
+    executionTraces: [],
+    masterControlDecisions: [],
+    runtimeAcceptanceDecisions: [],
+    productionPools: [],
+    contributionLedgers: [],
+    distributionPlans: [],
     gummies: [
       {
         schema: 'gummy.gummy/v0',
