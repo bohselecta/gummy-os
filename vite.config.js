@@ -53,7 +53,10 @@ export default defineConfig({
       },
       workbox: {
         sourcemap: false,
-        navigateFallbackDenylist: [/^\/api\//],
+        // Gummy OS currently owns only the root navigation. Unknown URLs must remain real 404s,
+        // including when an installed service worker controls the browser.
+        navigateFallbackAllowlist: [/^\/$/],
+        navigateFallbackDenylist: [/^\/api\//, /^\/robots\.txt$/, /^\/sitemap\.xml$/],
         runtimeCaching: [
           { urlPattern: ({ url }) => url.pathname.startsWith('/api/'), handler: 'NetworkOnly' },
           { urlPattern: ({ url }) => url.pathname.startsWith('/schemas/'), handler: 'CacheFirst', options: { cacheName: 'gummy-schemas-v1' } },
