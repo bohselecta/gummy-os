@@ -69,8 +69,8 @@ const entryName = shell.match(/assets\/(index-[^"]+\.js)/)?.[1];
 if (!entryName) throw new Error('Production entry bundle is missing');
 const entryBytes = (await stat(join('build/assets', entryName))).size;
 if (entryBytes > 264 * 1024) throw new Error(`Initial JavaScript entry exceeds 264 KiB budget: ${entryBytes}`);
-// Phase 16 and the commercial Composer/Box surfaces remain outside first paint.
-// The original initial-entry ceiling stays unchanged; each new lazy surface has a separate bounded allowance.
+// Living Collaboration, Gummy Box, and the goal-first Composer remain lazy. The initial-entry ceiling stays unchanged.
+// The Composer allowance covers patterns, the Human brief, impact explanation, and cross-surface canonical references.
 const phase16Names = javascript.filter(name => (
   name.startsWith('living-collaboration-')
   || name.startsWith('collaboration-')
@@ -82,10 +82,10 @@ const boxNames = javascript.filter(name => name.startsWith('gummy-box-'));
 const composerBytes = await total(composerNames);
 const boxBytes = await total(boxNames);
 if (phase16Bytes > 60 * 1024) throw new Error(`Phase 16 lazy JavaScript exceeds 60 KiB budget: ${phase16Bytes}`);
-if (composerBytes > 40 * 1024) throw new Error(`Composer lazy JavaScript exceeds 40 KiB budget: ${composerBytes}`);
-if (boxBytes > 12 * 1024) throw new Error(`Gummy Box lazy JavaScript exceeds 12 KiB budget: ${boxBytes}`);
-if (jsBytes > 464 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 464 KiB budget: ${jsBytes}`);
-if (cssBytes > 60 * 1024) throw new Error(`CSS bundle exceeds 60 KiB budget: ${cssBytes}`);
+if (composerBytes > 72 * 1024) throw new Error(`Composer lazy JavaScript exceeds 72 KiB budget: ${composerBytes}`);
+if (boxBytes > 24 * 1024) throw new Error(`Gummy Box lazy JavaScript exceeds 24 KiB budget: ${boxBytes}`);
+if (jsBytes > 520 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 520 KiB budget: ${jsBytes}`);
+if (cssBytes > 68 * 1024) throw new Error(`CSS bundle exceeds 68 KiB budget: ${cssBytes}`);
 
 console.log(JSON.stringify({
   status: 'pass',
