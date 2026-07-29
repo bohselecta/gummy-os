@@ -26,6 +26,20 @@
     "revision": { "type": "string", "minLength": 1 },
     "ownerActorId": { "type": "string", "pattern": "^actor:" },
     "productionId": { "type": ["string", "null"], "pattern": "^production:" },
+    "brief": {
+      "type": "object",
+      "description": "Human-readable outcome framing. This is intent context, not execution authority.",
+      "required": ["goal", "audience", "successCriteria", "constraints", "starterId", "updatedAt"],
+      "properties": {
+        "goal": { "type": "string" },
+        "audience": { "type": "string" },
+        "successCriteria": { "type": "string" },
+        "constraints": { "type": "string" },
+        "starterId": { "type": ["string", "null"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
     "nodes": {
       "type": "array",
       "items": {
