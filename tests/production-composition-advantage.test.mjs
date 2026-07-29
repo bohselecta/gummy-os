@@ -5,6 +5,7 @@ import {
   addCompositionReference,
   analyzeProductionComposition,
   applyCompositionStarter,
+  createProductionComposition,
   updateProductionCompositionBrief
 } from '../src/core/production-composition.js';
 
@@ -56,19 +57,28 @@ test('starter patterns create editable, non-executing compositions with Human re
   assert.equal(result.runtime.productionRuns.length, 0);
   assert.equal(result.runtime.workOrders.length, 0);
   assert.equal(result.runtime.grants.length, 0);
+  assert.equal(result.receipt.action, 'production-composition.starter-applied');
+  assert.equal(result.receipt.cost.amount, 0);
 });
 
-test('Composer brief is durable canonical state and affects guidance without granting authority', () => {
-  const started = applyCompositionStarter(runtime(), { starterId: 'research-brief' });
-  const updated = updateProductionCompositionBrief(started.runtime, started.composition.id, {
+test('a starter pattern preserves an existing Human brief and records the proposal change', () => {
+  const created = createProductionComposition(runtime(), { title: 'Human-defined work' });
+  const briefed = updateProductionCompositionBrief(created.runtime, created.composition.id, {
     goal: 'Prepare a cited launch brief',
     audience: 'Founding collaborators',
     successCriteria: 'Every claim resolves to an approved source',
     constraints: 'No publication and no private source leakage'
   });
-  assert.equal(updated.composition.brief.goal, 'Prepare a cited launch brief');
-  assert.equal(updated.composition.brief.constraints.includes('No publication'), true);
-  const analysis = analyzeProductionComposition(updated.composition, updated.runtime);
+  const patterned = applyCompositionStarter(briefed.runtime, {
+    compositionId: briefed.composition.id,
+    starterId: 'research-brief'
+  });
+  assert.equal(patterned.composition.brief.goal, 'Prepare a cited launch brief');
+  assert.equal(patterned.composition.brief.audience, 'Founding collaborators');
+  assert.equal(patterned.composition.brief.constraints.includes('No publication'), true);
+  assert.equal(patterned.composition.brief.starterId, 'research-brief');
+  assert.equal(patterned.receipt.summary.includes('Human brief was preserved'), true);
+  const analysis = analyzeProductionComposition(patterned.composition, patterned.runtime);
   assert.equal(analysis.authority, 'proposal-only');
   assert.equal(analysis.executionState, 'not-started');
   assert.equal(analysis.nextMoves.some(item => item.id === 'define-goal'), false);
