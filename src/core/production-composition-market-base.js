@@ -8,6 +8,7 @@ import {
 } from './production-composition-base.js';
 
 const clone = value => structuredClone(value);
+const nonExecuting = result => ({ ...result, executed: false });
 
 export const COMPOSITION_STARTERS = Object.freeze([
   Object.freeze({
@@ -177,7 +178,7 @@ function inferredEdgeType(from, to) {
 function addSpec(runtime, compositionId, spec) {
   const current = composition(runtime, compositionId);
   const existing = current?.nodes.find(node => node.ref.kind === spec.kind && node.ref.id === spec.id);
-  if (existing) return { runtime, node: existing };
+  if (existing) return nonExecuting({ runtime, node: existing });
   const result = addCompositionNode(runtime, compositionId, {
     ref: { kind: spec.kind, id: spec.id, revision: spec.revision, hash: spec.hash },
     label: spec.label,
@@ -187,12 +188,12 @@ function addSpec(runtime, compositionId, spec) {
     optional: false
   });
   const node = result.composition.nodes.find(item => item.ref.kind === spec.kind && item.ref.id === spec.id);
-  return { runtime: result.runtime, node };
+  return nonExecuting({ runtime: result.runtime, node });
 }
 
 function setBrief(runtime, compositionId, brief) {
   const current = composition(runtime, compositionId);
-  if (!current) return { runtime, denied: true, reason: 'composition-not-found' };
+  if (!current) return nonExecuting({ runtime, denied: true, reason: 'composition-not-found' });
   const snapshot = clone(current);
   snapshot.brief = {
     goal: String(brief.goal || '').trim(),
@@ -206,7 +207,7 @@ function setBrief(runtime, compositionId, brief) {
 }
 
 export function updateProductionCompositionBrief(runtime, compositionId, brief) {
-  return setBrief(runtime, compositionId, brief);
+  return nonExecuting(setBrief(runtime, compositionId, brief));
 }
 
 export function addCompositionReference(runtime, compositionId, reference) {
@@ -219,7 +220,7 @@ export function addCompositionReference(runtime, compositionId, reference) {
     'review-gate': 'review-approval',
     destination: 'destinations'
   }[reference.kind] || 'steps-connections');
-  return addSpec(runtime, compositionId, {
+  return nonExecuting(addSpec(runtime, compositionId, {
     kind: reference.kind,
     id: reference.id,
     revision: reference.revision || null,
@@ -228,7 +229,7 @@ export function addCompositionReference(runtime, compositionId, reference) {
     description: reference.description || 'A linked canonical Gummy object.',
     lane,
     availability: reference.availability || { state: 'available', reason: 'Available in this browser.' }
-  });
+  }));
 }
 
 export function applyCompositionStarter(runtime, {
@@ -237,7 +238,7 @@ export function applyCompositionStarter(runtime, {
   ownerActorId = 'actor:hayden'
 }) {
   const starter = COMPOSITION_STARTERS.find(item => item.id === starterId);
-  if (!starter) return { runtime, denied: true, reason: 'starter-not-found' };
+  if (!starter) return nonExecuting({ runtime, denied: true, reason: 'starter-not-found' });
   let working = clone(runtime);
   let current = compositionId ? composition(working, compositionId) : null;
   if (!current) {
@@ -257,7 +258,7 @@ export function applyCompositionStarter(runtime, {
     constraints: 'Nothing executes, publishes, spends, or grants authority from the Composer.',
     starterId
   });
-  if (briefResult.denied) return briefResult;
+  if (briefResult.denied) return nonExecuting(briefResult);
   working = briefResult.runtime;
 
   const orderedNodes = [];
@@ -328,6 +329,6 @@ export function addRecommendedCompositionElement(runtime, compositionId, recomme
     'add-review': reviewSpec(),
     'add-destination': destinationSpec('gummy-box', 'Keep in Gummy Box', 'Keep the accepted result private with evidence.')
   }[recommendationId];
-  if (!recommended) return { runtime, denied: true, reason: 'recommendation-not-actionable' };
-  return addSpec(runtime, compositionId, recommended);
+  if (!recommended) return nonExecuting({ runtime, denied: true, reason: 'recommendation-not-actionable' });
+  return nonExecuting(addSpec(runtime, compositionId, recommended));
 }

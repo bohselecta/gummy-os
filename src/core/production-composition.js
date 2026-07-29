@@ -19,6 +19,7 @@ import {
 } from './production-runtime.js';
 
 const clone = value => structuredClone(value);
+const nonExecuting = result => ({ ...result, executed: false });
 
 export const COMPOSITION_STARTERS = Object.freeze(BASE_COMPOSITION_STARTERS.map(starter => Object.freeze(
   starter.id === 'research-brief'
@@ -125,7 +126,7 @@ export function applyCompositionStarter(runtime, options) {
     : null;
   const humanBrief = before?.brief ? clone(before.brief) : null;
   let result = applyCompositionStarterBase(runtime, options);
-  if (result.denied) return result;
+  if (result.denied) return nonExecuting(result);
 
   if (humanBrief) {
     const starterBrief = result.composition.brief || {};
@@ -185,7 +186,7 @@ export function addCompositionReferenceWithIntent(runtime, compositionId, refere
   inputMode = reference.inputMode || 'keyboard'
 } = {}) {
   const current = composition(runtime, compositionId);
-  if (!current) return { runtime, denied: true, reason: 'composition-not-found' };
+  if (!current) return nonExecuting({ runtime, denied: true, reason: 'composition-not-found' });
   const lane = referenceLane(reference);
   const proposed = createDragIntent(runtime, {
     productionId: current.productionId || undefined,
@@ -199,12 +200,12 @@ export function addCompositionReferenceWithIntent(runtime, compositionId, refere
     inputMode
   });
   const accepted = applyDragIntent(proposed.runtime, proposed.intent.id);
-  if (accepted.denied) return accepted;
+  if (accepted.denied) return nonExecuting(accepted);
   const added = addCompositionReferenceBase(accepted.runtime, compositionId, {
     ...reference,
     lane
   });
-  if (added.denied) return added;
+  if (added.denied) return nonExecuting(added);
   return {
     ...added,
     intent: accepted.intent,
@@ -227,7 +228,7 @@ export function addRecommendedCompositionElement(runtime, compositionId, recomme
     const current = composition(runtime, compositionId);
     const human = (runtime.actors || []).find(actor => actor.id === current?.ownerActorId)
       || (runtime.actors || []).find(actor => actor.kind === 'person');
-    if (!human) return { runtime, denied: true, reason: 'human-actor-not-found' };
+    if (!human) return nonExecuting({ runtime, denied: true, reason: 'human-actor-not-found' });
     return addCompositionReferenceWithIntent(runtime, compositionId, {
       kind: 'actor',
       id: human.id,
@@ -238,7 +239,7 @@ export function addRecommendedCompositionElement(runtime, compositionId, recomme
     });
   }
   const result = addRecommendedCompositionElementBase(runtime, compositionId, recommendationId);
-  if (result.denied) return result;
+  if (result.denied) return nonExecuting(result);
   const next = clone(result.runtime);
   const current = composition(next, compositionId);
   const receipt = makeRuntimeReceipt({

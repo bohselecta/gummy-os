@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { evidencePath } from './evidence-path.mjs';
 
+test.use({ reducedMotion: 'reduce' });
+
 async function onboard(page) {
   await page.goto('/');
-  await page.addStyleTag({ content: '*, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }' });
   await page.getByTestId('mode-night').click();
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
   await page.getByLabel('What should Gummy call you?').fill('Evidence User');

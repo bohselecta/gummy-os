@@ -19,11 +19,13 @@ test('Gummy Box launchpad sends a canonical source into Composer without executi
   await expect(box.getByText('Continue, arrange, or bring something in')).toBeVisible();
 
   const source = box.locator('[data-gummy-id="gummy:project-brief"]');
-  await source.getByRole('button', { name: 'Add in Composer' }).click();
+  await source.getByRole('button', { name: 'Add Project Brief.md in Composer' }).click();
   const composer = page.getByTestId('composer-surface');
   await expect(composer).toBeVisible();
-  await expect(composer.locator('[data-node-id]').filter({ hasText: 'Project brief' })).toHaveCount(1);
-  await expect(composer).toContainText('Nothing runs here');
+  const linkedSource = composer.locator('[data-ref-kind="gummy"][data-ref-id="gummy:project-brief"]');
+  await expect(linkedSource).toHaveCount(1);
+  await expect(linkedSource).toContainText('Project Brief.md');
+  await expect(composer).toContainText(/nothing runs here/i);
 
   const state = await page.evaluate(async () => {
     const request = indexedDB.open('gummy-os');

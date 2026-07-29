@@ -513,7 +513,11 @@ export function createComposerApp({
     const card = el('article', {
       class: `composer-node availability-${node.availability.state} ${connectionSourceId === node.id ? 'is-connecting' : ''}`,
       draggable: 'true',
-      dataset: { nodeId: node.id },
+      dataset: {
+        nodeId: node.id,
+        refKind: node.ref.kind,
+        refId: node.ref.id
+      },
       ondragstart: event => {
         event.dataTransfer.setData('application/x-gummy-composition-node', node.id);
         event.dataTransfer.effectAllowed = 'move';
@@ -689,7 +693,14 @@ export function createComposerApp({
         production ? button('Open the full Production', 'secondary-button', () => openProduction(production.id)) : null
       ]),
       composition.linkedActorPlan
-        ? el('details', { class: 'composer-system-details' }, [
+        ? el('details', {
+            class: 'composer-system-details',
+            dataset: {
+              testid: 'composer-applied-evidence',
+              actorPlanId: composition.linkedActorPlan.id,
+              actorPlanRevision: composition.linkedActorPlan.revision
+            }
+          }, [
             el('summary', { text: 'Show applied system evidence' }),
             el('p', { text: `Composition ${composition.id}@${composition.revision}` }),
             el('p', { text: `Actor Plan ${composition.linkedActorPlan.id}@${composition.linkedActorPlan.revision}` }),

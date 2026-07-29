@@ -42,6 +42,7 @@ const clone = value => structuredClone(value);
 const now = () => new Date().toISOString();
 const uid = prefix => `${prefix}:${crypto.randomUUID()}`;
 const laneIndex = lane => Math.max(0, COMPOSER_LANES.findIndex(item => item.id === lane));
+const nonExecuting = result => ({ ...result, executed: false });
 
 function safeId(value) {
   return String(value).replace(/[^a-zA-Z0-9._-]/g, '-');
@@ -252,7 +253,7 @@ export function createProductionComposition(runtime, {
     ? `composition:${safeId(productionId.slice('production:'.length))}`
     : uid('composition'));
   const existing = next.compositions.find(item => item.id === compositionId);
-  if (existing) return { runtime: next, composition: existing, created: false };
+  if (existing) return nonExecuting({ runtime: next, composition: existing, created: false });
   const nodes = productionId ? defaultProductionNodes(next, productionId) : [];
   const timestamp = now();
   const composition = {
@@ -289,7 +290,7 @@ export function createProductionComposition(runtime, {
     resources: [composition.id, composition.revision]
   });
   next.receipts.push(receipt);
-  return { runtime: next, composition, receipt, created: true };
+  return nonExecuting({ runtime: next, composition, receipt, created: true });
 }
 
 export function replaceCompositionFromSnapshot(runtime, compositionId, snapshot, {
@@ -298,7 +299,7 @@ export function replaceCompositionFromSnapshot(runtime, compositionId, snapshot,
 } = {}) {
   const next = clone(runtime);
   const index = next.compositions.findIndex(item => item.id === compositionId);
-  if (index < 0) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (index < 0) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   const restored = clone(snapshot);
   restored.revision = String(Number(next.compositions[index].revision || 0) + 1);
   restored.updatedAt = now();
@@ -315,38 +316,38 @@ export function replaceCompositionFromSnapshot(runtime, compositionId, snapshot,
     resources: [restored.id, restored.revision]
   });
   next.receipts.push(receipt);
-  return { runtime: next, composition: restored, receipt };
+  return nonExecuting({ runtime: next, composition: restored, receipt });
 }
 
 export function renameProductionComposition(runtime, compositionId, title) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
-  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (!composition) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   composition.title = String(title || '').trim() || 'Untitled composition';
   bump(composition, next);
-  return { runtime: next, composition };
+  return nonExecuting({ runtime: next, composition });
 }
 
 export function bindCompositionToProduction(runtime, compositionId, productionId) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
   const production = next.productions.find(item => item.id === productionId);
-  if (!composition || !production) return { runtime: next, denied: true, reason: 'composition-or-production-not-found' };
+  if (!composition || !production) return nonExecuting({ runtime: next, denied: true, reason: 'composition-or-production-not-found' });
   composition.productionId = productionId;
   composition.provenance = {
     ...composition.provenance,
     source: composition.provenance.source === 'blank' ? 'production' : composition.provenance.source
   };
   bump(composition, next);
-  return { runtime: next, composition };
+  return nonExecuting({ runtime: next, composition });
 }
 
 export function addCompositionNode(runtime, compositionId, input) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
-  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (!composition) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   const duplicate = composition.nodes.find(item => item.ref.kind === input.ref.kind && item.ref.id === input.ref.id);
-  if (duplicate) return { runtime: next, composition, node: duplicate, created: false };
+  if (duplicate) return nonExecuting({ runtime: next, composition, node: duplicate, created: false });
   const node = compositionNode({
     ...input,
     order: composition.nodes.filter(item => item.lane === input.lane).length
@@ -354,19 +355,19 @@ export function addCompositionNode(runtime, compositionId, input) {
   if (input.sourceIntentId) node.sourceIntentId = input.sourceIntentId;
   composition.nodes.push(node);
   bump(composition, next);
-  return { runtime: next, composition, node, created: true };
+  return nonExecuting({ runtime: next, composition, node, created: true });
 }
 
 export function removeCompositionNode(runtime, compositionId, nodeId) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
-  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (!composition) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   const before = composition.nodes.length;
   composition.nodes = composition.nodes.filter(item => item.id !== nodeId);
   composition.edges = composition.edges.filter(edge => edge.fromNodeId !== nodeId && edge.toNodeId !== nodeId);
-  if (composition.nodes.length === before) return { runtime: next, denied: true, reason: 'composition-node-not-found' };
+  if (composition.nodes.length === before) return nonExecuting({ runtime: next, denied: true, reason: 'composition-node-not-found' });
   bump(composition, next);
-  return { runtime: next, composition };
+  return nonExecuting({ runtime: next, composition });
 }
 
 export function moveCompositionNodeToLane(runtime, compositionId, nodeId, lane) {
@@ -374,27 +375,27 @@ export function moveCompositionNodeToLane(runtime, compositionId, nodeId, lane) 
   const composition = next.compositions.find(item => item.id === compositionId);
   const node = composition?.nodes.find(item => item.id === nodeId);
   if (!composition || !node || !COMPOSER_LANES.some(item => item.id === lane)) {
-    return { runtime: next, denied: true, reason: 'composition-node-or-lane-not-found' };
+    return nonExecuting({ runtime: next, denied: true, reason: 'composition-node-or-lane-not-found' });
   }
   node.lane = lane;
   node.position.x = laneIndex(lane) * 280;
   node.position.order = composition.nodes.filter(item => item.lane === lane && item.id !== nodeId).length;
   node.position.y = node.position.order * 132;
   bump(composition, next);
-  return { runtime: next, composition, node };
+  return nonExecuting({ runtime: next, composition, node });
 }
 
 export function moveCompositionNode(runtime, compositionId, nodeId, direction) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
   const node = composition?.nodes.find(item => item.id === nodeId);
-  if (!composition || !node) return { runtime: next, denied: true, reason: 'composition-node-not-found' };
+  if (!composition || !node) return nonExecuting({ runtime: next, denied: true, reason: 'composition-node-not-found' });
   const laneNodes = composition.nodes
     .filter(item => item.lane === node.lane)
     .sort((left, right) => left.position.order - right.position.order);
   const index = laneNodes.findIndex(item => item.id === nodeId);
   const targetIndex = direction === 'before' ? index - 1 : index + 1;
-  if (index < 0 || targetIndex < 0 || targetIndex >= laneNodes.length) return { runtime: next, composition, node };
+  if (index < 0 || targetIndex < 0 || targetIndex >= laneNodes.length) return nonExecuting({ runtime: next, composition, node });
   [laneNodes[index], laneNodes[targetIndex]] = [laneNodes[targetIndex], laneNodes[index]];
   laneNodes.forEach((item, order) => {
     const current = composition.nodes.find(candidate => candidate.id === item.id);
@@ -402,14 +403,14 @@ export function moveCompositionNode(runtime, compositionId, nodeId, direction) {
     current.position.y = order * 132;
   });
   bump(composition, next);
-  return { runtime: next, composition, node: composition.nodes.find(item => item.id === nodeId) };
+  return nonExecuting({ runtime: next, composition, node: composition.nodes.find(item => item.id === nodeId) });
 }
 
 export function duplicateCompositionNode(runtime, compositionId, nodeId) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
   const source = composition?.nodes.find(item => item.id === nodeId);
-  if (!composition || !source) return { runtime: next, denied: true, reason: 'composition-node-not-found' };
+  if (!composition || !source) return nonExecuting({ runtime: next, denied: true, reason: 'composition-node-not-found' });
   const node = clone(source);
   node.id = uid('composition-node');
   node.ref = {
@@ -423,7 +424,7 @@ export function duplicateCompositionNode(runtime, compositionId, nodeId) {
   node.position.y = node.position.order * 132;
   composition.nodes.push(node);
   bump(composition, next);
-  return { runtime: next, composition, node };
+  return nonExecuting({ runtime: next, composition, node });
 }
 
 export function connectCompositionNodes(runtime, compositionId, {
@@ -439,9 +440,9 @@ export function connectCompositionNodes(runtime, compositionId, {
   const composition = next.compositions.find(item => item.id === compositionId);
   const from = composition?.nodes.find(item => item.id === fromNodeId);
   const to = composition?.nodes.find(item => item.id === toNodeId);
-  if (!composition || !from || !to || fromNodeId === toNodeId) return { runtime: next, denied: true, reason: 'composition-connection-invalid' };
+  if (!composition || !from || !to || fromNodeId === toNodeId) return nonExecuting({ runtime: next, denied: true, reason: 'composition-connection-invalid' });
   const duplicate = composition.edges.find(item => item.fromNodeId === fromNodeId && item.toNodeId === toNodeId && item.edgeType === edgeType);
-  if (duplicate) return { runtime: next, composition, edge: duplicate, created: false };
+  if (duplicate) return nonExecuting({ runtime: next, composition, edge: duplicate, created: false });
   const edge = {
     id: uid('composition-edge'),
     fromNodeId,
@@ -454,28 +455,28 @@ export function connectCompositionNodes(runtime, compositionId, {
   };
   composition.edges.push(edge);
   bump(composition, next);
-  return { runtime: next, composition, edge, created: true };
+  return nonExecuting({ runtime: next, composition, edge, created: true });
 }
 
 export function disconnectCompositionEdge(runtime, compositionId, edgeId) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
-  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (!composition) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   const before = composition.edges.length;
   composition.edges = composition.edges.filter(item => item.id !== edgeId);
-  if (before === composition.edges.length) return { runtime: next, denied: true, reason: 'composition-edge-not-found' };
+  if (before === composition.edges.length) return nonExecuting({ runtime: next, denied: true, reason: 'composition-edge-not-found' });
   bump(composition, next);
-  return { runtime: next, composition };
+  return nonExecuting({ runtime: next, composition });
 }
 
 export function toggleCompositionBranch(runtime, compositionId, edgeId) {
   const next = clone(runtime);
   const composition = next.compositions.find(item => item.id === compositionId);
   const edge = composition?.edges.find(item => item.id === edgeId);
-  if (!composition || !edge) return { runtime: next, denied: true, reason: 'composition-edge-not-found' };
+  if (!composition || !edge) return nonExecuting({ runtime: next, denied: true, reason: 'composition-edge-not-found' });
   edge.optional = !edge.optional;
   bump(composition, next);
-  return { runtime: next, composition, edge };
+  return nonExecuting({ runtime: next, composition, edge });
 }
 
 export function duplicateProductionComposition(runtime, compositionId, {
@@ -483,7 +484,7 @@ export function duplicateProductionComposition(runtime, compositionId, {
 } = {}) {
   const next = clone(runtime);
   const source = next.compositions.find(item => item.id === compositionId);
-  if (!source) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (!source) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   const copy = clone(source);
   copy.id = uid('composition');
   copy.title = title || `${source.title} copy`;
@@ -520,17 +521,17 @@ export function duplicateProductionComposition(runtime, compositionId, {
     resources: [source.id, copy.id]
   });
   next.receipts.push(receipt);
-  return { runtime: next, composition: copy, receipt };
+  return nonExecuting({ runtime: next, composition: copy, receipt });
 }
 
 export function applyProductionComposition(runtime, compositionId) {
   let next = clone(runtime);
   let composition = next.compositions.find(item => item.id === compositionId);
-  if (!composition) return { runtime: next, denied: true, reason: 'composition-not-found' };
+  if (!composition) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-found' });
   composition.readiness = projectCompositionReadiness(composition, next);
-  if (!composition.productionId) return { runtime: next, denied: true, reason: 'composition-not-bound-to-production' };
+  if (!composition.productionId) return nonExecuting({ runtime: next, denied: true, reason: 'composition-not-bound-to-production' });
   if (composition.readiness.blockers.length) {
-    return { runtime: next, denied: true, reason: composition.readiness.blockers.join(' ') };
+    return nonExecuting({ runtime: next, denied: true, reason: composition.readiness.blockers.join(' ') });
   }
   const beforeInventory = executionInventory(next);
   const production = next.productions.find(item => item.id === composition.productionId);
@@ -542,7 +543,7 @@ export function applyProductionComposition(runtime, compositionId) {
     if (!added.denied) next = added.runtime;
   }
   const compiled = compileActorPlan(next, production.id);
-  if (compiled.denied) return compiled;
+  if (compiled.denied) return nonExecuting(compiled);
   next = compiled.runtime;
   composition = next.compositions.find(item => item.id === compositionId);
   composition.linkedActorPlan = {
@@ -566,14 +567,15 @@ export function applyProductionComposition(runtime, compositionId) {
     composition,
     plan: compiled.plan,
     receipt,
-    executionInventoryUnchanged: JSON.stringify(beforeInventory) === JSON.stringify(afterInventory)
+    executionInventoryUnchanged: JSON.stringify(beforeInventory) === JSON.stringify(afterInventory),
+    executed: false
   };
 }
 
 export function ensureProductionComposition(runtime, productionId) {
   const existing = (runtime.compositions || []).find(item => item.productionId === productionId);
-  if (existing) return { runtime: clone(runtime), composition: clone(existing), created: false };
-  return createProductionComposition(runtime, { productionId, title: `${runtime.productions.find(item => item.id === productionId)?.title || 'Production'} composition` });
+  if (existing) return nonExecuting({ runtime: clone(runtime), composition: clone(existing), created: false });
+  return nonExecuting(createProductionComposition(runtime, { productionId, title: `${runtime.productions.find(item => item.id === productionId)?.title || 'Production'} composition` }));
 }
 
 function executionInventory(runtime) {
@@ -583,7 +585,8 @@ function executionInventory(runtime) {
     leases: runtime.taskLeases.length,
     grants: runtime.grants.length,
     returns: runtime.returns.length,
-    acceptedResults: runtime.gummies.filter(item => item.acceptance).length,
+    executionTraces: (runtime.executionTraces || []).length,
+    acceptedResults: runtime.gummies.filter(item => item.acceptance || item.status === 'accepted').length,
     releasedDistributions: (runtime.distributionPlans || []).filter(item => item.status === 'released' || item.status === 'published').length
   };
 }

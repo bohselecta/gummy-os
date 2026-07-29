@@ -65,7 +65,9 @@ async function captureCommercialJourney(page, suffix) {
   await composer.locator('.composer-name-controls')
     .getByRole('button', { name: 'Start a blank Production' }).click();
   await composer.getByRole('button', { name: 'Apply as Production proposal' }).click();
-  await expect(composer).toContainText('Applied to the editable Actor Plan');
+  const appliedEvidence = composer.getByTestId('composer-applied-evidence');
+  await expect(appliedEvidence).toHaveAttribute('data-actor-plan-id', /^actor-plan:/);
+  await expect(appliedEvidence).toContainText('No Run, Lease, Grant, provider call, charge, publication, or acceptance was created.');
   await composer.getByRole('button', { name: 'Open the full Production' }).click();
   const production = page.locator('[data-window-id^="production-window:"]').last();
   await expect(production).toBeVisible();
