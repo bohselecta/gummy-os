@@ -1,0 +1,20 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Gummy OS",
+  "alternateName": "Gummy",
+  "url": "https://www.mygum.my/",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Web",
+  "description": "Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production.",
+  "image": "https://www.mygum.my/brand/gummy/social/gummy-og-1200x630.webp",
+  "softwareVersion": "0.1",
+  "featureList": [
+    "Human-owned Local Gummy Box for durable sources, results, receipts, and backups",
+    "Visual Composer for arranging sources, people, specialist tools, review gates, and destinations",
+    "Governed Productions with explicit Master Control and Make Production boundary",
+    "Persistent Actor identities separated from replaceable Agent runtimes",
+    "Inspectable Returns, Receipts, provenance, cost, authority, and acceptance state",
+    "Local-first private operation with truthful connected-service boundaries"
+  ]
+}
