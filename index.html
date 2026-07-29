@@ -7,6 +7,8 @@
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="description" content="Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production." />
   <link rel="canonical" href="https://www.mygum.my/" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Gummy OS machine-readable product summary" />
+  <link rel="alternate" type="application/ld+json" href="/software-application.jsonld" title="Gummy OS structured product record" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Gummy OS" />
   <meta property="og:title" content="Gummy OS — Your creative computer, with you in control." />
@@ -35,9 +37,20 @@
     <img class="boot-mark" src="/brand/gummy/web/gummy-app-icon-monogram.webp" width="96" height="96" alt="Gummy OS" fetchpriority="high" />
     <h1>Your creative computer, with you in control.</h1>
     <p>Picking up where you left off…</p>
+    <div class="boot-public-summary">
+      <p>Arrange sources, people, specialist tools, review decisions, and destinations in one visible Composer. Your Gummy Box keeps the durable project state; nothing executes merely because it appears on the canvas.</p>
+      <p><a href="/changelog">What has shipped</a> · <a href="/llms.txt">Machine-readable summary</a></p>
+    </div>
   </div>
   <div id="app"></div>
   <div id="announcer" class="sr-only" aria-live="polite"></div>
+  <noscript>
+    <main>
+      <h1>Gummy OS — your creative computer, with you in control.</h1>
+      <p>Gummy OS is a local-first creative workspace with a Human-owned Gummy Box, a visual Composer, governed Productions, explicit authority, and inspectable Returns and Receipts.</p>
+      <p>JavaScript is required to open the private workspace. The <a href="/changelog">public changelog</a> and <a href="/llms.txt">machine-readable summary</a> remain available without it.</p>
+    </main>
+  </noscript>
   <script type="module" src="/src/app.js"></script>
 </body>
 </html>
