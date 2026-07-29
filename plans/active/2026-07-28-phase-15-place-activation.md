@@ -2,7 +2,20 @@
 
 ## Status
 
-**ACTIVE / CODEX-OWNED / CROSS-REPOSITORY IMPLEMENTATION**
+**COMPLETE / RELEASED / PRODUCTION VERIFIED**
+
+Runtime release:
+
+- Gummy OS merge: `aa1530284b4653153c7868a1966ca55b983425a7`
+- Gummy OS PR: `#35`
+- Production deployment: `dpl_HP62fzjPhStVq5KkFwoXHQTtyffK`
+- Canonical production: `https://www.mygum.my`
+- Release evidence: `evidence/phase15-release-evidence.json`
+- Rollback: Gummy OS `4c2cb092cc0ccab93df31a3479ddba460099363d` / deployment `dpl_GMb1VobkGE5uV2M3PdBQAYW9yncR`
+
+The founder authorized the designed Phase 15 build, PR/merge operations, browser verification, and production deployment on 2026-07-28. Automated and production acceptance passed before closure.
+
+The useful local cores and exact standalone bindings are complete. Production Channels publication/signing/Firebase, verified Table address release, final Radio voice/publication, remote Rooms/media, and authenticated Meshmallow construction remain capability-specific external gates. Their unavailable state is the required release truth, not unfinished simulated functionality.
 
 Phase 14 is accepted, merged, promoted, production-verified, and closed at Gummy OS commit `39f23fc37241c5648bb828a24f258682dd758dfb`.
 

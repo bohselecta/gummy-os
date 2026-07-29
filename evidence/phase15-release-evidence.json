@@ -1,0 +1,164 @@
+{
+  "schema": "gummy.phase15-release-evidence/v1",
+  "phase": 15,
+  "status": "complete",
+  "recordedAt": "2026-07-29T00:21:45.000Z",
+  "authority": {
+    "kind": "founder-execution-authority",
+    "receivedAt": "2026-07-28",
+    "scope": [
+      "build Phase 15 in full from the controlling repository instructions",
+      "create and close pull requests",
+      "merge approved changes",
+      "use browser verification",
+      "deploy production releases"
+    ]
+  },
+  "gummyOs": {
+    "repository": "bohselecta/gummy-os",
+    "pullRequest": "https://github.com/bohselecta/gummy-os/pull/35",
+    "applicationReleaseCommit": "aa1530284b4653153c7868a1966ca55b983425a7",
+    "applicationReleaseTree": "d40c9fc8c98671da34cf7499e4d49b78c1e40e2e",
+    "hostedCi": {
+      "url": "https://github.com/bohselecta/gummy-os/actions/runs/30410677674",
+      "conclusion": "success",
+      "duration": "2m48s"
+    },
+    "production": {
+      "deploymentId": "dpl_HP62fzjPhStVq5KkFwoXHQTtyffK",
+      "deploymentUrl": "https://gummy-1vbczdl33-mygummy.vercel.app",
+      "canonicalUrl": "https://www.mygum.my",
+      "status": "ready",
+      "httpStatus": 200,
+      "verifiedHeaders": {
+        "cache-control": "no-store",
+        "cross-origin-opener-policy": "same-origin-allow-popups",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      }
+    },
+    "verification": {
+      "unitAndIntegrationTests": 140,
+      "hermeticBrowserTestsPassed": 48,
+      "gatedLiveBrowserTestsSkippedInHermeticSuite": 2,
+      "productionBridgeBrowserTestsPassed": 2,
+      "npmAuditVulnerabilities": 0,
+      "initialJavascriptBytes": 268003,
+      "initialJavascriptCeilingBytes": 270336,
+      "fullProductPillarsPreserved": 8,
+      "phase14PlaceIdsPreserved": 6
+    },
+    "visualEvidence": [
+      "evidence/visual/phase15b/live-standalone-receipts-desktop.png",
+      "evidence/visual/phase15b/places-phone-night.png"
+    ]
+  },
+  "standaloneReleases": [
+    {
+      "product": "HomeWright",
+      "repository": "bohselecta/homewright",
+      "pullRequest": "https://github.com/bohselecta/homewright/pull/1",
+      "commit": "60963c3b4d8ae782d9b9ccdc31892625ff20230a",
+      "previousCommit": "7b7dcb0698ebad40553bef2d61ad613cb7257dd1",
+      "deploymentId": "dpl_911L79wmDWcti98J3ZicovCpvzo1",
+      "productionUrl": "https://homewright.vercel.app",
+      "verification": "12 tests, lint, build, audit, exact-origin receipt"
+    },
+    {
+      "product": "AfterCast",
+      "repository": "bohselecta/talkprint-studio",
+      "pullRequests": [
+        "https://github.com/bohselecta/talkprint-studio/pull/7",
+        "https://github.com/bohselecta/talkprint-studio/pull/8"
+      ],
+      "commit": "2e27f1f640da94d214322b537bb5e4ac4735b36c",
+      "previousCommit": "83ca3564b303e4d84ef507794c1c1ae766f7a74a",
+      "deploymentId": "dpl_VCXRyw1i6ihnNAJJR6XzcwKN7uU5",
+      "productionUrl": "https://www.getaftercast.com",
+      "verification": "16 tests, hosted CI, audit, exact-origin receipt"
+    },
+    {
+      "product": "VideoWorlds",
+      "repository": "bohselecta/videoworlds3",
+      "pullRequest": "https://github.com/bohselecta/videoworlds3/pull/2",
+      "commit": "a53d7b140b1700a6f4495df029a1e505dfda2c00",
+      "previousCommit": "b955eb82a5894a9abd85ac65d896aec3c9892d38",
+      "deploymentId": "dpl_7WKsk2ueXyhZTnhgyexJPDqzJWyD",
+      "productionUrl": "https://videoworldsnet.vercel.app",
+      "verification": "32 tests, vocabulary, lint, build, audit, exact-origin receipt"
+    },
+    {
+      "product": "Gummy Channels",
+      "repository": "bohselecta/vidfamtv",
+      "pullRequest": "https://github.com/bohselecta/vidfamtv/pull/2",
+      "commit": "52b439994104badb8d79eab406bf4984a9c909bc",
+      "previousCommit": "0c1adc991697a85f613b693502c929130a893231",
+      "productionState": "blocked-until-firebase-and-release-signing-exist",
+      "developmentApk": {
+        "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+        "bytes": 53597433,
+        "sha256": "4d78007061c1af6015986db633eedf5f2c2b1b30e1554053fb3b45f8ec8c1d98"
+      },
+      "verification": "39 Android tests, 17 Firebase function/constraint tests, development APK build, production truth gate"
+    }
+  ],
+  "auditedUnchangedSpecialists": [
+    {
+      "repository": "bohselecta/imagehoss",
+      "commit": "340f819b20c5b6d7ea988459c9380759941c757f",
+      "verification": "65 tests"
+    },
+    {
+      "repository": "bohselecta/videoboss",
+      "commit": "e67db769219e5a764821f7bac74638f3791dca98",
+      "verification": "43 tests"
+    },
+    {
+      "repository": "bohselecta/3d-bee",
+      "commit": "0c911f7552739f2e0bdefaf863a78a53f04a04c0",
+      "verification": "37 Rust tests, 21 Python tests, build and audit"
+    }
+  ],
+  "capabilitySpecificExternalGates": [
+    {
+      "capability": "channel.publish",
+      "state": "remote-service-required",
+      "requires": ["production Firebase project", "release signing", "moderation service"]
+    },
+    {
+      "capability": "address.release",
+      "state": "remote-service-required",
+      "requires": ["verified phone flow", "server-written gathering grant"]
+    },
+    {
+      "capability": "voice.render",
+      "state": "remote-service-required",
+      "requires": ["approved final voice renderer", "voice or likeness approval"]
+    },
+    {
+      "capability": "episode.publish",
+      "state": "blocked",
+      "requires": ["independently accepted publication system"]
+    },
+    {
+      "capability": "room.remote",
+      "state": "remote-service-required",
+      "requires": ["authenticated Rooms service", "verified live media transport"]
+    },
+    {
+      "capability": "make_world",
+      "state": "local-runtime-required",
+      "requires": ["authenticated Meshmallow supervisor", "supported Blender runtime", "Human-approved exact plan"]
+    }
+  ],
+  "rollback": {
+    "gummyOsCommit": "4c2cb092cc0ccab93df31a3479ddba460099363d",
+    "gummyOsDeploymentId": "dpl_GMb1VobkGE5uV2M3PdBQAYW9yncR",
+    "procedure": "Promote the recorded Gummy OS deployment, then revert only the exact standalone release commits if a standalone authority must also be rolled back."
+  },
+  "separateReviewHold": {
+    "issue": "https://github.com/bohselecta/gummy-os/issues/33",
+    "pullRequest": "https://github.com/bohselecta/gummy-os/pull/34",
+    "status": "unchanged"
+  }
+}
