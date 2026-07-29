@@ -44,6 +44,7 @@ export function createComposerApp({
   let paletteQuery = '';
   let paletteCategory = 'all';
   let displayMode = 'canvas';
+  let phoneMode = localStorage.getItem('gummy:composer-phone-mode') || 'goal';
   let zoom = 1;
   let pendingProposal = null;
   let connectionSourceId = null;
@@ -229,13 +230,40 @@ export function createComposerApp({
     const runtime = runtimeNow();
     const compositions = runtime.compositions || [];
     const composition = compositionNow(runtime);
+    if (composition && !localStorage.getItem('gummy:composer-phone-mode')) phoneMode = 'arrange';
+    root.dataset.composerPhoneMode = phoneMode;
     root.append(renderHeader(runtime, compositions, composition));
     if (!composition) {
       root.append(renderBlankState());
       return;
     }
+    root.append(renderPhoneModes());
     root.append(renderWorkspace(runtime, composition));
     if (pendingProposal) root.append(renderProposal(runtime));
+  }
+
+  function renderPhoneModes() {
+    const modes = [
+      ['goal', 'Goal'],
+      ['arrange', 'Arrange'],
+      ['review', 'Review'],
+      ['system', 'System Details']
+    ];
+    return el('nav', {
+      class: 'composer-phone-modes',
+      'aria-label': 'Composer mode'
+    }, modes.map(([id, label]) => el('button', {
+      type: 'button',
+      class: phoneMode === id ? 'primary-button' : 'ghost-button',
+      text: label,
+      'aria-pressed': String(phoneMode === id),
+      dataset: { composerMode: id },
+      onclick: () => {
+        phoneMode = id;
+        localStorage.setItem('gummy:composer-phone-mode', id);
+        render();
+      }
+    })));
   }
 
   function renderHeader(runtime, compositions, composition) {
@@ -288,7 +316,7 @@ export function createComposerApp({
       el('div', { class: 'composer-lanes composer-lanes-empty', 'aria-label': 'Empty Composer lanes' },
         COMPOSER_LANES.map(lane => el('article', { class: 'composer-lane' }, [
           el('span', { class: 'eyebrow', text: lane.title }),
-          el('h3', { text: lane.prompt }),
+          el('h2', { text: lane.prompt }),
           el('p', { text: lane.description })
         ]))
       )
@@ -297,14 +325,21 @@ export function createComposerApp({
 
   function renderWorkspace(runtime, composition) {
     const shell = el('div', { class: 'composer-workspace' });
-    shell.append(renderToolbar(runtime, composition));
+    const toolbar = renderToolbar(runtime, composition);
+    toolbar.dataset.composerPane = 'arrange';
+    shell.append(toolbar);
     const body = el('div', { class: 'composer-body' });
-    body.append(renderPalette(runtime, composition));
-    body.append(displayMode === 'list'
+    const palette = renderPalette(runtime, composition);
+    palette.dataset.composerPane = 'goal';
+    const arrangement = displayMode === 'list'
       ? renderOrderedList(runtime, composition)
-      : renderCanvas(runtime, composition));
+      : renderCanvas(runtime, composition);
+    arrangement.dataset.composerPane = 'arrange';
+    body.append(palette, arrangement);
     shell.append(body);
-    shell.append(renderReadiness(runtime, composition));
+    const readiness = renderReadiness(runtime, composition);
+    readiness.dataset.composerPane = 'review';
+    shell.append(readiness);
     return shell;
   }
 
@@ -494,7 +529,7 @@ export function createComposerApp({
       }, [
         el('header', {}, [
           el('span', { class: 'eyebrow', text: lane.title }),
-          el('h3', { text: lane.prompt }),
+          el('h2', { text: lane.prompt }),
           el('p', { text: lane.description })
         ])
       ]);

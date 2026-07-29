@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page, mode = 'night') {
   await page.goto('/');
@@ -38,7 +39,7 @@ test('realm art reaches Canvas, Actors, Glopper, chat, Production, and public me
   const canvasBackground = await page.locator('.canvas').evaluate(element => getComputedStyle(element).backgroundImage);
   expect(canvasBackground).toContain('lantern-chamber-night-1280x720.avif');
 
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   const portals = page.getByTestId('actor-presence-grid').locator('.presence-portal');
   await expect(portals).toHaveCount(4);
   for (const image of await portals.all()) {
@@ -46,7 +47,7 @@ test('realm art reaches Canvas, Actors, Glopper, chat, Production, and public me
     expect(await image.evaluate(node => node.naturalWidth)).toBe(960);
   }
 
-  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   await expect(page.getByRole('complementary', { name: 'Glopper Panel' }).getByAltText('Glopper')).toBeVisible();
   await page.getByRole('button', { name: 'Start or continue a private chat' }).click();
   await expect(page.getByTestId('private-actor-chat').getByAltText('Glopper')).toBeVisible();

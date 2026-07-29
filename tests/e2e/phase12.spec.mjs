@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page) {
   await page.goto('/');
@@ -13,7 +14,7 @@ async function onboard(page) {
 
 test('Living Actor presence and governed private Glopper chat persist with transcript, failure-safe controls, and Receipts', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   const glopper = page.locator('[data-presence-id="actor:glopper"]');
   await expect(glopper).toContainText('available for chat');
   await expect(glopper).toContainText('actor:glopper');
@@ -39,7 +40,7 @@ test('Living Actor presence and governed private Glopper chat persist with trans
   await page.getByRole('button', { name: 'Delete chat' }).click();
   await page.getByRole('button', { name: 'Confirm delete chat' }).click();
   await expect(page.getByRole('region', { name: /Private chat · Glopper window/ })).toHaveCount(0);
-  await page.getByRole('tab', { name: /Receipts/ }).click();
+  await openMoreItem(page, /Receipts/);
   await expect(page.getByText('delete-private-actor-chat')).toBeVisible();
 });
 
@@ -47,8 +48,8 @@ test('two same-origin pages receive persistent Human presence and private manual
   await onboard(page);
   const second = await context.newPage();
   await second.goto('/');
-  await page.getByRole('tab', { name: /Actors/ }).click();
-  await second.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
+  await openMoreItem(second, /People & groups/);
   const personalOne = page.locator('[data-actor-id="actor:hayden"]');
   await personalOne.getByRole('button', { name: 'available for chat' }).click();
   await expect(second.locator('[data-actor-id="actor:hayden"]')).toContainText('available for chat');
@@ -76,7 +77,7 @@ test('failed provider turns persist an explicit same-key recovery across reload 
     await route.continue();
   });
   await onboard(page);
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   await page.locator('[data-presence-id="actor:glopper"]').getByRole('button', { name: 'Open private chat' }).click();
   await page.getByLabel('Message Glopper').fill('Persist this recovery boundary.');
   await page.getByRole('button', { name: 'Approve context, cost & send' }).click();
@@ -94,7 +95,7 @@ test('failed provider turns persist an explicit same-key recovery across reload 
 
 test('tester operations preview/redact locally before explicit private submission and publish only local cohort counts', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /About/ }).click();
+  await openMoreItem(page, /About/);
   const operations = page.getByTestId('tester-operations');
   await expect(page.getByTestId('test-build-identity')).toContainText('Test build');
   await operations.getByLabel('Feedback category').selectOption('trust-privacy');
@@ -114,12 +115,12 @@ test('phone Bar, notifications, Actor cards, full Glopper sheet, chat, and media
   await onboard(page);
   const bar = page.locator('.gummy-bar');
   await expect(bar).toBeVisible();
-  expect(await bar.evaluate(node => node.scrollWidth > node.clientWidth)).toBe(true);
+  expect(await bar.evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
   await page.getByRole('button', { name: 'Switch Night or Day Gummy' }).click();
   const toast = page.locator('.toast').last();
   await expect(toast).toBeVisible();
   expect(await toast.evaluate(node => node.getBoundingClientRect().width <= 304)).toBe(true);
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   const presence = page.locator('.presence-card').first();
   expect(await presence.evaluate(node => node.getBoundingClientRect().width <= 300)).toBe(true);
   await page.getByRole('button', { name: 'Open Glopper Panel' }).click();

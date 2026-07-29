@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function reachLocalBox(page) {
   await page.goto('/');
@@ -21,7 +22,7 @@ test('a complete Gummy Box backup restores into a clean browser and reset remain
   const productionWindow = page.locator('[data-window-id="productions"]');
   await productionWindow.getByRole('button', { name: 'Open the Night Gummy Launch sample' }).click();
   await expect(productionWindow.getByRole('heading', { name: 'Night Gummy Launch' })).toBeVisible();
-  await page.getByRole('tab', { name: /Master Control/ }).click();
+  await openMoreItem(page, /Master Control/);
   const control = page.locator('[data-window-id="control"]');
   await expect(control.getByTestId('gummy-box-recovery')).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
@@ -58,7 +59,7 @@ test('a complete Gummy Box backup restores into a clean browser and reset remain
   expect(durable.gummies.length).toBeGreaterThan(0);
   expect(durable.receipts.some(item => item.action === 'import-gummy-box-backup')).toBe(true);
 
-  await clean.getByRole('tab', { name: /Master Control/ }).click();
+  await openMoreItem(clean, /Master Control/);
   const restoredControl = clean.locator('[data-window-id="control"]');
   await restoredControl.getByRole('button', { name: 'Reset layout and preferences' }).click();
   const preview = restoredControl.getByRole('dialog', { name: 'layout reset preview' });

@@ -1,0 +1,23 @@
+{
+  "schema": "gummy.phase16-5-baseline/v1",
+  "recordedAt": "2026-07-29",
+  "issue": 43,
+  "branch": "codex/phase16-5-calm-workspace",
+  "baseCommit": "617d9356b92160f77cda84f19c4877292f8b6edb",
+  "basePullRequest": 45,
+  "baseProductionDeployment": {
+    "id": "dpl_9kRsQWXMG3uZ3DmzFvSq3JDSU21c",
+    "url": "https://gummy-jxvse16yx-mygummy.vercel.app",
+    "aliases": [
+      "https://mygum.my",
+      "https://www.mygum.my"
+    ]
+  },
+  "authority": {
+    "localGummyBoxRemainsCanonical": true,
+    "liveMcpExecutionEnabled": false,
+    "googleExecutionEnabled": false,
+    "credentialsInClientOrEvidence": false
+  },
+  "rollbackDocument": "evidence/phase16-5-calm-workspace-rollback.md"
+}

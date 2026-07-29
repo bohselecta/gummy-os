@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openMoreItem } from './support/calm-navigation.mjs';
 import AxeBuilder from '@axe-core/playwright';
 
 async function onboard(page) {
@@ -28,7 +29,7 @@ test.afterEach(async ({ page }) => {
 test('Phase 14 Place identities and pinning model remain preserved after activation', async ({ page }) => {
   await onboard(page);
   await expect(page.locator('.gummy-bar [data-place-id]')).toHaveCount(0);
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   const grid = page.getByTestId('phase15-places');
   await expect(grid.locator('[data-place-id]')).toHaveCount(7);
   for (const name of ['Gummy Channels', 'Wardrobe', 'House', 'Worlds', 'Table', 'Radio', 'Rooms']) {
@@ -39,7 +40,7 @@ test('Phase 14 Place identities and pinning model remain preserved after activat
 
 test('Human pinning persists and Place windows remain context-specific', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   const wardrobeCard = page.locator('[data-place-id="app:gummy-wardrobe"]').first();
   await wardrobeCard.getByRole('button', { name: 'Pin', exact: true }).click();
   await expect(page.locator('.gummy-bar').getByRole('tab', { name: 'Wardrobe' })).toBeVisible();
@@ -56,20 +57,20 @@ test('Human pinning persists and Place windows remain context-specific', async (
 
 test('advanced Place capabilities remain separately blocked without staging the core', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   for (const name of ['Gummy Channels', 'Wardrobe', 'House', 'Worlds', 'Table', 'Radio', 'Rooms']) {
     const card = page.locator('.place-card').filter({ has: page.getByRole('heading', { name, exact: true }) });
     await expect(card.getByText('Available', { exact: true })).toBeVisible();
   }
   await page.getByRole('button', { name: 'Open Wardrobe' }).click();
   await expect(page.getByRole('region', { name: 'Wardrobe window' }).getByRole('button', { name: 'Camera capture needs companion' })).toBeDisabled();
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await page.getByRole('button', { name: 'Open Worlds' }).click();
   await expect(page.getByRole('region', { name: 'Worlds window' }).getByRole('button', { name: 'Build needs Meshmallow' })).toBeDisabled();
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await page.getByRole('button', { name: 'Open Table' }).click();
   await expect(page.getByRole('region', { name: 'Table window' }).getByRole('button', { name: 'Exact address requires verified service' })).toBeDisabled();
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await page.getByRole('button', { name: 'Open Radio' }).click();
   await expect(page.getByRole('region', { name: 'Radio window' }).getByRole('button', { name: 'Final voice service not connected' })).toBeDisabled();
 });
@@ -78,7 +79,7 @@ test('Places remains accessible on phone with reduced motion', async ({ page }) 
   await page.setViewportSize({ width: 320, height: 720 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await onboard(page);
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await expect(page.getByTestId('phase15-places').locator('[data-place-id]')).toHaveCount(7);
   const results = await new AxeBuilder({ page }).exclude('iframe').analyze();
   expect(results.violations).toEqual([]);

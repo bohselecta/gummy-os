@@ -180,10 +180,12 @@ export function createComposerApp(options) {
         placeholder: 'What must not change, happen, or leave this workspace?'
       }, brief.constraints || '')
     };
-    return h('section', {
+    const panel = h('details', {
       class: 'composer-brief market-card',
-      dataset: { testid: 'composer-brief' }
+      open: localStorage.getItem(`gummy:composer-panel:goal:${composition.id}`) !== 'closed',
+      dataset: { testid: 'composer-brief', composerPane: 'goal' }
     }, [
+      h('summary', { text: brief.goal ? 'Goal · defined' : 'Goal · describe what you want to make' }),
       h('div', { class: 'market-card-heading' }, [
         h('div', {}, [
           h('p', { class: 'eyebrow', text: 'START WITH THE RESULT' }),
@@ -200,6 +202,11 @@ export function createComposerApp(options) {
       ]),
       button('Save the brief', () => saveBrief(composition, controls), 'button primary')
     ]);
+    panel.addEventListener('toggle', () => localStorage.setItem(
+      `gummy:composer-panel:goal:${composition.id}`,
+      panel.open ? 'open' : 'closed'
+    ));
+    return panel;
   }
 
   function renderStarters(composition) {
@@ -207,7 +214,7 @@ export function createComposerApp(options) {
     return h('details', {
       class: 'composer-starters market-card',
       open: empty,
-      dataset: { testid: 'composer-starters' }
+      dataset: { testid: 'composer-starters', composerPane: empty ? 'goal' : 'arrange' }
     }, [
       h('summary', { text: empty ? 'Start from a useful pattern' : 'Add or compare a starting pattern' }),
       h('p', { text: 'Patterns add visible objects and typed connections. You remain free to move, remove, reconnect, duplicate, or ignore every part.' }),
@@ -222,10 +229,12 @@ export function createComposerApp(options) {
   function renderImpact(composition, runtime) {
     if (!composition) return null;
     const analysis = analyzeProductionComposition(composition, runtime);
-    return h('section', {
+    const panel = h('details', {
       class: 'composer-impact market-card',
-      dataset: { testid: 'composer-impact' }
+      open: localStorage.getItem(`gummy:composer-panel:review:${composition.id}`) !== 'closed',
+      dataset: { testid: 'composer-impact', composerPane: 'review' }
     }, [
+      h('summary', { text: 'Review · what this composition currently means' }),
       h('div', { class: 'market-card-heading' }, [
         h('div', {}, [
           h('p', { class: 'eyebrow', text: 'UNDERSTAND BEFORE YOU ACT' }),
@@ -272,6 +281,24 @@ export function createComposerApp(options) {
         }, null, 2) })
       ])
     ]);
+    panel.addEventListener('toggle', () => localStorage.setItem(
+      `gummy:composer-panel:review:${composition.id}`,
+      panel.open ? 'open' : 'closed'
+    ));
+    return panel;
+  }
+
+  function renderSystemDetails(composition) {
+    if (!composition) return null;
+    return h('details', {
+      class: 'composer-system-panel market-card',
+      dataset: { composerPane: 'system' }
+    }, [
+      h('summary', { text: 'System Details · canonical object references' }),
+      h('p', { text: `${composition.id}@${composition.revision} · ${composition.nodes.length} nodes · ${composition.edges.length} typed connections` }),
+      h('p', { text: `Production: ${composition.productionId || 'not attached'} · execution: not started · authority: proposal only` }),
+      h('p', { class: 'boundary-note compact', text: 'These details expose the same canonical objects; they do not create a second model or hidden execution path.' })
+    ]);
   }
 
   function metric(label, value) {
@@ -290,10 +317,11 @@ export function createComposerApp(options) {
       }, [
         composition ? renderBrief(composition) : null,
         renderStarters(composition),
-        renderImpact(composition, runtime)
+        renderImpact(composition, runtime),
+        renderSystemDetails(composition)
       ]);
-      const header = root.querySelector('.composer-header');
-      if (header?.nextSibling) root.insertBefore(layer, header.nextSibling);
+      const workspace = root.querySelector('.composer-workspace');
+      if (workspace) workspace.append(layer);
       else root.append(layer);
     } finally {
       enhancing = false;

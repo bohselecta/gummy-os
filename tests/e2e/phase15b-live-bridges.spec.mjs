@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 test.skip(!process.env.GUMMY_LIVE_BRIDGES, 'Run only for an explicit production bridge verification.');
 
@@ -13,7 +14,7 @@ async function onboard(page) {
 }
 
 async function openPlace(page, name) {
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await page.getByRole('button', { name: `Open ${name}` }).click();
   return page.getByRole('region', { name: `${name} window` });
 }
@@ -74,7 +75,7 @@ test('production House, Worlds, and Radio studios return exact import receipts',
 test('Phase 15 Places remain legible on a phone viewport', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await onboard(page);
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await expect(page.getByTestId('phase15-places')).toBeVisible();
   await page.screenshot({
     path: 'evidence/visual/phase15b/places-phone-night.png',

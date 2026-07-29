@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: /deep-smoke\.spec\.mjs/,
+  testMatch: /(deep-smoke|calm-return)\.spec\.mjs/,
   timeout: 60_000,
   expect: { timeout: 10_000 },
   fullyParallel: false,

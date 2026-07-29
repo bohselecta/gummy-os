@@ -34,6 +34,7 @@ import {
   setActorPresence
 } from './core/living-actor.js';
 import { WindowManager } from './window-manager.js';
+import { NotificationCenter } from './notification-center.js';
 import { gummyAssets } from './brand/gummy-assets.js';
 import { gummyRealmAssets, realmPicture } from './brand/gummy-realm-assets.js';
 
@@ -49,6 +50,7 @@ const githubBox = new GitHubBoxAdapter();
 const workflow = new WorkOrderWorkflow({ repository, byteStore, policy, box: localBox });
 const specialistAdapters = createBrowserSpecialistRegistry();
 let windowManager;
+let notificationCenter;
 let session = {
   openaiConfigured: false,
   githubConfigured: false,
@@ -59,7 +61,7 @@ let session = {
 let panelOpen = false;
 let panelTab = 'conversation';
 let selectedApp = 'guide';
-let systemExpanded = window.matchMedia('(min-width: 900px)').matches;
+let systemExpanded = false;
 let selectedWorkOrderId = 'work-order:project-brief';
 let productionState = { productionRuntime: null };
 let uxCopy;
@@ -79,21 +81,23 @@ const primarySurfaces = [
   ['gummies', '▤', 'Gummy Box', 'Gummy Box · My Gummies'],
   ['composer', '⌘', 'Composer'],
   ['productions', '◇', 'Productions'],
-  ['actors', '◎', 'People & groups', 'People & groups · Actors / Bowls'],
-  ['applications', '◌', 'Places'],
-  ['command-center', '◈', 'Command Center'],
-  ['control', '⌁', 'Master Control']
+  ['command-center', '◈', 'Command Center']
 ];
 
 const systemSurfaces = [
-  ['glopper', '✦', 'Glopper'],
+  ['productions', '◇', 'Productions'],
+  ['actors', '◎', 'People & groups', 'People & groups · Actors / Bowls'],
+  ['applications', '◌', 'Places'],
+  ['command-center', '◈', 'Command Center'],
+  ['control', '⌁', 'Master Control'],
   ['browser', '◉', 'Browser'],
   ['work-orders', '⇢', 'Work Orders'],
   ['receipts', '✓', 'Receipts'],
+  ['connections', '⌁', 'Connections & runtimes'],
   ['about', 'ⓘ', 'About / Limits']
 ];
 
-const surfaces = [...primarySurfaces, ...systemSurfaces];
+const surfaces = [...new Map([...primarySurfaces, ...systemSurfaces].map(surface => [surface[0], surface])).values()];
 
 function h(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -113,13 +117,12 @@ function h(tag, props = {}, children = []) {
   return node;
 }
 
-function announce(message) {
+function announce(message, options = {}) {
+  if (notificationCenter) {
+    void notificationCenter.notify(message, options);
+    return;
+  }
   announcer.textContent = message;
-  const layer = document.querySelector('.toast-layer');
-  if (!layer) return;
-  const toast = h('div', { class: 'toast' }, [h('strong', { text: 'Gummy OS' }), h('span', { text: message })]);
-  layer.append(toast);
-  setTimeout(() => toast.remove(), 4500);
 }
 
 async function initializeSession() {
@@ -479,6 +482,91 @@ function facts(items) {
   return list;
 }
 
+async function openCurrentWorkspace() {
+  const current = [...(productionState.productionRuntime?.productions || [])]
+    .reverse()
+    .find(item => !['completed', 'cancelled'].includes(item.status));
+  if (current) await openProduction(current.id);
+  else if (!await windowManager?.restoreLastFocused()) await openSurface('productions');
+}
+
+function workspaceSwitcher() {
+  const details = h('details', { class: 'workspace-switcher' });
+  const list = h('div', { class: 'workspace-switcher-menu' });
+  const render = async () => {
+    const group = await repository.get('meta', 'workspace-group:actor:hayden:default');
+    const windows = windowManager?.summaries() || [];
+    list.replaceChildren(
+      h('p', { class: 'eyebrow', text: 'WORKSPACE' }),
+      h('strong', { text: group?.name || 'My calm workspace' }),
+      h('small', { text: 'A saved window arrangement—not a Social Instance.' }),
+      h('div', { class: 'workspace-window-list' }, windows.length
+        ? windows.map(item => h('button', {
+            type: 'button',
+            class: 'workspace-window-choice',
+            onclick: () => {
+              windowManager.focusById(item.id);
+              details.open = false;
+            }
+          }, [
+            h('span', { text: item.title }),
+            h('small', { text: item.hidden ? 'minimized' : item.focused ? 'current' : 'open' })
+          ]))
+        : h('small', { text: 'No open windows.' })),
+      h('div', { class: 'workspace-switcher-actions' }, [
+        h('button', {
+          type: 'button',
+          class: 'button',
+          onclick: async () => {
+            const focused = windowManager.summaries().find(item => item.focused);
+            if (focused) windowManager.minimizeOthers(focused.id);
+            announce(focused ? `Focused ${focused.title}; other windows minimized.` : 'No current window to focus.');
+            await render();
+          }
+        }, 'Focus current'),
+        h('button', {
+          type: 'button',
+          class: 'button',
+          onclick: async () => {
+            windowManager.showAll();
+            announce('All workspace windows are visible.');
+            await render();
+          }
+        }, 'Show all'),
+        h('button', {
+          type: 'button',
+          class: 'button',
+          onclick: async () => {
+            await windowManager.saveGroup(group?.name);
+            announce('Workspace group saved locally.');
+            await render();
+          }
+        }, 'Save group'),
+        h('button', {
+          type: 'button',
+          class: 'button',
+          onclick: async () => {
+            await windowManager.restoreGroup();
+            announce('Saved workspace group restored.');
+            details.open = false;
+          }
+        }, 'Restore group')
+      ])
+    );
+  };
+  details.addEventListener('toggle', () => {
+    if (details.open) void render();
+  });
+  details.append(
+    h('summary', { class: 'button', role: 'button', 'aria-label': 'Open workspace switcher' }, [
+      h('span', { text: '▣' }),
+      h('span', { class: 'label', text: ' Workspace' })
+    ]),
+    list
+  );
+  return details;
+}
+
 async function renderShell() {
   const human = await repository.get('humans', 'human:hayden');
   const actor = await repository.get('actors', 'actor:hayden');
@@ -505,6 +593,7 @@ async function renderShell() {
       h('span', { text: 'Human ' }), h('strong', { text: human.name }), h('span', { text: '· Actor ' }), h('strong', { text: actor.address }), h('span', { text: '· Authority ' }), h('strong', { text: 'Local Gummy Box' })
     ]),
     h('div', { class: 'top-actions' }, [
+      workspaceSwitcher(),
       h('button', {
         class: 'button window-cycle-button',
         onclick: () => {
@@ -515,13 +604,7 @@ async function renderShell() {
       }, [h('span', { text: '▣' }), h('span', { class: 'label', text: ' Windows' })]),
       h('button', {
         class: 'button current-production-button',
-        onclick: () => {
-          const current = [...(productionState.productionRuntime?.productions || [])]
-            .reverse()
-            .find(item => !['completed', 'cancelled'].includes(item.status));
-          if (current) void openProduction(current.id);
-          else void openSurface('productions');
-        },
+        onclick: openCurrentWorkspace,
         'aria-label': 'Return to current Production'
       }, [h('span', { text: '◇' }), h('span', { class: 'label', text: ' Current' })]),
       h('button', { class: 'button', onclick: toggleMode, 'aria-label': 'Switch Night or Day Gummy' }, [h('span', { text: '◐' }), h('span', { class: 'label', text: ' Mode' })]),
@@ -536,6 +619,17 @@ async function renderShell() {
   shell.append(topbar, canvas, bar);
   appRoot.append(shell);
   windowManager = new WindowManager(layer, repository);
+  notificationCenter = new NotificationCenter({
+    repository,
+    announcer,
+    openHistory: () => void openSurface('receipts')
+  });
+  notificationCenter.mount(toasts);
+  await windowManager.ensureDefaultGroup();
+  const savedNavigation = await repository.get('meta', 'navigation:actor:hayden');
+  if (savedNavigation?.selectedSurface && surfaces.some(([id]) => id === savedNavigation.selectedSurface)) {
+    selectedApp = savedNavigation.selectedSurface;
+  }
   await renderBar(bar);
   const savedWindows = (await repository.all('meta'))
     .filter(record => record.id.startsWith('window:'))
@@ -583,13 +677,14 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
     || pinnedPlaces.some(place => selectedApp === `place:${place.id}`);
   bar.replaceChildren();
 
-  const appendSurface = ([id, icon, label, accessibleLabel], group, parent = bar) => {
+  const appendSurface = ([id, icon, label, accessibleLabel], group, parent = bar, role = 'tab') => {
     const surfaceButton = h('button', {
       class: `bar-candy bar-${group}`,
-      role: 'tab',
+      role,
       'aria-label': accessibleLabel || label,
-      'aria-selected': String(selectedApp === id),
-      tabindex: selectedApp === id || (!hasSelectedTab && id === 'guide') ? '0' : '-1',
+      'aria-selected': role === 'tab' ? String(selectedApp === id) : null,
+      'aria-current': role !== 'tab' && selectedApp === id ? 'page' : null,
+      tabindex: role === 'tab' ? (selectedApp === id || (!hasSelectedTab && id === 'guide') ? '0' : '-1') : null,
       dataset: { app: id, group },
       onclick: () => id === 'glopper' ? togglePanel() : openSurface(id)
     }, [
@@ -611,7 +706,7 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
   };
 
   const primaryGroup = h('span', {
-    class: 'gummy-primary-surfaces',
+    class: 'gummy-primary-surfaces gummy-desktop-nav',
     role: 'tablist',
     'aria-label': 'Primary workspaces'
   });
@@ -628,18 +723,19 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
     }
   }, [
     h('span', { class: 'icon', 'aria-hidden': 'true', text: '•••' }),
-    h('span', { class: 'label', text: 'More / System' })
+    h('span', { class: 'label', text: 'More' })
   ]);
+  systemToggle.classList.add('gummy-desktop-nav');
   bar.append(systemToggle);
   const systemGroup = h('span', {
     id: 'gummy-system-surfaces',
-    class: 'gummy-system-surfaces',
-    role: 'tablist',
+    class: 'gummy-system-surfaces gummy-desktop-nav',
+    role: 'menu',
     'aria-label': 'System workspaces',
     hidden: !systemExpanded
   });
   bar.append(systemGroup);
-  systemSurfaces.forEach(surface => appendSurface(surface, 'system', systemGroup));
+  systemSurfaces.forEach(surface => appendSurface(surface, 'system', systemGroup, 'menuitem'));
 
   for (const place of pinnedPlaces) {
     const placeButton = h('button', {
@@ -655,6 +751,49 @@ async function renderBar(bar = document.querySelector('.gummy-bar')) {
     ]);
     primaryGroup.append(placeButton);
   }
+  const phoneGroup = h('span', {
+    class: 'gummy-phone-nav',
+    role: 'navigation',
+    'aria-label': 'Phone workspaces'
+  });
+  bar.append(phoneGroup);
+  [
+    ['gummies', '▤', 'Gummy Box'],
+    ['composer', '⌘', 'Composer']
+  ].forEach(surface => appendSurface(surface, 'phone', phoneGroup, 'button'));
+  phoneGroup.append(h('button', {
+    class: 'bar-candy bar-phone',
+    role: 'button',
+    'aria-label': 'Return to current work',
+    onclick: openCurrentWorkspace
+  }, [
+    h('span', { class: 'icon', 'aria-hidden': 'true', text: '◇' }),
+    h('span', { class: 'label', text: 'Current' })
+  ]));
+  appendSurface(['guide', '⌂', 'Gummy'], 'phone', phoneGroup, 'button');
+  const phoneMore = h('button', {
+    class: 'bar-candy bar-phone',
+    type: 'button',
+    'aria-expanded': String(systemExpanded),
+    'aria-controls': 'gummy-phone-more',
+    onclick: () => {
+      systemExpanded = !systemExpanded;
+      void renderBar();
+    }
+  }, [
+    h('span', { class: 'icon', 'aria-hidden': 'true', text: '•••' }),
+    h('span', { class: 'label', text: 'More' })
+  ]);
+  phoneGroup.append(phoneMore);
+  const phoneMoreGroup = h('span', {
+    id: 'gummy-phone-more',
+    class: 'gummy-phone-more',
+    role: 'menu',
+    'aria-label': 'More workspaces',
+    hidden: !systemExpanded
+  });
+  bar.append(phoneMoreGroup);
+  systemSurfaces.forEach(surface => appendSurface(surface, 'phone-more', phoneMoreGroup, 'menuitem'));
   for (const candy of bar.querySelectorAll('.bar-candy')) {
     candy.addEventListener('keydown', event => {
       if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
@@ -678,8 +817,13 @@ async function toggleMode() {
 }
 
 async function openSurface(id) {
-  if (systemSurfaces.some(([surfaceId]) => surfaceId === id)) systemExpanded = true;
+  systemExpanded = false;
   selectedApp = id;
+  await repository.put('meta', {
+    id: 'navigation:actor:hayden',
+    selectedSurface: id,
+    updatedAt: new Date().toISOString()
+  }, { validate: false });
   await renderBar();
   const titles = {
     guide: ['Gummy', 'Orientation and continuity'],
@@ -693,6 +837,7 @@ async function openSurface(id) {
     receipts: ['Receipts', 'local tamper evidence'],
     control: ['Master Control', 'authority and revocation'],
     applications: ['Places', 'private, studio, and connected Places'],
+    connections: ['Connections & runtimes', 'status, capability, locality, cost, and limits'],
     about: ['About Gummy', 'capabilities, limits, privacy, and build']
   };
   const content = await buildSurface(id);
@@ -804,6 +949,7 @@ async function buildSurface(id) {
         social, windowManager, announce
       }),
       openMasterControl: () => openSurface('control'),
+      openCanonicalRef,
       announce
     });
     return app.node;
@@ -811,6 +957,20 @@ async function buildSurface(id) {
   if (id === 'actors') return actorsSurface();
   if (id === 'work-orders') return workOrdersSurface();
   if (id === 'receipts') return receiptsSurface();
+  if (id === 'connections') {
+    const [{ createConnectionsApp }, registryResponse] = await Promise.all([
+      import('./apps/connections.js'),
+      fetch('/registry/first-party-applications.json', { cache: 'no-cache' })
+    ]);
+    const registry = registryResponse.ok ? await registryResponse.json() : { applications: [] };
+    return createConnectionsApp({
+      session,
+      specialistAdapters,
+      registryApplications: registry.applications || [],
+      openStorage: () => openSurface('gummies'),
+      announce
+    });
+  }
   if (id === 'control') return controlSurface();
   if (id === 'about') return aboutSurface();
   return applicationsSurface();
@@ -1749,6 +1909,7 @@ async function decideWorkOrder(order, decision, button) {
 
 async function receiptsSurface() {
   const all = (await repository.all('receipts')).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const notifications = notificationCenter ? await notificationCenter.history() : [];
   const root = h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Evidence, not identity proof' }),
     h('h2', { text: 'Receipts' }),
@@ -1774,6 +1935,24 @@ async function receiptsSurface() {
   };
   query.addEventListener('input', render);
   root.append(h('label', { class: 'field' }, [h('span', { text: 'Search Receipts' }), query]), list);
+  root.append(h('section', { class: 'notification-history', dataset: { testid: 'notification-history' } }, [
+    h('p', { class: 'eyebrow', text: 'RECENT UI HISTORY' }),
+    h('h3', { text: 'Notifications' }),
+    h('p', { text: 'This local convenience history is separate from canonical Receipts and never acts as execution evidence.' }),
+    notifications.length
+      ? h('div', { class: 'record-list' }, notifications.slice().reverse().map(item => h('article', {
+          class: 'record-row',
+          dataset: { notificationKind: item.kind }
+        }, [
+          h('div', {}, [
+            h('strong', { text: item.title }),
+            h('span', { text: item.message }),
+            h('small', { text: `${item.updatedAt} · ${item.count || 1} update${item.count === 1 ? '' : 's'}` })
+          ]),
+          h('span', { class: `status ${item.kind === 'warning' || item.kind === 'decision' ? 'review' : ''}`, text: item.kind })
+        ])))
+      : h('p', { class: 'empty-state', text: 'No notifications have been recorded in this browser yet.' })
+  ]));
   render();
   return root;
 }
@@ -1811,7 +1990,8 @@ async function controlSurface() {
       h('h3', { text: 'Managed Gummy Box' }),
       h('p', { text: 'Optional managed synchronization infrastructure. It never replaces Local Box, Gummy OS, Places, the Operator, or Social computing.' }),
       h('span', { class: 'status offline', text: 'Staged · explicit opt-in only' }),
-      h('p', { class: 'meta', text: 'Local Gummy Box remains authoritative. No managed provider has been connected or granted access.' })
+      h('p', { class: 'meta', text: 'Local Gummy Box remains authoritative. No managed provider has been connected or granted access.' }),
+      h('button', { class: 'button', onclick: () => openSurface('connections') }, 'Open Connections & runtimes')
     ]),
     await githubSurface()
   );

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { evidencePath } from './evidence-path.mjs';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page, mode = 'night') {
   await page.goto('/');
@@ -10,7 +11,9 @@ async function onboard(page, mode = 'night') {
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create Local Gummy Box' }).click();
   await page.getByTestId('enter-canvas').click();
-  await page.getByRole('tab', { name: /Productions/ }).click();
+  const productionsTab = page.getByRole('tab', { name: /Productions/ });
+  if (await productionsTab.isVisible()) await productionsTab.click();
+  else await openMoreItem(page, /Productions/);
   await expect(page.getByRole('heading', { name: 'Start a Production' })).toBeVisible();
 }
 
@@ -181,7 +184,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
   expect(afterRestart.gummies.filter(item => item.kind === 'file').map(item => item.hash))
     .toEqual(beforeRestart.gummies.filter(item => item.kind === 'file').map(item => item.hash));
 
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   await page.getByTestId('actor-presence-grid').locator('[data-presence-id="actor:videoboss"]')
     .getByRole('button', { name: 'Open standalone Actor view' }).click();
   const standalone = page.locator('[data-window-id="actor-surface:actor:videoboss:standalone:main"]');

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page, name = 'Phase 16 Tester') {
   await page.goto('/');
@@ -13,7 +14,7 @@ async function onboard(page, name = 'Phase 16 Tester') {
 }
 
 async function openCommandCenter(page) {
-  await page.getByRole('tab', { name: 'Command Center' }).click();
+  await openMoreItem(page, 'Command Center');
   const commandCenter = page.getByRole('region', { name: 'Command Center window' });
   await expect(commandCenter.getByTestId('phase16-command-center')).toBeVisible();
   return commandCenter;
@@ -84,7 +85,7 @@ test('saved Social Instance restores five truthful windows and resumes as a new 
   await expect(page.getByTestId('phase16-shared-thread')).toContainText('Private budget details remain explicitly excluded');
   await expect(page.getByTestId('phase16-shared-thread')).toContainText('Explicitly excluded');
 
-  await page.getByRole('tab', { name: 'Command Center' }).click();
+  await openMoreItem(page, 'Command Center');
   await expect(page.locator('.gummy-window[data-window-id="command-center"]')).toHaveAttribute('data-focused', 'true');
   commandCenter = page.getByRole('region', { name: 'Command Center window' });
   await commandCenter.getByRole('button', { name: 'Close group windows' }).click();
@@ -159,7 +160,7 @@ test('Command Center is accessible on desktop and phone with reduced motion', as
 
   await page.setViewportSize({ width: 320, height: 720 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.getByRole('tab', { name: 'Command Center' }).click();
+  await openMoreItem(page, 'Command Center');
   commandCenter = page.getByRole('region', { name: 'Command Center window' });
   await expect(commandCenter.getByTestId('phase16-command-center')).toBeVisible();
   await expect(commandCenter.getByTestId('phase16-layout-preview')).toBeVisible();

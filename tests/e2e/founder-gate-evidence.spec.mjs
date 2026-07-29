@@ -1,5 +1,6 @@
 import { mkdir } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
+import { openMoreItem, openPrimary } from './support/calm-navigation.mjs';
 
 const directory = 'evidence/visual/phase16-founder-gate';
 await mkdir(directory, { recursive: true });
@@ -31,12 +32,12 @@ async function captureCommercialJourney(page, suffix) {
   await clearToasts(page);
   await page.screenshot({ path: `${directory}/first-run-workspace-${suffix}.png`, fullPage: true });
 
-  await page.getByRole('tab', { name: /Gummy Box/ }).click();
+  await openPrimary(page, /Gummy Box/);
   await expect(page.getByTestId('gummy-box')).toBeVisible();
   await clearToasts(page);
   await page.screenshot({ path: `${directory}/gummy-box-${suffix}.png`, fullPage: true });
 
-  await page.getByRole('tab', { name: 'Composer' }).click();
+  await openPrimary(page, 'Composer');
   const composerWindow = page.getByRole('region', { name: 'Composer window' });
   const composer = composerWindow.getByTestId('composer-surface');
   await expect(composer.getByTestId('composer-blank')).toBeVisible();
@@ -45,10 +46,14 @@ async function captureCommercialJourney(page, suffix) {
   await page.screenshot({ path: `${directory}/composer-blank-${suffix}.png`, fullPage: true });
 
   await composer.getByRole('button', { name: 'Create a blank composition' }).click();
+  const goalMode = composer.getByRole('button', { name: 'Goal', exact: true });
+  if (await goalMode.isVisible()) await goalMode.click();
   await addPaletteItem(composer, 'gummy:gummy:night-gummy-launch-brief', 'inputs');
   await addPaletteItem(composer, 'actor:actor:imagehoss', 'people-tools');
   await addPaletteItem(composer, 'gate:human-acceptance', 'review-approval');
   await addPaletteItem(composer, 'destination:gummy-box', 'destinations');
+  const arrangeMode = composer.getByRole('button', { name: 'Arrange', exact: true });
+  if (await arrangeMode.isVisible()) await arrangeMode.click();
   await composer.getByTestId('composer-canvas').scrollIntoViewIfNeeded();
   await clearToasts(page);
   await page.screenshot({ path: `${directory}/composer-populated-${suffix}.png`, fullPage: true });
@@ -64,6 +69,8 @@ async function captureCommercialJourney(page, suffix) {
 
   await composer.locator('.composer-name-controls')
     .getByRole('button', { name: 'Start a blank Production' }).click();
+  const reviewMode = composer.getByRole('button', { name: 'Review', exact: true });
+  if (await reviewMode.isVisible()) await reviewMode.click();
   await composer.getByRole('button', { name: 'Apply as Production proposal' }).click();
   const appliedEvidence = composer.getByTestId('composer-applied-evidence');
   await expect(appliedEvidence).toHaveAttribute('data-actor-plan-id', /^actor-plan:/);
@@ -83,7 +90,7 @@ async function captureCommercialJourney(page, suffix) {
   await clearToasts(page);
   await page.screenshot({ path: `${directory}/compiled-actor-plan-${suffix}.png`, fullPage: true });
 
-  await page.getByRole('tab', { name: 'Command Center' }).click();
+  await openMoreItem(page, 'Command Center');
   const command = page.getByTestId('phase16-command-center');
   await expect(command.getByRole('heading', { name: 'Choose what to continue' })).toBeVisible();
   await command.getByRole('heading', { name: 'Choose what to continue' }).scrollIntoViewIfNeeded();
