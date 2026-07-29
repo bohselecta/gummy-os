@@ -8,13 +8,14 @@ const publicTitle = 'Gummy OS — Your creative computer, with you in control.';
 const publicDescription = 'Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production.';
 
 test('public delivery exposes intentional crawler routes and no universal soft-404 rewrite', async () => {
-  const [vercelSource, viteSource, robots, sitemap, changelog, llms] = await Promise.all([
+  const [vercelSource, viteSource, robots, sitemap, changelog, llms, publicLogo] = await Promise.all([
     read('vercel.json'),
     read('vite.config.js'),
     read('public/robots.txt'),
     read('public/sitemap.xml'),
     read('public/changelog.html'),
-    read('public/llms.txt')
+    read('public/llms.txt'),
+    readFile(new URL('../public/brand/gummy/web/gummy-lockup-horizontal.webp', import.meta.url))
   ]);
   const vercel = JSON.parse(vercelSource);
 
@@ -34,6 +35,8 @@ test('public delivery exposes intentional crawler routes and no universal soft-4
   assert.match(sitemap, /<loc>https:\/\/www\.mygum\.my\/changelog<\/loc>/);
   assert.match(changelog, /What has shipped in Gummy OS/);
   assert.match(changelog, /Gummy Box, visual Composer, and public delivery/);
+  assert.match(changelog, /src="\/brand\/gummy\/web\/gummy-lockup-horizontal\.webp"/);
+  assert.ok(publicLogo.byteLength > 0, 'the public changelog logo must resolve to a retained production asset');
   assert.match(llms, /^# Gummy OS$/m);
   assert.match(llms, /A Composer edit never executes work/);
 });
