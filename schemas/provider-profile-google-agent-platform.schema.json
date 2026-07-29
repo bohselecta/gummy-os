@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/provider-profile-google-agent-platform.schema.json",
+  "title": "Google Agent Platform Provider Profile",
+  "description": "Google-specific profile beneath Gummy's provider-neutral Runtime Binding architecture.",
+  "type": "object",
+  "required": [
+    "schema",
+    "profileId",
+    "provider",
+    "runtime",
+    "runtimeSource",
+    "currentDeploymentLimitations",
+    "agentIdentity",
+    "memoryBank",
+    "agentGateway",
+    "agentRegistry",
+    "observability",
+    "maximumRuntimeDuration",
+    "features",
+    "pricingAndBudgetEvidence",
+    "dataResidency",
+    "encryption",
+    "revocationProcedure",
+    "deletionProcedure",
+    "sourceDocumentation",
+    "credentialsProvisioned",
+    "liveExecutionEnabled",
+    "verifiedAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.provider-profile.google-agent-platform/v1" },
+    "profileId": { "type": "string", "pattern": "^provider-profile:google:" },
+    "provider": { "const": "google-agent-platform" },
+    "runtime": {
+      "type": "object",
+      "required": ["resourceId", "deploymentMethod", "apiResourceName", "region"],
+      "properties": {
+        "resourceId": { "type": "string", "minLength": 1 },
+        "deploymentMethod": {
+          "type": "string",
+          "enum": ["source", "local-object", "dockerfile", "container-image", "connected-repository", "not-provisioned"]
+        },
+        "apiResourceName": { "type": "string", "minLength": 1 },
+        "region": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "runtimeSource": {
+      "type": "object",
+      "required": ["revision", "containerDigest"],
+      "properties": {
+        "revision": { "type": "string", "minLength": 1 },
+        "containerDigest": {
+          "oneOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "const": "not-provisioned" }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "currentDeploymentLimitations": {
+      "type": "object",
+      "required": ["managedSdkLanguage", "sourceObjectLanguage", "customContainerContract", "notes"],
+      "properties": {
+        "managedSdkLanguage": { "const": "python" },
+        "sourceObjectLanguage": { "const": "python" },
+        "customContainerContract": { "const": "language-neutral-http" },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "agentIdentity": {
+      "type": "object",
+      "required": [
+        "principal",
+        "principalType",
+        "featureState",
+        "productAvailability",
+        "apiMaturity",
+        "apiVersion"
+      ],
+      "properties": {
+        "principal": { "type": "string", "minLength": 1 },
+        "principalType": { "const": "provider-agent-identity" },
+        "featureState": { "const": "supported" },
+        "productAvailability": { "const": "ga" },
+        "apiMaturity": { "const": "preview" },
+        "apiVersion": { "const": "v1beta1" }
+      },
+      "additionalProperties": false
+    },
+    "memoryBank": {
+      "type": "object",
+      "required": ["resourceId", "scopeKey", "region", "ttl", "revisionsEnabled", "ingestionMode", "providerIsCanonical"],
+      "properties": {
+        "resourceId": { "type": "string", "minLength": 1 },
+        "scopeKey": { "type": "string", "minLength": 1 },
+        "region": { "type": "string", "minLength": 1 },
+        "ttl": { "type": "integer", "minimum": 1 },
+        "revisionsEnabled": { "type": "boolean" },
+        "ingestionMode": { "type": "string", "enum": ["disabled", "direct", "ingest-events", "not-provisioned"] },
+        "providerIsCanonical": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "agentGateway": {
+      "type": "object",
+      "required": ["policyRefs", "featureState"],
+      "properties": {
+        "policyRefs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "featureState": { "type": "string", "enum": ["supported", "preview", "unavailable", "not-verified"] }
+      },
+      "additionalProperties": false
+    },
+    "agentRegistry": {
+      "type": "object",
+      "required": ["resourceRefs", "featureState", "canonicalIdentityRegistry"],
+      "properties": {
+        "resourceRefs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "featureState": { "type": "string", "enum": ["supported", "preview", "unavailable", "not-verified"] },
+        "canonicalIdentityRegistry": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "observability": {
+      "type": "object",
+      "required": ["traceIds", "dagIds", "featureState", "receiptAuthority"],
+      "properties": {
+        "traceIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "dagIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "featureState": { "type": "string", "enum": ["supported", "preview", "unavailable", "not-verified"] },
+        "receiptAuthority": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "maximumRuntimeDuration": { "const": 604800, "description": "Seven days in seconds." },
+    "features": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["state", "allowedInFirstProof"],
+        "properties": {
+          "state": { "type": "string", "enum": ["supported", "preview", "unavailable", "not-verified"] },
+          "allowedInFirstProof": { "type": "boolean" },
+          "reason": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pricingAndBudgetEvidence": {
+      "type": "object",
+      "required": ["pricingSource", "usageSource", "gummyHardStopRequired"],
+      "properties": {
+        "pricingSource": { "type": "string", "format": "uri" },
+        "modelPricingSource": { "type": "string", "format": "uri" },
+        "usageSource": { "type": "string", "minLength": 1 },
+        "gummyHardStopRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "dataResidency": {
+      "type": "object",
+      "required": ["requiredRegion", "globalEndpointAllowed", "mismatchFailsClosed"],
+      "properties": {
+        "requiredRegion": { "type": "string", "minLength": 1 },
+        "globalEndpointAllowed": { "type": "boolean" },
+        "mismatchFailsClosed": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "encryption": {
+      "type": "object",
+      "required": ["cmekRequired", "globalEndpointCmekConstraintRecorded"],
+      "properties": {
+        "cmekRequired": { "type": "boolean" },
+        "globalEndpointCmekConstraintRecorded": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "revocationProcedure": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "deletionProcedure": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "sourceDocumentation": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "credentialsProvisioned": { "type": "boolean" },
+    "liveExecutionEnabled": { "type": "boolean" },
+    "verifiedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/long-running-work-policy.schema.json",
+  "title": "Gummy Long-Running Work Policy",
+  "description": "Authority, checkpoint, pause, cancellation, budget, drift and recovery rules for a bounded long-running Work Order.",
+  "type": "object",
+  "required": [
+    "schema",
+    "policyId",
+    "workOrderId",
+    "runtimeBindingId",
+    "maximumWallTime",
+    "providerMaximumWallTime",
+    "checkpointInterval",
+    "heartbeatPolicy",
+    "idleComputePolicy",
+    "budgetCeiling",
+    "productionPoolAuthorizationRefs",
+    "leaseExpiry",
+    "leaseRenewalPolicy",
+    "grantExpiry",
+    "humanInputPolicy",
+    "cancellationPolicy",
+    "staleCanonicalStatePolicy",
+    "returnDeadline",
+    "recoveryPolicy",
+    "providerFailoverPolicy",
+    "memoryGenerationPolicy",
+    "notificationPolicy",
+    "providerContinuationRenewsAuthority",
+    "ambientAuthorityAllowed"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.long-running-work-policy/v1" },
+    "policyId": { "type": "string", "pattern": "^long-work-policy:" },
+    "workOrderId": { "type": "string", "pattern": "^work-order:" },
+    "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+    "maximumWallTime": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 604800,
+      "description": "Gummy-approved maximum wall time in seconds."
+    },
+    "providerMaximumWallTime": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 604800,
+      "description": "Provider-reported maximum wall time in seconds."
+    },
+    "checkpointInterval": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum seconds between Gummy-owned checkpoints."
+    },
+    "heartbeatPolicy": {
+      "type": "object",
+      "required": ["interval", "missedBeforeStop", "evidenceRequired"],
+      "properties": {
+        "interval": { "type": "integer", "minimum": 1 },
+        "missedBeforeStop": { "type": "integer", "minimum": 1 },
+        "evidenceRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "idleComputePolicy": {
+      "type": "object",
+      "required": ["allowWhileAwaitingHuman", "maxIdleSeconds", "chargeRequiresAuthorization"],
+      "properties": {
+        "allowWhileAwaitingHuman": { "const": false },
+        "maxIdleSeconds": { "type": "integer", "minimum": 0 },
+        "chargeRequiresAuthorization": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "budgetCeiling": {
+      "type": "object",
+      "required": ["currency", "hardStopMicros", "warningMicros", "consumedMicros"],
+      "properties": {
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "hardStopMicros": { "type": "integer", "minimum": 0 },
+        "warningMicros": { "type": "integer", "minimum": 0 },
+        "consumedMicros": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "productionPoolAuthorizationRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^pool-authorization:" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "leaseExpiry": { "type": "string", "format": "date-time" },
+    "leaseRenewalPolicy": {
+      "type": "object",
+      "required": ["explicitDecisionRequired", "receiptRequired", "automaticRenewal"],
+      "properties": {
+        "explicitDecisionRequired": { "const": true },
+        "receiptRequired": { "const": true },
+        "automaticRenewal": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "grantExpiry": { "type": "string", "format": "date-time" },
+    "humanInputPolicy": {
+      "type": "object",
+      "required": ["masterControlDecisionRequired", "pauseWithoutAuthorityExpansion", "timeoutAction"],
+      "properties": {
+        "masterControlDecisionRequired": { "const": true },
+        "pauseWithoutAuthorityExpansion": { "const": true },
+        "timeoutAction": { "type": "string", "enum": ["checkpoint-and-stop", "cancel", "expire"] }
+      },
+      "additionalProperties": false
+    },
+    "cancellationPolicy": {
+      "type": "object",
+      "required": ["cooperative", "acknowledgementIsTermination", "terminalConfirmationRequired"],
+      "properties": {
+        "cooperative": { "const": true },
+        "acknowledgementIsTermination": { "const": false },
+        "terminalConfirmationRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "staleCanonicalStatePolicy": {
+      "type": "object",
+      "required": ["failClosed", "state", "silentApplicationAllowed"],
+      "properties": {
+        "failClosed": { "const": true },
+        "state": {
+          "type": "string",
+          "enum": ["stale-return-anchor", "reconciliation-required"]
+        },
+        "silentApplicationAllowed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "returnDeadline": { "type": "string", "format": "date-time" },
+    "recoveryPolicy": {
+      "type": "object",
+      "required": ["checkpointLocation", "providerStateCanonical", "latestValidCheckpointRequired"],
+      "properties": {
+        "checkpointLocation": { "const": "gummy-box" },
+        "providerStateCanonical": { "const": false },
+        "latestValidCheckpointRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "providerFailoverPolicy": {
+      "type": "object",
+      "required": ["allowed", "newBindingRevisionRequired", "preserveWorkOrder", "preserveReturnAnchor"],
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "newBindingRevisionRequired": { "const": true },
+        "preserveWorkOrder": { "const": true },
+        "preserveReturnAnchor": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "memoryGenerationPolicy": {
+      "type": "object",
+      "required": ["enabled", "scopeId", "exactRevisionEvidenceRequired", "canonicalPromotionAllowed"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+        "exactRevisionEvidenceRequired": { "const": true },
+        "canonicalPromotionAllowed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "notificationPolicy": {
+      "type": "object",
+      "required": ["attentionStates", "coalesceProgress"],
+      "properties": {
+        "attentionStates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "input-required",
+              "budget-warning",
+              "cancellation-requested",
+              "reconciliation-required",
+              "failed",
+              "expired",
+              "result-candidate"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "coalesceProgress": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "providerContinuationRenewsAuthority": { "const": false },
+    "ambientAuthorityAllowed": { "const": false }
+  },
+  "additionalProperties": false
+}

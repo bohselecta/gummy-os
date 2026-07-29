@@ -51,6 +51,15 @@ const required = [
   'docs/IMAGEHOSS_PRODUCTION_CONTRACT_RECONCILIATION.md',
   'docs/PRODUCTION_ACTOR_RUNTIME.md',
   'docs/ACTOR_FIRST_PRODUCTION_MODEL.md',
+  'docs/architecture/ACTOR_IDENTITY_VS_RUNTIME_IDENTITY_2026-07-29.md',
+  'docs/architecture/OPERATIONAL_MEMORY_VS_CANONICAL_STATE_2026-07-29.md',
+  'docs/providers/GOOGLE_AGENT_PLATFORM_PROFILE_2026-07-29.md',
+  'docs/security/PHASE17A_RUNTIME_IDENTITY_MEMORY_THREAT_MODEL_2026-07-29.md',
+  'plans/review/2026-07-29-phase17a-runtime-identity-memory-migration.md',
+  'evidence/phase17a-runtime-identity-memory-rollback.md',
+  'evidence/phase17a-foundation-acceptance-matrix.md',
+  'fixtures/runtime-conformance/google-agent-platform-profile-2026-07-29.json',
+  'fixtures/runtime-conformance/phase17a-runtime-identity-memory-foundation.json',
   'plans/active/2026-07-27-production-runtime-reconciliation-and-utility-tiles.md',
   'design/source/gummy-utility-tiles-legacy/manifest.json',
   'design/source/gummy-utility-tiles-legacy/SOURCE_ARCHIVE.md',
@@ -174,7 +183,14 @@ const schemas = [
   'schemas/contribution-ledger.schema.json',
   'schemas/production-formation.schema.json',
   'schemas/distribution-plan.schema.json',
-  'schemas/command-center-view.schema.json'
+  'schemas/command-center-view.schema.json',
+  'schemas/actor-agent-runtime-binding.schema.json',
+  'schemas/operational-memory.schema.json',
+  'schemas/memory-derivation.schema.json',
+  'schemas/memory-scope-policy.schema.json',
+  'schemas/long-running-work-policy.schema.json',
+  'schemas/provider-evidence-bundle.schema.json',
+  'schemas/provider-profile-google-agent-platform.schema.json'
 ];
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
@@ -186,6 +202,71 @@ for (const schema of schemas) {
   ajv.addSchema(parsed);
   parsedSchemas.set(schema, parsed);
 }
+
+const phase17aFixture = JSON.parse(
+  await readFile(
+    'fixtures/runtime-conformance/phase17a-runtime-identity-memory-foundation.json',
+    'utf8'
+  )
+);
+const googleAgentPlatformProfile = JSON.parse(
+  await readFile(
+    'fixtures/runtime-conformance/google-agent-platform-profile-2026-07-29.json',
+    'utf8'
+  )
+);
+const validatePhase17a = (schemaFile, value, label) => {
+  const schema = parsedSchemas.get(schemaFile);
+  const validate = ajv.getSchema(schema.$id);
+  if (!validate(value)) {
+    throw new Error(
+      `${label} validation failed: ${ajv.errorsText(validate.errors)}`
+    );
+  }
+};
+for (const [index, binding] of phase17aFixture.runtimeBindings.entries()) {
+  validatePhase17a(
+    'schemas/actor-agent-runtime-binding.schema.json',
+    binding,
+    `Phase 17A runtime binding ${index + 1}`
+  );
+}
+for (const [index, memory] of phase17aFixture.memories.entries()) {
+  validatePhase17a(
+    'schemas/operational-memory.schema.json',
+    memory,
+    `Phase 17A operational memory ${index + 1}`
+  );
+}
+for (const [index, derivation] of phase17aFixture.memoryDerivations.entries()) {
+  validatePhase17a(
+    'schemas/memory-derivation.schema.json',
+    derivation,
+    `Phase 17A memory derivation ${index + 1}`
+  );
+}
+for (const [index, policy] of phase17aFixture.memoryScopePolicies.entries()) {
+  validatePhase17a(
+    'schemas/memory-scope-policy.schema.json',
+    policy,
+    `Phase 17A memory scope policy ${index + 1}`
+  );
+}
+validatePhase17a(
+  'schemas/long-running-work-policy.schema.json',
+  phase17aFixture.longRunningWorkPolicy,
+  'Phase 17A long-running work policy'
+);
+validatePhase17a(
+  'schemas/provider-evidence-bundle.schema.json',
+  phase17aFixture.providerEvidenceBundle,
+  'Phase 17A provider evidence bundle'
+);
+validatePhase17a(
+  'schemas/provider-profile-google-agent-platform.schema.json',
+  googleAgentPlatformProfile,
+  'Phase 17A Google provider profile'
+);
 
 const placeRegistry = JSON.parse(await readFile('public/registry/gummy-places.json', 'utf8'));
 const validatePlaceRegistry = ajv.getSchema('https://mygum.my/schemas/place-registry.schema.json');

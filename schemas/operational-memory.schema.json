@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/operational-memory.schema.json",
+  "title": "Gummy Operational Memory",
+  "description": "Derived, scoped and non-authoritative context used by an Agent.",
+  "type": "object",
+  "required": [
+    "schema",
+    "memoryId",
+    "scopeId",
+    "scopeType",
+    "actorId",
+    "agentId",
+    "productionId",
+    "sourceEventRefs",
+    "sourceHashes",
+    "generatorProvider",
+    "generatorModel",
+    "generatedAt",
+    "revision",
+    "supersedes",
+    "confidence",
+    "claims",
+    "allowedUses",
+    "prohibitedUses",
+    "canonicalStateVersionObserved",
+    "ttl",
+    "expiresAt",
+    "invalidatedAt",
+    "reviewState",
+    "promotionPolicy",
+    "status",
+    "authoritative",
+    "authorityEffect",
+    "canonicalMutationApplied"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.operational-memory/v1" },
+    "memoryId": { "type": "string", "pattern": "^memory:" },
+    "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+    "scopeType": {
+      "type": "string",
+      "enum": ["actor", "actor-production", "production", "social-instance", "work-order", "privacy-partition"]
+    },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "agentId": { "type": "string", "pattern": "^agent:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "sourceEventRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^event:" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "sourceHashes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "generatorProvider": { "type": "string", "minLength": 1 },
+    "generatorModel": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "supersedes": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["memoryId", "revision"],
+          "properties": {
+            "memoryId": { "type": "string", "pattern": "^memory:" },
+            "revision": { "type": "integer", "minimum": 1 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claimId", "text", "sourceEventRefs"],
+        "properties": {
+          "claimId": { "type": "string", "pattern": "^claim:" },
+          "text": { "type": "string", "minLength": 1 },
+          "sourceEventRefs": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^event:" },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "allowedUses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["resume-context", "planning-context", "retrieval-context", "reconciliation-context", "receipt-evidence"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "prohibitedUses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "authorize-action",
+          "expand-lease",
+          "expand-grant",
+          "expand-budget",
+          "change-ownership",
+          "mutate-canonical-state",
+          "accept-result",
+          "publish"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "allOf": [
+        { "contains": { "const": "authorize-action" } },
+        { "contains": { "const": "expand-lease" } },
+        { "contains": { "const": "expand-grant" } },
+        { "contains": { "const": "expand-budget" } },
+        { "contains": { "const": "change-ownership" } },
+        { "contains": { "const": "mutate-canonical-state" } },
+        { "contains": { "const": "accept-result" } },
+        { "contains": { "const": "publish" } }
+      ]
+    },
+    "canonicalStateVersionObserved": { "type": "string", "minLength": 1 },
+    "ttl": { "type": "integer", "minimum": 1, "description": "TTL in seconds." },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "invalidatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "reviewState": {
+      "type": "string",
+      "enum": ["unreviewed", "reviewed", "rejected", "promotion-requested", "promoted-by-acceptance"]
+    },
+    "promotionPolicy": {
+      "type": "object",
+      "required": ["automaticPromotion", "humanAcceptanceRequired"],
+      "properties": {
+        "automaticPromotion": { "const": false },
+        "humanAcceptanceRequired": { "const": true },
+        "targetKinds": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["actor", "production", "project", "gummy"] },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "superseded", "expired", "invalidated", "deleted"]
+    },
+    "authoritative": { "const": false },
+    "authorityEffect": { "const": "none" },
+    "canonicalMutationApplied": { "const": false }
+  },
+  "additionalProperties": false
+}

@@ -50,6 +50,32 @@ Adapter outputs are classified as:
 
 No adapter may emit a Gummy Receipt, Human acceptance, or publication decision.
 
+## Phase 17A additive identity and memory extension
+
+`gummy.actor-agent-runtime-binding/v1` extends this contract without replacing
+`gummy.runtime-binding/v1`. Before dispatch and every continuation, an adapter
+must also verify:
+
+- the Human owner, enduring Actor, replaceable Agent and provider runtime
+  principal remain distinct;
+- the principal attestation belongs to the exact Agent and binding revision;
+- the Lease, Grant, Runtime Binding, Gummy wall time and budget remain valid;
+- any operational memory is selected by exact ID and revision inside the bound
+  Actor/Production scope;
+- the provider region matches binding and memory policy;
+- a provider checkpoint resolves to a Gummy Box checkpoint;
+- the Return anchor and canonical-state version still match.
+
+Long-running provider capacity never renews Gummy authority. Runtime principal
+rotation, provider failover or Agent replacement creates a new binding revision.
+Provider completion remains `return-candidate`; canonical drift changes that
+state to `stale-return-anchor` or `reconciliation-required`.
+
+Provider telemetry is packaged as
+`gummy.provider-evidence-bundle/v1`. The bundle is Receipt input. Gummy combines
+it with the Work Order, Lease, Grant, Production Pool authorization, Return and
+Human decisions; the adapter cannot compile the Receipt.
+
 ## Determinism
 
 The required release adapter consumes checked-in fixtures and produces the same

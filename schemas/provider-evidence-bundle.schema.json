@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/provider-evidence-bundle.schema.json",
+  "title": "Gummy Provider Evidence Bundle",
+  "description": "Provider telemetry and provenance packaged as evidence input for, but never equivalent to, a Gummy Receipt.",
+  "type": "object",
+  "required": [
+    "schema",
+    "providerEvidenceBundleId",
+    "runtimeBindingId",
+    "runtimeBindingRevision",
+    "provider",
+    "providerRuntimeResourceId",
+    "runtimePrincipal",
+    "runtimePrincipalAttestation",
+    "deploymentRevision",
+    "sourceProvenance",
+    "events",
+    "toolCalls",
+    "gatewayPolicyDecisions",
+    "traceIds",
+    "memoryReads",
+    "generatedMemoryRevisions",
+    "resourceUsage",
+    "costEvidence",
+    "providerLogs",
+    "observedTerminalState",
+    "complete",
+    "bundleHash",
+    "generatedAt",
+    "classification",
+    "receiptAuthority",
+    "acceptanceState",
+    "canonicalMutationApplied"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.provider-evidence-bundle/v1" },
+    "providerEvidenceBundleId": { "type": "string", "pattern": "^provider-evidence:" },
+    "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+    "runtimeBindingRevision": { "type": "integer", "minimum": 1 },
+    "provider": { "type": "string", "minLength": 1 },
+    "providerRuntimeResourceId": { "type": "string", "minLength": 1 },
+    "runtimePrincipal": { "type": "string", "minLength": 1 },
+    "runtimePrincipalAttestation": {
+      "type": "object",
+      "required": ["issuer", "subject", "fingerprint", "observedAt"],
+      "properties": {
+        "issuer": { "type": "string", "minLength": 1 },
+        "subject": { "type": "string", "minLength": 1 },
+        "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "observedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "deploymentRevision": { "type": "string", "minLength": 1 },
+    "sourceProvenance": {
+      "type": "object",
+      "required": ["kind", "reference", "digest"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["source", "container", "local-object", "connected-repository"] },
+        "reference": { "type": "string", "minLength": 1 },
+        "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["eventId", "sequence", "kind", "at", "status", "hash"],
+        "properties": {
+          "eventId": { "type": "string", "pattern": "^provider-event:" },
+          "sequence": { "type": "integer", "minimum": 0 },
+          "kind": {
+            "type": "string",
+            "enum": ["start", "heartbeat", "checkpoint", "pause", "resume", "cancellation-requested", "cancellation-acknowledged", "terminated", "failure", "completion"]
+          },
+          "at": { "type": "string", "format": "date-time" },
+          "status": { "type": "string", "minLength": 1 },
+          "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "toolCalls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["callId", "tool", "operationClass", "status", "hash"],
+        "properties": {
+          "callId": { "type": "string", "pattern": "^tool-call:" },
+          "tool": { "type": "string", "minLength": 1 },
+          "operationClass": {
+            "type": "string",
+            "enum": ["read-only", "destructive", "idempotent", "open-world", "financial", "publication", "identity-sensitive", "privacy-sensitive"]
+          },
+          "status": { "type": "string", "enum": ["allowed", "denied", "completed", "failed"] },
+          "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "gatewayPolicyDecisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["policyRef", "decision", "at", "hash"],
+        "properties": {
+          "policyRef": { "type": "string", "minLength": 1 },
+          "decision": { "type": "string", "enum": ["allow", "deny", "not-evaluated"] },
+          "at": { "type": "string", "format": "date-time" },
+          "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "traceIds": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "memoryReads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["memoryId", "revision", "scopeId", "readAt", "contentHash"],
+        "properties": {
+          "memoryId": { "type": "string", "pattern": "^memory:" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+          "readAt": { "type": "string", "format": "date-time" },
+          "contentHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      },
+      "uniqueItems": true
+    },
+    "generatedMemoryRevisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["memoryId", "revision", "scopeId", "derivationId"],
+        "properties": {
+          "memoryId": { "type": "string", "pattern": "^memory:" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+          "derivationId": { "type": "string", "pattern": "^memory-derivation:" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "resourceUsage": {
+      "type": "object",
+      "required": ["wallTimeSeconds", "inputTokens", "outputTokens"],
+      "properties": {
+        "wallTimeSeconds": { "type": "integer", "minimum": 0 },
+        "inputTokens": { "type": "integer", "minimum": 0 },
+        "outputTokens": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "costEvidence": {
+      "type": "object",
+      "required": ["currency", "amountMicros", "pricingSource", "observedAt"],
+      "properties": {
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "amountMicros": { "type": "integer", "minimum": 0 },
+        "pricingSource": { "type": "string", "minLength": 1 },
+        "observedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "providerLogs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["logRef", "hash", "retentionClass"],
+        "properties": {
+          "logRef": { "type": "string", "minLength": 1 },
+          "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "retentionClass": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "observedTerminalState": {
+      "type": "string",
+      "enum": ["none", "completed", "failed", "cancelled", "expired", "unknown"]
+    },
+    "complete": { "type": "boolean" },
+    "bundleHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "classification": { "const": "receipt-input" },
+    "receiptAuthority": { "const": "gummy" },
+    "acceptanceState": { "const": "not-determined" },
+    "canonicalMutationApplied": { "const": false }
+  },
+  "additionalProperties": false
+}
