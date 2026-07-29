@@ -1,6 +1,6 @@
 {
   "schema": "gummy.executive-convergence-state/v1",
-  "status": "verification-in-progress",
+  "status": "verification-restarted-after-portability-fixes",
   "baseline": {
     "mainCommit": "caa496a56bef499713b5dba90d355f8cdc729f05",
     "productionPhase": "Phase 16 Living Collaboration"
@@ -17,7 +17,9 @@
     "real crawler files and genuine unknown-route 404 behavior",
     "scheduled Chromium Firefox WebKit acceptance",
     "IndexedDB byte fallback when OPFS is unavailable",
-    "canonical Human Actor preservation in starter patterns"
+    "truthful OPFS or IndexedDB byte-store metadata",
+    "canonical Human Actor preservation in starter patterns",
+    "automated desktop and phone convergence screenshots"
   ],
   "preservedBoundaries": [
     "Composer edits never execute work",
@@ -36,5 +38,5 @@
     "rendered desktop and phone evidence",
     "exact accepted-head merge and production verification"
   ],
-  "recordedAt": "2026-07-29T08:20:00.000Z"
+  "recordedAt": "2026-07-29T08:25:00.000Z"
 }
