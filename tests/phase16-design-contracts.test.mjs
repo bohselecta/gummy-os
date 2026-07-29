@@ -102,5 +102,6 @@ test('canonical doctrine files preserve Master Control, Glopper, Zeke, and trans
   assert.match(command, /Command Center shows what needs attention\. Master Control decides what is allowed/);
   assert.match(command, /Glopper remains the first-party companion identity/);
   assert.match(command, /Zeke is the visible coordination and explanation intelligence of Command Center/);
-  assert.match(plan, /DO NOT IMPLEMENT DURING PHASE 15B/);
+  assert.match(plan, /FOUNDER ACCEPTED \/ MERGE AND PRODUCTION PROMOTION AUTHORIZED/);
+  assert.match(plan, /evidence\/phase16-founder-acceptance\.json/);
 });

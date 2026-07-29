@@ -4,7 +4,7 @@
   "title": "Gummy Shared Vision",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "id", "revision", "status", "ownerActorId", "participantActorIds", "origin", "intent", "goal", "privacy", "acknowledgements", "createdAt", "updatedAt"],
+  "required": ["schema", "id", "revision", "status", "ownerActorId", "participantActorIds", "origin", "intent", "goal", "privacy", "acknowledgements", "provenance", "createdAt", "updatedAt"],
   "properties": {
     "schema": { "const": "gummy.shared-vision/v1" },
     "id": { "type": "string", "pattern": "^shared-vision:" },
@@ -71,6 +71,7 @@
     },
     "proposedProductionId": { "type": ["string", "null"], "pattern": "^production:" },
     "formationReadiness": { "enum": ["not-assessed", "needs-acknowledgement", "needs-scope", "needs-estimate", "needs-agreement", "ready"] },
+    "provenance": { "type": "object" },
     "createdAt": { "type": "string", "format": "date-time" },
     "updatedAt": { "type": "string", "format": "date-time" },
     "expiresAt": { "type": ["string", "null"], "format": "date-time" }

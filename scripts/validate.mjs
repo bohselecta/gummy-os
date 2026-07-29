@@ -14,6 +14,7 @@ const required = [
   'src/core/product-registry.js',
   'src/core/place-system.js',
   'src/core/place-ui-contracts.js',
+  'src/core/living-collaboration.js',
   'src/places/place-doctrines.js',
   'src/integrations/app-handoff.js',
   'src/integrations/local-operator.js',
@@ -23,6 +24,8 @@ const required = [
   'src/apps/production.js',
   'src/apps/actor-surface.js',
   'src/apps/master-control.js',
+  'src/apps/collaboration.js',
+  'src/apps/social-instance-windows.js',
   'src/apps/places.js',
   'src/brand/gummy-utility-tiles.js',
   'src/production.css',
@@ -162,7 +165,16 @@ const schemas = [
   'schemas/context-envelope.schema.json',
   'schemas/production-run.schema.json',
   'schemas/actor-update-proposal.schema.json',
-  'schemas/drag-intent.schema.json'
+  'schemas/drag-intent.schema.json',
+  'schemas/actor-presence.schema.json',
+  'schemas/social-instance.schema.json',
+  'schemas/shared-vision.schema.json',
+  'schemas/production-agreement.schema.json',
+  'schemas/production-pool.schema.json',
+  'schemas/contribution-ledger.schema.json',
+  'schemas/production-formation.schema.json',
+  'schemas/distribution-plan.schema.json',
+  'schemas/command-center-view.schema.json'
 ];
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });

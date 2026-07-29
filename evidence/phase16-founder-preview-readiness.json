@@ -1,0 +1,118 @@
+{
+  "schema": "gummy.phase16-founder-preview-readiness/v1",
+  "phase": 16,
+  "title": "Living Collaboration",
+  "status": "founder-accepted-production-authorized",
+  "recordedAt": "2026-07-29T03:47:29.000Z",
+  "repository": "bohselecta/gummy-os",
+  "branch": "agent/phase16-living-collaboration",
+  "base": {
+    "ref": "origin/main",
+    "commit": "160b3c44932c6dd1ccd9ea439f9fe60fc4f11808",
+    "description": "Latest main with Phase 15 closed, Phase 16 design merged, and the non-live deterministic runtime conformance and governed Runtime Binding checkpoints preserved"
+  },
+  "governingIssue": "https://github.com/bohselecta/gummy-os/issues/33",
+  "phase17Constraint": {
+    "issue": "https://github.com/bohselecta/gummy-os/issues/36",
+    "status": "open-review-hold",
+    "implementedInPhase16": false
+  },
+  "contracts": [
+    "gummy.actor-presence/v1",
+    "gummy.social-instance/v1",
+    "gummy.shared-vision/v1",
+    "gummy.production-agreement/v1",
+    "gummy.production-pool/v1",
+    "gummy.contribution-ledger/v1",
+    "gummy.production-formation/v1",
+    "gummy.distribution-plan/v1",
+    "gummy.command-center-view/v1"
+  ],
+  "completeLocalProof": {
+    "socialInstanceWindows": 5,
+    "truthfulPresenceStates": [
+      "human-live",
+      "ai-represented",
+      "static",
+      "offline"
+    ],
+    "selectedConversationRecords": 3,
+    "excludedConversationRecords": 1,
+    "agreementRevision": 1,
+    "productionEstimateUsd": 10,
+    "authorizedMaximumsUsd": [
+      4,
+      3,
+      3
+    ],
+    "futureProposalUsd": [
+      2.5,
+      2.5,
+      2.5,
+      2.5
+    ],
+    "actualProviderChargeUsd": 0,
+    "productionRoute": "deterministic-local",
+    "formationImmutable": true,
+    "humanAcceptanceRequired": true,
+    "distributionPlans": [
+      "radio",
+      "channels",
+      "private-export"
+    ],
+    "releasedDestinations": [
+      "private-export"
+    ],
+    "commandCenterExecuting": false,
+    "masterControlRemainsAuthority": true
+  },
+  "capabilityTruth": {
+    "remoteMultiHumanPresence": "not-connected",
+    "verifiedRemoteIdentity": "not-connected",
+    "remoteAudioVideo": "not-connected",
+    "realPaymentProcessing": "not-connected",
+    "fundsCollected": false,
+    "internalCurrency": false,
+    "pooledFundCustody": false,
+    "radioFinalVoice": "not-connected",
+    "channelsRemotePublication": "not-connected",
+    "mcpExecution": "not-implemented-phase17-hold"
+  },
+  "automatedEvidence": {
+    "focusedNodeTests": 17,
+    "phase16BrowserTests": 4,
+    "fullNodeTestsPassed": 167,
+    "fullBrowserTestsPassed": 52,
+    "gatedLiveBrowserTestsSkipped": 2,
+    "schemaValidation": "passed",
+    "migrationPreservation": "passed",
+    "accessibilityDesktopAndPhone": "passed",
+    "bundleAndPreservationGates": "passed",
+    "npmAuditVulnerabilities": 0,
+    "bundleBytes": {
+      "initialJavascript": 270212,
+      "phase16LazyJavascript": 54356,
+      "totalJavascript": 413486,
+      "css": 48434
+    },
+    "fullRepositoryVerification": "passed",
+    "hostedExactHeadVerification": "passed"
+  },
+  "visualEvidence": [
+    "evidence/visual/phase16/command-center-desktop-night.png",
+    "evidence/visual/phase16/complete-local-proof.png",
+    "evidence/visual/phase16/social-instance-windows.png",
+    "evidence/visual/phase16/command-center-phone-night.png"
+  ],
+  "founderAcceptanceEvidence": "evidence/phase16-founder-acceptance.json",
+  "rollback": {
+    "applicationCommit": "160b3c44932c6dd1ccd9ea439f9fe60fc4f11808",
+    "procedure": "Before production promotion, leave the accepted application commit intact and revert only the acceptance-evidence commit if authorization is withdrawn. After production promotion, redeploy applicationCommit and verify the canonical production URL."
+  },
+  "releaseBoundary": {
+    "mergeAuthorized": true,
+    "productionPromotionAuthorized": true,
+    "founderAcceptanceRequired": false,
+    "issue33CloseAuthorized": false
+  }
+}

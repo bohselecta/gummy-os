@@ -63,7 +63,9 @@ test('release scanner is portable and preserves first-paint and lazy feature bud
   const source = await readFile(new URL('../scripts/release-hardening.mjs', import.meta.url), 'utf8');
   assert.match(source, /async function listSourceFiles/);
   assert.match(source, /Initial JavaScript entry exceeds 264 KiB budget/);
-  assert.match(source, /Total lazy-loaded JavaScript exceeds 380 KiB budget/);
+  assert.match(source, /Phase 16 lazy JavaScript exceeds 56 KiB budget/);
+  assert.match(source, /Total lazy-loaded JavaScript exceeds 408 KiB budget/);
+  assert.match(source, /CSS bundle exceeds 50 KiB budget/);
   assert.match(source, /first-paint ceiling remains unchanged/);
   assert.doesNotMatch(source, /execFileSync\(['"]rg['"]/);
 });

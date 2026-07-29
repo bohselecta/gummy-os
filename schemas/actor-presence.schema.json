@@ -4,7 +4,7 @@
   "title": "Gummy Actor Presence",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "id", "actorId", "state", "operator", "visibility", "contactModes", "contextRefs", "startedAt", "updatedAt", "expiresAt", "disclosure"],
+  "required": ["schema", "id", "actorId", "state", "operator", "representationAuthority", "visibility", "contactModes", "contextRefs", "revision", "startedAt", "updatedAt", "expiresAt", "disclosure", "provenance"],
   "properties": {
     "schema": { "const": "gummy.actor-presence/v1" },
     "id": { "type": "string", "pattern": "^actor-presence:" },
@@ -20,6 +20,18 @@
         "moldId": { "type": ["string", "null"], "pattern": "^mold:" },
         "grantId": { "type": ["string", "null"], "pattern": "^grant:" },
         "sponsorHumanId": { "type": ["string", "null"], "pattern": "^human:" }
+      }
+    },
+    "representationAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "allowedCapabilities", "allowedData", "excludedActions", "revocable"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "allowedCapabilities": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "allowedData": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "excludedActions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "revocable": { "const": true }
       }
     },
     "visibility": { "enum": ["private", "invite", "bowl", "organization", "public"] },
@@ -39,11 +51,14 @@
       }
     },
     "stale": { "type": "boolean" },
+    "revision": { "type": "integer", "minimum": 1 },
     "startedAt": { "type": "string", "format": "date-time" },
     "updatedAt": { "type": "string", "format": "date-time" },
     "expiresAt": { "type": ["string", "null"], "format": "date-time" },
     "lastVerifiedAt": { "type": ["string", "null"], "format": "date-time" },
+    "revokedAt": { "type": ["string", "null"], "format": "date-time" },
     "disclosure": { "type": "string", "minLength": 1 },
+    "provenance": { "type": "object" },
     "receiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true }
   }
 }

@@ -5,7 +5,7 @@
   "description": "Generated cross-system attention projection. It is never an authority source.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "id", "ownerActorId", "attentionItems", "sourceRevisions", "generatedAt", "authoritySource"],
+  "required": ["schema", "id", "ownerActorId", "attentionItems", "activeProductions", "activeSocialInstances", "sharedVisions", "activeAgents", "workOrders", "returns", "receipts", "productionPools", "contributionChanges", "waitingHumanDecisions", "blockers", "expiringPermissions", "presenceChanges", "distributionPlans", "resumeOpportunities", "sourceRevisions", "generatedAt", "authoritySource"],
   "properties": {
     "schema": { "const": "gummy.command-center-view/v1" },
     "id": { "type": "string", "pattern": "^command-center-view:" },
@@ -50,6 +50,22 @@
         }
       }
     },
+    "activeProductions": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "activeSocialInstances": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "sharedVisions": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "activeAgents": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "workOrders": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "jobs": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "returns": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "receipts": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "productionPools": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "contributionChanges": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "waitingHumanDecisions": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "blockers": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "expiringPermissions": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "presenceChanges": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "distributionPlans": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+    "resumeOpportunities": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
     "sourceRevisions": {
       "type": "array",
       "items": {
@@ -66,5 +82,20 @@
     "generatedAt": { "type": "string", "format": "date-time" },
     "authoritySource": { "const": "underlying-objects-and-master-control" },
     "executing": { "const": false }
+  },
+  "$defs": {
+    "projectionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "status", "revision"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "revision": { "type": ["integer", "string", "null"] },
+        "sourceId": { "type": ["string", "null"] },
+        "detail": { "type": ["string", "null"] }
+      }
+    }
   }
 }

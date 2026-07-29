@@ -79,6 +79,7 @@ const surfaces = [
   ['gummies', '▤', 'My Gummies'],
   ['browser', '◉', 'Browser'],
   ['productions', '◇', 'Productions'],
+  ['command-center', '◈', 'Command Center'],
   ['actors', '◎', 'Actors / Bowls'],
   ['work-orders', '⇢', 'Work Orders'],
   ['receipts', '✓', 'Receipts'],
@@ -550,6 +551,9 @@ async function renderShell() {
         }
       } else if (id.startsWith('private-chat:')) {
         await openPrivateChatWindow(id.slice('private-chat:'.length));
+      } else if (id.startsWith('social-window:')) {
+        const { restoreSocialWindow } = await import('./apps/social-instance-windows.js');
+        await restoreSocialWindow({ windowId: id, repository, windowManager });
       } else if (id.startsWith('place-window:')) {
         const [, placeSlug, contextType, ...contextParts] = id.split(':');
         const contextId = decodeURIComponent(contextParts.join(':'));
@@ -643,6 +647,7 @@ async function openSurface(id) {
     gummies: ['My Gummies', 'objects and quarantine'],
     browser: ['Gummy Browser', 'isolated navigation'],
     productions: ['Productions', 'Actor-first durable undertakings'],
+    'command-center': ['Command Center', 'attention, collaboration, and governed release'],
     actors: ['Actors & Bowls', 'composition proof'],
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
@@ -709,6 +714,30 @@ async function buildSurface(id) {
     return createBrowserSurface({ h, repository });
   }
   if (id === 'productions') return productionSurface();
+  if (id === 'command-center') {
+    const [{ createCollaborationApp }, socialWindows] = await Promise.all([
+      import('./apps/collaboration.js'),
+      import('./apps/social-instance-windows.js')
+    ]);
+    const app = await createCollaborationApp({
+      repository,
+      productionRuntime: productionState.productionRuntime,
+      persistProductionRuntime: async runtime => {
+        productionState = { productionRuntime: runtime };
+        await productionRepository.persist(runtime);
+        await productionRepository.flush();
+      },
+      openSocialInstance: social => socialWindows.openSocialInstanceWindows({
+        social, repository, windowManager, announce
+      }),
+      closeSocialInstance: social => socialWindows.closeSocialInstanceWindows({
+        social, windowManager, announce
+      }),
+      openMasterControl: () => openSurface('control'),
+      announce
+    });
+    return app.node;
+  }
   if (id === 'actors') return actorsSurface();
   if (id === 'work-orders') return workOrdersSurface();
   if (id === 'receipts') return receiptsSurface();

@@ -94,9 +94,14 @@ export class WindowManager {
     const node = this.windows.get(id);
     if (!node || !node.isConnected) return;
     const rect = node.getBoundingClientRect();
+    const saved = await this.repository.get('meta', `window:${id}`);
+    const hasVisibleGeometry = rect.width > 0 && rect.height > 0;
     await this.repository.put('meta', {
-      id: `window:${id}`, left: Math.round(rect.left), top: Math.round(rect.top),
-      width: Math.round(rect.width), height: Math.round(rect.height),
+      id: `window:${id}`,
+      left: hasVisibleGeometry ? Math.round(rect.left) : saved?.left ?? 0,
+      top: hasVisibleGeometry ? Math.round(rect.top) : saved?.top ?? 0,
+      width: hasVisibleGeometry ? Math.round(rect.width) : saved?.width ?? 0,
+      height: hasVisibleGeometry ? Math.round(rect.height) : saved?.height ?? 0,
       z: Number(node.style.zIndex || 0), hidden: node.hidden, maximized: node.classList.contains('is-maximized'),
       updatedAt: new Date().toISOString()
     }, { validate: false });

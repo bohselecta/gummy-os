@@ -26,7 +26,16 @@ const schemaFiles = Object.freeze({
   'gummy.place-binding/v1': 'place-binding',
   'gummy.source-package/v1': 'source-package',
   'gummy.place-handoff/v1': 'place-handoff',
-  'gummy.world-plan/v1': 'world-plan'
+  'gummy.world-plan/v1': 'world-plan',
+  'gummy.actor-presence/v1': 'actor-presence',
+  'gummy.social-instance/v1': 'social-instance',
+  'gummy.shared-vision/v1': 'shared-vision',
+  'gummy.production-agreement/v1': 'production-agreement',
+  'gummy.production-pool/v1': 'production-pool',
+  'gummy.contribution-ledger/v1': 'contribution-ledger',
+  'gummy.production-formation/v1': 'production-formation',
+  'gummy.distribution-plan/v1': 'distribution-plan',
+  'gummy.command-center-view/v1': 'command-center-view'
 });
 
 function validateNode(schema, value, path = '$') {

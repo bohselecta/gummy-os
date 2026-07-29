@@ -88,6 +88,23 @@
   .chat-composer .button.primary { flex: 1; }
   .live-foundation, .tester-operations { padding: var(--space-3); }
   .local-preview-video { max-height: 45dvh; }
+  .phase16-command-center { gap: var(--space-3); }
+  .phase16-hero, .phase16-split { grid-template-columns: 1fr; }
+  .phase16-hero, .phase16-section { padding: var(--space-4); }
+  .phase16-command-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .phase16-presence-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .phase16-presence-card p { min-height: 0; }
+  .phase16-progress { grid-template-columns: 1fr; }
+  .phase16-layout-preview { min-height: 350px; }
+  .phase16-layout-window { min-width: 0; width: 44%; }
+  .phase16-layout-window:nth-child(1) { left: 3%; top: 5%; }
+  .phase16-layout-window:nth-child(2) { left: auto; right: 3%; top: 5%; }
+  .phase16-layout-window:nth-child(3) { left: 3%; right: auto; top: 36%; }
+  .phase16-layout-window:nth-child(4) { left: auto; right: 3%; top: 36%; }
+  .phase16-layout-window:nth-child(5) { left: 3%; right: 3%; top: 67%; width: auto; }
+  .phase16-table { min-width: 620px; }
+  .phase16-attention-card { grid-template-columns: 1fr; }
+  .phase16-attention-card > div:last-child { justify-items: start; }
 }
 
 @media (max-width: 360px) {
@@ -101,6 +118,8 @@
   .bar-candy .label { font-size: .62rem; }
   .window-control { width: 26px; min-width: 26px; min-height: 26px; }
   .window-title { font-size: .86rem; }
+  .phase16-command-metrics, .phase16-presence-grid { grid-template-columns: 1fr 1fr; }
+  .metric-card { padding: var(--space-2); }
 }
 
 @media (max-width: 760px) and (orientation: landscape) {

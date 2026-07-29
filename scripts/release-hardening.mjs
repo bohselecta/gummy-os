@@ -69,11 +69,17 @@ const entryName = shell.match(/assets\/(index-[^"]+\.js)/)?.[1];
 if (!entryName) throw new Error('Production entry bundle is missing');
 const entryBytes = (await stat(join('build/assets', entryName))).size;
 if (entryBytes > 264 * 1024) throw new Error(`Initial JavaScript entry exceeds 264 KiB budget: ${entryBytes}`);
-// Phase 15 adds seven durable, lazy-loaded Place cores. The first-paint ceiling remains unchanged;
-// only the total lazy feature budget expands from 300 KiB to 380 KiB.
-if (jsBytes > 380 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 380 KiB budget: ${jsBytes}`);
-// One extra KiB is reserved for identity/privacy clarity such as hiding project-only reference participants from the default account grid.
-if (cssBytes > 41 * 1024) throw new Error(`CSS bundle exceeds 41 KiB budget: ${cssBytes}`);
+// Phase 16 remains outside first paint and adds three bounded Living Collaboration chunks; the first-paint ceiling remains unchanged.
+// The aggregate ceiling expands from 380 KiB to 408 KiB while the initial entry stays unchanged.
+const phase16Names = javascript.filter(name => (
+  name.startsWith('living-collaboration-')
+  || name.startsWith('collaboration-')
+  || name.startsWith('social-instance-windows-')
+));
+const phase16Bytes = await total(phase16Names);
+if (phase16Bytes > 56 * 1024) throw new Error(`Phase 16 lazy JavaScript exceeds 56 KiB budget: ${phase16Bytes}`);
+if (jsBytes > 408 * 1024) throw new Error(`Total lazy-loaded JavaScript exceeds 408 KiB budget: ${jsBytes}`);
+if (cssBytes > 50 * 1024) throw new Error(`CSS bundle exceeds 50 KiB budget: ${cssBytes}`);
 
 console.log(JSON.stringify({
   status: 'pass',
@@ -81,6 +87,7 @@ console.log(JSON.stringify({
   browserBundle: {
     javascriptBytes: jsBytes,
     initialJavascriptBytes: entryBytes,
+    phase16LazyJavascriptBytes: phase16Bytes,
     cssBytes,
     sourceMaps: 0,
     serverOnlyMarkers: 0

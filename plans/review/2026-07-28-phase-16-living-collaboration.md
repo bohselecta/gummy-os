@@ -2,9 +2,37 @@
 
 ## Shared Vision · Actor Presence · Social Instances · Production Pools · Command Center · Distribution
 
-**Status:** DESIGN COMPLETE / REVIEW HOLD / DO NOT IMPLEMENT DURING PHASE 15B  
-**Designed:** 2026-07-28  
-**Dependency:** Complete and production-verify the remaining Phase 15B source-product and specialist-runtime integrations before beginning broad Phase 16 implementation.
+**Status:** FOUNDER ACCEPTED / MERGE AND PRODUCTION PROMOTION AUTHORIZED
+**Designed:** 2026-07-28
+**Implemented:** 2026-07-28 from latest `main` at `160b3c44932c6dd1ccd9ea439f9fe60fc4f11808`
+**Dependency:** Satisfied. Phase 15 is accepted, merged, deployed, production-verified, and closed.
+
+## Implementation checkpoint
+
+The accepted design packet was first replayed onto a fresh branch from the production-verified Phase 15 head. When PR #34, the deterministic runtime-conformance checkpoint in PR #39, and the governed Runtime Binding checkpoint in PR #40 subsequently reached `main`, the implementation commit was transplanted onto that newer exact head. The final branch therefore contains the canonical merged design history once, preserves the additive non-live forward-compatibility contracts, and adds only the Phase 16 implementation.
+
+The founder-preview candidate now includes:
+
+- all nine validated Phase 16 contracts and migration-safe IndexedDB stores;
+- truthful Human-live, AI-represented, static, offline, expired, and revoked presence behavior;
+- a durable five-window Social Instance with preserved minimized state and new Session revisions on resume;
+- exact selected-message hashes and explicit exclusions for Shared Vision provenance;
+- exact-revision Agreement approval and stale-approval invalidation;
+- the $10.00 `$4 / $3 / $3` authorization proof and a separate `$2.50 × 4` future proposal;
+- append-only Contribution Ledger evidence with no automatic ownership;
+- an immutable Formation Event and Receipt;
+- the existing governed Make Production path through a deterministic local route;
+- separate Human result acceptance and three versioned Distribution Plans;
+- one explicit private local release while Radio and Channels remain unpublished;
+- a generated, non-executing Command Center projection with Master Control preserved as authority;
+- desktop, phone, accessibility, migration, reload, security, bundle, and preservation automation.
+
+Capability truth remains explicit: authenticated remote multi-Human presence, verified remote identity, live audio/video, real payment processing, final Radio voice, remote Channels publication, and Phase 17 MCP execution are not connected or claimed.
+
+Hayden accepted exact hosted preview head `be6f5b89b4929eea766b2321e2c65ed442b9f663`
+on 2026-07-29 and authorized merge and production promotion. The durable
+decision is recorded in `evidence/phase16-founder-acceptance.json`. Issue #36
+remains open and review-held.
 
 ## 1. Purpose
 
