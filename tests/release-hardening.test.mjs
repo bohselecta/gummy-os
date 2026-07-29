@@ -15,6 +15,7 @@ test('production security headers deny embedding and ambient access while allowi
   assert.match(headers['content-security-policy'], /object-src 'none'/);
   assert.equal(headers['x-frame-options'], 'DENY');
   assert.equal(headers['x-content-type-options'], 'nosniff');
+  assert.equal(headers['cross-origin-opener-policy'], 'same-origin-allow-popups');
   assert.equal(headers['permissions-policy'], 'camera=(self), display-capture=(self), geolocation=(), microphone=(self)');
 });
 
@@ -26,6 +27,11 @@ test('Vercel static delivery carries the same CSP plus transport and immutable a
   assert.match(global['content-security-policy'], /frame-ancestors 'none'/);
   assert.match(global['strict-transport-security'], /max-age=63072000/);
   assert.equal(global['x-frame-options'], 'DENY');
+  assert.equal(
+    global['cross-origin-opener-policy'],
+    'same-origin-allow-popups',
+    'Human-opened standalone Place windows must retain their exact-origin receipt channel'
+  );
   assert.equal(assets['cache-control'], 'public, max-age=31536000, immutable');
   assert.equal(shell['cache-control'], 'no-store');
   assert.equal(config.routes, undefined, 'legacy routes must not bypass the top-level security headers');
@@ -42,9 +48,13 @@ test('Vercel static delivery carries the same CSP plus transport and immutable a
 });
 
 test('external preview remains sandboxed and every new-tab link is opener-safe', async () => {
-  const source = await readFile(new URL('../src/app.js', import.meta.url), 'utf8');
-  assert.match(source, /h\('iframe', \{ title: 'Isolated external preview', sandbox: ''/);
-  for (const match of source.matchAll(/target: '_blank'[^}\n]*/g)) {
+  const [appSource, browserSource] = await Promise.all([
+    readFile(new URL('../src/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../src/apps/browser-surface.js', import.meta.url), 'utf8')
+  ]);
+  assert.match(browserSource, /sandbox: 'allow-scripts allow-forms allow-popups'/);
+  assert.doesNotMatch(browserSource, /sandbox: '[^']*allow-same-origin/);
+  for (const match of appSource.matchAll(/target: '_blank'[^}\n]*/g)) {
     assert.match(match[0], /rel: '(?:noopener noreferrer|noreferrer)'/);
   }
 });

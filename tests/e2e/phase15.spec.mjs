@@ -116,7 +116,8 @@ test('Radio revisions and approvals stay separate from final audio and publicati
   await onboard(page);
   const radio = await openPlace(page, 'Radio');
   await radio.getByLabel('Episode title').fill('Launch aftershow');
-  await radio.getByLabel('Selected source material').fill('The team completed the first locally active Gummy Places.');
+  await radio.getByLabel('Host A selected sources').fill('What changed?\nThe Places now preserve local state.');
+  await radio.getByLabel('Host B selected sources').fill('The scoped bridges opened.\nEach authority returned an exact receipt.');
   await radio.getByRole('button', { name: 'Create private episode' }).click();
   await radio.getByLabel(/Script revision/).fill('Host A: What changed? Host B: The Places now preserve real local state.');
   await radio.getByRole('button', { name: 'Save new revision' }).click();
@@ -142,4 +143,30 @@ test('Rooms creates a local room, participants, isolated threads, and a fair que
   await rooms.getByRole('button', { name: 'Advance fair queue' }).click();
   await expect(rooms.locator('[data-record-type="queue"]')).toHaveCount(1);
   await expect(rooms.getByRole('button', { name: 'Remote room service not connected' })).toBeDisabled();
+});
+
+test('Browser keeps a Human-owned allowlist and history and attaches only pasted selections', async ({ page }) => {
+  await onboard(page);
+  await page.getByRole('tab', { name: /Browser/ }).click();
+  const browser = page.getByRole('region', { name: 'Gummy Browser window' });
+  await browser.getByLabel('External URL').fill('https://example.com/');
+  await browser.getByLabel('Saved link label').fill('Example reference');
+  await browser.getByRole('button', { name: 'Save exact link' }).click();
+  await expect(browser.getByRole('heading', { name: 'Saved links (1)' })).toBeVisible();
+  await browser.getByRole('button', { name: 'Open isolated preview' }).click();
+  const frame = browser.getByTitle('Isolated external preview');
+  await expect(frame).toBeVisible();
+  await expect(frame).toHaveAttribute('sandbox', 'allow-scripts allow-forms allow-popups');
+  await expect(browser.getByRole('heading', { name: 'Private history (1)' })).toBeVisible();
+  await browser.getByLabel('Selected text to attach').fill('This exact passage was selected by the Human.');
+  await browser.getByRole('button', { name: 'Attach selection as a Gummy' }).click();
+  await expect(browser.getByRole('status')).toContainText('No embedded-page content was read');
+
+  await page.getByRole('tab', { name: /My Gummies/ }).click();
+  await expect(page.getByRole('region', { name: 'My Gummies window' })).toContainText('Example reference selection');
+
+  await page.reload();
+  const restored = page.getByRole('region', { name: 'Gummy Browser window' });
+  await expect(restored.getByRole('heading', { name: 'Saved links (1)' })).toBeVisible();
+  await expect(restored.getByRole('heading', { name: 'Private history (1)' })).toBeVisible();
 });

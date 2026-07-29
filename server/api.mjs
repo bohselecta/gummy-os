@@ -13,7 +13,7 @@ export function securityHeaders({ development = false } = {}) {
     'x-content-type-options': 'nosniff',
     'referrer-policy': 'no-referrer',
     'permissions-policy': 'camera=(self), display-capture=(self), geolocation=(), microphone=(self)',
-    'cross-origin-opener-policy': 'same-origin',
+    'cross-origin-opener-policy': 'same-origin-allow-popups',
     'x-frame-options': 'DENY'
   };
 }

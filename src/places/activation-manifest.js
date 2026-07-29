@@ -8,13 +8,14 @@ export const PLACE_ACTIVATION_OVERLAYS = Object.freeze({
       capability('watch-groups.manage', 'Watch groups', 'available', ['browser'], [], false, '$0 local', 'Create Human-defined watch groups without an algorithmic feed.'),
       capability('family-room.compose', 'Family Room notes', 'available', ['browser'], [], false, '$0 local', 'Create bounded bulletin notes; no open chat is implied.'),
       capability('premiere-draft.prepare', 'Premiere drafts', 'approval-required', ['browser'], ['Human guide-placement approval'], false, '$0 local', 'Prepare and approve a local premiere draft without publishing it.'),
+      capability('channels.android.open', 'Installed Android guide', 'mobile-companion-required', ['mobile'], ['Installed compatibility build'], false, '$0 local', 'Open the installed Gummy Channels compatibility build through its exact native route.'),
       capability('channel.publish', 'Remote channel publication', 'remote-service-required', ['remote'], ['Authenticated Channels service', 'moderation gates'], true, 'provider/service dependent', 'Remote publication remains unavailable until the Channels service and moderation system are verified.')
     ]),
     connectionRoutes: Object.freeze([
-      route('android', null, 'needs-setup'),
+      route('android', 'gummy-channels://open', 'available'),
       route('remote-service', null, 'needs-setup')
     ]),
-    lastVerifiedAt: null,
+    lastVerifiedAt: '2026-07-28T23:52:00.000Z',
     migration: migration(['app:gummy-channels', 'VidFam TV'])
   }),
   'app:gummy-wardrobe': Object.freeze({
@@ -42,10 +43,10 @@ export const PLACE_ACTIVATION_OVERLAYS = Object.freeze({
       capability('intent.preview', 'Intent Gate', 'available', ['browser'], ['Selected House nodes'], false, '$0 local', 'Preview exactly what crosses the Scope Wall.'),
       capability('two-note.commit', 'Two-note commit', 'approval-required', ['browser'], ['Intent note', 'Consequence note'], false, '$0 local', 'Commit intent and consequence together with a Place receipt.'),
       capability('house.export', 'Scoped House export', 'approval-required', ['browser'], ['Human selection'], false, '$0 local', 'Export selected House records without address or ambient photos.'),
-      capability('homewright.open', 'Full House workbench', 'remote-service-required', ['remote'], ['Verified allowlisted HomeWright deployment'], false, '$0 unless disclosed otherwise', 'The local House core works now; the full HomeWright workbench route still needs production binding.')
+      capability('homewright.open', 'Full House workbench', 'available', ['web'], ['Human-approved two-note commit'], false, '$0 local browser storage', 'Open the verified full House workbench and import only the exact Human-approved two-note commit.')
     ]),
-    connectionRoutes: Object.freeze([route('web', null, 'needs-setup')]),
-    lastVerifiedAt: null,
+    connectionRoutes: Object.freeze([route('web', 'https://homewright.vercel.app/', 'available')]),
+    lastVerifiedAt: '2026-07-28T23:56:00.000Z',
     migration: migration(['app:gummy-house', 'Homewright'])
   }),
   'app:gummy-worlds': Object.freeze({
@@ -60,11 +61,12 @@ export const PLACE_ACTIVATION_OVERLAYS = Object.freeze({
       capability('world.package', 'Package world', 'approval-required', ['browser'], ['Valid World Plan'], false, '$0 local', 'Export a versioned World Plan package.'),
       capability('world.duplicate', 'Duplicate world', 'available', ['browser'], ['Saved World Plan'], false, '$0 local', 'Create an isolated revision-one copy.'),
       capability('sit.preview', 'Sit experience preview', 'available', ['browser'], ['Sit-mode plan'], false, '$0 local', 'Preview the supported Sit experience configuration.'),
+      capability('worlds.studio.open', 'Full Worlds Studio', 'available', ['web'], ['Valid bounded Sit plan'], false, '$0 local browser storage', 'Open the full Worlds Studio and import the exact bounded plan without starting native construction.'),
       capability('make_world', 'Build editable 3D world', 'local-runtime-required', ['local'], ['Authenticated Meshmallow supervisor', 'Human-approved exact plan'], true, 'bounded estimate', 'Only real scene construction requires Meshmallow.'),
       capability('walk.preview', 'Walk experience', 'approval-required', ['browser', 'local'], ['Separate navigation/performance/accessibility acceptance'], false, '$0 local before build', 'Walk remains a separately gated experience.')
     ]),
-    connectionRoutes: Object.freeze([route('web', null, 'needs-setup'), route('local-bridge', 'http://127.0.0.1:5214', 'needs-setup')]),
-    lastVerifiedAt: null,
+    connectionRoutes: Object.freeze([route('web', 'https://videoworldsnet.vercel.app/create', 'available'), route('local-bridge', 'http://127.0.0.1:5214', 'needs-setup')]),
+    lastVerifiedAt: '2026-07-28T23:53:00.000Z',
     migration: migration(['app:gummy-worlds', 'VideoWorlds'])
   }),
   'app:gummy-table': Object.freeze({
@@ -95,11 +97,12 @@ export const PLACE_ACTIVATION_OVERLAYS = Object.freeze({
       capability('script.approve', 'Script approval', 'approval-required', ['browser'], ['Exact revision'], false, '$0 local', 'Approve the exact script revision.'),
       capability('speech.preview', 'Browser speech preview', 'available', ['browser'], ['Approved script'], false, '$0 local', 'Preview synthetic browser speech; it is not final audio.'),
       capability('episode.export', 'Private episode export', 'approval-required', ['browser'], ['Approved script', 'Scoped sources'], false, '$0 local', 'Export a private episode package without publishing it.'),
+      capability('aftercast.open', 'Full Radio Studio', 'available', ['web'], ['Private Human-approved A/B source package'], false, '$0 local browser storage', 'Open the verified full Radio Studio and import exact scoped A/B sources.'),
       capability('voice.render', 'Final generated voice', 'remote-service-required', ['remote'], ['Voice/likeness approval', 'Authenticated renderer'], true, 'provider dependent', 'Final generated audio requires a separate approved renderer.'),
       capability('episode.publish', 'Public publishing', 'blocked', ['remote'], ['Accepted publication system'], true, 'not offered', 'Public publication is not part of the current release.')
     ]),
-    connectionRoutes: Object.freeze([route('web', null, 'needs-setup')]),
-    lastVerifiedAt: null,
+    connectionRoutes: Object.freeze([route('web', 'https://www.getaftercast.com/', 'available')]),
+    lastVerifiedAt: '2026-07-28T23:53:00.000Z',
     migration: migration(['app:gummy-radio', 'TalkPrint Studio', 'AfterCast'])
   }),
   'app:gummy-rooms': Object.freeze({
@@ -144,12 +147,12 @@ export function activatePlaceDescriptor(descriptor) {
 
 function releaseSummary(placeId) {
   const summaries = {
-    'app:gummy-channels': 'The local guide, watch groups, Family Room notes, and premiere drafts work now. Remote publication still needs the Channels service.',
+    'app:gummy-channels': 'The local guide and installed Android route work now. Remote publication still needs the Channels service and production signing.',
     'app:gummy-wardrobe': 'Owned-item management, outfit composition, temporary availability, history, and selected-outfit export work locally. Camera classification needs a companion.',
-    'app:gummy-house': 'Scoped House memory, Intent Gate, two-note commits, and exports work locally. The full HomeWright workbench route still needs binding.',
-    'app:gummy-worlds': 'World planning, Sit preview, validation, estimates, inspection, duplication, and packages work locally. Only real 3D construction needs Meshmallow.',
+    'app:gummy-house': 'Scoped House memory, the Intent Gate, and the verified full workbench are connected through exact two-note commit receipts.',
+    'app:gummy-worlds': 'World planning and the full Worlds Studio are connected through exact bounded-plan receipts. Only real 3D construction needs Meshmallow.',
     'app:gummy-table': 'Private Table planning, invitations, RSVPs, rules, dishes, Pantry gifts, and export work locally. Exact-address release needs the verified service.',
-    'app:gummy-radio': 'Scoped sources, revisioned scripts, approvals, browser speech, and private episode export work locally. Final voice and publishing remain separate.',
+    'app:gummy-radio': 'Scoped A/B sources now import into the verified full Radio Studio. Final voice and public publishing remain separate.',
     'app:gummy-rooms': 'Private local rooms, second-tab joining, fair queues, threads, and selected Gummy sharing work locally. Remote rooms and live media need a service.'
   };
   return summaries[placeId] || 'Place capability state is available through its declared runtime.';
