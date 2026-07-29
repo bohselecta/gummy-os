@@ -1,0 +1,9 @@
+{
+  "surfaceId": "surface:ranch-day:render-review",
+  "serverId": "server:deterministic-render",
+  "actorId": "actor:producer",
+  "productionId": "production:ranch-day",
+  "sandboxed": true,
+  "consentRoute": "master-control",
+  "privileges": ["render", "submit-input", "request-tool"]
+}

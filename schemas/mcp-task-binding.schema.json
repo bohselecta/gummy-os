@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gummy.mcp-task-binding/v1",
+  "title": "Gummy MCP Task Binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "actorId",
+    "agentId",
+    "productionId",
+    "workOrderId",
+    "authorityLeaseId",
+    "moldId",
+    "grantId",
+    "returnAnchor",
+    "acceptancePolicy",
+    "contributionLedgerId",
+    "receiptId",
+    "transport"
+  ],
+  "properties": {
+    "actorId": { "type": "string", "minLength": 1 },
+    "agentId": { "type": "string", "minLength": 1 },
+    "productionId": { "type": "string", "minLength": 1 },
+    "workOrderId": { "type": "string", "minLength": 1 },
+    "authorityLeaseId": { "type": "string", "minLength": 1 },
+    "moldId": { "type": "string", "minLength": 1 },
+    "grantId": { "type": "string", "minLength": 1 },
+    "returnAnchor": { "type": "string", "minLength": 1 },
+    "acceptancePolicy": { "type": "string", "minLength": 1 },
+    "contributionLedgerId": { "type": "string", "minLength": 1 },
+    "receiptId": { "type": "string", "minLength": 1 },
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "taskId",
+        "serverId",
+        "protocolVersion",
+        "extensionId",
+        "capabilitySet"
+      ],
+      "properties": {
+        "type": { "const": "mcp-task" },
+        "taskId": { "type": "string", "minLength": 16 },
+        "serverId": { "type": "string", "minLength": 1 },
+        "protocolVersion": { "const": "2026-07-28" },
+        "extensionId": { "const": "io.modelcontextprotocol/tasks" },
+        "capabilitySet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
