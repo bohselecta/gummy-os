@@ -166,19 +166,25 @@ Composer remains the Human representation of the existing Actor Plan and Product
 
 # Release gates
 
-- [ ] full deterministic validation
-- [ ] all Node tests
-- [ ] production build
-- [ ] security and bundle budgets
-- [ ] complete Chromium browser suite
-- [ ] full-product preservation
-- [ ] bounded Chromium/Firefox/WebKit deep smoke
+- [x] full deterministic validation — `npm run check` PASS
+- [x] all Node tests — 186 passed, 0 failed, 0 skipped
+- [x] production build — Vite production build PASS
+- [x] security and bundle budgets — 374 sources scanned; all ceilings PASS
+- [x] complete Chromium browser suite — 62 passed, 2 gated live-bridge skips
+- [x] full-product preservation — 8 pillars, 4 products, 6 Places, 22 schemas, 8 brand masters
+- [x] bounded Chromium/Firefox/WebKit deep smoke — 3 passed
 - [ ] exact-head hosted preview
-- [ ] rendered Gummy Box and Composer review
+- [x] rendered Gummy Box and Composer review — desktop and 320px evidence retained with SHA-256
 - [ ] crawler/static-route verification
 - [ ] merge exact accepted head
 - [ ] exact-commit production promotion
 - [ ] production verification
-- [ ] rollback record
+- [x] rollback record — `b5b230f` / `dpl_8AtyzBxFUHikmdWWi6EGHWZfFPw1`
 
 The branch must not be merged merely because its architecture is persuasive. The executable evidence must remain stronger than the prose.
+
+Current machine-readable release transaction:
+`evidence/executive-convergence-production.json`.
+
+Current locally verified candidate:
+`d3246881ea868f40b2b6cd8551902302ef0dba67`.

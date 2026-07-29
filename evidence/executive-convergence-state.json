@@ -1,6 +1,6 @@
 {
   "schema": "gummy.executive-convergence-state/v1",
-  "status": "verification-restarted-after-portability-fixes",
+  "status": "founder-approved-candidate-locally-verified",
   "baseline": {
     "mainCommit": "caa496a56bef499713b5dba90d355f8cdc729f05",
     "productionPhase": "Phase 16 Living Collaboration"
@@ -31,12 +31,26 @@
     "Phase 17 live MCP execution remains disabled"
   ],
   "requiredBeforeMerge": [
-    "complete deterministic verification",
-    "cross-browser deep acceptance",
+    "complete deterministic verification — passed: 186 Node tests and 62 Chromium browser tests",
+    "cross-browser deep acceptance — passed: Chromium, Firefox, and WebKit",
     "exact-head Vercel preview",
     "server route and metadata verification",
-    "rendered desktop and phone evidence",
+    "rendered desktop and phone evidence — passed and SHA-256 recorded",
     "exact accepted-head merge and production verification"
   ],
-  "recordedAt": "2026-07-29T08:25:00.000Z"
+  "verifiedCandidate": {
+    "commit": "d3246881ea868f40b2b6cd8551902302ef0dba67",
+    "nodeTestsPassed": 186,
+    "chromiumTestsPassed": 62,
+    "chromiumTestsSkipped": 2,
+    "deepBrowserTestsPassed": {
+      "chromium": 1,
+      "firefox": 1,
+      "webkit": 1
+    },
+    "npmAuditVulnerabilities": 0,
+    "productionEvidence": "evidence/executive-convergence-production.json",
+    "releaseDocument": "docs/release/EXECUTIVE-CONVERGENCE-2026-07-29.md"
+  },
+  "recordedAt": "2026-07-29T10:05:19.000Z"
 }
