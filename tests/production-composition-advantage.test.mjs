@@ -90,7 +90,8 @@ test('external canonical references can be linked without duplication or executi
     description: 'A linked undertaking.',
     lane: 'inputs'
   });
-  assert.equal(second.composition.nodes.filter(node => node.ref.id === 'production:another').length, 1);
+  const canonical = second.runtime.compositions.find(item => item.id === started.composition.id);
+  assert.equal(canonical.nodes.filter(node => node.ref.id === 'production:another').length, 1);
   assert.equal(second.runtime.productionRuns.length, 0);
   assert.equal(second.runtime.receipts.some(receipt => receipt.action?.includes('run')), false);
 });
