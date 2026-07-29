@@ -141,7 +141,10 @@ export function createGummyBoxApp(options) {
           h('h2', { text: 'Continue, arrange, or bring something in' }),
           h('p', { text: 'Gummy Box is the durable home. Composer is where you visibly connect sources, people, tools, decisions, and destinations.' })
         ]),
-        h('span', { class: `status ${attention ? 'review' : ''}`, text: attention ? `${attention} need attention` : 'Ready' })
+        h('span', {
+          class: `status ${attention ? 'review' : ''}`,
+          text: attention ? `${attention} item${attention === 1 ? '' : 's'} needs attention` : 'Ready'
+        })
       ]),
       h('div', { class: 'gummy-box-home-metrics' }, [
         metric('Productions', options.runtime.productions.length),
@@ -149,14 +152,9 @@ export function createGummyBoxApp(options) {
         metric('Results', results.length),
         metric('Quarantined', quarantined.length)
       ]),
-      h('div', { class: 'gummy-box-home-actions' }, [
-        button('Open Composer', options.openComposer, 'button primary'),
-        button('Import a Gummy', () => options.picker.click()),
-        button('See what needs attention', options.openCommandCenter)
-      ]),
       h('div', { class: 'gummy-box-continue-grid' }, [
         recentProduction ? h('article', { class: 'continue-card' }, [
-          h('span', { class: 'eyebrow', text: 'CONTINUE A PRODUCTION' }),
+          h('span', { class: 'eyebrow', text: 'CONTINUE' }),
           h('strong', { text: recentProduction.title }),
           h('p', { text: recentProduction.description }),
           h('div', { class: 'button-row' }, [
@@ -172,17 +170,26 @@ export function createGummyBoxApp(options) {
             }))
           ])
         ]) : h('article', { class: 'continue-card' }, [
-          h('span', { class: 'eyebrow', text: 'START' }),
-          h('strong', { text: 'No Production yet' }),
+          h('span', { class: 'eyebrow', text: 'CONTINUE' }),
+          h('strong', { text: 'No Productions yet' }),
           h('p', { text: 'Start with a blank Composer or one of its optional patterns.' }),
           button('Open Composer', options.openComposer, 'button primary')
+        ]),
+        h('article', { class: 'continue-card' }, [
+          h('span', { class: 'eyebrow', text: 'START OR IMPORT' }),
+          h('strong', { text: 'Bring in a source or begin arranging' }),
+          h('p', { text: 'Imports stay bounded in this browser. Composer changes remain proposals until you choose a later governed action.' }),
+          h('div', { class: 'button-row' }, [
+            button('Import a Gummy', () => options.picker.click(), 'button primary'),
+            button('Open Composer', options.openComposer)
+          ])
         ]),
         recentResult ? h('article', {
           class: 'continue-card',
           title: recentResult.title || recentResult.name || recentResult.id
         }, [
           h('span', { class: 'eyebrow', text: 'RECENT RESULT' }),
-          h('strong', { text: 'Most recent result' }),
+          h('strong', { text: recentResult.title || recentResult.name || recentResult.id }),
           h('p', { text: recentResult.acceptance
             ? 'Accepted result · open Results for the exact item and provenance.'
             : 'Candidate result awaiting a Human decision · open Results for exact details.' }),
@@ -198,7 +205,19 @@ export function createGummyBoxApp(options) {
           }), 'button', {
             'aria-label': `Add ${recentResult.title || recentResult.name || recentResult.id} in Composer`
           })
-        ]) : null
+        ]) : h('article', { class: 'continue-card' }, [
+          h('span', { class: 'eyebrow', text: 'RECENT RESULT' }),
+          h('strong', { text: 'No results yet' }),
+          h('p', { text: 'Accepted and candidate results will appear here with their exact title and state.' })
+        ]),
+        h('article', { class: 'continue-card' }, [
+          h('span', { class: 'eyebrow', text: 'NEEDS ATTENTION' }),
+          h('strong', { text: attention ? `${attention} item${attention === 1 ? '' : 's'} to review` : 'Nothing urgent' }),
+          h('p', { text: attention
+            ? 'Review bounded imports and candidate results without changing their underlying state.'
+            : 'Command Center will collect meaningful local decisions here when they appear.' }),
+          button('Open Command Center', options.openCommandCenter, attention ? 'button primary' : 'button')
+        ])
       ])
     ]);
     heading.insertAdjacentElement('afterend', launchpad);

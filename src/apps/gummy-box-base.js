@@ -61,7 +61,7 @@ export function createGummyBoxApp({
     h('div', { class: 'button-row' }, [
       h('button', { class: 'button primary', onclick: () => picker.click(), dataset: { testid: 'import-gummy' } }, 'Import a Gummy'),
       h('button', { class: 'button', onclick: openComposer }, 'Open Composer'),
-      h('button', { class: 'button danger', onclick: burnWorkspace }, 'Burn disposable imports')
+      h('button', { class: 'button danger', onclick: burnWorkspace }, 'Clear temporary imports')
     ]),
     picker
   ]);

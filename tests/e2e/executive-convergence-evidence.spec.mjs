@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { evidencePath } from './evidence-path.mjs';
+import { openPrimary } from './support/calm-navigation.mjs';
 
 test.use({ reducedMotion: 'reduce' });
 
@@ -18,7 +19,7 @@ test('capture the Human-owned workspace and goal-first Composer', async ({ page 
   await page.setViewportSize({ width: 1440, height: 900 });
   await onboard(page);
 
-  await page.getByRole('tab', { name: /Gummy Box/ }).click();
+  await openPrimary(page, /Gummy Box/);
   const box = page.getByTestId('gummy-box');
   await expect(box.getByTestId('gummy-box-launchpad')).toBeVisible();
   await page.screenshot({ path: evidencePath('executive-convergence-gummy-box-desktop.png'), fullPage: true });
@@ -37,11 +38,11 @@ test('capture the Human-owned workspace and goal-first Composer', async ({ page 
   await page.screenshot({ path: evidencePath('executive-convergence-composer-desktop.png'), fullPage: true });
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole('tab', { name: /Gummy Box/ }).click();
+  await openPrimary(page, /Gummy Box/);
   await expect(page.getByTestId('gummy-box-launchpad')).toBeVisible();
   await page.screenshot({ path: evidencePath('executive-convergence-gummy-box-phone.png'), fullPage: true });
 
-  await page.getByRole('tab', { name: 'Composer' }).click();
+  await openPrimary(page, 'Composer');
   await expect(page.getByTestId('composer-brief').getByLabel('Desired result')).toHaveValue('Create a short visual launch story that explains Gummy clearly.');
   await page.screenshot({ path: evidencePath('executive-convergence-composer-phone.png'), fullPage: true });
 });

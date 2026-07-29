@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page) {
   await page.goto('/');
@@ -12,7 +13,7 @@ async function onboard(page) {
 
 test('Hoyt stays recorded but is not presented as a default local user', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: 'Actors / Bowls' }).click();
+  await openMoreItem(page, /People & groups/);
 
   const hoytDefaultCard = page.locator('.card[data-actor-id="actor:hoyt"]');
   await expect(hoytDefaultCard).toHaveCount(1);

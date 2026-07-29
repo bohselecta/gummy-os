@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { evidencePath } from './evidence-path.mjs';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function reachStartingChoice(page, mode = 'night') {
   await page.goto('/');
@@ -50,7 +51,7 @@ test('trusted test user can enter the sample, understand Actors, and use Glopper
   expect(await counts(page)).toEqual({ productions: 1, runs: 0, grants: 0 });
   await page.screenshot({ path: evidencePath('phase11-sample-production-night.png'), fullPage: true });
 
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   const presence = page.getByTestId('actor-presence-grid');
   await expect(presence.locator('[data-presence-id]')).toHaveCount(4);
   await expect(presence.getByRole('heading', { name: 'Glopper' })).toBeVisible();
@@ -60,7 +61,7 @@ test('trusted test user can enter the sample, understand Actors, and use Glopper
   await expect(presence.getByText(/supported Blender runtime/)).toBeVisible();
   await page.screenshot({ path: evidencePath('phase11-actor-presence-night.png'), fullPage: true });
 
-  await page.locator('.gummy-bar').getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   const glopper = page.getByRole('complementary', { name: 'Glopper Panel' });
   await expect(glopper.getByText(/You have 1 Production, 1 pending decision/)).toBeVisible();
   await expect(glopper.getByRole('button', { name: /Continue Night Gummy Launch/ })).toBeVisible();
@@ -80,7 +81,7 @@ test('first-user doorway and sample remain usable at phone width in Day Gummy', 
   await reachStartingChoice(page, 'day');
   await page.getByRole('button', { name: 'Open the sample Production' }).click();
   await expect(page.getByRole('region', { name: 'Night Gummy Launch window' })).toBeVisible();
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   await expect(page.getByTestId('actor-presence-grid').locator('[data-presence-id]')).toHaveCount(4);
   await page.screenshot({ path: evidencePath('phase11-test-user-phone-day.png'), fullPage: true });
 });

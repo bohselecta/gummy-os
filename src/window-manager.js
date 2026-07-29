@@ -51,6 +51,7 @@ export class WindowManager {
     if (saved?.maximized) node.classList.add('is-maximized');
     if (saved?.hidden) node.hidden = true;
     this.focus(node);
+    await this.ensureDefaultGroup();
     controls.addEventListener('click', event => this.control(id, event.target.dataset.windowAction));
     node.addEventListener('pointerdown', () => this.focus(node));
     new ResizeObserver(() => this.persist(id)).observe(node);
@@ -76,6 +77,86 @@ export class WindowManager {
     node.style.zIndex = String(++this.z);
     for (const candidate of this.windows.values()) candidate.dataset.focused = String(candidate === node);
     void this.persist(node.dataset.windowId);
+    void this.repository.put('meta', {
+      id: 'workspace:last-focused',
+      windowId: node.dataset.windowId,
+      updatedAt: new Date().toISOString()
+    }, { validate: false });
+  }
+
+  summaries() {
+    return [...this.windows.entries()].map(([id, node]) => ({
+      id,
+      title: node.querySelector('.window-title')?.textContent || id,
+      hidden: node.hidden,
+      focused: node.dataset.focused === 'true',
+      z: Number(node.style.zIndex || 0)
+    })).sort((a, b) => b.z - a.z);
+  }
+
+  showAll() {
+    for (const node of this.windows.values()) node.hidden = false;
+    for (const id of this.windows.keys()) void this.persist(id);
+  }
+
+  minimizeOthers(id) {
+    for (const [candidateId, node] of this.windows) {
+      node.hidden = candidateId !== id;
+      void this.persist(candidateId);
+    }
+    const selected = this.windows.get(id);
+    if (selected) this.focus(selected);
+  }
+
+  focusById(id) {
+    const node = this.windows.get(id);
+    if (!node) return null;
+    node.hidden = false;
+    this.focus(node);
+    return node;
+  }
+
+  async restoreLastFocused() {
+    const saved = await this.repository.get('meta', 'workspace:last-focused');
+    return saved?.windowId ? this.focusById(saved.windowId) : this.cycleFocus();
+  }
+
+  async ensureDefaultGroup() {
+    const existing = await this.repository.get('meta', 'workspace-group:actor:hayden:default');
+    if (existing) return existing;
+    const record = {
+      id: 'workspace-group:actor:hayden:default',
+      schema: 'gummy.workspace-group/v1',
+      name: 'My calm workspace',
+      ownerActorId: 'actor:hayden',
+      socialInstanceSemantics: false,
+      windowIds: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    await this.repository.put('meta', record, { validate: false });
+    return record;
+  }
+
+  async saveGroup(name = 'My calm workspace') {
+    const previous = await this.ensureDefaultGroup();
+    const record = {
+      ...previous,
+      name: String(name || previous.name).trim().slice(0, 80) || previous.name,
+      windowIds: this.summaries().filter(item => !item.hidden).map(item => item.id),
+      focusedWindowId: this.summaries().find(item => item.focused)?.id || null,
+      socialInstanceSemantics: false,
+      updatedAt: new Date().toISOString()
+    };
+    await this.repository.put('meta', record, { validate: false });
+    return structuredClone(record);
+  }
+
+  async restoreGroup() {
+    const group = await this.ensureDefaultGroup();
+    for (const [id, node] of this.windows) node.hidden = !group.windowIds.includes(id);
+    if (group.focusedWindowId) this.focusById(group.focusedWindowId);
+    return structuredClone(group);
   }
 
   cycleFocus() {

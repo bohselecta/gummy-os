@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page) {
   await page.goto('/');
@@ -152,7 +153,7 @@ test('production workload, persistence, long-session, phone, and cached-shell bu
     database.close();
   });
   const receiptRenderStarted = Date.now();
-  await page.getByRole('tab', { name: /Receipts/ }).click();
+  await openMoreItem(page, /Receipts/);
   const receiptCards = page.locator('[data-window-id="receipts"] .record-list .card');
   await expect.poll(() => receiptCards.count()).toBeGreaterThanOrEqual(250);
   const receiptRenderMs = Date.now() - receiptRenderStarted;
@@ -167,7 +168,7 @@ test('production workload, persistence, long-session, phone, and cached-shell bu
 
   await page.setViewportSize({ width: 320, height: 720 });
   const phoneInteractionStarted = Date.now();
-  await page.getByRole('tab', { name: /About \/ Limits/ }).click();
+  await openMoreItem(page, /About \/ Limits/);
   await expect(page.locator('[data-window-id="about"]').getByRole('heading', { name: 'Gummy OS 0.1' })).toBeVisible();
   const phoneInteractionMs = Date.now() - phoneInteractionStarted;
 
@@ -236,7 +237,7 @@ test('accessibility remains clean across modes, limits, desktop, tablet, and pho
   await page.getByRole('button', { name: 'Switch Night or Day Gummy' }).click();
   let results = await new AxeBuilder({ page }).analyze();
   expect(results.violations.filter(item => ['critical', 'serious'].includes(item.impact))).toEqual([]);
-  await page.getByRole('tab', { name: /About \/ Limits/ }).click();
+  await openMoreItem(page, /About \/ Limits/);
   const about = page.locator('[data-window-id="about"]');
   await expect(about.getByText('Live ImageHoss output is not claimed')).toBeVisible();
   await expect(about.getByText('Live VideoBoss output is not claimed')).toBeVisible();

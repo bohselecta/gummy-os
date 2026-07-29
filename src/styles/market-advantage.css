@@ -138,6 +138,12 @@
   opacity: 0.72;
 }
 
+.composer-phone-modes { display: none; }
+.composer-market-layer { order: 5; display: grid; gap: .8rem; margin-top: var(--space-3); }
+.composer-market-layer > details > summary { cursor: pointer; font-weight: 850; }
+.composer-market-layer > details[open] > summary { margin-bottom: var(--space-3); }
+.composer-workspace { display: flex; flex-direction: column; }
+
 @media (max-width: 760px) {
   .market-card-heading,
   .composer-next-move {
@@ -154,4 +160,28 @@
   .composer-impact-law {
     grid-template-columns: 1fr;
   }
+
+  .composer-phone-modes {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: .25rem;
+    margin: 0 0 var(--space-3);
+    padding: .35rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+  }
+
+  .composer-phone-modes button { min-width: 0; padding: .55rem .25rem; font-size: .7rem; }
+  .composer-app [data-composer-pane] { display: none !important; }
+  .composer-app[data-composer-phone-mode="goal"] [data-composer-pane="goal"],
+  .composer-app[data-composer-phone-mode="arrange"] [data-composer-pane="arrange"],
+  .composer-app[data-composer-phone-mode="review"] [data-composer-pane="review"],
+  .composer-app[data-composer-phone-mode="system"] [data-composer-pane="system"] { display: revert !important; }
+  .composer-app[data-composer-phone-mode="arrange"] .composer-body { display: block; }
+  .composer-app[data-composer-phone-mode="goal"] .composer-body { display: block; }
+  .composer-market-layer { margin-top: 0; }
 }

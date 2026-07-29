@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openMoreItem } from './support/calm-navigation.mjs';
 
 async function onboard(page) {
   await page.goto('/');
@@ -11,7 +12,7 @@ async function onboard(page) {
 }
 
 async function openPlace(page, name) {
-  await page.getByRole('tab', { name: 'Places' }).click();
+  await openMoreItem(page, 'Places');
   await page.getByRole('button', { name: `Open ${name}` }).click();
   return page.getByRole('region', { name: `${name} window` });
 }
@@ -147,7 +148,7 @@ test('Rooms creates a local room, participants, isolated threads, and a fair que
 
 test('Browser keeps a Human-owned allowlist and history and attaches only pasted selections', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Browser/ }).click();
+  await openMoreItem(page, /Browser/);
   const browser = page.getByRole('region', { name: 'Gummy Browser window' });
   await browser.getByLabel('External URL').fill('https://example.com/');
   await browser.getByLabel('Saved link label').fill('Example reference');

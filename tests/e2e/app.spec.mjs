@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { openMoreItem, revealMore } from './support/calm-navigation.mjs';
 
 async function onboard(page, mode = 'night') {
   await page.goto('/');
@@ -61,7 +62,7 @@ test('production Gummy identity is intact, responsive, addressable, and separate
     fit: getComputedStyle(image).objectFit
   }))).toEqual({ natural: [1280, 720], fit: 'cover' });
 
-  await page.getByRole('tab', { name: /Glopper/ }).click();
+  await page.getByRole('button', { name: 'Open Glopper Panel' }).click();
   await expect(page.getByRole('complementary', { name: 'Glopper Panel' }).getByAltText('Glopper')).toBeVisible();
   await expect(page.getByText(/temporary artwork slot/i)).toHaveCount(0);
 
@@ -94,7 +95,7 @@ test('onboarding, Night/Day continuity, Canvas windows, Bar keyboard, and access
   await expect(page.locator('html')).toHaveAttribute('data-gummy-mode', 'day');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-gummy-mode', 'day');
-  await expect(page.getByRole('tab', { name: /Glopper/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Open Glopper Panel' })).toBeVisible();
   await page.getByRole('tab', { name: /My Gummies/ }).focus();
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('tab', { name: 'Composer' })).toBeFocused();
@@ -113,8 +114,9 @@ test('simple doorway preserves the full product map and truthful first-party lau
   await expect(page.getByRole('button', { name: /Start a blank Production/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Open the Night Gummy Launch sample/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Learn how Gummy OS works/ })).toBeVisible();
-  await expect(page.getByRole('tab', { name: /Actors/ })).toBeVisible();
-  await page.getByRole('tab', { name: /Places/ }).click();
+  const more = await revealMore(page);
+  await expect(more.getByRole('menuitem', { name: /People & groups/ })).toBeVisible();
+  await more.getByRole('menuitem', { name: /Places/ }).click();
 
   const places = page.getByTestId('phase14-places');
   await expect(places.locator('[data-place-id]')).toHaveCount(6);
@@ -137,15 +139,15 @@ test('simple doorway preserves the full product map and truthful first-party lau
 
 test('approved Work Order produces separate result, Return, links, lease release, and Receipt', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Work Orders/ }).click();
+  await openMoreItem(page, /Work Orders/);
   await page.getByTestId('approve-work-order').click();
   await expect(page.getByText('Result returned. Review the separate result Gummy')).toBeVisible();
   await page.getByRole('tab', { name: /My Gummies/ }).click();
-  await expect(page.getByText('Gummy OS Standalone Executive Brief')).toBeVisible();
-  await page.locator('.gummy-bar').getByRole('tab', { name: /Work Orders/ }).click();
+  await expect(page.getByRole('region', { name: /Gummy Box window/ }).getByText('Gummy OS Standalone Executive Brief').first()).toBeVisible();
+  await openMoreItem(page, /Work Orders/);
   await page.getByRole('button', { name: 'Accept durable result' }).click();
   await expect(page.getByText('Human accepted this result')).toBeVisible();
-  await page.locator('.gummy-bar').getByRole('tab', { name: /Receipts/ }).click();
+  await openMoreItem(page, /Receipts/);
   await expect(page.getByText('execute-bounded-transform')).toBeVisible();
   const durable = await page.evaluate(async () => {
     const request = indexedDB.open('gummy-os');
@@ -175,7 +177,7 @@ test('approved Work Order produces separate result, Return, links, lease release
 
 test('Hold preserves authority, Revise supersedes, and Reject returns terminal evidence', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Work Orders/ }).click();
+  await openMoreItem(page, /Work Orders/);
   await page.getByRole('button', { name: 'Hold' }).click();
   await expect(page.getByText('held', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Revise' }).click();
@@ -200,7 +202,7 @@ test('Hold preserves authority, Revise supersedes, and Reject returns terminal e
 
 test('JSON Work Order import remains untrusted until schema and semantic validation pass', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Work Orders/ }).click();
+  await openMoreItem(page, /Work Orders/);
   const imported = await page.evaluate(async () => {
     const request = indexedDB.open('gummy-os');
     const db = await new Promise(resolve => { request.onsuccess = () => resolve(request.result); });
@@ -236,16 +238,16 @@ test('unknown imports are quarantined, denied promotion is receipted, and burn i
   await expect(page.getByText('blocked', { exact: true })).toBeVisible();
   await picker.setInputFiles({ name: 'burn-me.txt', mimeType: 'text/plain', buffer: Buffer.from('disposable') });
   await expect(page.getByText('burn-me.txt', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Burn disposable imports' }).click();
+  await page.getByRole('button', { name: 'Clear temporary imports' }).click();
   await expect(page.getByText('burn-me.txt', { exact: true })).toHaveCount(0);
-  await page.locator('.gummy-bar').getByRole('tab', { name: /Receipts/ }).click();
+  await openMoreItem(page, /Receipts/);
   await expect(page.getByText('deny-quarantine-promotion')).toBeVisible();
   await expect(page.getByText('burn-disposable-workspace')).toBeVisible();
 });
 
 test('offline approval queues once and reconnect revalidates before execution', async ({ page, context }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Work Orders/ }).click();
+  await openMoreItem(page, /Work Orders/);
   await context.setOffline(true);
   await page.getByTestId('approve-work-order').click();
   await expect(page.locator('.toast-layer').getByText(/queued and will be fully revalidated/)).toBeVisible();
@@ -260,19 +262,20 @@ test('offline approval queues once and reconnect revalidates before execution', 
   expect(queued).toHaveLength(1);
   await context.setOffline(false);
   await expect(page.locator('.toast-layer').getByText(/Queued execution completed after revalidation/)).toBeVisible();
+  page.runtimeErrors = page.runtimeErrors.filter(message => message !== 'Failed to load resource: net::ERR_FAILED');
   await page.locator('.gummy-bar').getByRole('tab', { name: /My Gummies/ }).click();
-  await expect(page.getByText('Gummy OS Standalone Executive Brief')).toBeVisible();
+  await expect(page.getByRole('region', { name: /Gummy Box window/ }).getByText('Gummy OS Standalone Executive Brief').first()).toBeVisible();
 });
 
 test('revocation blocks before provider, replacement Mold is additive, and two Actors compose', async ({ page }) => {
   await onboard(page);
-  await page.getByRole('tab', { name: /Master Control/ }).click();
+  await openMoreItem(page, /Master Control/);
   await page.getByRole('button', { name: 'Revoke active Mold' }).click();
   await page.getByRole('button', { name: 'Prove provider-call block' }).click();
   await expect(page.locator('.toast-layer').getByText(/Revocation proof: blocked/)).toBeVisible();
   await page.getByRole('button', { name: 'Issue replacement Mold v2' }).click();
   await expect(page.locator('.toast-layer').getByText(/Replacement Mold v2 issued/)).toBeVisible();
-  await page.getByRole('tab', { name: /Actors/ }).click();
+  await openMoreItem(page, /People & groups/);
   await page.getByRole('button', { name: 'Compose temporary private Bowl' }).click();
   await expect(page.getByText('Two-Actor Composition Proof')).toBeVisible();
 });
@@ -303,6 +306,6 @@ test('phone Glopper panel is a full-height sheet and 320px layout remains operab
   expect(box.width).toBe(320);
   expect(box.y).toBeLessThanOrEqual(60);
   await page.getByRole('button', { name: 'Close Glopper Panel' }).click();
-  await page.getByRole('button', { name: 'More / System' }).click();
-  await expect(page.getByRole('tab', { name: /Work Orders/ })).toBeVisible();
+  await page.getByRole('button', { name: 'More', exact: true }).click();
+  await expect((await revealMore(page)).getByRole('menuitem', { name: /Work Orders/ })).toBeVisible();
 });

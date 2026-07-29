@@ -48,10 +48,7 @@ test('Gummy Box is the unmistakable user-owned home workspace without weakening 
     'Gummy Box',
     'Composer',
     'Productions',
-    'People & groups',
-    'Places',
-    'Command Center',
-    'Master Control'
+    'Command Center'
   ]);
   await page.getByRole('tab', { name: /Gummy Box/ }).click();
   const box = page.getByTestId('gummy-box');
@@ -158,11 +155,12 @@ test('Command Center orients before and after the optional local example', async
 test('320px navigation keeps primary choices clear and exposes the Composer ordered-list equivalent', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 720 });
   await onboard(page, 'Phone Composer Tester');
-  await expect(page.getByRole('tab', { name: 'Composer' })).toBeVisible();
-  await expect(page.getByRole('tab', { name: 'Browser' })).toBeHidden();
-  await page.getByRole('button', { name: 'More / System' }).click();
-  await expect(page.getByRole('tab', { name: 'Browser' })).toBeVisible();
-  await page.getByRole('tab', { name: 'Composer' }).click();
+  const phoneNavigation = page.getByRole('navigation', { name: 'Phone workspaces' });
+  await expect(phoneNavigation.getByRole('button', { name: 'Composer' })).toBeVisible();
+  await expect(page.getByRole('menuitem', { name: 'Browser' })).toBeHidden();
+  await page.getByRole('button', { name: 'More', exact: true }).click();
+  await expect(page.getByRole('menuitem', { name: 'Browser' })).toBeVisible();
+  await phoneNavigation.getByRole('button', { name: 'Composer' }).click();
   const composer = page.getByTestId('composer-surface');
   await composer.getByRole('button', { name: 'Create a blank composition' }).click();
   await composer.getByRole('button', { name: 'Ordered-list view' }).click();
