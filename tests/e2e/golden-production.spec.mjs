@@ -39,7 +39,7 @@ test('Night Gummy Launch runs, compares, accepts, revises, and restarts with com
   const production = page.locator('[data-window-id="productions"]');
   await production.getByRole('button', { name: 'Open the Night Gummy Launch sample' }).click();
   await expect(production.getByRole('heading', { name: 'Night Gummy Launch' })).toBeVisible();
-  await expect(production.getByRole('status')).toContainText('not real generated image, video, or Blender output');
+  await expect(production.locator('.demonstration-lane')).toContainText('not real generated image, video, or Blender output');
   await production.getByRole('button', { name: 'Add launch specialists' }).click();
   await expect(production.locator('.actor-card')).toHaveCount(6);
 
@@ -67,7 +67,7 @@ test('Night Gummy Launch runs, compares, accepts, revises, and restarts with com
       await actor.getByText('View technical package').click();
       await expect(actor.getByText(schema)).toBeVisible();
     }
-    await actor.getByRole('button', { name: 'Save for Night Gummy Launch' }).click();
+    await actor.getByRole('button', { name: `Save for Night Gummy Launch` }).click();
     await expect(actor.getByText(/ready · sha256:/)).toBeVisible();
     await actor.getByRole('button', { name: `Close ${actorName}` }).click();
   }
