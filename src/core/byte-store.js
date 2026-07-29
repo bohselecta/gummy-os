@@ -18,6 +18,7 @@ export class ByteStore {
     this.indexedDBFactory = indexedDBFactory;
     this.fallbackDatabaseName = fallbackDatabaseName;
     this.fallbackDatabasePromise = null;
+    this.storageClass = storage?.getDirectory ? 'opfs' : indexedDBFactory ? 'indexeddb' : 'unavailable';
   }
 
   async root() {
@@ -66,6 +67,7 @@ export class ByteStore {
       transaction.onerror = () => reject(new ByteStoreError(transaction.error?.name === 'QuotaExceededError' ? 'quota' : 'write-failed', transaction.error?.message || 'IndexedDB byte write failed.'));
       transaction.onabort = () => reject(new ByteStoreError(transaction.error?.name === 'QuotaExceededError' ? 'quota' : 'write-failed', transaction.error?.message || 'IndexedDB byte write was aborted.'));
     });
+    this.storageClass = 'indexeddb';
   }
 
   async fallbackGet(path) {
@@ -75,6 +77,7 @@ export class ByteStore {
       request.onsuccess = () => resolve(request.result || null);
       request.onerror = () => reject(new ByteStoreError('read-failed', request.error?.message || 'IndexedDB byte read failed.'));
     });
+    if (record) this.storageClass = 'indexeddb';
     return record ? new Uint8Array(record.bytes) : null;
   }
 
@@ -98,6 +101,7 @@ export class ByteStore {
     const writable = await handle.createWritable();
     await writable.write(data);
     await writable.close();
+    this.storageClass = 'opfs';
   }
 
   async write(path, data) {
@@ -141,7 +145,9 @@ export class ByteStore {
         const parts = path.split('/').filter(Boolean);
         const fileName = parts.pop();
         const handle = await (await this.directory(parts.join('/'))).getFileHandle(fileName);
-        return new Uint8Array(await (await handle.getFile()).arrayBuffer());
+        const bytes = new Uint8Array(await (await handle.getFile()).arrayBuffer());
+        this.storageClass = 'opfs';
+        return bytes;
       } catch (error) {
         if (!this.indexedDBFactory && error?.name !== 'NotFoundError') {
           throw error instanceof ByteStoreError ? error : new ByteStoreError('read-failed', error.message);
