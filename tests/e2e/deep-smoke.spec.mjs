@@ -12,6 +12,30 @@ async function onboard(page) {
   await expect(page.getByRole('region', { name: 'Gummy Canvas' })).toBeVisible();
 }
 
+async function waitForSavedComposition(page) {
+  await expect.poll(() => page.evaluate(async () => {
+    const request = indexedDB.open('gummy-os');
+    const database = await new Promise((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    const transaction = database.transaction('productionCompositions');
+    const compositions = await new Promise((resolve, reject) => {
+      const read = transaction.objectStore('productionCompositions').getAll();
+      read.onsuccess = () => resolve(read.result);
+      read.onerror = () => reject(read.error);
+    });
+    database.close();
+    return compositions.some(composition => (
+      composition.brief?.goal === 'Create a cited private brief.'
+      && composition.nodes?.some(node => node.ref?.kind === 'actor' && node.ref?.id === 'actor:hayden')
+    ));
+  }), {
+    message: 'Composer proposal should be durable in IndexedDB before the return visit',
+    timeout: 10_000
+  }).toBe(true);
+}
+
 test('Human-owned workspace and goal-first Composer survive a cross-browser return visit', async ({ page }) => {
   await onboard(page);
 
@@ -35,6 +59,7 @@ test('Human-owned workspace and goal-first Composer survive a cross-browser retu
   await expect(composer.getByTestId('composer-impact')).toContainText('Proposal only');
   await expect(composer.getByRole('button', { name: /Make Production/ })).toHaveCount(0);
 
+  await waitForSavedComposition(page);
   await page.reload();
   await page.getByRole('tab', { name: 'Composer' }).click();
   await expect(page.getByTestId('composer-brief').getByLabel('Desired result')).toHaveValue('Create a cited private brief.');
