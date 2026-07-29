@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/social-instance.schema.json",
+  "title": "Gummy Social Instance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "name", "ownerActorId", "visibility", "members", "purpose", "layout", "privacy", "revision", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.social-instance/v1" },
+    "id": { "type": "string", "pattern": "^social-instance:" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "sourceBowlId": { "type": ["string", "null"], "pattern": "^bowl:" },
+    "originatingSessionId": { "type": ["string", "null"], "pattern": "^session:" },
+    "latestSessionId": { "type": ["string", "null"], "pattern": "^session:" },
+    "visibility": { "enum": ["private", "invite", "organization", "public"] },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actorId", "role", "status"],
+        "properties": {
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "role": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["invited", "active", "paused", "left", "removed"] },
+          "moldId": { "type": ["string", "null"], "pattern": "^mold:" },
+          "presencePolicy": { "type": "string" },
+          "joinedAt": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "rhythm": { "type": ["string", "null"] },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["windows"],
+      "properties": {
+        "windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["windowId", "subjectType", "subjectId", "state"],
+            "properties": {
+              "windowId": { "type": "string", "minLength": 1 },
+              "subjectType": { "enum": ["actor", "thread", "place", "production", "browser", "command-center", "other"] },
+              "subjectId": { "type": "string", "minLength": 1 },
+              "state": { "enum": ["open", "minimized", "maximized", "closed-view"] },
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "width": { "type": "number", "minimum": 0 },
+              "height": { "type": "number", "minimum": 0 },
+              "zIndex": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "threadIds": { "type": "array", "items": { "type": "string", "pattern": "^thread:" }, "uniqueItems": true },
+    "gummyIds": { "type": "array", "items": { "type": "string", "pattern": "^gummy:" }, "uniqueItems": true },
+    "sharedVisionIds": { "type": "array", "items": { "type": "string", "pattern": "^shared-vision:" }, "uniqueItems": true },
+    "productionIds": { "type": "array", "items": { "type": "string", "pattern": "^production:" }, "uniqueItems": true },
+    "linkIds": { "type": "array", "items": { "type": "string", "pattern": "^link:" }, "uniqueItems": true },
+    "communicationModes": { "type": "array", "items": { "enum": ["text", "voice", "video", "screen", "static"] }, "uniqueItems": true },
+    "notificationPolicy": { "type": "object" },
+    "privacy": {
+      "type": "object",
+      "required": ["recordingDefault", "transcriptionDefault", "crossInstanceSharing"],
+      "properties": {
+        "recordingDefault": { "enum": ["deny", "ask", "allow"] },
+        "transcriptionDefault": { "enum": ["deny", "ask", "allow"] },
+        "crossInstanceSharing": { "const": "explicit-handoff-only" }
+      },
+      "additionalProperties": true
+    },
+    "resumeState": { "type": "object" },
+    "status": { "enum": ["active", "paused", "archived", "revoked"] },
+    "revision": { "type": "integer", "minimum": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "lastActivityAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/command-center-view.schema.json",
+  "title": "Gummy Command Center View",
+  "description": "Generated cross-system attention projection. It is never an authority source.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "ownerActorId", "attentionItems", "sourceRevisions", "generatedAt", "authoritySource"],
+  "properties": {
+    "schema": { "const": "gummy.command-center-view/v1" },
+    "id": { "type": "string", "pattern": "^command-center-view:" },
+    "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "attentionItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "class", "title", "sourceObject", "materialState", "authorityRequired", "nextVerb", "explanation"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^attention:" },
+          "class": { "enum": ["needs-decision", "needs-approval", "needs-input", "needs-connection", "running", "recovering", "ready-for-review", "ready-to-accept", "blocked", "failed", "cost-changed", "permission-expiring", "presence-changed", "ready-to-publish", "completed"] },
+          "title": { "type": "string", "minLength": 1 },
+          "sourceObject": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "id", "revision"],
+            "properties": {
+              "kind": { "enum": ["actor-presence", "social-instance", "shared-vision", "production", "production-run", "production-pool", "work-order", "job", "return", "receipt", "distribution-plan", "other"] },
+              "id": { "type": "string", "minLength": 1 },
+              "revision": { "type": ["integer", "string", "null"] }
+            }
+          },
+          "materialState": { "enum": ["proposal", "committed", "executing", "materialized", "verified", "failed", "no-op"] },
+          "authorityRequired": { "type": ["string", "null"] },
+          "nextVerb": { "type": "string", "minLength": 1 },
+          "route": { "type": ["string", "null"] },
+          "cost": {
+            "type": ["object", "null"],
+            "properties": {
+              "currency": { "const": "USD" },
+              "estimate": { "type": ["number", "null"], "minimum": 0 },
+              "maximum": { "type": ["number", "null"], "minimum": 0 },
+              "actual": { "type": ["number", "null"], "minimum": 0 }
+            },
+            "additionalProperties": false
+          },
+          "receiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true },
+          "explanation": { "type": "string", "minLength": 1 },
+          "generatedBy": { "enum": ["system", "zeke", "human"] }
+        }
+      }
+    },
+    "sourceRevisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "id", "revision"],
+        "properties": {
+          "kind": { "type": "string", "minLength": 1 },
+          "id": { "type": "string", "minLength": 1 },
+          "revision": { "type": ["integer", "string", "null"] }
+        }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "authoritySource": { "const": "underlying-objects-and-master-control" },
+    "executing": { "const": false }
+  }
+}

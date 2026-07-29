@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/distribution-plan.schema.json",
+  "title": "Gummy Distribution Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "productionId", "revision", "status", "distributingActorId", "sourceArtifacts", "destination", "audience", "rights", "credits", "disclosures", "approvals", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": { "const": "gummy.distribution-plan/v1" },
+    "id": { "type": "string", "pattern": "^distribution-plan:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["draft", "needs-rights", "needs-credit-approval", "needs-likeness-approval", "needs-voice-approval", "ready-for-publication", "scheduled", "published", "blocked", "failed", "withdrawn", "archived"] },
+    "distributingActorId": { "type": "string", "pattern": "^actor:" },
+    "sourceArtifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gummyId", "revision", "hash", "acceptanceReceiptId"],
+        "properties": {
+          "gummyId": { "type": "string", "pattern": "^gummy:" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "hash": { "type": "string", "minLength": 16 },
+          "acceptanceReceiptId": { "type": "string", "pattern": "^receipt:" }
+        }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "placeId", "routeStatus"],
+      "properties": {
+        "type": { "enum": ["radio", "channels", "actor-home", "external-service", "private-export"] },
+        "placeId": { "type": ["string", "null"], "pattern": "^app:" },
+        "channelRef": { "type": ["string", "null"] },
+        "externalRoute": { "type": ["string", "null"] },
+        "routeStatus": { "enum": ["local", "connected", "service-required", "blocked"] }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "episodeType": { "type": ["string", "null"] },
+        "coverGummyId": { "type": ["string", "null"], "pattern": "^gummy:" },
+        "scheduledFor": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "additionalProperties": true
+    },
+    "audience": { "enum": ["private", "invite", "organization", "unlisted", "public"] },
+    "audienceActorIds": { "type": "array", "items": { "type": "string", "pattern": "^actor:" }, "uniqueItems": true },
+    "rights": {
+      "type": "object",
+      "required": ["verified", "licenseSummary"],
+      "properties": {
+        "verified": { "type": "boolean" },
+        "licenseSummary": { "type": "string" },
+        "commercialUse": { "enum": ["allowed", "prohibited", "permission-required", "unspecified"] },
+        "rightsReceiptIds": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "credits": {
+      "type": "object",
+      "required": ["agreementId", "ledgerId", "approved"],
+      "properties": {
+        "agreementId": { "type": "string", "pattern": "^production-agreement:" },
+        "ledgerId": { "type": "string", "pattern": "^contribution-ledger:" },
+        "approved": { "type": "boolean" },
+        "publicCreditLines": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "disclosures": {
+      "type": "object",
+      "required": ["syntheticMedia", "syntheticVoice", "aiRepresentation"],
+      "properties": {
+        "syntheticMedia": { "type": "boolean" },
+        "syntheticVoice": { "type": "boolean" },
+        "aiRepresentation": { "type": "boolean" },
+        "text": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "likenessPermissions": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true },
+    "voicePermissions": { "type": "array", "items": { "type": "string", "pattern": "^receipt:" }, "uniqueItems": true },
+    "privacyExclusions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "moderation": { "type": "object" },
+    "monetization": { "enum": ["none", "enabled", "prohibited", "undecided"] },
+    "retention": { "type": "object" },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["class", "actorId", "revision", "decision", "decidedAt"],
+        "properties": {
+          "class": { "enum": ["publication", "rights", "credit", "likeness", "voice", "moderation", "monetization"] },
+          "actorId": { "type": "string", "pattern": "^actor:" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "decision": { "enum": ["approve", "reject", "needs-change"] },
+          "decidedAt": { "type": "string", "format": "date-time" },
+          "receiptId": { "type": ["string", "null"], "pattern": "^receipt:" }
+        }
+      }
+    },
+    "releaseId": { "type": ["string", "null"], "pattern": "^distribution-release:" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
