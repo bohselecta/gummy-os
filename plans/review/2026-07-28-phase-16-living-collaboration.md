@@ -2,7 +2,7 @@
 
 ## Shared Vision · Actor Presence · Social Instances · Production Pools · Command Center · Distribution
 
-**Status:** IMPLEMENTATION COMPLETE / FOUNDER PREVIEW HOLD / DO NOT MERGE OR PROMOTE
+**Status:** FOUNDER ACCEPTED / MERGE AND PRODUCTION PROMOTION AUTHORIZED
 **Designed:** 2026-07-28
 **Implemented:** 2026-07-28 from latest `main` at `160b3c44932c6dd1ccd9ea439f9fe60fc4f11808`
 **Dependency:** Satisfied. Phase 15 is accepted, merged, deployed, production-verified, and closed.
@@ -29,7 +29,10 @@ The founder-preview candidate now includes:
 
 Capability truth remains explicit: authenticated remote multi-Human presence, verified remote identity, live audio/video, real payment processing, final Radio voice, remote Channels publication, and Phase 17 MCP execution are not connected or claimed.
 
-The release boundary remains closed until Hayden accepts the exact hosted preview head. Issue #36 remains open and review-held.
+Hayden accepted exact hosted preview head `be6f5b89b4929eea766b2321e2c65ed442b9f663`
+on 2026-07-29 and authorized merge and production promotion. The durable
+decision is recorded in `evidence/phase16-founder-acceptance.json`. Issue #36
+remains open and review-held.
 
 ## 1. Purpose
 

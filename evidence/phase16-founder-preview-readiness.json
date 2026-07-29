@@ -2,7 +2,7 @@
   "schema": "gummy.phase16-founder-preview-readiness/v1",
   "phase": 16,
   "title": "Living Collaboration",
-  "status": "founder-preview-boundary",
+  "status": "founder-accepted-production-authorized",
   "recordedAt": "2026-07-29T03:47:29.000Z",
   "repository": "bohselecta/gummy-os",
   "branch": "agent/phase16-living-collaboration",
@@ -96,7 +96,7 @@
       "css": 48434
     },
     "fullRepositoryVerification": "passed",
-    "hostedExactHeadVerification": "required-before-founder-review"
+    "hostedExactHeadVerification": "passed"
   },
   "visualEvidence": [
     "evidence/visual/phase16/command-center-desktop-night.png",
@@ -104,14 +104,15 @@
     "evidence/visual/phase16/social-instance-windows.png",
     "evidence/visual/phase16/command-center-phone-night.png"
   ],
+  "founderAcceptanceEvidence": "evidence/phase16-founder-acceptance.json",
   "rollback": {
     "applicationCommit": "160b3c44932c6dd1ccd9ea439f9fe60fc4f11808",
-    "procedure": "Do not merge or promote this branch. If the preview is rejected, remove only its preview deployment and leave production main unchanged."
+    "procedure": "Before production promotion, leave the accepted application commit intact and revert only the acceptance-evidence commit if authorization is withdrawn. After production promotion, redeploy applicationCommit and verify the canonical production URL."
   },
   "releaseBoundary": {
-    "mergeAuthorized": false,
-    "productionPromotionAuthorized": false,
-    "founderAcceptanceRequired": true,
+    "mergeAuthorized": true,
+    "productionPromotionAuthorized": true,
+    "founderAcceptanceRequired": false,
     "issue33CloseAuthorized": false
   }
 }
