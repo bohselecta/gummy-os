@@ -7,16 +7,19 @@ const read = path => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const publicTitle = 'Gummy OS — Your creative computer, with you in control.';
 const publicDescription = 'Your creative computer, with you in control. Start locally with no account. Nothing runs until you review it and choose Make Production.';
 
-test('public delivery exposes real crawler files and no universal soft-404 rewrite', async () => {
-  const [vercelSource, viteSource, robots, sitemap] = await Promise.all([
+test('public delivery exposes intentional crawler routes and no universal soft-404 rewrite', async () => {
+  const [vercelSource, viteSource, robots, sitemap, changelog, llms] = await Promise.all([
     read('vercel.json'),
     read('vite.config.js'),
     read('public/robots.txt'),
-    read('public/sitemap.xml')
+    read('public/sitemap.xml'),
+    read('public/changelog.html'),
+    read('public/llms.txt')
   ]);
   const vercel = JSON.parse(vercelSource);
 
   assert.ok(vercel.rewrites.some(rule => rule.source === '/api/(.*)' && rule.destination === '/api/[...path].mjs'));
+  assert.ok(vercel.rewrites.some(rule => rule.source === '/changelog' && rule.destination === '/changelog.html'));
   assert.equal(
     vercel.rewrites.some(rule => rule.destination === '/index.html' && ['/(.*)', '/:path*'].includes(rule.source)),
     false,
@@ -28,6 +31,11 @@ test('public delivery exposes real crawler files and no universal soft-404 rewri
   assert.match(robots, /^Disallow: \/api\/$/m);
   assert.match(robots, /^Sitemap: https:\/\/www\.mygum\.my\/sitemap\.xml$/m);
   assert.match(sitemap, /<loc>https:\/\/www\.mygum\.my\/<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/www\.mygum\.my\/changelog<\/loc>/);
+  assert.match(changelog, /What has shipped in Gummy OS/);
+  assert.match(changelog, /Gummy Box, visual Composer, and public delivery/);
+  assert.match(llms, /^# Gummy OS$/m);
+  assert.match(llms, /A Composer edit never executes work/);
 });
 
 test('public shell uses one product position and user-facing boot copy', async () => {
@@ -38,7 +46,19 @@ test('public shell uses one product position and user-facing boot copy', async (
   assert.match(html, /<meta name="robots" content="index,follow,max-image-preview:large" \/>/);
   assert.match(html, /<h1>Your creative computer, with you in control\.<\/h1>/);
   assert.match(html, /<p>Picking up where you left off…<\/p>/);
+  assert.match(html, /Arrange sources, people, specialist tools, review decisions, and destinations/);
+  assert.match(html, /href="\/llms\.txt"/);
+  assert.match(html, /href="\/software-application\.jsonld"/);
   assert.doesNotMatch(html, /Personal Gummy|Checking your durable state|Human-controlled work|Enter a living personal creative computer/);
+});
+
+test('structured application record describes shipped capability and truthful boundaries', async () => {
+  const structured = JSON.parse(await read('public/software-application.jsonld'));
+  assert.equal(structured['@type'], 'SoftwareApplication');
+  assert.equal(structured.name, 'Gummy OS');
+  assert.equal(structured.url, 'https://www.mygum.my/');
+  assert.ok(structured.featureList.some(item => item.includes('Visual Composer')));
+  assert.ok(structured.featureList.some(item => item.includes('Master Control')));
 });
 
 test('loopback CSP allowance remains an explicit reviewed compatibility decision', async () => {
