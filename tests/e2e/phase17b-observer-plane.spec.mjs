@@ -42,7 +42,24 @@ async function observerSnapshot(page) {
   });
 }
 
+async function closeRestoredActorWindows(page) {
+  const actorWindows = page.locator(
+    '[data-window-id^="actor-surface:actor:"][data-window-id*="production:night-gummy-launch:"]'
+  );
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const count = await actorWindows.count();
+    if (count === 0) return;
+    await actorWindows
+      .nth(count - 1)
+      .locator('[data-window-action="close"]')
+      .evaluate(button => button.click());
+    await expect.poll(async () => actorWindows.count()).toBeLessThan(count);
+  }
+  await expect(actorWindows).toHaveCount(0);
+}
+
 async function saveActorConfiguration(page, production, actorId, actorName) {
+  await closeRestoredActorWindows(page);
   await production.locator('.actor-card').filter({ hasText: `@${actorName}` })
     .getByRole('button', { name: `Open ${actorName}` }).click();
   const actor = page.locator(
@@ -104,20 +121,6 @@ test('separate browser Observer proves completion across worker replacement with
   await expect(
     replacementProduction.getByRole('heading', { name: 'Night Gummy Launch' })
   ).toBeVisible();
-  for (const [actorId, actorName] of [
-    ['3d-bee', 'Meshmallow'],
-    ['imagehoss', 'ImageHoss']
-  ]) {
-    const restoredActorWindow = replacementWorker.locator(
-      `[data-window-id="actor-surface:actor:${actorId}:production:night-gummy-launch:main"]`
-    );
-    if (await restoredActorWindow.isVisible()) {
-      await restoredActorWindow
-        .getByRole('button', { name: `Close ${actorName}` })
-        .evaluate(button => button.click());
-      await expect(restoredActorWindow).toHaveCount(0);
-    }
-  }
 
   for (const [actorId, actorName] of [
     ['videoboss', 'VideoBoss'],
