@@ -29,20 +29,21 @@
       "skipped": 0
     },
     "chromium": {
-      "total": 69,
-      "passed": 67,
+      "total": 70,
+      "passed": 68,
       "skipped": 2,
       "skipReason": "explicitly configured live-bridge cases"
     },
     "deepReturn": {
-      "total": 6,
-      "passed": 6,
+      "total": 9,
+      "passed": 9,
       "projects": [
         "chromium-deep",
         "firefox-deep",
         "webkit-deep"
       ]
     },
+    "phoneWorkspaceReturn": "PASS — Focus current, Show all, Save group, and Restore group remain reachable at 390 px and 320 px",
     "githubActionsRunIds": [
       30491169101,
       30491169166
@@ -66,7 +67,7 @@
     "returnsAndReceipts": "PASS",
     "localBoxBackupRestore": "PASS",
     "accessibility": "PASS — desktop, tablet, phone, Night, Day, and reduced motion",
-    "visualAndResponsive": "PASS — including 320 px navigation and notification obstruction checks",
+    "visualAndResponsive": "PASS — including reachable saved-workspace controls, 320 px navigation, and notification obstruction checks",
     "security": "PASS — 404 source files, zero source maps, zero server-only markers in the browser bundle",
     "bundle": "PASS",
     "dependencyVulnerabilities": 0,
