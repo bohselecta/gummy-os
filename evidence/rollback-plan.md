@@ -1,9 +1,13 @@
-# Gummy OS final-release rollback
+# Gummy OS v1 rollback
 
-The application rollback anchor is the accepted Phase 10 Gummy OS commit
-`4369d7181868cfd173f88698816b9190f9c0ad11`, deployed by Vercel as
-`dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa` at
-`https://gummy-os-six.vercel.app`.
+The immediate application rollback anchor is the founder-accepted merged Calm
+Workspace commit `1bdd08a2c983b154a577fcf4e21e01034033bb53`, deployed by Vercel
+as `dpl_GWshoouUf6HqwmjWy75i8eMo6bzc` at
+`https://gummy-6npeok6ga-mygummy.vercel.app`.
+
+That deployment predates only the v1 release-record closure. It preserves the
+exact accepted product candidate and is the preferred rollback for the stable
+release.
 
 ## Trigger
 
@@ -15,11 +19,13 @@ unavailable; that is already an explicit product state.
 
 ## Application rollback
 
-Promote the retained Vercel deployment
-`dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa` for project
-`prj_iN4lDNquY0Y2xf297UvDZCVGWmsY`, or redeploy the exact baseline commit
-`4369d7181868cfd173f88698816b9190f9c0ad11`. Verify that the canonical
-production alias reports that commit before declaring rollback complete.
+Promote retained Vercel deployment
+`dpl_GWshoouUf6HqwmjWy75i8eMo6bzc` for project
+`prj_iN4lDNquY0Y2xf297UvDZCVGWmsY`, or redeploy exact commit
+`1bdd08a2c983b154a577fcf4e21e01034033bb53`. Verify that
+`https://www.mygum.my/` reports that commit before declaring rollback
+complete. The apex host must continue to redirect permanently to the canonical
+`www` host while preserving the path and query string.
 
 ## Local Box safety
 

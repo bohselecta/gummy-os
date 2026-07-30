@@ -1,16 +1,20 @@
 # Gummy OS Master Finish-Up — Controlling Codex Work Order
 
 **Date:** 2026-07-27  
-**Status:** Active and controlling  
+**Status:** Completed 2026-07-29; retained as the historical “Active and controlling” release work order
 **Founder:** Hayden Lindley  
 **Canonical repository:** `bohselecta/gummy-os`  
 **Baseline:** `c46e5f4a0719b06a7dcdfd815bb8f3d5a89daa62`
 
 ## Mission
 
-Complete the founder-ready personal Gummy OS release now.
+The founder-ready personal Gummy OS release was completed as Gummy OS v1.
+This plan no longer authorizes another implementation or provider-expansion
+phase.
 
-The architecture and product contracts are sufficiently defined. Codex must execute the remaining productization, specialist integration, storage/recovery, polish, acceptance, deployment, and repository-delivery phases in one sustained turn.
+This historical work order directed the completed productization, specialist
+integration, storage/recovery, polish, acceptance, deployment, and
+repository-delivery phases. It is no longer an active work queue.
 
 ```text
 Do not redesign the house.

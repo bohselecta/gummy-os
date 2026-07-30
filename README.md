@@ -10,20 +10,24 @@ The canonical personal address is **mygum.my**.
 
 ## Current status
 
-Gummy OS has completed the founder-ready personal release and Ubuntu Phase 10
-live activation. The deterministic local-first product, bounded specialist
-adapters, Local Gummy Box recovery, full acceptance suite, and public web
-surface are shipped.
+**Gummy OS v1 is production complete.**
+
+The shipped product includes the Human-owned Gummy Box, visual Composer,
+governed Productions, Calm Workspace, Living Collaboration, Places, Master
+Control, Returns, Receipts, and provider-neutral runtime foundations.
+
+Live Google Agent Platform and live MCP provider execution are not enabled.
+No active Gummy OS capability depends on those optional integrations.
 
 Open the current production release:
 
-- **Gummy OS:** [https://gummy-os-six.vercel.app](https://gummy-os-six.vercel.app)
+- **Gummy OS:** [https://www.mygum.my/](https://www.mygum.my/)
 - **Release evidence:** [`docs/release/FINAL_RELEASE.md`](docs/release/FINAL_RELEASE.md)
-- **Ubuntu live activation:** [`docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md`](docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md)
-- **First-user readiness:** [`docs/release/PHASE-11-TEST-USER-READINESS.md`](docs/release/PHASE-11-TEST-USER-READINESS.md)
+- **Public changelog:** [https://www.mygum.my/changelog](https://www.mygum.my/changelog)
+- **Optional post-v1 integrations:** [`docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md`](docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md)
 
-The controlling finish-up kit remains the reproducible build and acceptance
-contract:
+The finish-up kit is retained as the completed reproducible build and
+acceptance contract:
 
 - [`docs/finish-kit/README.md`](docs/finish-kit/README.md)
 - [`docs/finish-kit/MASTER_RELEASE_ROADMAP.md`](docs/finish-kit/MASTER_RELEASE_ROADMAP.md)
@@ -43,10 +47,14 @@ preserve the accepted product
 → ship one coherent release ✓
 ```
 
-Long-horizon Social, Gummy Rooms, enterprise, federation, managed cross-device
-Box, marketplace, and broad native-control lanes remain deliberately deferred.
-They are protected product scope, not unfinished requirements for this personal
-release.
+The legacy Vercel address
+[https://gummy-os-six.vercel.app](https://gummy-os-six.vercel.app) remains a
+non-canonical provider alias. The permanent public identity is
+`https://www.mygum.my/`, with the apex host permanently redirecting there.
+
+Any future live-provider work is optional post-v1 infrastructure and requires
+separate authorization. It is not an active implementation phase or a promise
+required to use Gummy OS v1.
 
 ## Public technology position
 
