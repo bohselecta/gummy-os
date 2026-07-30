@@ -35,3 +35,16 @@ local-first behavior.
 
 This file is a bounded archive, not an active implementation plan or issue
 queue.
+
+## 2026-07-30 bounded resilience exception
+
+Hayden separately authorized the deterministic Phase 17B Memory Admission and
+Observer Plane pass in response to the RufRoot memory-poisoning disclosure and
+Gemini Robotics ER 2 coordinator/executor/observer separation.
+
+That completed pass adds provider-neutral schemas, domain enforcement, a
+compromised-worker/replacement benchmark, fail-closed tests, and dated
+acceptance/rollback evidence. It adds no provider resource, credential, live
+adapter, UI lane or storage migration.
+
+The live integrations listed above remain archived and separately gated.

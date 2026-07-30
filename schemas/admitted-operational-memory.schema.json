@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/admitted-operational-memory.schema.json",
+  "title": "Gummy Admitted Operational Memory",
+  "description": "Durable operational context admitted from one exact Memory Candidate and decision. It remains non-authoritative and is not canonical Actor, Production or Project state.",
+  "type": "object",
+  "required": [
+    "schema",
+    "memoryId",
+    "revision",
+    "candidateId",
+    "admissionDecisionId",
+    "actorId",
+    "productionId",
+    "scopeId",
+    "contentDigest",
+    "canonicalStateVersionObserved",
+    "acceptedByHumanId",
+    "acceptedByActorId",
+    "acceptedAt",
+    "expiresAt",
+    "status",
+    "authoritative",
+    "authorityEffect",
+    "canonicalMutationApplied"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.admitted-operational-memory/v1" },
+    "memoryId": { "type": "string", "pattern": "^memory:" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "candidateId": { "type": "string", "pattern": "^memory-candidate:" },
+    "admissionDecisionId": { "type": "string", "pattern": "^memory-decision:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+    "contentDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "canonicalStateVersionObserved": { "type": "string", "minLength": 1 },
+    "acceptedByHumanId": { "type": "string", "pattern": "^human:" },
+    "acceptedByActorId": { "type": "string", "pattern": "^actor:" },
+    "acceptedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["active", "superseded", "expired", "invalidated", "revoked"]
+    },
+    "authoritative": { "const": false },
+    "authorityEffect": { "const": "none" },
+    "canonicalMutationApplied": { "const": false }
+  },
+  "additionalProperties": false
+}

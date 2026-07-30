@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/execution-observation.schema.json",
+  "title": "Gummy Execution Observation",
+  "description": "Independent evidence of progress and completion across one or more replaceable execution runtimes.",
+  "type": "object",
+  "required": [
+    "schema",
+    "observationId",
+    "actorId",
+    "productionId",
+    "workOrderId",
+    "authorityLeaseId",
+    "observerAuthorityLeaseId",
+    "executingAgentId",
+    "executingRuntimeId",
+    "observerAgentId",
+    "observerRuntimeId",
+    "embodimentOrWindowId",
+    "runtimeSegments",
+    "observedStateBefore",
+    "progressEvents",
+    "completionEvidence",
+    "observedStateAfter",
+    "returnAnchor",
+    "canonicalStateVersion",
+    "acceptanceStatus",
+    "independentObserver",
+    "workerReportAuthority",
+    "observerCanAccept",
+    "canonicalMutationApplied",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.execution-observation/v1" },
+    "observationId": { "type": "string", "pattern": "^execution-observation:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "workOrderId": { "type": "string", "pattern": "^work-order:" },
+    "authorityLeaseId": { "type": "string", "pattern": "^lease:" },
+    "observerAuthorityLeaseId": { "type": "string", "pattern": "^lease:" },
+    "executingAgentId": { "type": "string", "pattern": "^agent:" },
+    "executingRuntimeId": { "type": "string", "pattern": "^runtime-binding:" },
+    "observerAgentId": { "type": "string", "pattern": "^agent:" },
+    "observerRuntimeId": { "type": "string", "pattern": "^runtime-binding:" },
+    "embodimentOrWindowId": { "type": "string", "minLength": 1 },
+    "runtimeSegments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "runtimeBindingId",
+          "executingAgentId",
+          "authorityLeaseId",
+          "startedAt",
+          "endedAt",
+          "termination"
+        ],
+        "properties": {
+          "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+          "executingAgentId": { "type": "string", "pattern": "^agent:" },
+          "authorityLeaseId": { "type": "string", "pattern": "^lease:" },
+          "startedAt": { "type": "string", "format": "date-time" },
+          "endedAt": { "type": "string", "format": "date-time" },
+          "termination": {
+            "type": "string",
+            "enum": ["completed", "failed", "revoked", "replaced", "cancelled"]
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "observedStateBefore": { "$ref": "#/$defs/observedState" },
+    "progressEvents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "eventId",
+          "sequence",
+          "kind",
+          "runtimeBindingId",
+          "executingAgentId",
+          "evidenceDigest",
+          "at"
+        ],
+        "properties": {
+          "eventId": { "type": "string", "pattern": "^observation-event:" },
+          "sequence": { "type": "integer", "minimum": 0 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "started",
+              "checkpointed",
+              "worker-revoked",
+              "worker-replaced",
+              "resumed",
+              "artifact-observed",
+              "completed",
+              "failed"
+            ]
+          },
+          "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+          "executingAgentId": { "type": "string", "pattern": "^agent:" },
+          "evidenceDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "at": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "completionEvidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "ref", "digest", "observedAt"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "dom-snapshot",
+              "screenshot",
+              "filesystem",
+              "artifact",
+              "application-state",
+              "video-event"
+            ]
+          },
+          "ref": { "type": "string", "minLength": 1 },
+          "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "observedAt": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "observedStateAfter": { "$ref": "#/$defs/observedState" },
+    "returnAnchor": { "type": "string", "pattern": "^gummy-box:" },
+    "canonicalStateVersion": { "type": "string", "minLength": 1 },
+    "acceptanceStatus": { "const": "not-reviewed" },
+    "independentObserver": { "const": true },
+    "workerReportAuthority": { "const": false },
+    "observerCanAccept": { "const": false },
+    "canonicalMutationApplied": { "const": false },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "observedState": {
+      "type": "object",
+      "required": ["canonicalStateVersion", "digest", "artifactRefs", "observedAt"],
+      "properties": {
+        "canonicalStateVersion": { "type": "string", "minLength": 1 },
+        "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "artifactRefs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "observedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

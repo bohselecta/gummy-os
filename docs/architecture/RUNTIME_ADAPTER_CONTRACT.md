@@ -76,6 +76,27 @@ Provider telemetry is packaged as
 it with the Work Order, Lease, Grant, Production Pool authorization, Return and
 Human decisions; the adapter cannot compile the Receipt.
 
+## Phase 17B endpoint, memory and observation extension
+
+Every concrete tool endpoint must expose a capability set that is a subset of
+both the active Authority Lease and Grant. Orchestration-layer checks do not
+excuse a wider endpoint. `memory.propose` may be granted; `memory.admit` may
+not be exposed to an Agent endpoint.
+
+Runtime-generated durable context begins as `gummy.memory-candidate/v1`.
+Adapters may supply source evidence and runtime attestation, but cannot create
+the Human-governed `gummy.memory-admission-decision/v1`.
+
+Progress observation is performed through a separately bound Observer Agent,
+Runtime Binding, Lease, Grant and endpoint. Adapter telemetry may contribute to
+`gummy.execution-observation/v1`, but the observation must remain independent
+from every executing runtime segment and cannot accept a result.
+
+Completion produces a worker claim plus Observer evidence.
+`gummy.return-reconciliation/v1` compares both with the originating Work Order,
+Return anchor, memory decisions and current canonical version. A successful
+comparison remains `matched-awaiting-human-acceptance`.
+
 ## Determinism
 
 The required release adapter consumes checked-in fixtures and produces the same

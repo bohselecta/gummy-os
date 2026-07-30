@@ -364,4 +364,22 @@ A lane is complete only when:
 
 The final Return invites Hayden to use the exact release. It does not hand him a manual regression checklist.
 
+## External-influence and adaptation passes
+
+When Hayden separately authorizes a bounded post-v1 pass in response to a
+security incident, provider development, standard change, competitor release,
+or other outside influence:
+
+- preserve the production-complete v1 baseline and scope the smallest useful
+  additive response;
+- distinguish deterministic evidence from live claims;
+- record the external trigger, exact control change, test, limitation and
+  rollback;
+- finish the authorized implementation before returning another proposal;
+- report a numbered approval list where every item contains **What changed**
+  and **Why it matters**;
+- keep `BLOCKED` and `NOT CLAIMED` facts explicit;
+- invite Hayden to approve or change each numbered item without assigning him
+  routine regression work.
+
 > **Open Gummy OS. Pick a candy. Make a world.**

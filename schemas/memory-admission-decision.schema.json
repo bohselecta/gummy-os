@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/memory-admission-decision.schema.json",
+  "title": "Gummy Memory Admission Decision",
+  "description": "A Human-governed Actor decision that accepts, rejects, quarantines or revokes one exact Memory Candidate.",
+  "type": "object",
+  "required": [
+    "schema",
+    "decisionId",
+    "candidateId",
+    "candidateDigest",
+    "actorId",
+    "humanAuthorityId",
+    "productionId",
+    "decision",
+    "validation",
+    "reason",
+    "acceptedOperationalMemory",
+    "evidenceRefs",
+    "actorAcceptance",
+    "automaticDecision",
+    "canonicalMutationApplied",
+    "decidedAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.memory-admission-decision/v1" },
+    "decisionId": { "type": "string", "pattern": "^memory-decision:" },
+    "candidateId": { "type": "string", "pattern": "^memory-candidate:" },
+    "candidateDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "humanAuthorityId": { "type": "string", "pattern": "^human:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "decision": {
+      "type": "string",
+      "enum": ["accept", "reject", "quarantine", "revoke"]
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "provenanceValid",
+        "scopeValid",
+        "runtimeAttestationValid",
+        "leaseBound",
+        "riskReviewed"
+      ],
+      "properties": {
+        "provenanceValid": { "type": "boolean" },
+        "scopeValid": { "type": "boolean" },
+        "runtimeAttestationValid": { "type": "boolean" },
+        "leaseBound": { "type": "boolean" },
+        "riskReviewed": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "reason": { "type": "string", "minLength": 1 },
+    "acceptedOperationalMemory": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["memoryId", "revision", "scopeId"],
+          "properties": {
+            "memoryId": { "type": "string", "pattern": "^memory:" },
+            "revision": { "type": "integer", "minimum": 1 },
+            "scopeId": { "type": "string", "pattern": "^memory-scope:" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "actorAcceptance": { "const": true },
+    "automaticDecision": { "const": false },
+    "canonicalMutationApplied": { "const": false },
+    "decidedAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision": { "const": "accept" } },
+        "required": ["decision"]
+      },
+      "then": {
+        "properties": {
+          "acceptedOperationalMemory": { "type": "object" }
+        }
+      },
+      "else": {
+        "properties": {
+          "acceptedOperationalMemory": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

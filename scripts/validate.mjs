@@ -60,6 +60,14 @@ const required = [
   'evidence/phase17a-foundation-acceptance-matrix.md',
   'fixtures/runtime-conformance/google-agent-platform-profile-2026-07-29.json',
   'fixtures/runtime-conformance/phase17a-runtime-identity-memory-foundation.json',
+  'plans/active/2026-07-30-memory-admission-observer-plane-pass.md',
+  'docs/architecture/MEMORY_ADMISSION_AND_OBSERVER_PLANE_2026-07-30.md',
+  'docs/security/PHASE17B_EXTERNAL_INFLUENCE_RESILIENCE_THREAT_MODEL_2026-07-30.md',
+  'evidence/phase17b-external-influence-acceptance-matrix.md',
+  'evidence/phase17b-external-influence-rollback.md',
+  'fixtures/runtime-conformance/phase17b-memory-admission-observer-recovery.json',
+  'src/core/external-influence-resilience.js',
+  'tests/e2e/phase17b-observer-plane.spec.mjs',
   'plans/active/2026-07-27-production-runtime-reconciliation-and-utility-tiles.md',
   'design/source/gummy-utility-tiles-legacy/manifest.json',
   'design/source/gummy-utility-tiles-legacy/SOURCE_ARCHIVE.md',
@@ -190,7 +198,12 @@ const schemas = [
   'schemas/memory-scope-policy.schema.json',
   'schemas/long-running-work-policy.schema.json',
   'schemas/provider-evidence-bundle.schema.json',
-  'schemas/provider-profile-google-agent-platform.schema.json'
+  'schemas/provider-profile-google-agent-platform.schema.json',
+  'schemas/memory-candidate.schema.json',
+  'schemas/memory-admission-decision.schema.json',
+  'schemas/admitted-operational-memory.schema.json',
+  'schemas/execution-observation.schema.json',
+  'schemas/return-reconciliation.schema.json'
 ];
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
@@ -266,6 +279,39 @@ validatePhase17a(
   'schemas/provider-profile-google-agent-platform.schema.json',
   googleAgentPlatformProfile,
   'Phase 17A Google provider profile'
+);
+
+const phase17bFixture = JSON.parse(
+  await readFile(
+    'fixtures/runtime-conformance/phase17b-memory-admission-observer-recovery.json',
+    'utf8'
+  )
+);
+for (const [index, candidate] of phase17bFixture.memoryCandidates.entries()) {
+  validatePhase17a(
+    'schemas/memory-candidate.schema.json',
+    candidate,
+    `Phase 17B Memory Candidate ${index + 1}`
+  );
+}
+for (const [index, decision] of phase17bFixture.memoryAdmissionDecisions.entries()) {
+  validatePhase17a(
+    'schemas/memory-admission-decision.schema.json',
+    decision,
+    `Phase 17B Memory Admission Decision ${index + 1}`
+  );
+}
+for (const [index, memory] of phase17bFixture.admittedOperationalMemories.entries()) {
+  validatePhase17a(
+    'schemas/admitted-operational-memory.schema.json',
+    memory,
+    `Phase 17B Admitted Operational Memory ${index + 1}`
+  );
+}
+validatePhase17a(
+  'schemas/execution-observation.schema.json',
+  phase17bFixture.executionObservation,
+  'Phase 17B Execution Observation'
 );
 
 const placeRegistry = JSON.parse(await readFile('public/registry/gummy-places.json', 'utf8'));

@@ -110,6 +110,34 @@ requires Human acceptance. The accepted canonical object is a new canonical
 record with provenance back to memory; the operational-memory record itself
 remains non-authoritative.
 
+## Phase 17B admission boundary
+
+The 2026-07-30 external-influence resilience pass adds a required boundary
+before new generated context becomes durable operational memory:
+
+```text
+runtime note
+→ gummy.memory-candidate/v1
+→ provenance, scope, runtime-attestation and risk validation
+→ gummy.memory-admission-decision/v1
+→ gummy.admitted-operational-memory/v1
+```
+
+Agents may write ephemeral runtime notes and may propose a Memory Candidate.
+They cannot call `memory.admit`, create an admission decision or write an
+admitted-memory record.
+
+Admitted Operational Memory is intentionally not called Canonical Operational
+Memory. Admission makes context durable and reviewable; it does not make the
+context authoritative. Canonical Actor, Production and Project promotion
+remains the separate Human-governed path above.
+
+Recovery may select a suspected compromise timestamp and reconstruct
+operational memory using only Candidate/decision/admitted-memory chains written
+before that point. Every later write can be excluded even when it was
+previously accepted. See
+`MEMORY_ADMISSION_AND_OBSERVER_PLANE_2026-07-30.md`.
+
 ## Runtime continuation, Return and Receipt
 
 A checkpoint or provider session can resume runtime state. Neither is a Return.

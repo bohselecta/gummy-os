@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/return-reconciliation.schema.json",
+  "title": "Gummy Return Reconciliation",
+  "description": "Comparison of a worker claim, independent observation, originating Work Order and current canonical state before Human acceptance.",
+  "type": "object",
+  "required": [
+    "schema",
+    "reconciliationId",
+    "workReturnId",
+    "observationId",
+    "actorId",
+    "productionId",
+    "workOrderId",
+    "authorityLeaseIds",
+    "runtimeBindingIds",
+    "returnAnchor",
+    "commissionedCanonicalStateVersion",
+    "observedCanonicalStateVersion",
+    "currentCanonicalStateVersion",
+    "workerClaimDigest",
+    "observedStateAfterDigest",
+    "completionEvidenceDigests",
+    "criteriaEvaluations",
+    "memoryAdmissionDecisionIds",
+    "rejectedMemoryCandidateIds",
+    "workerReportClassification",
+    "observerEvidenceRequired",
+    "humanAcceptanceRequired",
+    "acceptanceStatus",
+    "state",
+    "canonicalMutationApplied",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.return-reconciliation/v1" },
+    "reconciliationId": { "type": "string", "pattern": "^return-reconciliation:" },
+    "workReturnId": { "type": "string", "pattern": "^return:" },
+    "observationId": { "type": "string", "pattern": "^execution-observation:" },
+    "actorId": { "type": "string", "pattern": "^actor:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "workOrderId": { "type": "string", "pattern": "^work-order:" },
+    "authorityLeaseIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^lease:" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "runtimeBindingIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^runtime-binding:" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "returnAnchor": { "type": "string", "pattern": "^gummy-box:" },
+    "commissionedCanonicalStateVersion": { "type": "string", "minLength": 1 },
+    "observedCanonicalStateVersion": { "type": "string", "minLength": 1 },
+    "currentCanonicalStateVersion": { "type": "string", "minLength": 1 },
+    "workerClaimDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "observedStateAfterDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "completionEvidenceDigests": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "criteriaEvaluations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterionId", "outcome", "evidenceRefs"],
+        "properties": {
+          "criterionId": { "type": "string", "pattern": "^criterion:" },
+          "outcome": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+          "evidenceRefs": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "memoryAdmissionDecisionIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^memory-decision:" },
+      "uniqueItems": true
+    },
+    "rejectedMemoryCandidateIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^memory-candidate:" },
+      "uniqueItems": true
+    },
+    "workerReportClassification": { "const": "claim" },
+    "observerEvidenceRequired": { "const": true },
+    "humanAcceptanceRequired": { "const": true },
+    "acceptanceStatus": {
+      "type": "string",
+      "enum": ["pending", "accepted", "rejected"]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "matched-awaiting-human-acceptance",
+        "reconciliation-required",
+        "denied"
+      ]
+    },
+    "canonicalMutationApplied": { "const": false },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

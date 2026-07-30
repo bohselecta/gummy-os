@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mygum.my/schemas/memory-candidate.schema.json",
+  "title": "Gummy Memory Candidate",
+  "description": "A runtime-produced proposal for durable operational memory. The proposal has no authority and cannot write admitted or canonical state.",
+  "type": "object",
+  "required": [
+    "schema",
+    "candidateId",
+    "originatingActorId",
+    "executingAgentId",
+    "productionId",
+    "workOrderId",
+    "authorityLeaseId",
+    "runtimeBindingId",
+    "sourceEvidence",
+    "claims",
+    "contentDigest",
+    "proposedScope",
+    "proposedExpiry",
+    "riskClassification",
+    "runtimeAttestation",
+    "canonicalStateVersionObserved",
+    "status",
+    "authoritative",
+    "authorityEffect",
+    "durableWriteApplied",
+    "canonicalMutationApplied",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": { "const": "gummy.memory-candidate/v1" },
+    "candidateId": { "type": "string", "pattern": "^memory-candidate:" },
+    "originatingActorId": { "type": "string", "pattern": "^actor:" },
+    "executingAgentId": { "type": "string", "pattern": "^agent:" },
+    "productionId": { "type": "string", "pattern": "^production:" },
+    "workOrderId": { "type": "string", "pattern": "^work-order:" },
+    "authorityLeaseId": { "type": "string", "pattern": "^lease:" },
+    "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+    "sourceEvidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidenceId", "kind", "ref", "digest", "observedAt"],
+        "properties": {
+          "evidenceId": { "type": "string", "pattern": "^evidence:" },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observed-event",
+              "tool-call",
+              "artifact",
+              "runtime-note",
+              "provider-event",
+              "human-instruction"
+            ]
+          },
+          "ref": { "type": "string", "minLength": 1 },
+          "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "observedAt": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claimId", "text", "sourceEvidenceIds"],
+        "properties": {
+          "claimId": { "type": "string", "pattern": "^claim:" },
+          "text": { "type": "string", "minLength": 1 },
+          "sourceEvidenceIds": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^evidence:" },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "contentDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "proposedScope": {
+      "type": "object",
+      "required": [
+        "scopeId",
+        "scopeType",
+        "actorId",
+        "productionId",
+        "permittedAgentIds",
+        "allowedUses",
+        "crossActorAccess",
+        "crossProductionAccess"
+      ],
+      "properties": {
+        "scopeId": { "type": "string", "pattern": "^memory-scope:" },
+        "scopeType": {
+          "type": "string",
+          "enum": ["actor", "actor-production", "production", "work-order"]
+        },
+        "actorId": { "type": "string", "pattern": "^actor:" },
+        "productionId": { "type": "string", "pattern": "^production:" },
+        "permittedAgentIds": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^agent:" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowedUses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "resume-context",
+              "planning-context",
+              "retrieval-context",
+              "reconciliation-context",
+              "receipt-evidence"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "crossActorAccess": { "const": false },
+        "crossProductionAccess": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "proposedExpiry": { "type": "string", "format": "date-time" },
+    "riskClassification": {
+      "type": "object",
+      "required": ["level", "reasons", "humanReviewRequired"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "humanReviewRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "runtimeAttestation": {
+      "type": "object",
+      "required": [
+        "runtimeBindingId",
+        "runtimeBindingRevision",
+        "runtimePrincipal",
+        "fingerprint",
+        "observedAt"
+      ],
+      "properties": {
+        "runtimeBindingId": { "type": "string", "pattern": "^runtime-binding:" },
+        "runtimeBindingRevision": { "type": "integer", "minimum": 1 },
+        "runtimePrincipal": { "type": "string", "minLength": 1 },
+        "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "observedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "canonicalStateVersionObserved": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "quarantined", "admitted", "rejected", "revoked", "expired"]
+    },
+    "authoritative": { "const": false },
+    "authorityEffect": { "const": "none" },
+    "durableWriteApplied": { "const": false },
+    "canonicalMutationApplied": { "const": false },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}
