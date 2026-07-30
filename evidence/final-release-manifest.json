@@ -78,20 +78,21 @@
       "failed": 0
     },
     "chromium": {
-      "total": 69,
-      "passed": 67,
+      "total": 70,
+      "passed": 68,
       "skipped": 2,
       "skipReason": "explicitly configured live-bridge cases"
     },
     "deepReturn": {
-      "total": 6,
-      "passed": 6,
+      "total": 9,
+      "passed": 9,
       "browsers": [
         "Chromium",
         "Firefox",
         "WebKit"
       ]
     },
+    "phoneWorkspaceReturn": "PASS — saved-workspace actions remain reachable and restorable at 390 px and 320 px",
     "accessibility": "PASS — desktop, tablet, phone, Night, Day, and reduced motion",
     "security": "PASS — 404 source files, zero source maps, zero server-only markers in browser bundle",
     "productPreservation": "PASS — suite complete",

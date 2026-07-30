@@ -20,8 +20,9 @@ merge commit `1bdd08a2c983b154a577fcf4e21e01034033bb53` in PR #46.
 Clean-checkout merged-main verification passed:
 
 - 204 of 204 Node tests;
-- 67 of 69 Chromium browser tests, with two explicit live-service skips;
-- 6 of 6 deep-return journeys across Chromium, Firefox, and WebKit;
+- 68 of 70 Chromium browser tests, with two explicit live-service skips;
+- 9 of 9 deep-return journeys across Chromium, Firefox, and WebKit;
+- saved-workspace controls reachable and restorable at both 390 px and 320 px;
 - accessibility across desktop, tablet, 320 px phone, Night, Day, and reduced
   motion;
 - schema, fixture, brand, product-preservation, security, bundle, persistence,

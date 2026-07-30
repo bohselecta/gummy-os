@@ -36,6 +36,16 @@
   .top-actions { gap: 2px; }
   .top-actions .button { min-width: 40px; padding-inline: .55rem; }
   .top-actions .label { display: none; }
+  .workspace-switcher { position: static; }
+  .workspace-switcher-menu {
+    position: fixed;
+    inset: calc(56px + env(safe-area-inset-top) + var(--space-2))
+      var(--space-2)
+      calc(76px + env(safe-area-inset-bottom) + var(--space-2));
+    width: auto;
+    max-height: none;
+    overflow: auto;
+  }
   .gummy-window {
     inset: 6px !important; width: auto !important; height: auto !important; min-width: 0; resize: none;
     border-radius: var(--radius-md);
