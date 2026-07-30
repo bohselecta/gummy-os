@@ -2,16 +2,21 @@
 
 ## Current program
 
-Gummy OS is no longer in foundation or architecture discovery. The current program is the **founder-ready personal release completion** defined in:
+**Gummy OS v1 is production complete.** The **founder-ready personal release completion**
+program defined in the following files is closed and retained as historical
+evidence:
 
 - `docs/finish-kit/README.md`
 - `docs/finish-kit/MASTER_RELEASE_ROADMAP.md`
 - `docs/finish-kit/release-program.json`
 - `plans/active/2026-07-27-master-finish-up-execution.md`
 
-This file is the concise roadmap entrypoint. The finish kit contains the full implementation, UX, specialist, infrastructure, risk, and acceptance detail.
+There is no active Phase 17 implementation promise. Optional provider work is
+bounded in
+`docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md` and requires separate
+post-v1 authorization.
 
-## Product state entering the program
+## Completed v1 product state
 
 Already accepted and implemented as the release foundation:
 
@@ -27,11 +32,12 @@ Already accepted and implemented as the release foundation:
 - accepted ImageHoss, VideoBoss, and Meshmallow Production contracts;
 - automated unit, integration, browser, accessibility, visual, and preservation foundations.
 
-The remaining work is not to invent a new platform. It is to finish the current one.
+The release work is complete. Maintenance must preserve this state without
+opening another expansion loop.
 
-## Release target
+## Released target
 
-The target is a founder-ready, local-first personal Gummy OS release candidate.
+The shipped result is the stable, local-first Gummy OS v1 product.
 
 A clean user can:
 
@@ -51,7 +57,7 @@ open Gummy OS
 
 Live specialist capabilities execute only when their trusted runtime/provider is present. Missing optional external capability produces a truthful unavailable state, not a fake success or a failure of the whole local release.
 
-## Final implementation phases
+## Completed implementation record — formerly Final implementation phases
 
 ### Phase 0 — Freeze exact baseline
 
@@ -171,6 +177,8 @@ The following remains part of the Gummy OS vision after the personal release is 
 9. billing, marketplace, certification, and commercial network.
 
 These lanes are preserved, not discarded. They do not delay the founder-ready personal release.
+They are not active v1 requirements; live runtime integrations are further
+bounded by `docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md`.
 
 ## Stop rules
 

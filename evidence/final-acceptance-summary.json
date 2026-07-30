@@ -1,176 +1,115 @@
 {
   "schema": "gummy.final-acceptance-summary/v1",
-  "createdAt": "2026-07-27T19:19:08.628Z",
+  "createdAt": "2026-07-30T00:07:08Z",
   "status": "PASS",
-  "releaseLevel": "founder-ready",
-  "releaseRef": "main / phase-10-live-activation",
+  "releaseLevel": "stable-v1",
+  "releaseRef": "v1.0.0 — exact tag target",
   "repositories": {
     "gummyOs": {
       "branch": "main",
-      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/22",
-      "headBinding": "4369d7181868cfd173f88698816b9190f9c0ad11 plus the release-closure commit containing this summary"
-    },
-    "imageHoss": {
-      "head": "340f819b20c5b6d7ea988459c9380759941c757f",
-      "pullRequest": "https://github.com/bohselecta/imagehoss/pull/7",
-      "status": "merged"
-    },
-    "videoBoss": {
-      "head": "e67db769219e5a764821f7bac74638f3791dca98",
-      "pullRequest": "https://github.com/bohselecta/videoboss/pull/5",
-      "status": "merged"
-    },
-    "meshmallow": {
-      "head": "0c911f7552739f2e0bdefaf863a78a53f04a04c0",
-      "pullRequest": "https://github.com/bohselecta/3d-bee/pull/6",
-      "status": "merged"
+      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/46",
+      "acceptedCandidate": "ac9c5f61d5979531df7c5f9559bddb131a620613",
+      "phase16_5MergeCommit": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+      "releaseHeadBinding": "the exact commit targeted by immutable tag v1.0.0"
     }
   },
-  "verification": [
-    {
-      "repository": "bohselecta/imagehoss",
-      "command": "npm ci && npm run verify",
-      "environment": "fresh shared-object checkout",
-      "tests": 65,
-      "status": "PASS"
+  "verification": {
+    "cleanCheckoutSource": "the exact commit targeted by immutable tag v1.0.0",
+    "commands": [
+      "npm ci",
+      "npm run verify",
+      "npm run test:deep",
+      "npm audit --audit-level=moderate",
+      "git diff --check"
+    ],
+    "node": {
+      "total": 204,
+      "passed": 204,
+      "failed": 0,
+      "skipped": 0
     },
-    {
-      "repository": "bohselecta/videoboss",
-      "command": "npm ci && npm run verify",
-      "environment": "fresh shared-object checkout",
-      "tests": 43,
-      "status": "PASS"
+    "chromium": {
+      "total": 69,
+      "passed": 67,
+      "skipped": 2,
+      "skipReason": "explicitly configured live-bridge cases"
     },
-    {
-      "repository": "bohselecta/3d-bee",
-      "command": "npm ci && npm run verify",
-      "environment": "fresh shared-object checkout",
-      "tests": {
-        "rust": 37,
-        "pythonBridge": 21,
-        "jsonContractsAndFixtures": 14
-      },
-      "status": "PASS",
-      "hostedActions": "NOT CLAIMED — GitHub prevented both jobs from starting because the account Actions budget was exhausted"
+    "deepReturn": {
+      "total": 6,
+      "passed": 6,
+      "projects": [
+        "chromium-deep",
+        "firefox-deep",
+        "webkit-deep"
+      ]
     },
-    {
-      "repository": "bohselecta/gummy-os",
-      "command": "npm run verify",
-      "environment": "production build plus Playwright Chromium",
-      "tests": {
-        "node": 95,
-        "browser": 23
-      },
-      "status": "PASS"
-    },
-    {
-      "repository": "bohselecta/gummy-os",
-      "command": "npm run test:acceptance",
-      "environment": "exact production-like build plus Playwright Chromium",
-      "tests": 23,
-      "status": "PASS"
-    }
-  ],
+    "githubActionsRunIds": [
+      30491169101,
+      30491169166
+    ]
+  },
   "gates": {
     "exactSource": "PASS",
     "cleanCheckout": "PASS",
+    "schemaAndFixtures": "PASS",
     "productPreservation": "PASS",
-    "configurationTruth": "PASS",
-    "executionBoundary": "PASS",
+    "composerProposalOnly": "PASS",
+    "makeProductionBoundary": "PASS",
     "authority": "PASS",
     "sourceImmutability": "PASS",
-    "persistence": "PASS",
-    "truthfulCapability": "PASS",
-    "deterministicGoldenProduction": "PASS",
+    "persistenceAndRecovery": "PASS",
+    "migrationsAndImports": "PASS",
+    "quarantine": "PASS",
+    "places": "PASS",
+    "productions": "PASS",
+    "socialInstances": "PASS",
+    "returnsAndReceipts": "PASS",
     "localBoxBackupRestore": "PASS",
-    "accessibility": "PASS — zero critical or serious axe violations",
-    "visualAndResponsive": "PASS",
-    "security": "PASS",
-    "reliability": "PASS",
-    "performance": "PASS",
-    "migration": "PASS",
-    "rollback": "PASS",
-    "deploymentExactHead": "bound to the post-merge Vercel promotion and smoke required by this release transaction"
-  },
-  "goldenProduction": {
-    "productionId": "production:night-gummy-launch",
-    "status": "PASS",
-    "executionNodes": 5,
-    "workOrders": 5,
-    "contextEnvelopes": 5,
-    "taskLeases": 5,
-    "grants": 5,
-    "returns": 5,
-    "specialistNodeReceipts": 5,
-    "resultGummies": 5,
-    "sourceAndAcceptedPriorResultImmutability": "PASS",
-    "restartRecovery": "PASS",
-    "evidence": "evidence/night-gummy-launch-golden-path.json"
-  },
-  "localBox": {
-    "status": "PASS",
-    "cleanContextRestore": "PASS",
-    "inspectBeforeApply": "PASS",
-    "tamperAndPathTraversalRejection": "PASS",
-    "idempotentRepeat": "PASS",
-    "conflictPreservesBothVersions": "PASS",
-    "scopedResetPreviewAndTypedConfirmation": "PASS",
-    "evidence": "evidence/phase-7-gummy-box.json"
-  },
-  "specialists": {
-    "imageHoss": {
-      "capabilityReady": "PASS",
-      "liveProven": "PASS",
-      "humanAcceptance": "PASS",
-      "acceptedAssetSha256": "2f53ecd6891137462908154427bf0bf8eaaf2b37bfe193309ff2050819c0956a",
-      "acceptedHossSha256": "c31c39ab8ec0dadb0bd0b12d9b57dbdca636450990971f2076f3e7e4e8e78b97"
-    },
-    "videoBoss": {
-      "capabilityReady": "PASS",
-      "liveProven": "PASS",
-      "humanAcceptance": "PASS",
-      "providerRequestId": "019fa4f4-25ba-7193-ba4f-739bc9b87f4f",
-      "costUsd": 0.5,
-      "deliverySha256": "391a41f2a34a9bd8e5dbb2b8deb4f8b8633ad317860af2c0ef03770b79f2f247"
-    },
-    "meshmallow": {
-      "capabilityReady": "PASS",
-      "liveProven": "PASS",
-      "humanAcceptance": "PASS",
-      "blendSha256": "d714fd7cc3b1f759a77c63ab3714de876cfe96a960ce21bf1d46ea6d04e630ae",
-      "glbSha256": "62bbeb6125bee051567d584ace151bda9a1b5ccffaee8a30f2846195a08834b2"
-    }
+    "accessibility": "PASS — desktop, tablet, phone, Night, Day, and reduced motion",
+    "visualAndResponsive": "PASS — including 320 px navigation and notification obstruction checks",
+    "security": "PASS — 404 source files, zero source maps, zero server-only markers in the browser bundle",
+    "bundle": "PASS",
+    "dependencyVulnerabilities": 0,
+    "rollback": "PASS"
   },
   "deployment": {
     "provider": "Vercel",
     "projectId": "prj_iN4lDNquY0Y2xf297UvDZCVGWmsY",
-    "productionUrl": "https://gummy-os-six.vercel.app",
-    "acceptedActivationDeploymentId": "dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa",
-    "acceptedActivationCommit": "4369d7181868cfd173f88698816b9190f9c0ad11",
-    "commitBinding": "VERCEL_GIT_COMMIT_SHA displayed in About / Limits and matched to the exact merged release head"
+    "canonicalUrl": "https://www.mygum.my/",
+    "apexUrl": "https://mygum.my/",
+    "verifiedMergedMainDeployment": {
+      "id": "dpl_GWshoouUf6HqwmjWy75i8eMo6bzc",
+      "url": "https://gummy-6npeok6ga-mygummy.vercel.app",
+      "commit": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+      "status": "READY"
+    },
+    "releaseDeploymentBinding": "The immutable GitHub release v1.0.0 records the final deployment ID, URL, ready time, canonical-alias time, source SHA, and smoke receipt assigned after rollout."
+  },
+  "capabilities": {
+    "localGummyBox": "PASS",
+    "providerNeutralRuntimeFoundations": "PASS",
+    "liveGoogleAgentPlatform": "NOT CLAIMED — credentials absent and execution disabled",
+    "liveMcpProviderExecution": "NOT CLAIMED — no live host/server execution enabled",
+    "memoryBankProjection": "NOT CLAIMED",
+    "providerTelemetryIngestion": "NOT CLAIMED",
+    "specialistPublicLiveAdapters": "NOT CLAIMED — historical bounded proofs are preserved but no public ambient provider execution is enabled"
   },
   "knownLimitations": [
+    "Live Google Agent Platform, Google runtime principals, Agent Identity, Memory Bank, and provider telemetry ingestion are not configured.",
+    "Live MCP hosts, servers, MCP App execution, and specialist MCP adapters are not configured.",
+    "No background provider execution is enabled.",
+    "Managed Box, Google Drive authority, hosted Gummy Rooms, social federation, enterprise habitat, billing, and marketplace remain outside v1.",
     "Exported .gummybox files are integrity-hashed but not encrypted or signed.",
-    "Managed Box, Google Drive authority, Gummy Rooms hosting, social federation, and enterprise habitat remain deferred.",
-    "Live specialist execution remains bound to trusted local/server adapters and is not exposed as ambient authority in the public browser deployment.",
-    "The provider-original VideoBoss result contained AAC despite no audio input; the immutable original is retained and the Human-accepted delivery removes audio by video stream copy.",
-    "Meshmallow hosted Actions did not start because the account Actions budget prevented runner assignment; the complete exact-head local suite passed.",
-    "Performance evidence is local Chromium lab data, not field Core Web Vitals."
+    "Performance evidence is automated local Chromium lab data rather than field Core Web Vitals.",
+    "Optional provider work requires separate credentials, infrastructure, cost/privacy review, authorization, verification, and rollback."
   ],
-  "rollback": "evidence/rollback-plan.md",
+  "rollback": {
+    "plan": "evidence/rollback-plan.md",
+    "source": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+    "deploymentId": "dpl_GWshoouUf6HqwmjWy75i8eMo6bzc"
+  },
   "founderDecision": {
     "status": "accepted",
-    "acceptedImageRoles": [
-      "production-image",
-      "video-first-frame"
-    ],
-    "acceptedSceneRoles": [
-      "accepted-scene",
-      "engine-handoff"
-    ],
-    "acceptedVideoRoles": [
-      "accepted-take",
-      "delivery-take"
-    ]
+    "statement": "I accept the exact Phase 16.5 Calm Workspace candidate at ac9c5f61d5979531df7c5f9559bddb131a620613 for merge and production release. The goal is to finish Gummy OS as a stable v1 product, not begin another expansion loop."
   }
 }

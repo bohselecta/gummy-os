@@ -4,6 +4,8 @@
 
 Gummy OS is a local-first, Human-controlled creative workspace delivered through the browser. It preserves durable project state in a Local Gummy Box and lets the Human arrange sources, people, specialist tools, review decisions, and destinations in a visual Composer.
 
+Gummy OS v1 is production complete. The stable release is v1.0.0 at https://www.mygum.my/.
+
 ## Product model
 
 - Human: the person who owns authority and chooses what becomes canonical.
@@ -36,7 +38,9 @@ Gummy OS is a local-first, Human-controlled creative workspace delivered through
 - Acceptance is not publication.
 - Shared compute records are authorization and reconciliation records; Gummy OS does not claim internal currency or pooled-fund custody.
 - Exact address release, final generated Radio voice, remote Channels publication, remote multi-Human live media, and authenticated Meshmallow construction remain separately gated unless their real services are connected.
-- Phase 17 live MCP execution is not enabled in the current public release.
+- Live Google Agent Platform and live MCP provider execution are not enabled in Gummy OS v1.
+- Google runtime principals, Memory Bank, provider telemetry ingestion, MCP hosts/servers, specialist live adapters, and background provider execution are optional post-v1 infrastructure.
+- No active product capability depends on those optional integrations.
 
 ## Public resources
 

@@ -1,15 +1,25 @@
 {
   "schema": "gummy.final-release-manifest/v1",
-  "createdAt": "2026-07-27T19:19:08.628Z",
-  "releaseRef": "main / phase-10-live-activation",
+  "createdAt": "2026-07-30T00:07:08Z",
+  "releaseRef": "v1.0.0 — exact tag target",
+  "release": {
+    "version": "1.0.0",
+    "tag": "v1.0.0",
+    "name": "Gummy OS v1 — Calm Workspace",
+    "status": "production-complete",
+    "acceptedCandidate": "ac9c5f61d5979531df7c5f9559bddb131a620613",
+    "phase16_5MergeCommit": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+    "sourceBinding": "the exact commit targeted by immutable tag v1.0.0",
+    "canonicalUrl": "https://www.mygum.my/"
+  },
   "repositories": {
     "gummyOs": {
       "repository": "bohselecta/gummy-os",
-      "baselineHead": "c1279e5f45d51e64febf4c29a701bbd5b21e62f1",
-      "phase8Head": "6a5ebbe6fd33dcf283d60b52d39e83be00c28ee5",
-      "phase10MergedHead": "4369d7181868cfd173f88698816b9190f9c0ad11",
-      "releaseHeadBinding": "the exact release-closure commit containing this manifest",
-      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/22"
+      "prePhase16_5Head": "617d9356b92160f77cda84f19c4877292f8b6edb",
+      "acceptedPhase16_5Head": "ac9c5f61d5979531df7c5f9559bddb131a620613",
+      "phase16_5MergeCommit": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+      "releaseHeadBinding": "the exact release-closure commit containing this manifest and targeted by v1.0.0",
+      "pullRequest": "https://github.com/bohselecta/gummy-os/pull/46"
     },
     "imageHoss": {
       "repository": "bohselecta/imagehoss",
@@ -38,7 +48,7 @@
         "bohselecta/3d-bee",
         "app:3d-bee",
         "actor:3d-bee",
-        "three-d-bee.*"
+        "3d-bee.*"
       ]
     }
   },
@@ -46,12 +56,59 @@
     "provider": "Vercel",
     "teamId": "team_2sFAdYg7bfXw0aDBAmDU7LK7",
     "projectId": "prj_iN4lDNquY0Y2xf297UvDZCVGWmsY",
-    "canonicalUrl": "https://gummy-os-six.vercel.app",
+    "canonicalUrl": "https://www.mygum.my/",
+    "apexUrl": "https://mygum.my/",
+    "apexPolicy": "permanent redirect to https://www.mygum.my/ preserving paths and query strings",
     "mainAlias": "https://gummy-os-git-main-mygummy.vercel.app",
-    "acceptedActivationDeploymentId": "dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa",
-    "acceptedActivationCommit": "4369d7181868cfd173f88698816b9190f9c0ad11",
+    "verifiedMergedMainDeployment": {
+      "id": "dpl_GWshoouUf6HqwmjWy75i8eMo6bzc",
+      "url": "https://gummy-6npeok6ga-mygummy.vercel.app",
+      "commit": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+      "status": "READY"
+    },
+    "releaseDeploymentBinding": "The immutable GitHub release v1.0.0 records the final deployment ID, URL, ready time, and canonical-alias time assigned after this source is deployed.",
     "buildCommitBinding": "VERCEL_GIT_COMMIT_SHA, displayed in About / Limits and verified against the merged PR head",
-    "promotionRule": "production only after the exact release PR merges and every deterministic release gate passes"
+    "promotionRule": "production only after the exact release-record PR merges and every deterministic release gate passes"
+  },
+  "verification": {
+    "source": "the exact commit targeted by immutable tag v1.0.0",
+    "node": {
+      "total": 204,
+      "passed": 204,
+      "failed": 0
+    },
+    "chromium": {
+      "total": 69,
+      "passed": 67,
+      "skipped": 2,
+      "skipReason": "explicitly configured live-bridge cases"
+    },
+    "deepReturn": {
+      "total": 6,
+      "passed": 6,
+      "browsers": [
+        "Chromium",
+        "Firefox",
+        "WebKit"
+      ]
+    },
+    "accessibility": "PASS — desktop, tablet, phone, Night, Day, and reduced motion",
+    "security": "PASS — 404 source files, zero source maps, zero server-only markers in browser bundle",
+    "productPreservation": "PASS — suite complete",
+    "dependencyVulnerabilities": 0,
+    "gitDiffCheck": "PASS",
+    "githubActionsRunIds": [
+      30491169101,
+      30491169166
+    ]
+  },
+  "capabilityBoundaries": {
+    "providerNeutralRuntimeFoundation": "PASS",
+    "liveGoogleAgentPlatform": "NOT CLAIMED — credentials absent and live execution disabled",
+    "liveMcpProviderExecution": "NOT CLAIMED — no live host/server execution enabled",
+    "memoryBankProjection": "NOT CLAIMED",
+    "providerTelemetryIngestion": "NOT CLAIMED",
+    "localGummyBox": "PASS — authoritative by default without an account"
   },
   "contracts": [
     "gummy.imagehoss-production-configuration/v1",
@@ -90,7 +147,10 @@
     "evidence/phase-8-release-hardening.json",
     "evidence/performance-budget.json",
     "evidence/final-acceptance-summary.json",
+    "evidence/phase16-5-calm-workspace-acceptance.md",
     "docs/release/PHASE-10-UBUNTU-LIVE-ACTIVATION.md",
+    "docs/release/FINAL_RELEASE.md",
+    "docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md",
     "evidence/rollback-plan.md",
     "artifacts/evidence/"
   ],
@@ -102,8 +162,8 @@
   },
   "rollback": {
     "plan": "evidence/rollback-plan.md",
-    "priorProductionCommit": "4369d7181868cfd173f88698816b9190f9c0ad11",
-    "priorDeploymentId": "dpl_EzAjF9HeksPnNWg8tYDnzhLNhVQa",
-    "priorDeploymentUrl": "https://gummy-os-six.vercel.app"
+    "priorProductionCommit": "1bdd08a2c983b154a577fcf4e21e01034033bb53",
+    "priorDeploymentId": "dpl_GWshoouUf6HqwmjWy75i8eMo6bzc",
+    "priorDeploymentUrl": "https://gummy-6npeok6ga-mygummy.vercel.app"
   }
 }

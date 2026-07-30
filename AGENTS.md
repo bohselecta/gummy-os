@@ -2,16 +2,21 @@
 
 ## Current mission
 
-Gummy OS is in **founder-ready release completion**.
+Gummy OS v1 is **production complete**. The former **founder-ready release completion**
+mission is closed.
 
-The product architecture, vocabulary, authority model, brand, Production behavior, and creative specialist contracts are sufficiently defined. Builders must now finish the product, integrate the specialist runtimes, harden it, prove it, and deliver the release.
+Do not begin another design, feature, or provider-expansion phase by default.
+Preserve and maintain the shipped product. Optional live Google, MCP,
+operational-memory, telemetry, and specialist-adapter work is archived in
+`docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md` and requires a
+separately authorized post-v1 project.
 
 ```text
 Preserve the house.
-Finish the rooms.
-Make the doorway obvious.
-Prove the complete journey.
-Ship one coherent product.
+Keep main green.
+Keep production matched to main.
+Preserve the v1 evidence and rollback.
+Do not manufacture live-provider claims.
 ```
 
 Do not begin another broad architecture pass. Do not stop after another proposal, gap audit, or vertical-slice recommendation.
