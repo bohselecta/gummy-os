@@ -1,0 +1,372 @@
+{
+  "schema": "gummy.project-operations-language/v1",
+  "version": "1.0.0",
+  "principle": "Software project machinery remains fully capable while its provider-specific language stays behind the interface boundary.",
+  "userFacingProviderName": "Project Service",
+  "forbiddenByDefault": [
+    "git",
+    "github",
+    "version control",
+    "repository",
+    "repo",
+    "commit",
+    "push",
+    "pull request",
+    "pr",
+    "branch",
+    "checkout",
+    "stash",
+    "merge conflict",
+    "detached head",
+    "rebase",
+    "blame",
+    "workflow",
+    "github actions",
+    "ci/cd",
+    "pipeline",
+    "deployment"
+  ],
+  "terms": [
+    {
+      "technical": "repository",
+      "also": ["repo"],
+      "user": "Project Folder",
+      "category": "files",
+      "meaning": "The complete set of files and history for one project."
+    },
+    {
+      "technical": "commit",
+      "also": ["revision"],
+      "user": "Save Point",
+      "category": "files",
+      "meaning": "A restorable snapshot of the project."
+    },
+    {
+      "technical": "push",
+      "also": ["publish refs"],
+      "user": "Upload",
+      "category": "files",
+      "meaning": "Send local Save Points to the connected Project Service."
+    },
+    {
+      "technical": "pull",
+      "also": ["fetch and integrate"],
+      "user": "Download Updates",
+      "category": "files",
+      "meaning": "Bring newer project work onto this device."
+    },
+    {
+      "technical": "clone",
+      "also": [],
+      "user": "Download a Copy",
+      "category": "files",
+      "meaning": "Create the first complete local copy of a Project Folder."
+    },
+    {
+      "technical": "fork",
+      "also": [],
+      "user": "Make a Personal Copy",
+      "category": "files",
+      "meaning": "Create an independently editable copy under another owner."
+    },
+    {
+      "technical": "blob",
+      "also": [],
+      "user": "File",
+      "category": "files",
+      "meaning": "Stored file contents."
+    },
+    {
+      "technical": "working tree",
+      "also": ["worktree", "workspace checkout"],
+      "user": "Current Project Files",
+      "category": "files",
+      "meaning": "The files currently open for editing on this device."
+    },
+    {
+      "technical": "index",
+      "also": ["staging area", "staged changes"],
+      "user": "Next Save",
+      "category": "files",
+      "meaning": "The selected changes that will be included in the next Save Point."
+    },
+    {
+      "technical": "remote",
+      "also": ["origin", "upstream"],
+      "user": "Connected Project Service",
+      "category": "files",
+      "meaning": "The online or network location used to exchange project updates."
+    },
+    {
+      "technical": "branch",
+      "also": ["ref"],
+      "user": "Draft Version",
+      "category": "workflow",
+      "meaning": "An isolated line of project work."
+    },
+    {
+      "technical": "main",
+      "also": ["master", "default branch"],
+      "user": "Official Version",
+      "category": "workflow",
+      "meaning": "The approved project version used as the primary source."
+    },
+    {
+      "technical": "checkout",
+      "also": ["switch"],
+      "user": "Switch To",
+      "category": "workflow",
+      "meaning": "Change which project version is active on this device."
+    },
+    {
+      "technical": "stash",
+      "also": [],
+      "user": "Set Aside",
+      "category": "workflow",
+      "meaning": "Temporarily protect unfinished work while another task is handled."
+    },
+    {
+      "technical": "tag",
+      "also": ["release tag"],
+      "user": "Named Release",
+      "category": "workflow",
+      "meaning": "A permanent name attached to an important Save Point."
+    },
+    {
+      "technical": "pull request",
+      "also": ["pr", "merge request"],
+      "user": "Proposed Update",
+      "category": "collaboration",
+      "meaning": "A request to review and add a Draft Version to the Official Version."
+    },
+    {
+      "technical": "draft pull request",
+      "also": ["draft pr"],
+      "user": "Work in Progress",
+      "category": "collaboration",
+      "meaning": "A visible Proposed Update that is not ready for approval."
+    },
+    {
+      "technical": "mergeable",
+      "also": ["cleanly mergeable"],
+      "user": "Ready to Combine",
+      "category": "collaboration",
+      "meaning": "No editing or policy problem prevents approval."
+    },
+    {
+      "technical": "unmerged",
+      "also": ["open pull request"],
+      "user": "Pending Approval",
+      "category": "collaboration",
+      "meaning": "A Proposed Update has not yet been added to the Official Version."
+    },
+    {
+      "technical": "merge",
+      "also": ["squash merge", "rebase merge"],
+      "user": "Approve and Combine",
+      "category": "collaboration",
+      "meaning": "Add an approved Proposed Update to the Official Version."
+    },
+    {
+      "technical": "issue",
+      "also": ["ticket"],
+      "user": "To-Do or Problem",
+      "category": "collaboration",
+      "meaning": "A tracked request, task, question, or defect."
+    },
+    {
+      "technical": "review",
+      "also": ["code review"],
+      "user": "Project Review",
+      "category": "collaboration",
+      "meaning": "A person or automated specialist checks a Proposed Update."
+    },
+    {
+      "technical": "review comment",
+      "also": ["inline comment"],
+      "user": "Requested Change",
+      "category": "collaboration",
+      "meaning": "Feedback attached to a specific part of a Proposed Update."
+    },
+    {
+      "technical": "merge conflict",
+      "also": ["conflict", "non-fast-forward", "push rejected"],
+      "user": "Editing Collision",
+      "category": "errors",
+      "meaning": "Newer work overlaps with the work being saved and must be reconciled."
+    },
+    {
+      "technical": "detached head",
+      "also": [],
+      "user": "System Tracking Error",
+      "category": "errors",
+      "meaning": "The current files are not attached to an active Draft Version."
+    },
+    {
+      "technical": "revert",
+      "also": ["reset"],
+      "user": "Undo",
+      "category": "errors",
+      "meaning": "Restore project contents to an earlier safe state."
+    },
+    {
+      "technical": "rebase",
+      "also": [],
+      "user": "Rebuild the Update History",
+      "category": "errors",
+      "meaning": "Reapply Save Points onto a newer project foundation."
+    },
+    {
+      "technical": "blame",
+      "also": [],
+      "user": "File History",
+      "category": "errors",
+      "meaning": "Show when and why each line last changed."
+    },
+    {
+      "technical": "workflow",
+      "also": ["github actions", "action", "ci", "continuous integration"],
+      "user": "Automated Safety Checks",
+      "category": "automation",
+      "meaning": "Automated work that verifies, assembles, or launches the project."
+    },
+    {
+      "technical": "pipeline",
+      "also": ["job graph"],
+      "user": "Automated Assembly Line",
+      "category": "automation",
+      "meaning": "The ordered steps used to check, assemble, and launch a project."
+    },
+    {
+      "technical": "runner",
+      "also": ["agent runner", "build runner"],
+      "user": "Automation Worker",
+      "category": "automation",
+      "meaning": "The computer that performs an automated step."
+    },
+    {
+      "technical": "build",
+      "also": ["compile", "bundle"],
+      "user": "Assembly",
+      "category": "automation",
+      "meaning": "Prepare source files as a usable application or website."
+    },
+    {
+      "technical": "artifact",
+      "also": ["build artifact"],
+      "user": "Assembled Package",
+      "category": "automation",
+      "meaning": "A file or package produced by Automated Safety Checks."
+    },
+    {
+      "technical": "deployment",
+      "also": ["deploy", "release deployment"],
+      "user": "Launch",
+      "category": "automation",
+      "meaning": "Place an assembled project into a live environment."
+    },
+    {
+      "technical": "webhook",
+      "also": [],
+      "user": "Automatic Project Notification",
+      "category": "automation",
+      "meaning": "A secure message sent when project state changes."
+    },
+    {
+      "technical": "secret",
+      "also": ["token", "personal access token", "pat"],
+      "user": "Private Access Key",
+      "category": "security",
+      "meaning": "A protected credential that grants bounded access."
+    }
+  ],
+  "states": {
+    "clean": "Everything is saved",
+    "dirty": "Unsaved project changes",
+    "ahead": "Updates ready to upload",
+    "behind": "Newer updates are available",
+    "diverged": "Two versions need to be reconciled",
+    "draft": "Work in Progress",
+    "open": "Pending Approval",
+    "mergeable": "Ready to Combine",
+    "merged": "Approved and Combined",
+    "checks_pending": "Safety checks are running",
+    "checks_passed": "Safety checks passed",
+    "checks_failed": "Safety checks need attention",
+    "deployed": "Live",
+    "deployment_pending": "Launch in progress",
+    "deployment_failed": "Launch needs attention"
+  },
+  "errors": {
+    "editing_collision": {
+      "title": "Editing collision",
+      "message": "Someone else updated this project while we were working. Your work is safe. We need to refresh the Project Folder and reconcile the overlapping changes before saving again.",
+      "action": "Refresh and reconcile",
+      "approvalRequired": true,
+      "workSafe": true,
+      "retryable": true
+    },
+    "safety_check_failed": {
+      "title": "Safety check needs attention",
+      "message": "The automated safety checks found something that should be fixed before this update becomes official.",
+      "action": "Show the problem and prepare a fix",
+      "approvalRequired": false,
+      "workSafe": true,
+      "retryable": true
+    },
+    "missing_item": {
+      "title": "Item not found",
+      "message": "I cannot find that file or Project Folder. It may have been moved, removed, renamed, or made private.",
+      "action": "Search again",
+      "approvalRequired": false,
+      "workSafe": true,
+      "retryable": false
+    },
+    "access_denied": {
+      "title": "Access needs to be restored",
+      "message": "We do not currently have the digital keys needed to change this project. You may have been signed out or the owner may need to grant access.",
+      "action": "Reconnect access",
+      "approvalRequired": true,
+      "workSafe": true,
+      "retryable": true
+    },
+    "moving_too_fast": {
+      "title": "The service needs a moment",
+      "message": "We are sending updates faster than the connected service can process them. Your work is safe. We can retry after a short pause.",
+      "action": "Retry automatically",
+      "approvalRequired": false,
+      "workSafe": true,
+      "retryable": true,
+      "retryAfterSeconds": 60
+    },
+    "system_hiccup": {
+      "title": "Temporary service hiccup",
+      "message": "The connected project service is temporarily unavailable. Your local work is safe, and nothing needs to be recreated.",
+      "action": "Retry when the service recovers",
+      "approvalRequired": false,
+      "workSafe": true,
+      "retryable": true
+    },
+    "system_tracking_error": {
+      "title": "Project tracking needs repair",
+      "message": "The current files are no longer attached to an active Draft Version. Your files are still present. We need to return them to a recent Save Point before continuing.",
+      "action": "Repair project tracking",
+      "approvalRequired": true,
+      "workSafe": true,
+      "retryable": true
+    },
+    "unknown": {
+      "title": "Project operation could not finish",
+      "message": "The system could not finish that project operation. Your existing work has not been discarded.",
+      "action": "Inspect safely and try again",
+      "approvalRequired": false,
+      "workSafe": true,
+      "retryable": true
+    }
+  },
+  "responseContract": {
+    "required": ["status", "summary", "workSafe", "nextAction", "approvalRequired"],
+    "technicalDetails": "Technical details must be stored in a private Receipt and omitted from normal user output.",
+    "rawIdentifiers": "Provider identifiers may be retained internally but are hidden unless Developer View is explicitly enabled."
+  }
+}
