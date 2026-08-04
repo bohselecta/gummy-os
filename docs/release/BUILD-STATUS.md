@@ -7,7 +7,7 @@
 ## Current phase
 
 ```text
-Provenance recorded → stranger-path assembly → tests PASS → release docs → deploy → tag v1.0.1
+Provenance recorded → stranger-path assembly → tests PASS → release docs → deploy PASS → tag v1.0.1 PASS
 ```
 
 Immutable `v1.0.0` remains at `7dace7c…` and continues to serve as the historical Calm Workspace attestation. This branch completes the founder-authorized stranger loop without rewriting that tag.
@@ -27,7 +27,7 @@ Immutable `v1.0.0` remains at `7dace7c…` and continues to serve as the histori
 | Unit tests | PASS — 217/217 |
 | Playwright stranger loop suite | PASS — 10/10 targeted |
 | Prod build | PASS |
-| Production deploy of this branch | In progress |
+| Production deploy of this branch | PASS — dpl_85oqLRngo73edeafoTgJsbiuyvif |
 
 ## Package / tooling
 
