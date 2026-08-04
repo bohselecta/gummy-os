@@ -127,6 +127,7 @@
   .phase16-hero, .phase16-split { grid-template-columns: 1fr; }
   .phase16-hero, .phase16-section { padding: var(--space-4); }
   .phase16-command-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .phase16-lane-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .phase16-presence-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .phase16-presence-card p { min-height: 0; }
   .phase16-progress { grid-template-columns: 1fr; }

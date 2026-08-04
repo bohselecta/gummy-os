@@ -59,8 +59,8 @@ test('captures settled Night and Day first-impression evidence', async ({ page }
 test('captures the complete Actor presence grid', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 2400 });
   await enterCanvas(page);
-  await openMoreItem(page, /People & groups/);
-  await page.getByRole('button', { name: 'Maximize People & groups' }).click();
+  await openMoreItem(page, /Actor Home/);
+  await page.getByRole('button', { name: 'Maximize Actor Home' }).click();
   await expect(page.getByTestId('actor-presence-grid').locator('.presence-card')).toHaveCount(4);
   await settleImages(page, '[data-testid="actor-presence-grid"] img');
   await page.screenshot({

@@ -23,11 +23,26 @@ export const PHASE16_IDS = Object.freeze({
 });
 
 export const PHASE16_ACTORS = Object.freeze([
-  Object.freeze({ id: 'actor:hayden', name: 'Hayden', role: 'Human sponsor', presence: 'human-live' }),
-  Object.freeze({ id: 'actor:contributor-b', name: 'Contributor B', role: 'Writing', presence: 'ai-represented' }),
-  Object.freeze({ id: 'actor:contributor-c', name: 'Contributor C', role: 'Design', presence: 'static' }),
-  Object.freeze({ id: 'actor:contributor-d', name: 'Contributor D', role: 'Technical review', presence: 'offline' })
+  Object.freeze({ id: 'actor:hayden', name: 'Hayden', role: 'Human sponsor', presence: 'human-live', address: '@Hayden' }),
+  Object.freeze({ id: 'actor:contributor-b', name: 'Bob', role: 'Writing', presence: 'ai-represented', address: '@Bob' }),
+  Object.freeze({ id: 'actor:contributor-c', name: 'Sarah', role: 'Design', presence: 'static', address: '@Sarah' }),
+  Object.freeze({ id: 'actor:contributor-d', name: 'Dana', role: 'Technical review', presence: 'offline', address: '@Dana' })
 ]);
+
+/** Specialist and companion identities shown on the Demo Production cast (separate from person Actors). */
+export const DEMO_PRODUCTION_SPECIALISTS = Object.freeze([
+  Object.freeze({ id: 'actor:imagehoss', name: 'ImageHoss', address: '@ImageHoss', role: 'Image direction specialist' }),
+  Object.freeze({ id: 'actor:videoboss', name: 'VideoBoss', address: '@VideoBoss', role: 'Moving-image specialist' }),
+  Object.freeze({ id: 'actor:glopper', name: 'Glopper', address: '@Glopper', role: 'Action companion' })
+]);
+
+/** Plain-language Demo Worker identity for deterministic local execution. */
+export const DEMO_WORKER = Object.freeze({
+  id: 'worker:demo',
+  label: 'Demo Worker',
+  lane: 'deterministic-demonstration',
+  disclosure: 'Deterministic local Demo Worker. Visibly labeled. Not a live provider. Charges $0.00 and publishes nothing remotely.'
+});
 
 const REPRESENTATIVE_AGENT_ID = 'agent:contributor-b-representative';
 const REPRESENTATION_MOLD_ID = 'mold:contributor-b:representation-v1';
@@ -169,9 +184,9 @@ export async function ensureLivingCollaborationRecords(repository, { clock } = {
   const timestamp = now(clock);
 
   for (const definition of [
-    ['actor:contributor-b', '@contributor-b', 'Contributor B', { representation: 'AI-represented local fixture' }],
-    ['actor:contributor-c', '@contributor-c', 'Contributor C', { representation: 'Static local fixture' }],
-    ['actor:contributor-d', '@contributor-d', 'Contributor D', { representation: 'Offline local fixture' }]
+    ['actor:contributor-b', '@bob', 'Bob', { representation: 'AI-represented local fixture', publicAddress: '@Bob' }],
+    ['actor:contributor-c', '@sarah', 'Sarah', { representation: 'Static local fixture', publicAddress: '@Sarah' }],
+    ['actor:contributor-d', '@dana', 'Dana', { representation: 'Offline local fixture', publicAddress: '@Dana' }]
   ]) {
     await ensureRecord(repository, 'actors', definition[0], () => actorFixture(
       definition[0],
@@ -185,7 +200,7 @@ export async function ensureLivingCollaborationRecords(repository, { clock } = {
   await ensureRecord(repository, 'agents', REPRESENTATIVE_AGENT_ID, () => ({
     schema: 'gummy.agent/v0',
     id: REPRESENTATIVE_AGENT_ID,
-    name: 'Contributor B disclosed representative',
+    name: 'Bob disclosed representative',
     characterFamily: 'Local representation fixture',
     version: '1',
     providerClass: 'deterministic-local-fixture',
@@ -216,7 +231,7 @@ export async function ensureLivingCollaborationRecords(repository, { clock } = {
     schema: 'gummy.mold/v0',
     id: REPRESENTATION_MOLD_ID,
     actorId: 'actor:contributor-b',
-    name: 'Contributor B bounded representation',
+    name: 'Bob bounded representation',
     handle: '@contributor-b',
     status: 'active',
     allowedHumanIds: ['human:hayden'],
@@ -224,7 +239,7 @@ export async function ensureLivingCollaborationRecords(repository, { clock } = {
     role: 'message collection and approved profile explanation',
     context: PHASE16_IDS.socialInstance,
     representation: {
-      displayName: 'Contributor B · AI represented',
+      displayName: 'Bob · AI represented',
       description: 'Disclosed deterministic local fixture; never Human-live.'
     },
     permissions: {
@@ -315,7 +330,7 @@ export async function ensureLivingCollaborationRecords(repository, { clock } = {
   }));
 
   const messages = [
-    ['message:friday:118', 'actor:hayden', 'Let’s make a short cyberpunk music video from our Night Gummy world.', true],
+    ['message:friday:118', 'actor:hayden', 'Let’s create a collaborative 30-second AI video from our Night Gummy world.', true],
     ['message:friday:124', 'actor:contributor-b', 'I can shape the story and opening narration.', true],
     ['message:friday:131', 'actor:contributor-c', 'I can contribute visual direction and title-card design.', true],
     ['message:friday:140', 'actor:hayden', 'Private budget details stay excluded from the source package.', false]
@@ -623,9 +638,9 @@ export async function createSharedVisionFromSelection(repository, {
       })),
       explicitExclusions: ['message:friday:140', 'unselected-conversation', 'private-budget-details', 'credentials']
     },
-    intent: 'Create a cyberpunk music video together.',
-    goal: 'Produce one governed short film proof with inspectable collaboration evidence.',
-    possibleOutputs: ['short film', 'Radio aftershow', 'Channels premiere package'],
+    intent: 'Create a collaborative 30-second AI video.',
+    goal: 'Produce one governed 30-second collaborative video proof with inspectable collaboration evidence.',
+    possibleOutputs: ['30-second AI video', 'Radio aftershow', 'Channels premiere package'],
     unresolvedQuestions: ['Final public audience remains undecided.'],
     volunteeredContributions: [
       { actorId: 'actor:hayden', category: 'compute', description: 'Up to $4.00 future compute authorization', status: 'acknowledged' },
@@ -903,7 +918,7 @@ export async function proposeFourthContributorAllocation(repository, { clock } =
       approvedAt: null
     })),
     recalculation: {
-      reason: 'Contributor D joined before the Run.',
+      reason: 'Dana joined before the Run.',
       fromRevision: 1,
       toRevision: 2,
       increasesExistingMaximum: false,
@@ -1179,13 +1194,13 @@ function distributionPlan({
       agreementId: PHASE16_IDS.agreement,
       ledgerId: PHASE16_IDS.ledger,
       approved: true,
-      publicCreditLines: ['Hayden · creative direction', 'Contributor B · writing', 'Contributor C · design']
+      publicCreditLines: ['Hayden · creative direction', 'Bob · writing', 'Sarah · design']
     },
     disclosures: {
       syntheticMedia: true,
       syntheticVoice: false,
       aiRepresentation: true,
-      text: 'Deterministic local fixture. Contributor B is visibly AI represented; no remote identity or final media is claimed.'
+      text: 'Deterministic local fixture. Bob is visibly AI represented; Demo Worker is labeled; no remote identity or final media is claimed.'
     },
     likenessPermissions: [],
     voicePermissions: [],
@@ -1322,6 +1337,66 @@ function projectionRef(record, {
   return { id: record.id, title, status, revision, sourceId, detail };
 }
 
+/**
+ * Project persisted Command Center attention into plain-language lanes.
+ * Now / Next / Delegated / Review / Blocked / Done — never an authority source.
+ */
+export function projectCommandCenterLanes({
+  attentionItems = [],
+  activeProductions = [],
+  workOrders = [],
+  returns = [],
+  receipts = [],
+  blockedPlans = [],
+  waitingPlans = [],
+  runtime = {}
+} = {}) {
+  const classOf = item => item.class || item.status || '';
+  const fromAttention = item => ({
+    id: item.id,
+    title: item.title,
+    status: item.class || item.nextVerb || 'attention',
+    revision: item.sourceObject?.revision ?? null,
+    sourceId: item.sourceObject?.id || null,
+    detail: item.nextVerb || item.explanation || null
+  });
+  const now = attentionItems
+    .filter(item => ['needs-decision', 'needs-approval', 'needs-input', 'ready-to-accept'].includes(classOf(item)))
+    .map(fromAttention);
+  const next = [
+    ...attentionItems
+      .filter(item => ['needs-connection', 'ready-for-review', 'ready-to-publish', 'cost-changed', 'permission-expiring', 'presence-changed'].includes(classOf(item)))
+      .map(fromAttention),
+    ...activeProductions.map(item => projectionRef(item, { title: item.title || item.id, detail: 'Active Production' }))
+  ];
+  const delegated = workOrders
+    .filter(item => ['approved', 'leased', 'running', 'dispatched'].includes(item.status))
+    .map(item => projectionRef(item, { title: item.goal || item.id, detail: DEMO_WORKER.label }));
+  const review = [
+    ...returns.map(item => projectionRef(item, { title: item.summary || item.id, status: item.result || item.status || 'recorded' })),
+    ...attentionItems.filter(item => classOf(item) === 'ready-for-review').map(fromAttention)
+  ];
+  const blocked = [
+    ...blockedPlans.map(item => projectionRef(item, { title: `${item.destination?.type || 'destination'} blocked`, detail: item.destination?.routeStatus })),
+    ...attentionItems.filter(item => ['blocked', 'failed'].includes(classOf(item))).map(fromAttention),
+    ...waitingPlans.filter(item => item.status === 'blocked').map(item => projectionRef(item, { title: `${item.destination.type} blocked` }))
+  ];
+  const done = [
+    ...receipts.slice(-12).map(item => projectionRef(item, { title: item.action, status: item.outcome })),
+    ...attentionItems.filter(item => classOf(item) === 'completed').map(fromAttention),
+    ...(runtime.gummies || []).filter(item => item.status === 'accepted').map(item => projectionRef(item, { title: item.title || item.id, status: 'accepted' }))
+  ];
+  return {
+    now,
+    next,
+    delegated,
+    review,
+    blocked,
+    done,
+    worker: DEMO_WORKER
+  };
+}
+
 export async function generateCommandCenterView(repository, productionRuntime, { clock } = {}) {
   const [
     socialInstances,
@@ -1399,15 +1474,26 @@ export async function generateCommandCenterView(repository, productionRuntime, {
       route: 'Master Control',
       cost: { currency: 'USD', estimate: 10, maximum: 10, actual: 0 },
       receiptIds: [],
-      explanation: 'Contributor D joined. Existing $4/$3/$3 maximum authorizations remain unchanged.',
+      explanation: 'Dana joined. Existing $4/$3/$3 maximum authorizations remain unchanged.',
       generatedBy: 'zeke'
     }))
   ];
+  const lanes = projectCommandCenterLanes({
+    attentionItems,
+    activeProductions,
+    workOrders,
+    returns,
+    receipts,
+    blockedPlans,
+    waitingPlans,
+    runtime
+  });
   return {
     schema: 'gummy.command-center-view/v1',
     id: 'command-center-view:hayden:phase16',
     ownerActorId: 'actor:hayden',
     attentionItems,
+    lanes,
     activeProductions: activeProductions.map(item => projectionRef(item)),
     activeSocialInstances: socialInstances.filter(item => item.status !== 'archived').map(item => projectionRef(item)),
     sharedVisions: visions.map(item => projectionRef(item, { title: item.goal })),
@@ -1453,8 +1539,8 @@ export async function runLivingCollaborationProof(repository, productionRuntime,
   if (!production) {
     const created = createProduction(runtime, {
       id: PHASE16_IDS.production,
-      title: 'Friday Brainstorm Film',
-      description: 'Deterministic local Production formed from the Friday Brainstorm Crew Shared Vision.',
+      title: 'Collaborative 30-second AI video',
+      description: 'Deterministic local Demo Production formed from the Friday Brainstorm Crew Shared Vision. Executed by the labeled Demo Worker.',
       visibility: 'private',
       audience: 'private-collaboration',
       sourceGummyIds: [...PROOF_SOURCE_GUMMIES]

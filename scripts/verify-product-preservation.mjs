@@ -96,11 +96,13 @@ for (const [id, name, actorAddress] of requiredPhase14Places) {
 }
 
 for (const surface of [
-  "['actors', '◎', 'People & groups', 'People & groups · Actors / Bowls']",
+  "['actors', '◎', 'Actor Home', 'Actor Home · Living Self / People']",
   "['applications', '◌', 'Places']"
 ]) {
   assert.ok(appSource.includes(surface), `protected Gummy Bar surface disappeared: ${surface}`);
 }
+assert.ok(appSource.includes("['actors',"), 'protected actors surface id disappeared from Gummy Bar');
+assert.match(appSource, /Actor Home/);
 const placeUiSource = `${appSource}\n${placesSource}`;
 assert.match(placeUiSource, /loadPlaceCatalog/);
 assert.match(placeUiSource, /data.*applicationId|applicationId/);

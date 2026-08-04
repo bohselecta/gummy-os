@@ -2,8 +2,8 @@
   "schema": "gummy.first-user-experience/v1",
   "onboarding": {
     "welcome": {
-      "title": "Your creative computer, with you in control.",
-      "lede": "Start locally. Bring an idea, file, or project. Configure what you want. Nothing runs until you choose Make Production.",
+      "title": "Your work should not disappear into AI chats.",
+      "lede": "Gummy keeps Productions, Work Orders, Returns, and Receipts together. Start locally. Nothing runs until you choose Make Production. No orphaned work.",
       "detail": "Choose Night or Day Gummy. Start locally without an account; connect more only when you choose."
     },
     "identity": {
@@ -29,6 +29,7 @@
   },
   "guide": {
     "topics": [
+      ["Why does Gummy exist?", "Your work should not disappear into AI chats. Productions, Work Orders, and Receipts keep people, specialists, and artifacts together — no orphaned work."],
       ["What is a Production?", "One durable undertaking: the people and specialist Actors involved, its sources, decisions, Runs, results, and evidence."],
       ["What is an Actor?", "A persistent identity or specialist you can open. An Agent is the separate executor that may act for it only with your permission."],
       ["What happens when I choose Make Production?", "You first see the exact routes, permissions, cost ceiling, and missing capabilities. Only your approval freezes the configuration and starts eligible work."],

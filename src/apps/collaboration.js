@@ -1,4 +1,6 @@
 import {
+  DEMO_PRODUCTION_SPECIALISTS,
+  DEMO_WORKER,
   ensureLivingCollaborationRecords,
   generateCommandCenterView,
   PHASE16_ACTORS,
@@ -328,10 +330,10 @@ export async function createCollaborationApp({
       revision: item.sourceObject.revision
     });
 
-    const runButton = button('Create the full local example', async event => {
+    const createRunButton = (testid = null) => button('Open the Demo Production', async event => {
       const target = event.currentTarget;
       target.disabled = true;
-      target.textContent = 'Creating governed local example…';
+      target.textContent = 'Sending to Demo Worker…';
       try {
         const result = await runLivingCollaborationProof(repository, currentRuntime, {
           persistProductionRuntime: async runtime => {
@@ -340,23 +342,40 @@ export async function createCollaborationApp({
           }
         });
         currentRuntime = result.runtime;
-        announce('Full local example created. Phase 16 local proof completed. The deterministic route charged $0.00 and nothing was published remotely.');
+        announce('Demo Production complete. Demo Worker returned $0.00 actual cost. Nothing was published remotely. Review what came back, then continue.');
         await render();
       } catch (error) {
         target.disabled = false;
-        target.textContent = 'Create the full local example';
-        announce(`Local example blocked: ${error.message}`);
+        target.textContent = 'Open the Demo Production';
+        announce(`Demo Production blocked: ${error.message}`);
       }
-    }, 'button primary', { dataset: { testid: 'phase16-run-proof' } });
+    }, 'button primary', testid ? { dataset: { testid } } : {});
+
+    const laneBoard = command.lanes || { now: [], next: [], delegated: [], review: [], blocked: [], done: [], worker: DEMO_WORKER };
+    const laneCard = (title, items, testid) => h('article', {
+      class: 'phase16-lane',
+      dataset: { testid }
+    }, [
+      h('header', {}, [
+        h('strong', { text: title }),
+        h('span', { text: String(items.length) })
+      ]),
+      items.length
+        ? h('ul', {}, items.slice(0, 6).map(item => h('li', {}, [
+          h('strong', { text: item.title }),
+          h('small', { text: [item.status, item.detail].filter(Boolean).join(' · ') })
+        ])))
+        : h('p', { class: 'empty-inline', text: 'Nothing here yet.' })
+    ]);
 
     root.replaceChildren(
       h('header', { class: 'phase16-hero' }, [
         h('div', {}, [
-          h('p', { class: 'eyebrow', text: 'COMMAND CENTER · LIVING COLLABORATION' }),
-          h('h2', { text: 'Choose what to continue' }),
+          h('p', { class: 'eyebrow', text: 'COMMAND CENTER · NO ORPHANED WORK' }),
+          h('h2', { text: 'Your work should not disappear into AI chats.' }),
           h('p', {
             class: 'lede',
-            text: 'Open a saved group, shape an idea into a Production, review decisions, or send an accepted result somewhere. Nothing acts without your choice.'
+            text: 'Open a saved group, shape an idea into a Production, review cost and permissions, send work to a labeled Demo Worker, then Accept what came back. Productions, Work Orders, and Receipts keep the loop durable.'
           }),
           h('details', { class: 'phase16-how-it-works' }, [
             h('summary', { text: 'How this works' }),
@@ -370,6 +389,35 @@ export async function createCollaborationApp({
           h('small', { text: 'Nothing runs merely because it appears here.' })
         ])
       ]),
+      h('section', {
+        class: 'phase16-demo-doorway',
+        dataset: { testid: 'demo-production-doorway' },
+        'aria-label': 'Demo Production doorway'
+      }, [
+        h('p', { class: 'eyebrow', text: 'THREE-MINUTE DEMO · LOCAL ONLY' }),
+        h('h3', { text: 'Create a collaborative 30-second AI video.' }),
+        h('p', {
+          text: `People: ${PHASE16_ACTORS.map(actor => actor.address || `@${actor.name}`).join(', ')}. Specialists: ${DEMO_PRODUCTION_SPECIALISTS.map(item => item.address).join(', ')}. Worker: ${DEMO_WORKER.label}.`
+        }),
+        h('ol', { class: 'phase16-stranger-steps' }, [
+          h('li', { text: 'Open Actor Home / this Command Center' }),
+          h('li', { text: 'Save the Shared Vision, then form the Production' }),
+          h('li', { text: 'Review cost, contribution split, permissions, and destination' }),
+          h('li', { text: `Approve dispatch to the labeled ${DEMO_WORKER.label}` }),
+          h('li', { text: 'Inspect the Return and Receipt, then Accept once' }),
+          h('li', { text: 'Resume with a clear next action' })
+        ]),
+        h('div', { class: 'button-row' }, [
+          createRunButton('phase16-run-proof'),
+          button('Open this group', () => openSocialInstance(social, { resume: false }), 'button'),
+          button('Open Master Control', openMasterControl)
+        ]),
+        h('p', {
+          class: 'boundary-note compact',
+          dataset: { testid: 'demo-worker-label' },
+          text: DEMO_WORKER.disclosure
+        })
+      ]),
       h('div', { class: 'phase16-command-metrics' }, [
         commandMetric('Active Productions', command.activeProductions),
         commandMetric('Saved groups', command.activeSocialInstances),
@@ -377,6 +425,20 @@ export async function createCollaborationApp({
         commandMetric('Waiting decisions', command.waitingHumanDecisions),
         commandMetric('Returns', command.returns),
         commandMetric('Receipts', command.receipts)
+      ]),
+      section('What needs attention', 'COMMAND CENTER LANES · PERSISTED STATE', [
+        h('div', {
+          class: 'phase16-lane-board',
+          dataset: { testid: 'command-center-lanes' }
+        }, [
+          laneCard('Now', laneBoard.now, 'lane-now'),
+          laneCard('Next', laneBoard.next, 'lane-next'),
+          laneCard('Delegated', laneBoard.delegated, 'lane-delegated'),
+          laneCard('Review', laneBoard.review, 'lane-review'),
+          laneCard('Blocked', laneBoard.blocked, 'lane-blocked'),
+          laneCard('Done', laneBoard.done, 'lane-done')
+        ]),
+        h('p', { class: 'boundary-note compact', text: 'Lanes are a non-executing projection. Master Control remains the authority layer.' })
       ]),
       section('Friday Brainstorm Crew', 'LOCAL EXAMPLE · OPEN A SAVED GROUP', [
         h('p', { class: 'boundary-note', text: 'This example demonstrates the complete model using private records in this browser. It does not imply real contacts, remote presence, payment, publication, or ownership.' }),
@@ -404,20 +466,21 @@ export async function createCollaborationApp({
           progressCard('Restore saved group', 'Social Instance', social, record => `${record.layout.windows.length} windows · revision ${record.revision}`),
           progressCard('Save the idea', 'Shared Vision', sharedVision, record => `${record.origin.recordRefs.length} exact selected records · no execution`),
           progressCard('Agree how to make it', 'Production Agreement', agreement, record => `revision ${record.revision} · ${record.approvals.length} Actor approvals`),
+          progressCard('Review cost & contribution', 'Cost Review', originalPool, record => `${record.allocations.map(item => money(item.maximumAmount)).join(' / ')} maximums · ${DEMO_WORKER.label}`),
           progressCard('Set contribution limits', 'Production Pool', originalPool, record => `${record.allocations.map(item => money(item.maximumAmount)).join(' / ')} maximums`),
           progressCard('Invite another contributor', 'Production Pool revision proposal', revisedPool, record => `${record.allocations.length} future shares · prior authorizations unchanged`),
           progressCard('Record contributions', 'Contribution Ledger', ledger, record => `${record.entries.length} append-only entries · revision ${record.revision}`),
           progressCard('Form the Production', 'Production Formation Event', formation, record => `${record.id} · immutable`),
-          progressCard('Make Production', 'Production Run', run, record => `${record.id} · ${record.status} · ${money(record.policy.costCeiling)} run ceiling`),
+          progressCard('Approve dispatch', 'Make Production', run, record => `${record.id} · ${record.status} · ${money(record.policy.costCeiling)} run ceiling · ${DEMO_WORKER.label}`),
           progressCard('Accept the result', 'Human acceptance', accepted, record => `${record.id} · ${record.acceptance.role}`),
           progressCard('Prepare destinations', 'Distribution Plans', plans.length ? { id: 'plans', length: plans.length } : null, record => `${record.length} separate destinations`),
           progressCard('Release one destination', 'Distribution Release', releases[0], record => `${record.destination.type} · ${money(record.cost.amount)} actual`)
         ]),
         h('div', { class: 'button-row' }, [
-          runButton,
+          createRunButton(),
           button('Open Master Control', openMasterControl)
         ]),
-        h('p', { class: 'boundary-note compact', text: 'Creates the remaining example records in this browser, uses the governed deterministic route, charges $0.00, and publishes nothing remotely.' }),
+        h('p', { class: 'boundary-note compact', text: `Creates the remaining example records in this browser, uses the governed ${DEMO_WORKER.label}, charges $0.00, and publishes nothing remotely.` }),
         h('p', { text: 'This is optional. You can instead inspect and manipulate individual objects through Composer and the sections below.' })
       ], { dataset: { testid: 'phase16-proof-status' } }),
       h('div', { class: 'phase16-split' }, [
@@ -454,8 +517,9 @@ export async function createCollaborationApp({
           ])
         ] : [emptyState('The exact Agreement revision has not been approved.')])
       ]),
-      section('Set contribution limits', 'PRODUCTION POOL', [
+      section('Review cost, contribution, permissions, outputs, destination', 'COST REVIEW', [
         h('p', { class: 'phase16-law', text: "These are individual maximum authorizations, not collected money. Nobody's limit changes until that person approves a new revision." }),
+        h('p', { class: 'boundary-note', dataset: { testid: 'cost-review-worker' }, text: `Dispatch target: ${DEMO_WORKER.label}. Live providers stay unavailable unless separately connected — never a silent fake fallback.` }),
         poolTable(originalPool, revisedPool),
         h('details', {}, [
           h('summary', { text: 'Show authorization and reconciliation evidence' }),
@@ -510,6 +574,23 @@ export async function createCollaborationApp({
           h('p', { text: command.sourceRevisions.map(item => `${item.id}@${item.revision ?? 'unrevisioned'}`).join(' · ') })
         ])
       ], { dataset: { testid: 'phase16-attention' } }),
+      section('What came back / what happens next', 'RETURN · ACCEPTANCE · RESUME', [
+        accepted
+          ? h('div', { class: 'phase16-next-action', dataset: { testid: 'next-action-card' } }, [
+            h('strong', { text: 'Accepted once. Canonical Production advanced.' }),
+            h('p', { text: `${accepted.id} · ${accepted.acceptance?.role || 'accepted'}. Choose a destination below, open the Receipts surface, or continue the saved group.` }),
+            h('div', { class: 'button-row' }, [
+              button('Continue the group', async () => {
+                const resumed = await resumeSocialInstance(repository, social.id);
+                await openSocialInstance(resumed.socialInstance, { resume: true });
+              }, 'button primary'),
+              button('Open Master Control', openMasterControl)
+            ])
+          ])
+          : run
+            ? h('p', { text: 'A Return is ready for Human acceptance. Accepting updates canonical Production state exactly once.' })
+            : h('p', { text: 'After Demo Worker returns, inspect artifacts, Evidence, cost, attribution, and Receipt before Accept.' })
+      ]),
       section('Choose where an accepted result could go', 'DISTRIBUTION', plans.length ? [
         h('div', { class: 'card-grid phase16-distribution-grid' }, plans.map(plan => distributionCard(plan, releases))),
         h('p', { class: 'phase16-law', text: 'Accepting a result never publishes it.' }),

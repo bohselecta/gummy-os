@@ -172,10 +172,10 @@ export function createProductionApp({
       el('strong', { text: copy.boundaryTitle }),
       el('p', { text: copy.boundaryDetail })
     ]));
-    if (production.id === 'production:night-gummy-launch') {
-      root.append(el('div', { class: 'demonstration-lane', role: 'status' }, [
-        el('strong', { text: 'Deterministic demonstration lane' }),
-        el('span', { text: 'This example demonstrates the complete model using private records in this browser. It does not imply real contacts, remote presence, payment, publication, or ownership. It creates structured studies and evidence, not real generated image, video, or Blender output.' })
+    if (production.id === 'production:night-gummy-launch' || production.id === 'production:friday-brainstorm-film') {
+      root.append(el('div', { class: 'demonstration-lane', role: 'status', dataset: { testid: 'demo-worker-banner' } }, [
+        el('strong', { text: 'Demo Worker' }),
+        el('span', { text: 'Deterministic demonstration lane. Visibly labeled. Not a live provider. This example uses private records in this browser and does not imply real contacts, remote presence, payment, publication, or ownership. It creates structured studies and evidence, not real generated image, video, or Blender output.' })
       ]));
     }
 
@@ -695,7 +695,7 @@ export function createProductionApp({
           runPreview = null;
           if (result.denied) toast('Make Production blocked', result.blockers.join(', '));
           else {
-            toast('Production Run finished', `${result.run.id} ended ${result.run.status} with ${result.results.length} result Gummies and truthful node evidence.`);
+            toast('Demo Worker finished', `${result.run.id} ended ${result.run.status} with ${result.results.length} result Gummies. Review what came back before Accept.`);
             selectedTab = 'runs';
           }
           render();

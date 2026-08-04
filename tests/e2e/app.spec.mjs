@@ -115,7 +115,7 @@ test('simple doorway preserves the full product map and truthful first-party lau
   await expect(page.getByRole('button', { name: /Open the Night Gummy Launch sample/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Learn how Gummy OS works/ })).toBeVisible();
   const more = await revealMore(page);
-  await expect(more.getByRole('menuitem', { name: /People & groups/ })).toBeVisible();
+  await expect(more.getByRole('menuitem', { name: /Actor Home/ })).toBeVisible();
   await more.getByRole('menuitem', { name: /Places/ }).click();
 
   const places = page.getByTestId('phase14-places');
@@ -275,7 +275,7 @@ test('revocation blocks before provider, replacement Mold is additive, and two A
   await expect(page.locator('.toast-layer').getByText(/Revocation proof: blocked/)).toBeVisible();
   await page.getByRole('button', { name: 'Issue replacement Mold v2' }).click();
   await expect(page.locator('.toast-layer').getByText(/Replacement Mold v2 issued/)).toBeVisible();
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
   await page.getByRole('button', { name: 'Compose temporary private Bowl' }).click();
   await expect(page.getByText('Two-Actor Composition Proof')).toBeVisible();
 });

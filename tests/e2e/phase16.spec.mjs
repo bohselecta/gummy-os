@@ -118,9 +118,9 @@ test('complete journey forms, runs, accepts, and releases only one explicit dest
   expect(before.distributionReleases).toHaveLength(0);
 
   await commandCenter.getByTestId('phase16-run-proof').click();
-  await expect(page.locator('.toast-layer')).toContainText('Phase 16 local proof completed', { timeout: 20_000 });
+  await expect(page.locator('.toast-layer')).toContainText('Demo Production complete', { timeout: 20_000 });
   commandCenter = page.getByRole('region', { name: 'Command Center window' });
-  await expect(commandCenter.locator('.phase16-progress-complete')).toHaveCount(11);
+  await expect(commandCenter.locator('.phase16-progress-complete')).toHaveCount(12);
   await expect(commandCenter.getByTestId('phase16-pool')).toContainText('$4.00');
   await expect(commandCenter.getByTestId('phase16-pool')).toContainText('$3.00');
   await expect(commandCenter.getByTestId('phase16-pool')).toContainText('$2.50');
@@ -148,7 +148,7 @@ test('complete journey forms, runs, accepts, and releases only one explicit dest
 
   await page.reload();
   commandCenter = page.getByRole('region', { name: 'Command Center window' });
-  await expect(commandCenter.locator('.phase16-progress-complete')).toHaveCount(11);
+  await expect(commandCenter.locator('.phase16-progress-complete')).toHaveCount(12);
   await expect(commandCenter).toContainText('production:friday-brainstorm-film · accepted');
 });
 

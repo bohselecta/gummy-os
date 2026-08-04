@@ -86,7 +86,7 @@ const primarySurfaces = [
 
 const systemSurfaces = [
   ['productions', '◇', 'Productions'],
-  ['actors', '◎', 'People & groups', 'People & groups · Actors / Bowls'],
+  ['actors', '◎', 'Actor Home', 'Actor Home · Living Self / People'],
   ['applications', '◌', 'Places'],
   ['command-center', '◈', 'Command Center'],
   ['control', '⌁', 'Master Control'],
@@ -832,7 +832,7 @@ async function openSurface(id) {
     browser: ['Gummy Browser', 'isolated navigation'],
     productions: ['Productions', 'Actor-first durable undertakings'],
     'command-center': ['Command Center', 'attention, collaboration, and governed release'],
-    actors: ['People & groups', 'Actors, Bowls, and Social Instances'],
+    actors: ['Actor Home', 'Your Living Self Page doorway — Actors, Bowls, and Social Instances'],
     'work-orders': ['Work Orders', 'Glopper Inbox'],
     receipts: ['Receipts', 'local tamper evidence'],
     control: ['Master Control', 'authority and revocation'],
@@ -1089,9 +1089,17 @@ function guideSurface() {
   return h('div', {}, [
     h('p', { class: 'eyebrow', text: 'Gummy guide · orientation and continuity' }),
     h('section', { class: 'doorway', 'aria-label': 'Start in Gummy OS' }, [
-      h('h1', { text: 'Your creative computer, with you in control.' }),
-      h('p', { class: 'lede', text: 'Start locally. Configure what you want. Nothing runs until you choose Make Production.' }),
+      h('h1', { text: 'Your work should not disappear into AI chats.' }),
+      h('p', { class: 'lede', text: 'Your creative computer, with you in control. Gummy keeps people, specialists, Work Orders, Returns, and Receipts inside living Productions. No orphaned work.' }),
       h('div', { class: 'doorway-actions' }, [
+        h('button', {
+          class: 'choice doorway-choice',
+          dataset: { testid: 'open-demo-production' },
+          onclick: () => openSurface('command-center')
+        }, [
+          h('strong', { text: 'Open the Demo Production' }),
+          h('span', { text: 'Create a collaborative 30-second AI video with @Hayden, @Bob, @ImageHoss, @VideoBoss, Glopper, and a labeled Demo Worker.' })
+        ]),
         h('button', { class: 'choice doorway-choice', onclick: () => void startProduction('blank') }, [
           h('strong', { text: 'Start a blank Production' }),
           h('span', { text: 'Create a private workspace. No specialist work starts.' })
@@ -1102,6 +1110,7 @@ function guideSurface() {
         ])
       ]),
       h('div', { class: 'button-row secondary-doorway-actions' }, [
+        h('button', { class: 'button', onclick: () => openSurface('actors') }, 'Enter Actor Home'),
         h('button', { class: 'button', onclick: () => openSurface('gummies') }, 'Import a project or backup'),
         h('button', { class: 'button', onclick: () => openSurface('productions') }, 'Open an existing Production'),
         h('button', { class: 'button', onclick: () => document.querySelector('#gummy-conversation')?.focus() }, 'Learn how Gummy OS works')
@@ -1121,7 +1130,7 @@ function guideSurface() {
         h('p', { text: answer })
       ]))),
       h('div', { class: 'button-row' }, [
-        h('button', { class: 'button', onclick: () => openSurface('actors') }, 'Meet the Actors'),
+        h('button', { class: 'button', onclick: () => openSurface('actors') }, 'Open Actor Home'),
         h('button', { class: 'button', onclick: () => { panelTab = 'conversation'; void togglePanel(true); } }, 'Ask Glopper what to do next')
       ])
     ]),
@@ -1652,9 +1661,18 @@ async function actorsSurface() {
     };
   });
   const root = h('div', {}, [
-    h('p', { class: 'eyebrow', text: 'Living entry points · truthful presence' }),
-    h('h2', { text: 'Actors & companions' }),
-    h('p', { class: 'lede', text: copy.intro }),
+    h('p', { class: 'eyebrow', text: 'Actor Home · Living Self doorway' }),
+    h('h2', { text: 'Actor Home' }),
+    h('p', { class: 'lede', text: 'Your personal Actor is the experiential center. Open specialists, resume groups, or continue into the Demo Production from Command Center. Agents never replace Actors.' }),
+    h('div', { class: 'button-row' }, [
+      h('button', {
+        class: 'button primary',
+        dataset: { testid: 'actor-home-demo' },
+        onclick: () => openSurface('command-center')
+      }, 'Open the Demo Production'),
+      h('button', { class: 'button', onclick: () => openSurface('productions') }, 'Open Productions')
+    ]),
+    h('p', { class: 'boundary-note', text: copy.intro }),
     h('div', {
       class: 'presence-grid',
       dataset: { testid: 'actor-presence-grid' }

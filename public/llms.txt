@@ -4,7 +4,7 @@
 
 Gummy OS is a local-first, Human-controlled creative workspace delivered through the browser. It preserves durable project state in a Local Gummy Box and lets the Human arrange sources, people, specialist tools, review decisions, and destinations in a visual Composer.
 
-Gummy OS v1 is production complete. The stable release is v1.0.0 at https://www.mygum.my/.
+Gummy OS v1 is production complete. The stable release line is v1.0.1 (immutable v1.0.0 preserved) at https://www.mygum.my/.
 
 ## Product model
 

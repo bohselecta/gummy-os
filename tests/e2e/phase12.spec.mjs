@@ -14,7 +14,7 @@ async function onboard(page) {
 
 test('Living Actor presence and governed private Glopper chat persist with transcript, failure-safe controls, and Receipts', async ({ page }) => {
   await onboard(page);
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
   const glopper = page.locator('[data-presence-id="actor:glopper"]');
   await expect(glopper).toContainText('available for chat');
   await expect(glopper).toContainText('actor:glopper');
@@ -48,8 +48,8 @@ test('two same-origin pages receive persistent Human presence and private manual
   await onboard(page);
   const second = await context.newPage();
   await second.goto('/');
-  await openMoreItem(page, /People & groups/);
-  await openMoreItem(second, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
+  await openMoreItem(second, /Actor Home/);
   const personalOne = page.locator('[data-actor-id="actor:hayden"]');
   await personalOne.getByRole('button', { name: 'available for chat' }).click();
   await expect(second.locator('[data-actor-id="actor:hayden"]')).toContainText('available for chat');
@@ -77,7 +77,7 @@ test('failed provider turns persist an explicit same-key recovery across reload 
     await route.continue();
   });
   await onboard(page);
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
   await page.locator('[data-presence-id="actor:glopper"]').getByRole('button', { name: 'Open private chat' }).click();
   await page.getByLabel('Message Glopper').fill('Persist this recovery boundary.');
   await page.getByRole('button', { name: 'Approve context, cost & send' }).click();
@@ -120,7 +120,7 @@ test('phone Bar, notifications, Actor cards, full Glopper sheet, chat, and media
   const toast = page.locator('.toast').last();
   await expect(toast).toBeVisible();
   expect(await toast.evaluate(node => node.getBoundingClientRect().width <= 304)).toBe(true);
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
   const presence = page.locator('.presence-card').first();
   expect(await presence.evaluate(node => node.getBoundingClientRect().width <= 300)).toBe(true);
   await page.getByRole('button', { name: 'Open Glopper Panel' }).click();

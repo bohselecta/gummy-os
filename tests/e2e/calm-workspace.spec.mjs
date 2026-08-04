@@ -20,7 +20,7 @@ test('desktop Calm Workspace keeps core destinations primary and system tools be
   await expect(page.getByRole('menu', { name: 'System workspaces' })).toBeHidden();
   await page.getByRole('button', { name: 'More', exact: true }).click();
   const more = page.getByRole('menu', { name: 'System workspaces' });
-  for (const name of ['People & groups', 'Places', 'Master Control', 'Browser', 'Work Orders', 'Receipts', 'Connections & runtimes', 'About / Limits']) {
+  for (const name of ['Actor Home', 'Places', 'Master Control', 'Browser', 'Work Orders', 'Receipts', 'Connections & runtimes', 'About / Limits']) {
     await expect(more.getByRole('menuitem', { name })).toBeVisible();
   }
 

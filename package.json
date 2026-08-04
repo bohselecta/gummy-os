@@ -1,6 +1,6 @@
 {
   "name": "gummy-os",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "Gummy is a provider-neutral personal AI computer, social protocol, and governed enterprise software habitat delivered through the browser.",
