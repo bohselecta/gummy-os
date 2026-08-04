@@ -39,7 +39,7 @@ test('realm art reaches Canvas, Actors, Glopper, chat, Production, and public me
   const canvasBackground = await page.locator('.canvas').evaluate(element => getComputedStyle(element).backgroundImage);
   expect(canvasBackground).toContain('lantern-chamber-night-1280x720.avif');
 
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
   const portals = page.getByTestId('actor-presence-grid').locator('.presence-portal');
   await expect(portals).toHaveCount(4);
   for (const image of await portals.all()) {

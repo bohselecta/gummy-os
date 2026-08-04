@@ -260,6 +260,6 @@ test('production responses expose security headers and terminal boot state', asy
   expect(headers['x-content-type-options']).toBe('nosniff');
   expect(headers['x-frame-options']).toBe('DENY');
   await expect(page.locator('#boot')).toHaveCount(0, { timeout: 5000 });
-  await expect(page.getByRole('heading', { name: 'Your creative computer, with you in control.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Your work should not disappear into AI chats.' })).toBeVisible();
   await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
 });

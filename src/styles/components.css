@@ -252,6 +252,54 @@
 .phase16-command-metrics {
   display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-2);
 }
+.phase16-demo-doorway {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--g-gold) 55%, var(--line));
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--g-gold) 18%, transparent), transparent 42%),
+    color-mix(in srgb, var(--panel) 92%, var(--g-violet));
+}
+.phase16-demo-doorway h3 { margin: 0; font-size: clamp(1.35rem, 2.4vw, 1.9rem); }
+.phase16-stranger-steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: .35rem;
+  color: var(--muted);
+}
+.phase16-lane-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.phase16-lane {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  min-height: 8rem;
+}
+.phase16-lane header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.phase16-lane ul { margin: 0; padding-left: 1rem; display: grid; gap: .45rem; }
+.phase16-lane li strong, .phase16-lane li small { display: block; }
+.phase16-lane li small, .phase16-lane .empty-inline { color: var(--muted); }
+.phase16-next-action {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--g-gold) 50%, var(--line));
+  border-radius: 14px;
+}
 .metric-card {
   display: grid; gap: .15rem; min-width: 0; padding: var(--space-3); border: 1px solid var(--line);
   border-radius: var(--radius-sm); background: var(--surface-soft);

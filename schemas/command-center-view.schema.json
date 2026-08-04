@@ -10,6 +10,29 @@
     "schema": { "const": "gummy.command-center-view/v1" },
     "id": { "type": "string", "pattern": "^command-center-view:" },
     "ownerActorId": { "type": "string", "pattern": "^actor:" },
+    "lanes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["now", "next", "delegated", "review", "blocked", "done"],
+      "properties": {
+        "now": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+        "next": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+        "delegated": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+        "review": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+        "blocked": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+        "done": { "type": "array", "items": { "$ref": "#/$defs/projectionRef" } },
+        "worker": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": { "type": "string" },
+            "label": { "type": "string" },
+            "lane": { "type": "string" },
+            "disclosure": { "type": "string" }
+          }
+        }
+      }
+    },
     "attentionItems": {
       "type": "array",
       "items": {

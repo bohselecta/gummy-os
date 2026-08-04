@@ -13,7 +13,7 @@ async function onboard(page) {
 
 test('Hoyt stays recorded but is not presented as a default local user', async ({ page }) => {
   await onboard(page);
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
 
   const hoytDefaultCard = page.locator('.card[data-actor-id="actor:hoyt"]');
   await expect(hoytDefaultCard).toHaveCount(1);

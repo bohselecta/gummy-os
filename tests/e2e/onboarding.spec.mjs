@@ -3,8 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 async function completeOnboarding(page) {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Your creative computer, with you in control.' })).toBeVisible();
-  await expect(page.getByText(/Nothing runs until you choose Make Production/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Your work should not disappear into AI chats.' })).toBeVisible();
+  await expect(page.getByText(/No orphaned work|Nothing runs until you choose Make Production/i).first()).toBeVisible();
   await page.getByTestId('mode-night').click();
   await page.getByRole('button', { name: 'Enter Gummy OS' }).click();
   await page.getByLabel('What should Gummy call you?').fill('Test User');
@@ -38,9 +38,10 @@ async function stores(page) {
   });
 }
 
-test('first run creates a local Box, offers exactly two primary paths, and preserves the safe sample', async ({ page }) => {
+test('first run creates a local Box, offers primary Demo and sample paths, and preserves the safe sample', async ({ page }) => {
   await completeOnboarding(page);
   const guide = page.locator('[data-window-id="guide"]');
+  await expect(guide.getByRole('button', { name: /Open the Demo Production/ })).toBeVisible();
   await expect(guide.getByRole('button', { name: /Start a blank Production/ })).toBeVisible();
   await expect(guide.getByRole('button', { name: /Open the Night Gummy Launch sample/ })).toBeVisible();
   expect((await stores(page)).boxes).toHaveLength(1);

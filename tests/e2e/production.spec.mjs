@@ -184,7 +184,7 @@ test('Ranch Day executes through branded WebOS, persists exact evidence, and rev
   expect(afterRestart.gummies.filter(item => item.kind === 'file').map(item => item.hash))
     .toEqual(beforeRestart.gummies.filter(item => item.kind === 'file').map(item => item.hash));
 
-  await openMoreItem(page, /People & groups/);
+  await openMoreItem(page, /Actor Home/);
   await page.getByTestId('actor-presence-grid').locator('[data-presence-id="actor:videoboss"]')
     .getByRole('button', { name: 'Open standalone Actor view' }).click();
   const standalone = page.locator('[data-window-id="actor-surface:actor:videoboss:standalone:main"]');

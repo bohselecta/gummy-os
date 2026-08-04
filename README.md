@@ -1,6 +1,8 @@
 # Gummy OS
 
 > **A computer you can open. A playground with real boundaries.**
+>
+> **No orphaned work.** Your work should not disappear into AI chats.
 
 Gummy OS is a browser-delivered personal creative computer where persistent **Actors** can be opened, composed, and connected to executable **Agents** under Human-controlled **Master Control**.
 
@@ -8,9 +10,12 @@ It keeps the familiar computer—Canvas, windows, files, applications, drag-and-
 
 The canonical personal address is **mygum.my**.
 
+Start with the **Demo Production** doorway: create a collaborative 30-second AI video with @Hayden, @Bob, specialists, and a labeled **Demo Worker** (deterministic demonstration — not a live provider).
+
 ## Current status
 
-**Gummy OS v1 is production complete.**
+**Gummy OS v1 is production complete** (`v1.0.0` Calm Workspace).  
+**v1.0.1** on `release/v1.0.1-stranger-loop` completes the stranger-walkable Demo Production loop without rewriting the immutable `v1.0.0` tag.
 
 The shipped product includes the Human-owned Gummy Box, visual Composer,
 governed Productions, Calm Workspace, Living Collaboration, Places, Master
@@ -22,7 +27,10 @@ No active Gummy OS capability depends on those optional integrations.
 Open the current production release:
 
 - **Gummy OS:** [https://www.mygum.my/](https://www.mygum.my/)
+- **Product map:** [`PRODUCT.md`](PRODUCT.md)
+- **Release notes:** [`RELEASE_NOTES.md`](RELEASE_NOTES.md) · [`CHANGELOG.md`](CHANGELOG.md)
 - **Release evidence:** [`docs/release/FINAL_RELEASE.md`](docs/release/FINAL_RELEASE.md)
+- **Build status:** [`docs/release/BUILD-STATUS.md`](docs/release/BUILD-STATUS.md)
 - **Public changelog:** [https://www.mygum.my/changelog](https://www.mygum.my/changelog)
 - **Optional post-v1 integrations:** [`docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md`](docs/roadmap/OPTIONAL_POST_V1_RUNTIME_INTEGRATIONS.md)
 
